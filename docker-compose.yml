@@ -1,0 +1,238 @@
+version: '3.9'
+
+services:
+  # Neo4j - Graph Database for Knowledge Representation
+  neo4j:
+    image: neo4j:5.15.0
+    container_name: multiagents-neo4j
+    restart: unless-stopped
+    ports:
+      - "7474:7474"  # HTTP
+      - "7687:7687"  # Bolt
+    environment:
+      - NEO4J_AUTH=neo4j/multiagents123
+      - NEO4J_PLUGINS=["apoc", "graph-data-science"]
+      - NEO4J_dbms_memory_pagecache_size=1G
+      - NEO4J_dbms_memory_heap_max__size=2G
+      - NEO4J_dbms_memory_heap_initial__size=1G
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*,gds.*
+      - NEO4J_dbms_security_procedures_allowlist=apoc.*,gds.*
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+      - neo4j_import:/var/lib/neo4j/import
+      - neo4j_plugins:/plugins
+    networks:
+      - multiagents-network
+
+  # Qdrant - Vector Database for Semantic Search
+  qdrant:
+    image: qdrant/qdrant:v1.7.4
+    container_name: multiagents-qdrant
+    restart: unless-stopped
+    ports:
+      - "6333:6333"  # REST API
+      - "6334:6334"  # gRPC
+    environment:
+      - QDRANT__SERVICE__GRPC_PORT=6334
+      - QDRANT__SERVICE__HTTP_PORT=6333
+      - QDRANT__LOG_LEVEL=INFO
+      - QDRANT__STORAGE__STORAGE_PATH=/qdrant/storage
+      - QDRANT__STORAGE__ON_DISK_PAYLOAD=true
+      - QDRANT__TELEMETRY_DISABLED=true
+    volumes:
+      - qdrant_storage:/qdrant/storage
+    networks:
+      - multiagents-network
+
+  # PostgreSQL - Relational Database for Metadata
+  postgres:
+    image: postgres:16.1-alpine
+    container_name: multiagents-postgres
+    restart: unless-stopped
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=multiagents
+      - POSTGRES_PASSWORD=multiagents123
+      - POSTGRES_DB=multiagents_db
+      - POSTGRES_MAX_CONNECTIONS=100
+      - POSTGRES_SHARED_BUFFERS=256MB
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U multiagents -d multiagents_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - multiagents-network
+
+  # Redis - Cache and Message Queue
+  redis:
+    image: redis:7.2-alpine
+    container_name: multiagents-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: >
+      redis-server
+      --maxmemory 512mb
+      --maxmemory-policy allkeys-lru
+      --save 60 1
+      --loglevel warning
+      --requirepass multiagents123
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - multiagents-network
+
+  # MinIO - S3-compatible Object Storage (for document storage)
+  minio:
+    image: minio/minio:RELEASE.2024-01-13T07-53-03Z
+    container_name: multiagents-minio
+    restart: unless-stopped
+    ports:
+      - "9000:9000"  # API
+      - "9001:9001"  # Console
+    environment:
+      - MINIO_ROOT_USER=multiagents
+      - MINIO_ROOT_PASSWORD=multiagents123
+      - MINIO_DEFAULT_BUCKETS=papers:public,extracted:private,outputs:private
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - multiagents-network
+
+  # Prometheus - Metrics Collection
+  prometheus:
+    image: prom/prometheus:v2.48.1
+    container_name: multiagents-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    volumes:
+      - prometheus_data:/prometheus
+    networks:
+      - multiagents-network
+
+  # Grafana - Metrics Visualization
+  grafana:
+    image: grafana/grafana:10.2.3
+    container_name: multiagents-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=multiagents123
+      - GF_INSTALL_PLUGINS=redis-datasource,vertamedia-clickhouse-datasource
+      - GF_SERVER_ROOT_URL=http://localhost:3000
+      - GF_ANALYTICS_REPORTING_ENABLED=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    networks:
+      - multiagents-network
+
+  # Jupyter Lab - Interactive Development Environment
+  jupyter:
+    image: jupyter/scipy-notebook:latest
+    container_name: multiagents-jupyter
+    restart: unless-stopped
+    ports:
+      - "8888:8888"
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - JUPYTER_TOKEN=multiagents123
+    volumes:
+      - jupyter_notebooks:/home/jovyan/work
+    networks:
+      - multiagents-network
+
+  # Nginx - Reverse Proxy (optional, for production)
+  nginx:
+    image: nginx:alpine
+    container_name: multiagents-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    # volumes: # Uncomment when nginx.conf is ready
+    #   - ./deployment/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    #   - ./deployment/nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - neo4j
+      - qdrant
+      - postgres
+    networks:
+      - multiagents-network
+    profiles:
+      - production
+
+  # SageMath - Mathematical Computation Engine
+  sagemath:
+    image: sagemath/sagemath:latest
+    container_name: multiagents-sagemath
+    restart: unless-stopped
+    ports:
+      - "8889:8888"  # Jupyter interface for SageMath
+    environment:
+      - SAGE_JUPYTER_TOKEN=sagemath123
+    volumes:
+      - sage_data:/home/sage/work
+    networks:
+      - multiagents-network
+    profiles:
+      - math
+
+networks:
+  multiagents-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
+
+volumes:
+  neo4j_data:
+    driver: local
+  neo4j_logs:
+    driver: local
+  neo4j_import:
+    driver: local
+  neo4j_plugins:
+    driver: local
+  qdrant_storage:
+    driver: local
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  minio_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  sage_data:
+    driver: local
+  jupyter_notebooks:
+    driver: local
