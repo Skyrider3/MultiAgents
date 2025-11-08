@@ -1,9 +1,12 @@
 # agents.py
 import os, json, pickle, faiss, numpy as np, random
 from typing import List, Dict
-from langchain import OpenAI  # if using OpenAI
+from langchain_openai import OpenAI as LCOpenAI
 from langchain.prompts import PromptTemplate
-from langchain.llms import OpenAI as LCOpenAI
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Load faiss / metadata
 INDEX_DIR = "index"
@@ -20,7 +23,7 @@ if USE_OPENAI:
     llm = LCOpenAI(temperature=0.2, model_name="gpt-4o-mini")  # change as needed
 else:
     # placeholder: you can swap other LLMs
-    from langchain.llms.fake import FakeListLLM
+    from langchain_community.llms.fake import FakeListLLM
     llm = FakeListLLM(responses=["Fake response — configure OPENAI_API_KEY to use real LLM"])
 
 # simple semantic retriever
@@ -28,7 +31,7 @@ def semantic_retrieve(query, k=6, embed_fn=None):
     if embed_fn is None:
         # use OpenAI if available
         if USE_OPENAI:
-            from langchain.embeddings.openai import OpenAIEmbeddings
+            from langchain_openai import OpenAIEmbeddings
             emb = OpenAIEmbeddings()
             v = emb.embed_query(query)
         else:
@@ -63,7 +66,7 @@ def symbol_retrieve(symbols: List[str], max_chunks_per_symbol=6):
 NUMBER_THEORIST_PROMPT = PromptTemplate(
     input_variables=["query","evidence"],
     template="""
-You are the Number Theorist Agent.
+You are an expert Number Theorist Agent.
 
 Task: Given the user query and the retrieved evidence below, propose up to 5 concise conjectures in LaTeX. For each conjecture provide:
 1) statement_tex (LaTeX),

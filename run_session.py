@@ -1,7 +1,8 @@
 # run_session.py
 import json, sys, time
 from agents import semantic_retrieve, symbol_retrieve, run_number_theorist, run_experimenter, run_symbolic, run_coordinator
-from langchain.embeddings import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
+
 
 def expand_query_for_number_theory(q):
     # Add keyword heuristics
@@ -54,8 +55,12 @@ def session(query):
     print("saved to session file.")
     return out
 
-if __name__ == "__main__":
+def main():
+    """Entry point for the run-session script."""
     q = "distribution of zeros of Ramanujan tau(n) modulo small primes"
     if len(sys.argv) > 1:
         q = " ".join(sys.argv[1:])
     session(q)
+
+if __name__ == "__main__":
+    main()
