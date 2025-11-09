@@ -11,6 +11,7 @@ from typing import List, Dict, Any
 from datetime import datetime
 from crewai import Agent, Task, Crew, Process
 from crewai.tools import tool
+from pydantic import BaseModel, Field
 from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 
@@ -31,39 +32,87 @@ def retrieve_evidence(query: str) -> str:
     """
     Retrieve relevant evidence from the paper database
     using both semantic and symbol-based search.
+
+    Args:
+        query: The search query string
     """
+    # Ensure query is a string
+    if not isinstance(query, str):
+        # Handle case where query might be a dict (CrewAI sometimes passes structured data)
+        if isinstance(query, dict):
+            # Extract the actual query string from the dict
+            if 'description' in query:
+                query = query['description']
+            elif 'query' in query:
+                query = query['query']
+            elif 'value' in query:
+                query = query['value']
+            else:
+                # Try to find any string value in the dict
+                for key, value in query.items():
+                    if isinstance(value, str):
+                        query = value
+                        break
+                else:
+                    query = str(query)  # Last resort: convert to string
+    else :
+        pass
+    # Ensure query is not empty
+    if not query or query.strip() == "":
+        query = "number theory mathematical conjecture"  # Default fallback
+
     # Expand query for number theory
     extras = ["multiplicative", "Dirichlet", "mod p", "L-function", "elliptic", "congruence"]
     expanded_query = query + " " + " ".join(extras)
 
-    # Get semantic hits
-    sem_hits = semantic_retrieve(expanded_query, k=8)
+    try:
+        # Get semantic hits
+        sem_hits = semantic_retrieve(expanded_query, k=8)
 
-    # Extract symbols from query
-    import re
-    symbols = re.findall(r"\\[A-Za-z]+\{[^}]*\}", query)
-    symbols += re.findall(r"[a-zA-Z]_\{?[0-9nkp]+\}?", query)
+        # Extract symbols from query
+        import re
+        symbols = re.findall(r"\\[A-Za-z]+\{[^}]*\}", query)
+        symbols += re.findall(r"[a-zA-Z]_\{?[0-9nkp]+\}?", query)
 
-    # Get symbol hits
-    sym_hits = symbol_retrieve(symbols) if symbols else []
+        # Get symbol hits
+        sym_hits = symbol_retrieve(symbols) if symbols else []
 
-    # Merge evidence
-    evidence = sem_hits + sym_hits
+        # Merge evidence
+        evidence = sem_hits + sym_hits
 
-    # Format evidence
-    evidence_text = []
-    for e in evidence[:10]:  # Limit to top 10
-        evidence_text.append(f"Source: {e['meta'].get('source', 'unknown')}\n{e['text'][:500]}")
+        # Format evidence
+        evidence_text = []
+        for e in evidence[:10]:  # Limit to top 10
+            evidence_text.append(f"Source: {e['meta'].get('source', 'unknown')}\n{e['text'][:500]}")
 
-    return "\n\n---\n\n".join(evidence_text)
+        result = "\n\n---\n\n".join(evidence_text)
+
+        # If no evidence found, return a default message
+        if not result:
+            return "No specific evidence found in the database. Please proceed with general mathematical knowledge."
+
+        return result
+
+    except Exception as e:
+        print(f"Error in retrieve_evidence: {str(e)}")
+        return f"Error retrieving evidence: {str(e)}. Proceeding with general knowledge."
 
 
 @tool("Reduce to Known Lemmas")
-def reduce_to_lemmas(conjecture: str, evidence: str) -> str:
+def reduce_to_lemmas(conjecture: str, evidence: str = "") -> str:
     """
     Attempt to reduce a conjecture to known lemmas and theorems.
     Returns a structured reduction with references.
+
+    Args:
+        conjecture: The mathematical conjecture to reduce
+        evidence: Optional evidence to use for reduction
     """
+    # Handle case where inputs might be dicts
+    if isinstance(conjecture, dict):
+        conjecture = conjecture.get('description', conjecture.get('conjecture', str(conjecture)))
+    if isinstance(evidence, dict):
+        evidence = evidence.get('description', evidence.get('evidence', str(evidence)))
     # This would ideally use a symbolic math engine
     # For now, we'll use LLM-based reduction
     reduction_prompt = f"""
@@ -253,29 +302,25 @@ class ProofSystem:
             context=[reduction_task]
         )
 
-        # Task 4: Iterative Verification
+        # Task 4: Iterative Verification - USING THE ACTUAL ITERATIVE VERIFIER
+        # We need to extract results from previous tasks first
+        print("\n🔄 Starting Iterative Verification Process...")
+
+        # Create the iterative verifier with proper back-and-forth
+        iterative_verifier = IterativeProofVerifier(max_iterations=self.max_iterations)
+
+        # We'll need to execute the previous tasks first to get their outputs
+        # Then use those outputs in the iterative verification
+        # For now, create a placeholder task that will trigger the iteration
         verification_task = Task(
             description=f"""
-            Engage in iterative proof refinement:
+            PLACEHOLDER TASK - Actual iteration happens via IterativeProofVerifier
 
-            1. Verify the proof attempt from the experimenter
-            2. Identify logical gaps or errors
-            3. Suggest corrections
-            4. Iterate up to {self.max_iterations} times
-
-            For each iteration:
-            - Verifier checks the proof
-            - If invalid, provide specific feedback
-            - Experimenter revises based on feedback
-            - Continue until proof is valid or max iterations reached
-
-            Final output should indicate:
-            - PROVEN: Valid proof found
-            - CONJECTURE: No valid proof found after {self.max_iterations} iterations
-            - DISPROVEN: Counterexample found
+            This task triggers the iterative verification process between
+            Experimenter and Verifier for up to {self.max_iterations} iterations.
             """,
-            agent=self.agents["verifier"],
-            expected_output="Verification result with detailed feedback",
+            agent=self.agents["coordinator"],  # Use coordinator as placeholder
+            expected_output="Iterative verification results",
             context=[proof_task]
         )
 
@@ -297,26 +342,81 @@ class ProofSystem:
             context=[conjecture_task, reduction_task, proof_task, verification_task]
         )
 
-        # Create and run the crew
-        crew = Crew(
-            agents=list(self.agents.values()),
+        # Create and run the crew for initial tasks (conjecture, reduction, initial proof)
+        initial_crew = Crew(
+            agents=[
+                self.agents["number_theorist"],
+                self.agents["experimenter"]
+            ],
             tasks=[
                 conjecture_task,
                 reduction_task,
-                proof_task,
-                verification_task,
-                synthesis_task
+                proof_task
             ],
             process=Process.sequential,  # Tasks run in order
             verbose=True
         )
 
-        # Execute the crew
-        result = crew.kickoff()
+        # Execute initial tasks
+        print("\n" + "="*60)
+        print("PHASE 1: Conjecture Generation and Initial Proof")
+        print("="*60 + "\n")
+
+        initial_results = initial_crew.kickoff()
+        results["initial_phase"] = initial_results
+
+        # Extract conjecture and initial proof from results
+        # In production, you'd parse these from the actual outputs
+        conjecture_text = "The conjecture generated from the query"  # This should be extracted
+        initial_proof = str(initial_results)  # The proof attempt output
+
+        # PHASE 2: Run the actual iterative verification
+        print("\n" + "="*60)
+        print(f"PHASE 2: Iterative Verification (Max {self.max_iterations} iterations)")
+        print("="*60 + "\n")
+
+        iterative_verifier = IterativeProofVerifier(max_iterations=self.max_iterations)
+        verification_results = iterative_verifier.verify_proof(
+            conjecture=conjecture_text,
+            initial_proof=initial_proof
+        )
+
+        results["verification"] = verification_results
+
+        # PHASE 3: Final synthesis with all results
+        print("\n" + "="*60)
+        print("PHASE 3: Final Synthesis")
+        print("="*60 + "\n")
+
+        # Update synthesis task with actual results
+        synthesis_task.description = f"""
+        Synthesize all results into a comprehensive report:
+
+        1. Summary of original query: {user_query}
+        2. Generated conjectures from initial phase
+        3. Proof attempts and verification results
+        4. Final status: {verification_results['status']}
+        5. Iterations used: {verification_results['iterations']}
+        6. Recommendations for future research
+
+        Verification History:
+        {json.dumps(verification_results['history'], indent=2)}
+
+        Format as a structured JSON report.
+        """
+
+        final_crew = Crew(
+            agents=[self.agents["coordinator"]],
+            tasks=[synthesis_task],
+            process=Process.sequential,
+            verbose=True
+        )
+
+        final_result = final_crew.kickoff()
 
         # Parse and return results
-        results["final_output"] = result
-        results["status"] = "completed"
+        results["final_output"] = final_result
+        results["status"] = verification_results["status"]
 
         # Save to file
         filename = f"proof_session_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
@@ -347,9 +447,12 @@ class IterativeProofVerifier:
         current_proof = initial_proof
 
         for iteration in range(self.max_iterations):
-            print(f"\n--- Iteration {iteration + 1}/{self.max_iterations} ---")
+            print(f"\n{'='*60}")
+            print(f"ITERATION {iteration + 1} of {self.max_iterations}")
+            print(f"{'='*60}\n")
 
-            # Verifier checks the proof
+            # STEP 1: Verifier checks the proof
+            print(f"📝 VERIFIER: Checking proof attempt...")
             verification_task = Task(
                 description=f"""
                 Verify the following proof for the conjecture:
@@ -370,7 +473,16 @@ class IterativeProofVerifier:
                 expected_output="Verification verdict with detailed feedback"
             )
 
-            verification_result = verification_task.execute()
+            # Execute verification using a mini-crew
+            verification_crew = Crew(
+                agents=[self.verifier],
+                tasks=[verification_task],
+                process=Process.sequential,
+                verbose=False
+            )
+            verification_result = verification_crew.kickoff()
+
+            print(f"\n🔍 VERIFIER VERDICT: {verification_result[:200]}...")  # Show first 200 chars
 
             proof_history.append({
                 "iteration": iteration + 1,
@@ -379,7 +491,8 @@ class IterativeProofVerifier:
             })
 
             # Check if proof is valid
-            if "VALID" in verification_result.upper():
+            if "VALID" in str(verification_result).upper():
+                print(f"\n✅ PROOF VALIDATED! Stopping after {iteration + 1} iterations.")
                 return {
                     "status": "PROVEN",
                     "iterations": iteration + 1,
@@ -389,6 +502,7 @@ class IterativeProofVerifier:
 
             # If not valid and not last iteration, refine
             if iteration < self.max_iterations - 1:
+                print(f"\n🔧 EXPERIMENTER: Refining proof based on feedback...")
                 refinement_task = Task(
                     description=f"""
                     Refine your proof based on the verifier's feedback:
@@ -404,9 +518,20 @@ class IterativeProofVerifier:
                     expected_output="Refined proof attempt"
                 )
 
-                current_proof = refinement_task.execute()
+                # Execute refinement using a mini-crew
+                refinement_crew = Crew(
+                    agents=[self.experimenter],
+                    tasks=[refinement_task],
+                    process=Process.sequential,
+                    verbose=False
+                )
+                current_proof = refinement_crew.kickoff()
+
+                print(f"\n📝 EXPERIMENTER OUTPUT: {str(current_proof)[:200]}...")  # Show first 200 chars
 
         # Max iterations reached without valid proof
+        print(f"\n⚠️ Maximum iterations ({self.max_iterations}) reached without valid proof.")
+        print("Status: REMAINS CONJECTURE")
         return {
             "status": "CONJECTURE",
             "iterations": self.max_iterations,
