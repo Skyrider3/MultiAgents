@@ -1,6 +1,6 @@
 # Conjecture Generation System
 
-A LangGraph-based system for generating scientific conjectures about a given topic using RAG (Retrieval-Augmented Generation).
+A crewAI-based system for generating scientific conjectures about a given topic using RAG (Retrieval-Augmented Generation).
 
 ## Features
 
