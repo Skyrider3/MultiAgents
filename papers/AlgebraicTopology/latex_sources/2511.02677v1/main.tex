@@ -1,0 +1,1068 @@
+\documentclass[english]{article}
+\include{preamble}
+
+\begin{document}
+\title{Proper kernels in microlocal sheaf theory}
+\maketitle
+\begin{abstract}
+Let $X$ and $Y$ be real analytic manifolds and let $\Lambda \subseteq T^*X$ and
+$\Sigma \subseteq T^*Y$ be closed conic subanalytic singular isotropics.
+Given a sheaf $K \in \Sh_{-\Lambda \times \Sigma}(X \times Y)$ microsupported
+in $-\Lambda \times \Sigma$, consider the convolution functor
+\(
+(-) \ast K \colon \Sh_{\Lambda}(X) \rightarrow \Sh_{\Sigma}(Y)
+\)
+from sheaves microsupported in $\Lambda$ to sheaves microsupported in $\Sigma$.
+We show that the convolution functor $(-) \ast K$ preserves compact objects
+if and only if for each $x \in X$, the restriction
+$K|_{\{x\} \times Y} \in \Sh_\Sigma(Y)$ is a compact object.
+By a result of Kuo-Li \cite{kuo-li-duality},
+the functor sending a sheaf kernel $K$ to the convlution functor $(-) \ast K$ is
+an equivalence
+between the category $\Sh_{-\Lambda \times \Sigma}(X \times Y)$ of sheaves
+microsupported in $-\Lambda \times \Sigma$ and the category of cocontinuous functors
+from $\Sh_\Lambda(X)$ to $\Sh_\Sigma(Y)$.
+We therefore classify all cocontinuous functors that preserve compact objects
+between the two categories.
+Our approach is entirely categorical and requires minimal input from geometry:
+we introduce the notion of a proper object in a compactly
+generated stable $\infty$-category and study its properties under
+strongly continuous localizations to obtain the result.
+The main geometric input is the analysis of compact and proper objects of
+the category of $P$-constructible sheaves for a triangulation $P$ of a manifold $Z$
+via the exit path category $\Exit(Z, P) \simeq P$.
+Along the way, we show that a sheaf $F \in \Sh_\Lambda(X)$
+is proper if and only if it has perfect stalks,
+which is equivalent to a result of Nadler.
+\end{abstract}
+\tableofcontents
+\section{Introduction}
+\subsection{Motivation and background}
+Let $X$ be a real analytic manifold and let $\Lambda \subseteq T^*X$ be a closed conic subanalytic singular isotropic.
+The work of Kuo-Li \cite{kuo-li-duality} shows that the category
+$\Sh_\Lambda(X)$ of sheaves microsupported in $\Lambda$ is a \emph{dualizable}
+stable $\oo$-category (cf. \cref{defn:dualizable}).
+More precisely, let $Y$ be a real analytic manifold and $\Sigma$ be a closed conic subanalytic singular isotropic,
+it is shown there \cite[Theorem 1.1, Theorem 1.2, Corollary 1.7]{kuo-li-duality} that
+the dual of $\Sh_\Lambda(X)$ is given by $\Sh_{-\Lambda}(X)$:
+\[
+	\Sh_\Lambda(X)^\vee \simeq \Sh_{-\Lambda}(X),
+\]
+the Kunneth formula holds:
+\[
+	\Sh_\Lambda(X) \otimes \Sh_\Sigma(Y) \simeq \Sh_{\Lambda \times \Sigma}(X \times Y),
+\]
+and that the equivalence
+\[
+	\Sh_{-\Lambda\times \Sigma}(X\times Y) \simeq \Sh_\Lambda(X)^\vee \otimes \Sh_\Sigma(Y) \simeq \Fun^L(\Sh_\Lambda(X), \Sh_\Sigma(Y))
+\]
+is given by the assignment
+\[
+	K \mapsto (-) \ast K,
+\]
+where
+\[
+	(-) \ast K \coloneqq \pi_{2,!}(\pi_1^* (-) \otimes K)
+\]
+is the convolution functor. Here $\Fun^L(-,-)$ denotes the category of cocontinuous functors, and $\pi_1 \colon X\times Y \rightarrow X$ and
+$\pi_2 \colon X \times Y \rightarrow Y$ are the projections.
+
+In conclusion, cocontinuous functors between the sheaf categories
+$\Sh_\Lambda(X)$ and $\Sh_\Sigma(Y)$ are classified by sheaf kernels
+$K \in \Sh_{-\Lambda\times \Sigma}(X\times Y)$ on $X \times Y$ microsupported
+in $-\Lambda \times \Sigma$.
+
+On the other hand, previous works \cite{nadler-zaslow, nadler-microlocal-branes, gps3} have drawn parallels between
+microlocal sheaf theory and the theory of
+Fukaya categories in various flavors.
+In particular, assuming $\Lambda \subseteq T^*X$ contains the zero section $0_X$,
+it is shown in \cite{gps3} that there is an equivalence
+between the category of sheaves of $\ZZ$-modules microsupported in $\Lambda$ and
+the ind-completion of the partially wrapped Fukaya category of $T^*X$
+stopped at $-\Lambda_\infty$:
+\[
+	\Sh_\Lambda(X; \ZZ\mathhyphen\Mod) \simeq \Ind\Wc(T^*X, -\Lambda_\infty).
+\]
+Here $\Lambda_\infty$ is the projection of $\Lambda - 0_X$ to the
+cosphere bundle $S^*X$.
+Taking compact objects on both sides,
+we have
+\[
+	\Sh_\Lambda(X;\ZZ\mathhyphen\Mod)^\omega \simeq \Perf \Wc(T^*X,-\Lambda_\infty),
+\]
+where $\Perf \Wc(T^*X, -\Lambda)$ is the idempotent completion of $\Wc(T^*X,-\Lambda_\infty)$.\footnote{Strictly speaking, it is only possible to compare the category on
+the left and that on the right \emph{up to Morita equivalence},
+since the identification of $R$-linear stable $\oo$-categories, dg-categories,
+and $A_\infty$-categories requires the Morita model structure.
+In this sense, the equivalence only exists up to some replacement
+in the model category in the first place, and it is technically redundant to
+explictly mention idempotent completion.}
+In \cite{nadler-wrapped}, Nadler first introduced the notion of
+\emph{wrapped sheaves}, which are by definition, compact objects in $\Sh_\Lambda(X)$.
+In \cite{kuo-wrapped-sheaves}, Kuo showed that the category of wrapped sheaves
+can also be realized geometrically, without alluding to compactness
+in the ambient category.
+
+Consequently, one can argue that studying compact objects
+in $\Sh_\Lambda(X)$ is not a purely academic pursuit,
+but is of intrinsic geometric interest from the viewpoint of Floer theory.
+Given Liouville manifolds $M$ and $N$,
+and a Lagragian correspondence $\Lc \subseteq M^{-} \times N$,
+Gao \cite{gao-correspondence} showed that, if $\Lc \rightarrow N$ is proper,
+under some genericity conditions,
+there is an induced $A_\infty$-functor
+\[
+	\Theta_{\Lc} \colon \Wc(M) \rightarrow \Wc(N),
+\]
+which on objects is given by geometric composition of Lagrangians:
+\[
+	M \supseteq L \mapsto L \circ \Lc \subseteq N.
+\]
+A natural question to ask is what the sheaf-theoretic incarnation
+of the above functor is.
+Note that the category 
+\[
+	\Fun^\ex(\Sh_\Lambda(X)^\omega, \Sh_\Sigma(Y)^\omega)
+\]
+of exact functors is equivalent to the subcategory of
+\[
+	\Fun^L(\Sh_\Lambda(X), \Sh_\Sigma(Y)) \simeq \Sh_{-\Lambda \times \Sigma}(X \times Y)
+\]
+spanned by functors that preserve compact objects.
+Therefore, an equivalent question to ask is:
+\begin{question}
+Under what conditions on the sheaf kernel
+$K \in \Sh_{-\Lambda \times \Sigma}(X\times Y)$, does the convolution functor
+\[
+	(-) \ast K \colon \Sh_{\Lambda}(X) \rightarrow \Sh_{\Sigma}(Y)
+\]
+preserve compact objects?
+\end{question}
+Our main result provides a complete answer to this question. As a consequence, we can verify the following special case, which was conjectured by Ganatra-Kuo-Li-Wu (see \cref{example:conj-ganatra}).
+
+\begin{conjecture}[Ganatra-Kuo-Li-Wu]\label{conj-ganatra}
+Let $K \in \Sh_{-\Lambda \times \Sigma}(X \times Y)$ be a sheaf kernel. If $\ssupp(K) \rightarrow T^*Y$ is proper and $K$ has perfect stalks, assuming $Y$ is compact,
+then $(-) \ast K$ preserves compact objects.
+\end{conjecture}
+
+\begin{rem}
+Ganatra-Kuo-Li-Wu pursue a geometric approach to this question in \cite{Ganatra-Kuo-Li-Wu}, using techniques based on wrappings. Their work actually addresses the following more general conjecture.
+\end{rem}
+\begin{conjecture}[Ganatra-Kuo-Li-Wu]\label{conj-complete}
+Let $L \in \Sh(X \times Y)$ be a constructible sheaf with perfect stalks,
+not necessarily microsupported in ${-\Lambda \times \Sigma}$.
+Certain geometric constraints on $\ssupp(L)$ guarantee that $\mathfrak{M}^+_{-\Lambda \times \Sigma}(L) \ast (-)$ preserves compact objects. \footnote{Here $\mathfrak{M}^{+}_{-\Lambda \times \Sigma}$ is the positive wrapping functor introduced in \cite{kuo-wrapped-sheaves}, which is equivalent to the localization functor $\iota^*_{-\Lambda \times \Sigma} \colon \Sh(X) \rightarrow \Sh_{-\Lambda \times \Sigma}(X \times Y)$ in our notation.}
+\end{conjecture}
+\subsection{Main results and overview}
+In this section, fix real analytic manifolds $X$ and $Y$
+and closed conic subanalytic singular isotropics $\Lambda \subseteq T^*X$
+and $\Sigma \subseteq T^*Y$.
+Our main result is the following.
+\begin{thm}[\cref{main-thm}]
+Let $K \in \Sh_{-\Lambda\times \Sigma}(X\times Y)$ be a sheaf kernel.
+The convolution functor
+\[
+	(-) \ast K\colon \Sh_\Lambda(X) \rightarrow \Sh_\Sigma(Y)
+\]
+preserves compact objects if and only if for every $x \in X$,
+the restriction $K|_{\{x\} \times Y} \in \Sh_{\Sigma}(Y)$ is a compact object.
+Consequently, there is an equivalence
+\[
+	\Pc \simeq \Fun^{\ex}(\Sh_\Lambda(X)^\omega,\Sh_\Sigma(Y)^\omega),
+\]
+where $\Pc \subseteq \Sh_{-\Lambda \times \Sigma}(X \times Y)$
+is the full subcategory spanned by such sheaf kernels.
+\end{thm}
+From this, we can deduce a sufficient condition.
+\begin{cor}[\cref{perfect-stalk-and-compact-support}]
+Let $K \in \Sh_{-\Lambda \times \Sigma}(X \times Y)$ be a sheaf kernel.
+If $K$ has perfect stalks and $\supp(K|_{\{x\} \times Y})$ is compact for every $x \in X$,
+then convolution with $K$ preserves compact objects.
+\end{cor}
+\begin{rem}\label{example:conj-ganatra}
+If $Y$ is compact, then $\supp(K|_{\{x\} \times Y})$ is always compact.
+In this case, if $K$ has perfect stalks, then convolution with $K$ preserves
+compact objects. In particular, \cref{conj-ganatra} is true.
+\end{rem}
+The core to our argument is the notion of a
+\emph{proper} object
+in a compactly generated stable $\oo$-category.
+\begin{defn}[\cref{defn:proper-object}]
+Let $\Cc$ be a presentable stable $\infty$-category.
+We say $c\in\Cc$ is \emph{proper} if the functor
+\[
+\map_\Cc(-,c) \colon \Cc^{\omega,\op} \to \Sp
+\]
+factors through $\Sp^\omega \subseteq \Sp$.
+\end{defn}
+The following result on proper objects in $\Sh_\Lambda(X)$ can be also
+seen as a special case of the main theorem.
+\begin{thm}[\cref{proper-objects-in-shv}]
+A sheaf $F \in \Sh_\Lambda(X)$ is proper if and only if $F$ has perfect stalks.
+\end{thm}
+The result above, albeit stated in a slightly different setting,
+was first proved as \cite[Theorem 3.21]{nadler-wrapped} using
+arborealization,
+and later proved again as \cite[Corollary 4.24]{gps3} with
+a more direct argument.
+The main point of this paper is that,
+once we distill the essential ideas in its proof
+to categorical terms, the argument can be
+further simplified and adapted to a relative setting,
+allowing us to prove the main theorem of this paper.
+\subsection{Notations and conventions}
+For the sake of brevity and clarity,
+we will work exclusively with sheaves of spectra, unless otherwise specified.
+\begin{rem}
+All our arguments work mutatis mutandis if
+we replace the $\infty$-category $\Sp$ of spectra with
+any compactly generated rigid monoidal $\infty$-category $\Vc$,
+and argue in the context of $\Vc$-enriched categories instead.
+Much of the theory of $\Vc$-enriched category is developed in
+\cite{gepner-haugseng, hinich18, hinich21, heine-equivalence, benmoshe-naturality}.
+For a quick review on the theory of presentable and dualizable categories
+in the enriched setting directly applicable to this paper, see \cite[\S 1]{ramzi2024dualizable}.
+\end{rem}
+\begin{notation}
+Let $\Cc$ be a stable $\oo$-category.
+Throughout this paper,
+$\map_\Cc(-,-)$ denotes the mapping spectrum,
+while $\Map_\Cc(-,-)$ denotes the mapping space.
+\end{notation}
+\subsection*{Acknowledgements}
+I am grateful to Haosen Wu for bringing this problem to my attention and sharing an early draft of the joint work \cite{Ganatra-Kuo-Li-Wu}, and to Wenyuan Li for answering many questions about that work.
+This project began as an attempt to give a categorical proof of a geometric result pursued in \cite{Ganatra-Kuo-Li-Wu}.
+While the theorem we prove here is more general than originally anticipated, it addresses a different (though related) question than the one studied there.
+I thank Qingyuan Bai, Peter Haine, and Gus Schrader for reading an early draft of this paper, and Peter Haine in particular for very detailed comments.
+I was supported by the NSF grant DMS 2302624.
+
+\section{Preliminaries}
+\subsection{Exodromy}
+Consider a topological space $X$ with a stratification $P$,
+or simply a \emph{stratified space} $(X,P)$.
+\begin{recollection}
+A \emph{stratified space} $(X,P)$ is a topological space $X$,
+together with a continuous map $X \rightarrow P$, where $P$ is a poset
+equipped with the Alexandroff topology.
+\end{recollection}
+The \emph{exodromy equivalence}
+\begin{comment}
+was first proposed by MacPherson,
+and studied by Treumann \cite{treumann2009exit}.
+It has since been genralized by Lurie \cite[Appendix A]{HA},
+Lejay \cite{lejay2021constructible}, Porta-Teyssier \cite{porta-teyssier},
+and Haine-Porta-Teyssier \cite{haine2024exodromy}.
+\end{comment}
+(see \cite{treumann2009exit, HA, lejay2021constructible, porta-teyssier, haine2024exodromy})
+states that under suitable assumptions
+on $(X,P)$ and $\Vc$, the category
+\[
+	\Cons_P(X;\Vc)
+\]
+of $P$-constructible sheaves \footnote{Technically, to state the most general result,
+one has to consider hyper-constructible hypersheaves.
+However, the distinction between hyper-constructible hypersheaves
+and constructible sheaves disappears when everything is hypercomplete,
+as is the case if $X$ is a finite-dimensional manifold and all the strata
+are submanifolds.}
+on $X$ valued in $\Vc$
+is equivalent to the category
+\[
+	\Fun(\Exit(X,P), \Vc)
+\]
+of functors from the \emph{exit-path $\oo$-category}
+$\Exit(X,P)$ to $\Vc$.
+While the construction of $\Exit(X,P)$ is quite involved in general,
+the only result we need in this paper is the following.
+\begin{prop}
+Let $P$ be a triangulation of a manifold $X$. Then $\Exit(X,P) \simeq P$.
+\end{prop}
+\begin{proof}
+This is a special case of \HA{Theorem}{A.6.10}.
+\end{proof}
+\begin{cor}\label{cons-p-fun-p}
+Let $P$ be a triangulation of a manifold $X$.
+Then $ \Cons_P(X) \simeq \Fun(P, \Sp)$.
+\end{cor}
+
+\subsection{Dualizable stable $\infty$-categories}
+We give a quick recap of the theory of dualizable stable $\oo$-categories.
+
+The $\infty$-category $\Prlst$ of presentable stable $\infty$-categories and left adjoints admits
+a closed symmetric monoidal structure given by tensor product in $\Prl$.
+The internal hom is given by $[\Cc, \Dc] = \Fun^L(\Cc, \Dc)$.
+
+The $\infty$-category $\Catperf$ of small idempotent complete stable $\infty$-categories
+has a symmetric monoidal structure where the tensor product $\Cc_0 \otimes \Dc_0$
+classifies bi-exact functors out of $\Cc_0 \times \Dc_0$.
+It is again a closed monoidal category with internal homs given by
+$[\Cc_0, \Dc_0] = \Fun^{\ex}(\Cc_0, \Dc_0)$.
+
+The ind-construction
+\[
+\Ind \colon \Catperf \to \Prlst
+\]
+makes $\Catperf$ a wide subcategory of $\Prlst$, with
+its essential image spanned by compactly generated stable $\infty$-categories
+and left adjoints that preserve compact objects.
+
+Moreover, $\Ind$ is a symmetric monoidal fuctor.
+The ind construction and taking compact objects give inverse equivalences
+\[
+	\Ind \colon \Catperf \leftrightarrows {\Pr}^{L,\omega}_\st \colon (-)^\omega,
+\]
+where $\Pr^{L,\omega}_\st$ is the $\oo$-category of compactly generated
+stable $\oo$-categories and left adjoints that preserve compact objects.
+\begin{defn}\label{defn:dualizable}
+A presentable stable $\infty$-category $\Cc$ is \emph{dualizable} if
+there exists $\Cc^\vee$ so that the functor
+\[
+- \otimes \Cc \colon \Prlst \to \Prlst.
+\]
+is left adjoint to
+\[
+- \otimes \Cc^\vee \colon \Prlst \to \Prlst.
+\]
+\end{defn}
+\begin{example}[{{\SAG{Proposition}{D.7.2.3}}}]
+If $\Cc$ is a compactly generated stable $\oo$-category, then $\Cc$ is
+dualizable. The dual is given by $\Cc^\vee \simeq \Ind(\Cc^{\omega,\op})$,
+and the evaluation map $\ev: \Cc^\vee \otimes \Cc \to \Sp$ is given by
+the left Kan extension of
+\[
+  \map_\Cc(-, -) \colon \Cc^{\omega,\op} \otimes \Cc^\omega \to \Sp.
+\]
+along $\Cc^{\omega,\op} \otimes \Cc^\omega \to \Cc^\vee \otimes \Cc \simeq \Ind(\Cc^{\omega,\op} \otimes \Cc^\omega)$.
+\end{example}
+\begin{recollection}
+A left adjoint functor between presentable $\oo$-categories is called
+an \emph{internal left adjoint} in $\Pr^L$, if it is the left adjoint of
+an adjunction in the $(\infty,2)$-category $\mathbf{Pr}^L$ of presentable $\oo$-categories and left adjoints.
+Being an internal left adjoint is equivalent to being a \emph{strongly cocontinuous functor}: a functor whose right adjoint admits a further right adjoint.
+\end{recollection}
+\begin{rem}\label{internal-left-adjoint-between-compactly-generated}
+A left adjoint functor between compactly generated presentable stable $\infty$-categories
+is an internal left adjoint if and only if it preserves compact objects.
+Therefore, $\Catperf \simeq \Pr^{L,\omega}_\st$ is equivalent to
+the $\oo$-category of compactly generated stable $\oo$-categories and internal
+left adjoints.
+\end{rem}
+\begin{defn}
+The $\infty$-category $\Pr^{\dual}_\st$ of dualizable stable $\infty$-categories
+is the wide subcategory of $\Prlst$ spanned by dualizable objects
+and internal left adjoints in $\Prlst$.
+\end{defn}
+\begin{rem}
+By \cref{internal-left-adjoint-between-compactly-generated}, $\Catperf \simeq \Pr^{\dual}_\st$ is the full subcategory of $\Pr^\dual_\st$ spanned
+by compactly generated stable $\oo$-categories.
+\end{rem}
+\begin{thm}[{{\SAG{Proposition}{D.7.3.1}}}]
+  A presentable stable $\infty$-category is dualizable
+  if and only if it is the retract of a compactly
+  generated one in $\Prlst$.
+\end{thm}
+\begin{comment}
+\begin{obsv}
+Let $\Cc$ and $\Dc$ be compactly generated presentable stable $\infty$-categories
+and $K \in \Cc \otimes \Dc$.
+Under the equivalences
+\[
+\Cc \otimes \Dc \simeq \Fun^L(\Cc^\vee, \Dc) \simeq \Fun^{\ex}(\Cc^{\omega,\op}, \Dc),
+\]
+the object $K \in \Cc \otimes \Dc$
+corresponds to the composition
+\[
+\Cc^{\omega, \op}
+\xrightarrow{(\id,  K)} \Cc^{\omega, \op} \times \Cc \otimes \Dc
+\xrightarrow{\map_\Cc(-, -) \otimes \id} \Dc,
+\]
+where $\map_\Cc(-,-)\otimes \id$ is the functor
+classifying the functor
+\[
+\Cc^{\omega, \op} \times \Cc \times \Dc \xrightarrow{\map_\Cc(-,-) \otimes -} \Dc
+\]
+cocontinuous in the second and third variables.
+\end{obsv}
+We can therefore conclude the following.
+\begin{prop}\label{left-proper-kernel-preserves-compact}
+If $K \in \Cc \otimes \Dc$ lies in
+the essential image of $\Cc^\pr \otimes \Dc^\omega \rightarrow \Cc \otimes \Dc$,
+then the induced functor $\Cc^\vee \rightarrow \Dc$ preserves compact objects.
+\end{prop}
+\begin{proof}
+Under the equivalences
+\[
+\Fun^L(\Cc^\vee, \Dc) \simeq \Fun^\ex((\Cc^\vee)^\omega, \Dc) \simeq \Fun^\ex(\Cc^{\omega,\op}, \Dc),
+\]
+a functor $\Cc^\vee \rightarrow \Dc$ preserves compact objects if and only if
+the corresponding functor $\Cc^{\omega,\op} \rightarrow \Dc$ factors through
+$\Dc^\omega \subseteq \Dc$.
+By assumption on $K$,
+we have a commutative diagram
+% https://q.uiver.app/#q=WzAsNyxbMiwxLCJcXENjXntcXG9tZWdhLFxcb3B9XFx0aW1lc1xcQ2NcXG90aW1lc1xcRGNeXFxvbWVnYSJdLFs1LDEsIlxcRGMiXSxbMSwxLCJcXENjXntcXG9tZWdhLFxcb3B9Il0sWzIsMCwiXFxDY157XFxvbWVnYSxcXG9wfVxcdGltZXMgXFxDY15cXHFwclxcb3RpbWVzXFxEY15cXG9tZWdhIl0sWzAsMF0sWzUsMCwiXFxEY15cXG9tZWdhIl0sWzQsMCwiXFxTcF5cXG9tZWdhXFxvdGltZXNcXERjXlxcb21lZ2EiXSxbMCwxLCJcXG1hcF9cXENjKC0sLSlcXG90aW1lcyAtIl0sWzIsMCwiKFxcaWQsIEspIl0sWzMsMCwiIiwxLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoiaG9vayIsInNpZGUiOiJ0b3AifX19XSxbMiwzLCIiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbNSwxLCIiLDEseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJob29rIiwic2lkZSI6InRvcCJ9fX1dLFszLDYsIlxcbWFwX1xcQ2MoLSwtKVxcb3RpbWVzXFxpZCJdLFs2LDVdXQ==&macro_url=https%3A%2F%2Fgist.githubusercontent.com%2Fcasteryh%2F4e19ae618815e6d0f61c98f9121c3c1a%2Fraw%2F916a7aadc97e24b907d7bb38739ad684758f2464%2Fmacros.txt
+% https://q.uiver.app/#q=WzAsNyxbMiwxLCJcXENjXntcXG9tZWdhLFxcb3B9XFx0aW1lc1xcQ2NcXG90aW1lc1xcRGMiXSxbNSwxLCJcXERjIl0sWzEsMSwiXFxDY157XFxvbWVnYSxcXG9wfSJdLFsyLDAsIlxcQ2Nee1xcb21lZ2EsXFxvcH1cXHRpbWVzIFxcQ2NeXFxxcHJcXG90aW1lc1xcRGNeXFxvbWVnYSJdLFswLDBdLFs1LDAsIlxcRGNeXFxvbWVnYSJdLFs0LDAsIlxcU3BeXFxvbWVnYVxcb3RpbWVzXFxEY15cXG9tZWdhIl0sWzAsMSwiXFxtYXBfXFxDYygtLC0pXFxvdGltZXMgLSJdLFsyLDAsIihcXGlkLCBLKSJdLFszLDAsIiIsMSx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Imhvb2siLCJzaWRlIjoidG9wIn19fV0sWzIsMywiIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzUsMSwiIiwxLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoiaG9vayIsInNpZGUiOiJ0b3AifX19XSxbMyw2LCJcXG1hcF9cXENjKC0sLSlcXG90aW1lc1xcaWQiXSxbNiw1XV0=&macro_url=https%3A%2F%2Fgist.githubusercontent.com%2Fcasteryh%2F4e19ae618815e6d0f61c98f9121c3c1a%2Fraw%2F916a7aadc97e24b907d7bb38739ad684758f2464%2Fmacros.txt
+\[\begin{tikzcd}[cramped]
+	{} && {\Cc^{\omega,\op}\times \Cc^\pr\otimes\Dc^\omega} && {\Sp^\omega\otimes\Dc^\omega} & {\Dc^\omega} \\
+	& {\Cc^{\omega,\op}} & {\Cc^{\omega,\op}\times\Cc\otimes\Dc} &&& \Dc
+	\arrow["{\map_\Cc(-,-)\otimes\id}", from=1-3, to=1-5]
+	\arrow[from=1-3, to=2-3]
+	\arrow[from=1-5, to=1-6]
+	\arrow[hook, from=1-6, to=2-6]
+	\arrow[dashed, from=2-2, to=1-3]
+	\arrow["{(\id, K)}", from=2-2, to=2-3]
+	\arrow["{\map_\Cc(-,-)\otimes -}", from=2-3, to=2-6]
+\end{tikzcd}.\]
+\end{proof}
+
+\begin{lem}\label{tensor-in-catperf-preserves-fully-faithfulness}
+  If $\Cc \rightarrow \Dc$ is a fully faithful functor in $\Catperf$,
+  then $\Cc \otimes \Ec \rightarrow \Dc \otimes \Ec$ is fully faithful
+  for any $\Ec \in \Catperf$.
+\end{lem}
+\begin{proof}
+  Since $\Ind(\Ec)$ is dualizable in $\Prlst$,
+  it follows that $- \otimes \Ind(\Ec) \simeq \Fun^L(\Ind(\Ec^\op), -)$
+  preserves fully-faithfulness.
+  In particular,
+  $\Ind(\Cc) \otimes \Ind(\Ec) \rightarrow \Ind(\Dc) \otimes \Ind(\Ec)$
+  is fully faithful.
+  Taking compact objects, we get
+  $\Cc \otimes \Ec \rightarrow \Dc \otimes \Ec$ is fully faithful.
+\end{proof}
+
+\begin{lem}\label{tensor-with-proper-is-fully-faithful}
+Let $\Cc_0 \subseteq \Cc$ be a small idempotent complete stable full subcategory,
+and $\Dc$ a compactly generated presentable stable $\infty$-category.
+Assume further that $\Dc$ is proper.
+Then the functor
+\[
+\Cc_0 \otimes \Dc^\omega \rightarrow \Cc \otimes \Dc
+\]
+is fully faithful.
+\end{lem}
+\begin{proof}
+We can identify the left hand side with compact objects in
+\[
+\Ind(\Cc_0 \otimes \Dc^\omega) \simeq \Fun^{\ex}(\Dc^{\omega, \op}, \Ind(\Cc_0)).
+\]
+Similarly, the right hand side with
+\[
+\Fun^{\ex}(\Dc^{\omega, \op}, \Cc).
+\]
+It suffices to show that
+$\Cc_0 \otimes \Dc^\omega \rightarrow \Fun^{\ex}(\Dc^{\omega, \op}, \Cc)$
+factors through
+$\Fun^{\ex}(\Dc^{\omega, \op}, \Cc_0)$.
+This follows from the fact that $\Dc$ is proper, and thus
+for any $c \in \Cc_0$ and $d \in \Dc^\omega$,
+\[
+c \otimes d \colon \Dc^{\omega, \op} \rightarrow \Ind(\Cc_0), \quad d' \mapsto \map_\Dc(d', d) \otimes c \in \Cc_0 \subseteq \Ind(\Cc_0).
+\]
+
+\end{proof}
+\end{comment}
+\section{Compactness and properness}
+In this section, we discuss \emph{compact} and \emph{proper} objects
+in presentable stable $\infty$-categories.
+We will focus on how these objects behave under
+the inclusion of reflective and co-reflective subcategories.
+\begin{recollection}
+Let $\mathcal{C}$ be a presentable $\infty$-category.
+An object $c \in \mathcal{C}$ is \emph{compact} if the functor
+$\Map_{\Cc}(c, -) \colon \mathcal{C} \to \Spc$ commutes with filtered colimits.
+If $\Cc$ is stable, this is equivalent to that
+$\map_{\Cc}(c, -) \colon \Cc \to \Sp$ commutes with filtered colimits.
+\end{recollection}
+\begin{defn}\label{defn:proper-object}
+Let $\Cc$ be a presentable stable $\infty$-category.
+We say $c\in\Cc$ is \emph{proper} if the functor
+\[
+\map_\Cc(-,c) \colon \Cc^{\omega,\op} \to \Sp
+\]
+factors through $\Sp^\omega \subseteq \Sp$.
+Denote by $\Cc^{\text{pr}} \subseteq \Cc$ the full subcategory of proper objects.
+\end{defn}
+\begin{rem}
+If $\Cc$ is compactly generated and every compact object in $\Cc$ is proper,
+then $\Cc$ is a proper stable $\infty$-category in the sense of \SAG{Definition}{11.1.0.1}.
+\end{rem}
+\begin{prop}
+Let $\Cc$ be a presentable stable $\oo$-category.
+Then $\Cc^{\text{pr}}$ is an idempotent complete stable subcategory of $\Cc$.
+\end{prop}
+\begin{proof}
+Note that $\Sp^\omega \subseteq \Sp$ is closed under finite (co)limits and retracts,
+and for any $x \in \Cc^\omega$,
+the functor $\map_\Cc(x,-) \colon \Cc \rightarrow \Sp$ preserves finite (co)limits and retracts.
+It follows that $\Cc^\pr$ is closed under finite (co)limits and retracts.
+\end{proof}
+\begin{prop}
+Let $\Cc$ be a compactly generated stable $\oo$-category.
+The spectral Yoneda embedding
+\[
+	c  \mapsto \map_\Cc(-,c)
+\]
+restricts to an equivalence
+\[
+	\Cc^\pr \xrightarrow{\simeq} \Fun^\ex(\Cc^{\omega,\op}, \Sp^\omega).
+\]
+Here $\Fun^\ex(-,-)$ denotes the category of exact
+functors between two stable $\oo$-categories.
+\end{prop}
+\begin{proof}
+Since $\Cc$ is compactly generated, there are equivalences
+\[
+	\Cc \xrightarrow{\simeq} \Ind(\Cc) \simeq \Fun^{\lex}(\Cc^{\omega,\op},\Spc)
+	\simeq \Fun^{\ex}(\Cc^{\omega,\op},\Sp).
+\]
+Here $\Fun^{\lex}(-,-)$ denotes the category of left exact\footnote{Recall that a functor is called \emph{left exact} if it preserves finite limits.} functors.
+By definition, the composite functor is the spectral Yoneda embedding.
+Restricting to proper objects gives the desired equivalence.
+\end{proof}
+\begin{cor}
+If $\Cc$ is a compactly generated stable $\oo$-category,
+then $\Cc^\pr$ is a small $\oo$-category.
+\qed
+\end{cor}
+Compact and proper objects behave in a very controllable way, under
+\emph{strongly cococontinuous localizations}, which we now introduce.
+\begin{recollection}
+A functor between presentable $\infty$-categories is called \emph{strongly cocontinuous},
+if its right adjoint admits a further right adjoint.
+Alternatively, it is an internal left adjoint in $\Pr^L$.
+\end{recollection}
+\begin{obsv}
+Let $\Cc$ be a presentable $\oo$-category, and $\iota_* \colon \Dc \hookrightarrow \Cc$
+be a full subcategory.
+Suppose that $\Dc$ is closed under small limits and colimits.
+By the $\oo$-categorical reflection theorem \cite{infinity-categorical-reflection},
+the inclusion $\iota_*$ participates in a triple adjunction:
+% https://q.uiver.app/#q=WzAsMixbMCwwLCJcXERjIl0sWzEsMCwiXFxDYyJdLFswLDEsIlxcaW90YV8qIiwxLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoiaG9vayIsInNpZGUiOiJ0b3AifX19XSxbMSwwLCJcXGlvdGFeXFxmbGF0IiwwLHsib2Zmc2V0IjotM31dLFsxLDAsIlxcaW90YV4qIiwyLHsib2Zmc2V0IjozfV1d&macro_url=https%3A%2F%2Fgist.githubusercontent.com%2Fcasteryh%2F4e19ae618815e6d0f61c98f9121c3c1a%2Fraw%2F916a7aadc97e24b907d7bb38739ad684758f2464%2Fmacros.txt
+\[\begin{tikzcd}[cramped]
+	\Dc & \Cc
+	\arrow["{\iota_*}"{description}, hook, from=1-1, to=1-2]
+	\arrow["{\iota^\flat}", shift left=3, from=1-2, to=1-1]
+	\arrow["{\iota^*}"', shift right=3, from=1-2, to=1-1]
+\end{tikzcd}.\]
+In particular, the localization functor $\iota^*$ is strongly cocontinuous.
+\end{obsv}
+\begin{notation}\label{bireflective-subcategory}
+In the above situation, we say $\iota^* \colon \Cc \rightarrow \Dc$
+is a \emph{strongly cocontinuous localization}, and $\iota_* \colon \Dc \hookrightarrow \Cc$
+is a \emph{bi-reflective subcategory}. In this case, we always use
+$\iota^* \dashv \iota_* \dashv \iota^\flat$ to refer to the adjoint triple.
+\end{notation}
+\begin{prop}
+\label{localization-compactness}
+Let $\Cc$ be a compactly generated presentable $\oo$-category.
+Suppose $\iota_* \colon \Dc \hookrightarrow \Cc$ is a bi-reflective subcategory.
+Then:
+\begin{enumerate}[(1)]
+   \item The inclusion $\iota_*$ detects compact objects: if $\iota_* d$ is compact in $\Cc$, then $d$ is compact in $\Dc$.
+   \item The $\infty$-category $\Dc$ is compactly generated by $\iota^* \Cc^\omega$.
+   \item The $\Dc^\omega$ is the smallest replete subcategory of $\Dc$
+	   containing $\iota^* \Cc^\omega$ and closed under finite colimits
+	   and retracts.
+\end{enumerate}
+\end{prop}
+\begin{proof}
+To prove point (1), note that there is a natural equivalence
+\[
+\Map_\Dc(d, -) \simeq \Map_\Cc(\iota_*d, \iota_* -)
+\]
+and that $\iota_*$ preserves all colimits, in particular filtered colimits.
+Therefore if $\iota_*d$ is compact in $\Cc$, then $\Map_\Dc(d, -)$ commutes with filtered colimits, and hence $d$ is compact in $\Dc$.
+
+To prove points (2) and (3), first note that $\iota^*$ preserves compact objects:
+indeed, its right adjoint $\iota_*$ preserves all colimits, in particular filtered colimits \HTT{Proposition}{5.5.7.2}.
+
+Now let $\Dc'$ be the full subcategory of $\Dc$ generated under colimits
+by $\iota^*\Cc^\omega$.
+Consider the full subcategory
+\[
+  (\iota^*)^{-1} \Dc' \defeq \{ c \in \Cc \mid \iota^* c \in \Dc' \} \subseteq \Cc.
+\]
+Since $\iota^*$ preserves colimits, it is immediate that $(\iota^*)^{-1}(\Dc')$ is closed under colimits.
+However, by definition of $\Dc'$ we have
+\[
+\Cc^\omega \subseteq (\iota^*)^{-1}\iota^* \Cc^\omega \subseteq (\iota^*)^{-1}\Dc'.
+\]
+As $\Cc^\omega$ generates $\Cc$ colimits, we must have $(\iota^*)^{-1}\Dc' = \Cc$.
+Therefore, we obtain $\Dc' = \Dc$: for any $d \in \Dc$, we have
+$d \simeq \iota^* \iota_* d \in \iota^* (\Cc) = \iota^*(\iota^*)^{-1}\Dc' \subseteq \Dc'$.
+Consequently, $\iota^*\Cc^\omega$ generates $\Dc$ under colimits.
+\end{proof}
+\begin{prop}\label{properness-localization}
+Let $\Cc$ be a compactly generated stable $\oo$-category.
+Let $\iota_* \colon \Dc \hookrightarrow \Cc$ be a bi-reflective subcategory.
+Then $d \in \Dc$ is proper in $\Dc$
+if and only if $\iota_*d \in \Cc$ is proper in $\Cc$.
+\end{prop}
+\begin{proof}
+Fix $d$ so that $\iota_*d$ is proper in $\Cc$.
+We need to show that $\map_\Dc(-, d)$ sends $\Dc^\omega$ to $\Sp^\omega$.
+Consider the full subcategory
+\[
+\Dc' \defeq \{x \in \Dc \mid \map_\Dc(x, d) \in \Sp^\omega\} \subseteq \Dc.
+\]
+Clearly, $\Dc'$ is closed under finite (co)limits and retracts.
+For any $y \in \Cc^\omega$, we have
+\[
+\map_\Dc(\iota^*y, d) \simeq \map_\Cc(y, \iota_* d) \in \Sp^\omega.
+\]
+Therefore, $\iota^*\Cc^\omega \subseteq \Dc'$.
+By \cref{localization-compactness},
+$\Dc^\omega$ is generated by $\iota^*\Cc^\omega$,
+so $\Dc^\omega \subseteq \Dc'$ as $\Dc'$ is closed under retracts and finite colimits.
+Thus by definition of $\Dc'$, $d$ is proper in $\Dc$.
+
+Conversely, assume $d$ is proper in $\Cc$.
+Then for any $y \in \Cc^\omega$, we have
+\[
+\map_\Dc(\iota^*y, d) \simeq \map_\Cc(y, \iota_* d) \in \Sp^\omega
+\]
+and thus $\iota_* d$ is proper in $\Cc$
+\end{proof}
+
+
+\section{$\Vc$-properness}
+Throughout this section, let $\Vc$ be a compactly generated stable $\oo$-category.
+\begin{notation}
+Let $\Cc$ be a dualizable stable $\oo$-category.
+Denote by
+\[
+	e \colon \Cc \otimes \Vc \xrightarrow{\simeq} \Fun^L(\Cc^\vee, \Vc)
+\]
+the evaluation functor.
+\end{notation}
+\begin{defn}
+Let $\Cc$ be a compactly generated stable $\oo$-category.
+An object $F \in \Cc \otimes \Vc$ is \emph{$\Vc$-proper}, if the functor
+\[
+	e(F) \colon \Cc^\vee \rightarrow \Vc
+\]
+sends $(\Cc^\vee)^\omega \simeq \Cc^{\omega,\op}$ to $\Vc^\omega$.
+\end{defn}
+\begin{rem}
+An object $x \in \Cc$ is proper in the sense of \cref{defn:proper-object},
+precisely if $x \in \Cc \simeq \Cc \otimes \Sp$ is $\Sp$-proper.
+\end{rem}
+\begin{example}
+Let $x \in \Cc$ be a proper object and $v \in \Vc$ a compact object.
+Then $x \boxtimes v \in \Cc \otimes \Vc$ is $\Vc$-proper.
+Here $- \boxtimes - \colon \Cc \times \Vc \rightarrow \Cc \otimes \Vc$ is
+the universal bi-cocontinuous functor.
+\end{example}
+\begin{obsv}
+Let $\Cc$ be a compactly generated stable $\oo$-category.
+Suppose $\iota_* \colon \Dc \hookrightarrow \Cc$ is a bi-reflective subcategory (cf. \cref{bireflective-subcategory}):
+  % https://q.uiver.app/#q=WzAsMixbMCwwLCJcXERjIl0sWzEsMCwiXFxDYyJdLFswLDEsIlxcaW90YV8qIiwxLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoiaG9vayIsInNpZGUiOiJ0b3AifX19XSxbMSwwLCJcXGlvdGFeXFxmbGF0IiwwLHsib2Zmc2V0IjotM31dLFsxLDAsIlxcaW90YV4qIiwyLHsib2Zmc2V0IjozfV1d&macro_url=https%3A%2F%2Fgist.githubusercontent.com%2Fcasteryh%2F4e19ae618815e6d0f61c98f9121c3c1a%2Fraw%2F916a7aadc97e24b907d7bb38739ad684758f2464%2Fmacros.txt
+  \[\begin{tikzcd}[cramped]
+    \Dc & \Cc
+    \arrow["{\iota_*}"{description}, hook, from=1-1, to=1-2]
+    \arrow["{\iota^\flat}", shift left=3, from=1-2, to=1-1]
+    \arrow["{\iota^*}"', shift right=3, from=1-2, to=1-1]
+  \end{tikzcd}.\]
+Since $\iota^* \dashv \iota_*$ is an adjunction internal to $\Pr^L$,
+tensoring with $\Vc$ gives rise to a bi-reflective subcategory
+% https://q.uiver.app/#q=WzAsMixbMCwwLCJcXERjIFxcb3RpbWVzIFxcVmMiXSxbMiwwLCJcXENjIFxcb3RpbWVzIFxcVmMiXSxbMCwxLCJcXGlvdGFfKiBcXG90aW1lcyBcXFZjIiwxLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoiaG9vayIsInNpZGUiOiJ0b3AifX19XSxbMSwwLCJcXGlvdGFeXFxmbGF0X1xcVmMiLDAseyJvZmZzZXQiOi0zfV0sWzEsMCwiXFxpb3RhXiogXFxvdGltZXMgXFxWYyIsMix7Im9mZnNldCI6M31dXQ==&macro_url=https%3A%2F%2Fgist.githubusercontent.com%2Fcasteryh%2F4e19ae618815e6d0f61c98f9121c3c1a%2Fraw%2F916a7aadc97e24b907d7bb38739ad684758f2464%2Fmacros.txt
+\[\begin{tikzcd}[cramped]
+	{\Dc \otimes \Vc} & {\Cc \otimes \Vc}
+	\arrow["{\iota_*^\Vc}"{description}, hook, from=1-1, to=1-2]
+	\arrow["{\iota^\flat_\Vc}", shift left=3, from=1-2, to=1-1]
+	\arrow["{\iota^*_\Vc}"', shift right=3, from=1-2, to=1-1].
+\end{tikzcd}\]
+Here $\iota^*_\Vc = \iota^* \otimes \Vc$, $\iota_*^\Vc = \iota_* \otimes \Vc$, and $\iota^\flat_\Vc$ is the right adjoint to $\iota_* \otimes \Vc$.
+\end{obsv}
+\begin{prop}[cf. \cref{properness-localization}]
+\label{v-properness-localization}
+In above situation, an object $F \in \Dc \otimes \Vc$ is $\Vc$-proper
+if and only if $\iota_*^\Vc(F)$ is $\Vc$-proper.
+\end{prop}
+\begin{proof}
+By \HA{Proposition}{4.8.1.17},
+there is a commutative diagram
+% https://q.uiver.app/#q=WzAsNSxbMSwwLCJcXFByciJdLFszLDAsIlxcUHJyIl0sWzEsMSwiXFxQcl57TCxcXG9wfSJdLFszLDEsIlxcUHJeUiJdLFswLDBdLFswLDEsIi0gXFxvdGltZXMgXFxWYyJdLFswLDIsIlxcc2ltZXEiLDJdLFsyLDMsIlxcRnVuXntSfSgtXlxcb3AsXFxWYykiXSxbMSwzLCIiLDAseyJsZXZlbCI6Miwic3R5bGUiOnsiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dXQ==&macro_url=https%3A%2F%2Fgist.githubusercontent.com%2Fcasteryh%2F4e19ae618815e6d0f61c98f9121c3c1a%2Fraw%2F916a7aadc97e24b907d7bb38739ad684758f2464%2Fmacros.txt
+\[\begin{tikzcd}[cramped]
+	{} & \Prr && \Prr \\
+	& {\Pr^{L,\op}} && {\Pr^R}
+	\arrow["{- \otimes \Vc}", from=1-2, to=1-4]
+	\arrow["\simeq"', from=1-2, to=2-2]
+	\arrow[equals, from=1-4, to=2-4]
+	\arrow["{\Fun^{R}(-^\op,\Vc)}", from=2-2, to=2-4]
+\end{tikzcd}.\]
+Restricting the domain of the functors
+to compactly generated stable $\oo$-categories and compact preserving left adjoints
+(resp. their right adjoints),
+we have
+\[
+	- \otimes \Vc \simeq \Fun^R(-^\op,\Vc) \simeq \Fun^\ex((-)^{\omega,\op},\Vc).
+\]
+Under this equivalence, the right adjoint $\iota_*^\Vc$ corresponds to
+\[
+	- \circ \iota^* \colon \Fun^{\ex}(\Dc^{\omega,\op},\Vc) \rightarrow \Fun^{\ex}(\Cc^{\omega,\op},\Vc).
+\]
+Suppose $F \colon \Dc^{\omega,\op} \rightarrow \Vc$ factors through $\Vc^\omega$.
+It follows that $\iota_*^\Vc(F) = F \circ \iota^*$ also factors through $\Vc^\omega$.
+On the other hand, suppose $\iota_*^\Vc(F)$ factors through $\Vc^\omega$,
+and let $\mathcal{K} \subseteq \Dc^\omega$ be the full subcategory spanned
+by objects $d \in \Dc^\omega$ such that $F(d) \in \Vc^\omega$.
+By assumptions on $\iota_*^\Vc(F)$,  we have
+$F(\iota^*c) = \iota_*^\Vc(F)(c) \in \Vc^\omega$,
+and therefore $\iota^*\Cc^\omega \subseteq \mathcal{K}$.
+Because $\mathcal{K}$ is closed under finite colimits and retracts,
+\cref{localization-compactness} shows that $\mathcal{K} = \Dc^\omega$.
+\end{proof}
+\section{Proper objects in functor categories}
+Let $P$ be a triangulation of a manifold $X$.
+By the exodromy equivalence (cf. \cref{cons-p-fun-p}), we have
+\[
+\Cons_P(X) \simeq \Fun(P, \Sp).
+\]
+In this section, we study proper objects in $\Cons_P(X) \simeq \Fun(P,\Sp)$.
+First we note that, if $P$ is a triangulation of $X$,
+then $P$ as a poset is \emph{locally finite}.
+\begin{defn}
+A poset $P$ is \emph{locally finite} if for every $p \in P$, the poset $P_{p/}$ is finite.
+\end{defn}
+\begin{prop}[{\cite[Lemma 4.4.10]{bh25}}]\label{compact-objects-in-fun-p}
+Let $P$ be a locally finite poset.
+Then $F$ is compact in $\Fun(P, \Sp)$ if and only if
+$F$ is finitely supported and $F(p)$ is a finite spectrum for every $p \in P$.
+\end{prop}
+\begin{comment}
+\begin{thm}\label{pointiwse-finite-is-proper}
+Let $P$ be a locally finite poset.
+Then $F$ is proper in $\Fun(P, \Sp)$ if and only if $F(p)$ is a finite spectrum
+for every $p \in P$.
+\end{thm}
+
+\begin{proof}
+Suppose $F(p)$ is finite for every $p \in P$.
+We claim that $F$ is proper in $\Fun(P, \Sp)$.
+By \cite[Proposition 2.2.3]{LurieRotation}, $\Fun(P,\Sp)$ is compactly generated
+by the the stable coYoneda images $\yo(p) = \Sigma^\infty_+\Map_P(p, -)$ for $p \in P$.
+It therefore suffices to show that for every $p \in P$,
+the spectrum
+\[
+\map_{\Fun(P, \Sp)}(\yo(p), F)
+\]
+is finite.
+Now note that $\yo(p)$ is left Kan extended along $P_{p/} \into P$,
+and thus
+\begin{align*}
+\map_{\Fun(P, \Sp)}(\yo(p), F)
+&\simeq \map_{\Fun(P_{p/}, \Sp)}(\yo(p), F|_{P_{p/}}) \\
+&\simeq \map_{\Fun(P_{p/}, \Sp)}(\underline{\SS}, F|_{P_{p/}}) \\
+&\simeq \lim_{k \in P_{p/}} F(k) \\
+&\simeq F(p)
+\end{align*}
+is a finite, where the last equivalence holds because $p \in P_{p/}$ is
+an initial object.
+The other direction also follows immediately from the above calculation.
+
+For the other direction, assume $F \in \Fun(P, \Sp)$ is proper.
+We wish to show that $F(p)$ is finite for each $p \in P$.
+Replacing $P$ by $P_{p/}$ if necessary, it suffices to prove the following:
+\begin{center}
+  ($\ast$) Let $P$ be a finite poset. If $F \in \Fun(P, \Sp)$ is proper, then $F(p)$ is finite for each $p \in P$.
+\end{center}
+We prove ($\ast$) by induction on the Krull dimension of $P$.
+If $\dim(P) = 0$, then $P$ is discrete, and the result is clear.
+Now assume $\dim(P) > 0$, and let $p \in P$.
+If $p$ is not minimal, then $\dim(P_{p/}) < \dim(P)$, and $F|_{P_{/p}}$ is proper.
+By induction, $F(p)$ is finite.
+If $p$ is minimal, replacing $P$ by $P_{/p}$ if necessary, we can write
+$P = Q^\triangleleft$ for a some poset $Q$ and $p = - \infty$.
+Write $j: Q \hookrightarrow P$ for the inclusion and consider the fiber sequence
+\[
+F' \rightarrow F \rightarrow j_* j^* F.
+\]
+Note that $F'(q) \simeq 0$ for all $q \in Q$ and $F'(-\infty) \simeq F(-\infty)$,
+since $j^*F \simeq j^*j_*j^*F$.
+Applying
+\[
+\map_{\Fun(P, \Sp)}(\yo(-\infty), -) \simeq \lim_{P}(-)
+\] to this sequence,
+we get another fiber sequence
+\[
+F'(-\infty) \simeq \lim_P F' \rightarrow \lim_P F \rightarrow \lim_P j_* j^* F \simeq \lim_{Q} j^*F.
+\]
+Now that $j^*F$ is proper, by induction, $\lim_{Q} j^*F$ is a finite limit of
+finite spectra, hence finite. By properness of $F$,
+$\map_{\Fun(P, \Sp)}(\yo(-\infty), F) \simeq \lim_P F$ is finite.
+It follows that $F'(-\infty) \simeq F(-\infty)$ is also finite, as desired.
+\end{proof}
+\end{comment}
+\begin{thm}\label{v-proper-objects-in-fun-p}
+Let $P$ be a locally finite poset. Then $F \in \Fun(P,\Sp) \otimes \Vc \simeq \Fun(P,\Vc)$ is $\Vc$-proper if and only if $F(p) \in \Vc^\omega$ for every $p \in P$.
+\end{thm}
+\begin{proof}
+Write
+\begin{align*}
+	\yo \colon P^\op & \rightarrow \Fun(P, \Spc) \rightarrow \Fun(P, \Sp) \\
+	p & \mapsto \Map_P(p, -) \mapsto \Sigma^\infty_+\Map_P(p, -)
+\end{align*}
+for the stable (co)Yoneda embedding.
+
+By \cite[Proposition 2.2.3]{LurieRotation}, $\Fun(P,\Sp)$ is compactly generated
+by the collection $\{\yo(p)\}_{p \in P}$.
+Recall that the equivalence
+\[
+	\Fun(P, \Sp) \otimes \Vc \simeq \Fun(P, \Vc)
+\]
+can be obtained as the composite
+\[
+	\Fun(P, \Sp) \otimes \Vc \simeq \Fun^R(\Fun(P,\Sp)^\op, \Vc)
+	\simeq \Fun^R(\Fun(P,\Spc)^\op, \Vc) \simeq \Fun(P, \Vc).
+\]
+It follows that under the above equivalence,
+the continuos functor
+\[
+	\tilde{e}(F) \colon \Fun(P,\Sp)^\op \rightarrow \Vc
+\]
+classified by an object $F \in \Fun(P,\Vc)$
+sends $\yo(p)$ to $F(p) \in \Vc$.
+
+On the other hand, unwinding definitions
+(cf. the proof of \SAG{Proposition}{D.7.2.3}),
+the evaluation
+\[
+	e(F) \colon \Fun(P,\Sp)^\vee \rightarrow \Vc
+\]
+is the ind extension of
+\[
+	\tilde{e}(F)|_{\Fun(P,\Sp)^{\omega,\op}} \colon \Fun(P,\Sp)^{\omega,\op} \rightarrow \Vc.
+\]
+Since $\yo(p)$ is compact in $\Fun(P,\Sp)$,
+it follows that
+\[
+	e(F)(\yo(p)) \simeq \tilde{e}(F)(\yo(p)) \simeq F(p).
+\]
+As $\{\yo(p)\}_{p \in P}$ generate $\Fun(P,\Sp)^\omega$
+under small colimits and retracts, the result follows.
+\end{proof}
+\begin{cor}\label{properness-of-fun-p}
+  If $P$ is a locally finite poset, then $\Fun(P, \Sp)$ is a proper stable $\infty$-category:
+  every compact object is proper.
+  The compact objects are precisely those functors that factor through $\Sp^\omega$
+  and are supported on a finite subset of $P$.
+  \qed
+\end{cor}
+
+\section{Proper objects in sheaf categories}
+In this section, we prove the main theorem.
+We do this by reducing to the category of $P$-constructible sheaves
+for a triangulation $P$, studied in the previous section.
+\begin{comment}
+\begin{convention}
+All manifolds are real analytic. All Lagrangians are subanalytic.
+In particular, exodromy holds and all Lagrangians are in the conormal of some triangulation.
+\end{convention}
+\end{comment}
+
+To this end, we first recall some facts on the geometry of stratifications
+and microlocal sheaf theory.
+\begin{notation}
+Let $P$ be a $C^1$-stratification of a $C^1$-manifold $X$.
+We write
+\[
+	N^*P \coloneqq \cup_{p \in P} N^*X_p \subseteq T^*X
+\]
+for the union of the conormals of the strata in $X$.
+\end{notation}
+\begin{recollection}[{{\cite[Corollary 8.3.22]{ks90}, \cite{czapla2012definable}}}]
+Let $X$ be a real analytic manifold and $\Lambda \subseteq T^*X$ be a closed conic subanalytic singular isotropic.
+There is a $C^\infty$ Whitney stratification $S$ of $X$ so that $\Lambda \subseteq N^*S$. Moreover, $S$ can be refined to a $C^p$ Whi:etney
+triangulation $P$ for any $p \geq 1$.
+\end{recollection}
+\begin{recollection}[{{\cite[Proposition 8.4.1]{ks90}}}]
+Let $P$ be a $C^1$ Whitney stratification of $X$.
+Then
+\[
+	\Cons_P(X) \simeq \Sh_{N^*P}(X).
+\]
+\end{recollection}
+\begin{recollection}[{{\cite[Proposition 3.4]{guillermou-viterbo}}}]
+Let $\Lambda \subseteq T^*X$ be a closed conic isotropic.
+The $\oo$-category $\Sh_\Lambda(X)$ is closed under limits and colimits in $\Sh(X)$.
+\end{recollection}
+The results mentioned so far can be combined and summarized as follows.
+\begin{obsv}
+Let $X$ be a real analytic manifold and $\Lambda \subseteq T^*X$ a closed conic
+subanalytic isotropic.
+Then there exists a $C^1$ Whitney triangulation $P$ of $X$, so that $\Lambda \subseteq N^*P$.
+And the inclusion
+\[
+	\iota_{\Lambda, P, *} \colon \Sh_\Lambda(X) \hookrightarrow \Sh_{N^*P}(X) \simeq \Cons_P(X) \simeq \Fun(P, \Sp)
+\]
+is closed under both limits and colimits, \emph{i.e.}, a bi-reflective subcategory
+(cf. \cref{bireflective-subcategory}).
+In particular, it participates
+in an adjoint triple
+$\iota^*_{\Lambda,P} \dashv \iota_{\Lambda,P,*} \dashv \iota_{\Lambda,P}^\flat$.
+\end{obsv}
+For the rest of this section, fix $X$, $\Lambda$, and $P$ as above.
+\begin{cor}\label{compacts-in-shv}
+If $F \in \Sh_\Lambda(X)$ is compactly supported and has perfect stalks,
+then $F$ is compact.
+
+\end{cor}
+\begin{proof}
+By \cref{compact-objects-in-fun-p}, $F$ is compact in $\Cons_P(X)\simeq \Fun(P,\Sp)$ and
+thus also compact in $\Sh_\Lambda(X)$ by \cref{localization-compactness}.
+\end{proof}
+\begin{thm}\label{proper-objects-in-shv}
+A sheaf $F \in \Sh_\Lambda(X)$ is proper if and only if $F$ has perfect stalks.
+\end{thm}
+To prove this, we need a lemma about calculating stalks in $\Cons_P(X)$.
+\begin{lem}\label{stalk-in-cons-p}
+	Let $(X, P)$ be an exodromic stratified space, and $\Vc$ a dualizable stable $\oo$-category\footnote{Here the dualizability condition is assumed to ensure that we have\[
+	\Cons_P(X;\Vc) \simeq \Cons_P(X;\Spc) \otimes \Vc \simeq \Fun(\Exit(X,P),\Vc).\] See {\cite[\S 4]{haine2024exodromy}} for detaield discussions on the exodromy equivalence with coefficients.}
+Then the stalk functor at $x$
+\[
+(-)_x \colon \Cons_P(X;\Vc) \rightarrow \Vc
+\]
+is canonically equivalent to
+the evaluation functor
+\[
+\ev_x \colon \Fun(\Exit(X, P), \Vc) \rightarrow \Vc.
+\]
+at $x \colon [0] \rightarrow \Exit(X, P)$.
+\end{lem}
+\begin{proof}
+Taking stalks at $x$ is by definition the pullback along
+$x: \ast \rightarrow X$, \emph{i.e.}
+\[
+F_x \simeq x^* F \in \Sh(\ast; \Vc) \simeq \Vc.
+\]
+By the functoriality of the exodromy equivalence,
+this is equivalent to evaluation at $x \colon [0] \rightarrow \Exit(X, P)$.
+\footnote{Here we distinguish the topological space $\ast$ consisting of a single point
+from its homotopy type $[0]$.}
+\end{proof}
+
+\begin{proof}[Proof of \cref{proper-objects-in-shv}]
+By \cref{properness-localization}, a sheaf $F$ is proper in $\Sh_\Lambda(X)$
+if and only if it is proper in $\Cons_P(X) \simeq \Fun(P, \Sp)$.
+By \cref{properness-of-fun-p}, this is equivalent to $F$ taking values in $\Sp^\omega$,
+which in turn is equivalent to $F$ having perfect stalks by \cref{stalk-in-cons-p}.
+\end{proof}
+The exact same argument using \cref{v-properness-localization} can be used prove the analogous statement for $\Vc$-properness.
+\begin{thm}\label{v-proper-object-in-shv}
+Let $\Vc$ be a compactly generated stable $\oo$-category.
+An object $F \in \Sh_\Lambda(X) \otimes \Vc$ is $\Vc$-proper if and only
+if viewed as an object in $\Sh(X;\Vc)$, it has stalks valued in $\Vc^\omega$.
+\end{thm}
+\begin{proof}
+By \cref{v-properness-localization}, $F \in \Sh_\Lambda(X) \otimes \Vc$ is
+$\Vc$-proper if and only if
+\[
+	\iota_{\Lambda, P, *}^\Vc (F) \in \Cons_P(X) \otimes \Vc \simeq \Fun(P,\Sp) \otimes \Vc \simeq \Fun(P, \Vc)
+\]
+is $\Vc$-proper.
+By \cref{v-proper-objects-in-fun-p},
+this is equivalent to $F(p) \in \Vc^\omega$ for every $p \in P$,
+which in turn is equivalent to $F$ has stalks valued
+in $\Vc^\omega$ when viewed as an object in $\Sh(X;\Vc)$
+by \cref{stalk-in-cons-p}.
+\end{proof}
+The above result, together with the following results of Kuo-Li \cite{kuo-li-duality},
+leads to our main theorem.
+\begin{recollection}[{{\cite[Theorem 1.1, Theorem 1.2, Corollary 1.7]{kuo-li-duality}}}]
+Let $X$ and $Y$ be real analytic manifolds, $\Lambda \subseteq T^*X$ and
+$\Sigma \subseteq T^*Y$ closed conic subanalytic istropics.
+Then the Kunneth formula holds:
+\[
+	\Sh_\Lambda(X) \otimes \Sh_\Sigma(Y) \simeq \Sh_{\Sigma \times \Sigma}(X \times Y).
+\]
+The dual of $\Sh_\Lambda(X)$ is $\Sh_{-\Lambda}(X)$.
+And the equivalence
+\[
+	\Sh_{-\Lambda\times \Sigma}(X\times Y) \simeq \Sh_\Lambda(X)^\vee \otimes \Sh_\Sigma(Y) \simeq \Fun^L(\Sh_\Lambda(X), \Sh_\Sigma(Y))
+\]
+is given by the assignment
+\[
+	K \mapsto (-) \ast K.
+\]
+\end{recollection}
+\begin{thm}\label{main-thm}
+Let $K \in \Sh_{-\Lambda\times \Sigma}(X\times Y)$ be a sheaf kernel.
+The convolution functor
+\[
+- \ast K\colon \Sh_\Lambda(X) \rightarrow \Sh_\Sigma(Y)
+\]
+preserves compact objects if and only if for every $x \in X$,
+the restriction $K|_{\{x\} \times Y} \in \Sh_{\Sigma}(Y)$ is a compact object.
+\end{thm}
+\begin{proof}
+By definition, the convolution preserves compact objects precisely
+if $K \in \Sh_{-\Lambda \times \Sigma}(X \times Y) \simeq \Sh_{-\Lambda}(X) \otimes \Sh_\Sigma(Y)$ is a $\Sh_\Sigma(Y)$-proper object.
+By \cref{v-proper-object-in-shv},
+this is equivalent to
+$K$ having compact stalks when viewed as a sheaf on $X$ valued in $\Sh_\Sigma(Y)$.
+In light of the naturality of the Kunneth formula, the stalk of said sheaf
+at $x \in X$ is equivalent to
+$K|_{\{x\} \times Y} \in \Sh_{\Sigma}(Y)$, whence the result.
+\end{proof}
+\begin{comment}
+\begin{thm}
+$K \in \Sh_{-\Lambda\times \Sigma}(X\times Y)$,
+if $Y$ is compact and $K$
+has perfect stalks,
+then the convolution functor $- \ast K\colon \Sh_\Lambda(X) \rightarrow \Sh_\Sigma(Y)$
+preserves compact objects.
+\end{thm}
+
+\begin{proof}
+Let $(X, P)$ and $(Y, Q)$ be triangulations of $X$ and $Y$ respectively,
+such that $-\Lambda \subseteq N^*P$ and $\Sigma \subseteq N^*Q$.
+By \cref{localization-compactness}, it suffices to show that the
+functor $- \ast K$ takes compact objects in $\Sh_\Lambda(X)$ to compact objects
+in $\Cons_Q(Y)$.
+By \cref{left-proper-kernel-preserves-compact}, it suffices to show that
+if $K \in \Sh_{-\Lambda \times N^*Q}(X \times Y)$ has perfect stalks,
+then $K$ lies in the essential image of
+\[
+\Sh_{-\Lambda}(X)^\pr \otimes \Cons_Q(Y)^\omega
+\rightarrow \Sh_{-\Lambda}(X) \otimes \Cons_Q(Y)
+\simeq \Sh_{-\Lambda \times N^*Q}(X \times Y).
+\]
+By \cref{tensor-with-proper-is-fully-faithful},
+the above functor is fully faithful.
+Since $Q$ is a finite poset, by \HTT{Proposition}{5.3.5.15}, we have
+\begin{align*}
+\Sh_{-\Lambda}(X)^\pr \otimes \Cons_Q(Y)^\omega
+& \simeq (\Ind\Sh_{-\Lambda}(X)^\pr \otimes \Fun(Q, \Sp))^\omega \\
+& \simeq (\Fun(Q, \Ind\Sh_{-\Lambda}(X)^\pr))^\omega \\
+& \simeq \Fun(Q, \Sh_{-\Lambda}(X)^\pr),
+\end{align*}
+while
+\[
+\Sh_{-\Lambda}(X) \otimes \Cons_Q(Y) \simeq \Fun(Q, \Sh_{-\Lambda}(X)).
+\]
+It follows that $K$ lies in the image of
+$\Sh_{-\Lambda}(X)^\pr \otimes \Cons_Q(Y)^\omega$
+precisely when the corresponding
+map $Q \rightarrow \Sh_{-\Lambda}(X)$
+factors through $\Sh_{-\Lambda}(X)^\pr$,
+which is equivalent to $K$ having perfect stalks
+by \cref{stalk-in-cons-p}.
+\end{proof}
+\end{comment}
+%The following geometric criteria of sheaf kernels preseving compact objects
+%will appear in the forthcoming work of Ganatra-Kuo-Li-Wu \cite{Ganatra-Li-Kuo-Wu}.
+\begin{cor}\label{perfect-stalk-and-compact-support}
+Let $K \in \Sh_{-\Lambda \times \Sigma}(X \times Y)$ be a sheaf kernel.
+If $K$ has perfect stalks and $\supp(K|_{\{x\} \times Y})$ is compact for every $x \in X$,
+then convolution with $K$ preserves compact objects.
+\end{cor}
+\begin{proof}
+Combine \cref{compacts-in-shv} and \cref{main-thm}.
+\end{proof}
+
+\printbibliography[keyword=alpha]
+\printbibliography[notkeyword=alpha, heading=none]
+\BiblatexSplitbibDefernumbersWarningOff
+
+\end{document}

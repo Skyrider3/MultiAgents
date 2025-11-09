@@ -1,0 +1,128 @@
+\section{Examples of Tensor Operations}
+\label{append:tensor-examples}
+
+In this appendix, we provide a few examples to illustrate the tensor operations
+defined in \ssref{tensorops}.
+Consider the following~tensors:
+\[
+    T = \begin{bmatrix}
+        1 & 2 \\
+        3 & 4 \\
+        5 & 6
+    \end{bmatrix}, \quad
+    U = \begin{bmatrix}
+        1 \\
+        2
+    \end{bmatrix}, \quad
+    V = \begin{bmatrix}
+        5
+    \end{bmatrix}
+\]
+
+% Cumulative sum
+The $\cumsum$ operation computes the cumulative sum of each row of the tensor.
+For the tensor $T$, we see
+\[
+    \cumsum(T) = \begin{bmatrix}
+        1 & 1 + 2 \\
+        3 & 3 + 4 \\
+        5 & 5 + 6
+    \end{bmatrix} = \begin{bmatrix}
+        1 & 3 \\
+        3 & 7 \\
+        5 & 11
+    \end{bmatrix}.
+\]
+
+% Reduced max
+The $\rmax$ operation computes the maximum value with respect to a specified axis.
+That is, for the tensor $T$ and axis $p = 1$, we have
+\[
+    \rmax(T, 1) = \begin{bmatrix}
+        \max(1, 2) \\
+        \max(3, 4) \\
+        \max(5, 6)
+    \end{bmatrix} = \begin{bmatrix}
+        2 \\
+        4 \\
+        6
+    \end{bmatrix}.
+\]
+
+% Advanced Indexing
+Next, we consider the advanced indexing operation, using $U$ to index into $T$.
+Note that~$T$ has shape $(3, 2)$ and $U$ has shape $(2, 1)$, so the resulting tensor
+has shape $(2, 1, 2)$.
+Then, for each $k \in [[2]]$ we have
+\[
+    T[U] = \begin{bmatrix}
+            T[U[0, 0], k] \\
+            T[U[0, 1], k]
+        \end{bmatrix} =
+        \begin{bmatrix}
+            T[1, k] \\
+            T[2, k]
+        \end{bmatrix} =
+        \begin{bmatrix}
+            \begin{bmatrix}
+                3 & 4
+            \end{bmatrix} \\
+            \begin{bmatrix}
+                5 & 6
+            \end{bmatrix}
+        \end{bmatrix}.
+\]
+
+% Scatter Add
+To demonstrate the $\scadd$ operation, we need to ensure dimensions align correctly, so consider the transpose $S = T^T$, which is
+\[
+    S = \begin{bmatrix}
+        1 & 3 & 5 \\
+        2 & 4 & 6
+    \end{bmatrix},
+\]
+Next, we compute $\scadd(U, V)(S)$.
+To do so, we compute the difference tensor~$D$, which is used to modify $S$ in place.
+The tensor $D$ has the same shape as $S$, which is~$(2, 3)$.
+Because~$V$ has shape $(1)$, we note that $k=0$ is the only possible value of
+$k$ in the definition of $D$ given in \eqref{difftensor}.  As a result, we look
+for indices $i,j$ such that $U[i,0]=j$.
+Thus, we start with $D=\zeros((2,3))$ and compute the values of $D$ by adding
+the following values:
+\begin{enumerate}
+    \item For the first row ($i = 0$), the index from $U$ is $U[0,0] = 1$,
+        and the value from $V$ is~$5$.
+        Thus, we add the value $5$ to the element at position~\mbox{$(i, U[i, k]) =
+        (0,U[0,0])= (0, 1)$},
+        so the first row of $D$ is $[0, 5, 0]$.
+    \item For the second row ($i = 1$), the index from $U$ is $U[1, 0] = 2$,
+        and the value from $V$ is~$5$.
+        Thus, we add the value $5$ to the element at position~\mbox{$(i, U[i, k]) =
+        (1,U[1,0]) = (1, 2)$},
+        so the second row of $D$ is $[0, 0, 5]$.
+\end{enumerate}
+Thus, the difference tensor is
+\[
+    D = \begin{bmatrix}
+        0 & 5 & 0 \\
+        0 & 0 & 5
+    \end{bmatrix},
+\]
+and we have
+\[
+    \scadd(U, V)(S) = S + D = \begin{bmatrix}
+        1 + 0 & 3 + 5 & 5 + 0 \\
+        2 + 0 & 4 + 0 & 6 + 5
+    \end{bmatrix} = \begin{bmatrix}
+        1 & 8 & 5 \\
+        2 & 4 & 11
+    \end{bmatrix}.
+\]
+Recall that the $\scadd$ operation modifies the input tensor in place,
+so the new value of $S$ is
+\[
+    S = \begin{bmatrix}
+        1 & 8 & 5 \\
+        2 & 4 & 11
+    \end{bmatrix}.
+\]

@@ -1,0 +1,799 @@
+\section{A global \texorpdfstring{$\gloo$}{gl11}-action on odd Khovanov homology}
+\label{sec:global_action_odd_khovanov}
+
+In this section, we describe a \texorpdfstring{$\gloo$}{gl11}-action on odd Khovanov homology using the original definition of odd Khovanov homology \cite{ORS_OddKhovanovHomology_2013}, and show that it coincides with the local $\gloo$-action defined in the previous section, restricted to links.
+This can be seen as an equivariant version of \cite[Theorem 3.4]{SV_OddKhovanovHomology_2023}.
+
+For this section, we refer to the original construction as \emph{odd $\slt$-Khovanov homology}, and denote $\slOKh^X(D)$ (resp.\ $\slOKh^Y(D)$) the construction using type X (resp.\ type Y).
+In contrast, the construction in \cref{defn:tangle_invariant} is referred to as \emph{odd $\glt$-Khovanov homology}.
+We review $\gloo$-representations in \cref{subsec:gloo_basic_definitions} and define a $\gloo$-representation on the exterior algebra in \cref{subsec:gloo_action_exterior_alg}.
+Then, with the $\gloo$-action on $\slOKh^X(D)$ and $\slOKh^Y(D)$ defined in \cref{subsec:defn_global_action_odd_Kh}, we show in \cref{subsec:comparison_local_global} that:
+
+\begin{theorem}
+  \label{thm:equivalence_local_global}
+  Let $W$ be a marked closed tangled web and $D=\undcomp(W)$ its underlying marked link diagram.
+  Denote $\emptyset$ the empty web in $\sfoam^{\greenmarking}$.
+  There is an $\gloo$-equivariant isomorphism of complexes
+  \begin{equation*}
+    H_\bullet\Hom_{\sfoam^{\greenmarking}}(\emptyset,\glOKh(W))\cong^{\gloo}\slOKh^Y(D)
+  \end{equation*}
+  and similarly when working with $\sfoam'$ and type X.
+\end{theorem}
+
+Here a link diagram $D$ is \emph{marked} if it is marked as a tangle diagram; see \cref{subsec:defn_tangle_invariant}.
+Note that we used the homology functor described at the end of \cref{subsec:relative_homotopy_category}.
+
+\medbreak
+
+This $\gloo$-action has appeared in various guised in the literature; we discuss this in the following remarks.
+The reader may wish to come back to them after reading the main definitions of the section.
+
+\begin{remark}
+  \label{rem:literature_comparison_Shumakovitch}
+  Over the field $\bZ/2\bZ$,
+  the action of $\liee$ recovers Shumakovitch's operation \cite{Shumakovitch_TorsionKhovanovHomology_2014} and when the marking is only a base point, the action of $\lief$ recovers Khovanov's differential \cite{Khovanov_PatternsKnotCohomology_2003}.
+  We note that Shumakovitch's operation was recently extended to equivariant Khovanov homology over $\bZ$ \cite{KS_SymmetriesEquivariantKhovanov_2025}.
+\end{remark}
+
+\begin{remark}
+  \label{rem:literature_comparison_Migdail_Wehrli}
+  The $\lief$-part of the global action was already studied by Manion \cite{Manion_SignAssignmentTotally_2014}, although with a different perspective. This action is furthered studied in Migdail's PhD thesis \cite{Migdail_FunctorialityOddKhovanov_2025}, who realize it as an action of the coloring module or, when restricting to reduced odd Khovanov homology, as an action of the first homology of the branched double cover of the link. In particular, they point out that contrary to what is claimed in \cite{Manion_SignAssignmentTotally_2014}, markings (or dot action, in their perspective) cannot both overslide and underslide; via \cref{thm:equivalence_local_global}, this is in agreement with our result (\cref{lem:dot_slide_lemma}).
+  This action is further studied in work in progress by Migdail and Wehrli \cite{MW_ModuleStructureOdd_}.
+
+  As noted in the introduction, we learned about their work while working on this manu\-script; at the ``Conference on Modern Developments in Low-Dimensional Topology'' (Trieste, June 2025) and through private communication following that.
+  This motivated us to precisely compare our action with the original definition of odd Khovanov homology, and hence compare with their work.
+  Furthermore, as we learned in private communication, at least part of the work in progress of Migdail and Wehrli appeared already in Migdail's PhD thesis; while unpublished at that time, it was posted on the arXiv \cite{Migdail_FunctorialityOddKhovanov_2025} (see e.g.\ Theorem 5 for the definition of the action) at about the same time we posted our article.
+\end{remark}
+
+\begin{remark}
+  \label{rem:literature_comparison_Grigsby_Wehrli}
+  The $\gloo$-action on odd annular Khovanov homology defined by Grigsby and Wehrli \cite{GW_Action$mathfrakgl1|1$Odd_2020} closely resembles ours.
+  Writing $x$ both for a circle and its associated variable, the action of $\lief$ in \cite{GW_Action$mathfrakgl1|1$Odd_2020} is an alternating sum of $(-)\wedge x$, and the action of $\liee$ is a sum over $(-)\mathbin{\llcorner}x$, where each sum is over essential circles.
+  Apart from the difference of convention that their action is on the right, our definition does not allow twisting the action of $\liee$, so that the sum is always over all circles.
+  If we did however, their action should be a special case of ours, with the annular structure inducing a canonical choice of markings, and hence a canonical $\gloo$-action.
+\end{remark}
+
+Throughout we assume $2$ is invertible in $\ringfoam$, although the analogue of \cref{rem:local_invariant_2_invertible} applies.
+
+
+\subsection{Review of \texorpdfstring{$\gloo$}{gl11}-representations}
+
+\label{subsec:gloo_basic_definitions}
+
+% A \emph{super vector space} is a $\bZ/2\bZ$-graded vector space $V=V_{\ov{0}}\oplus V_{\ov{1}}$.
+% For $v$ a non-zero homogeneous vector in $V$, we write $\abs{v}\in\bZ/2\bZ$ its $\bZ/2\bZ$-degree, and called it its \emph{parity}.
+% Given two super vector spaces $V$ and $W$, the space $\HOM_\ringfoam(V,W)$ of all linear maps has a canonical $\bZ/2\bZ$-grading, where $\deg(f) = g$ if and only if $f(V_{\ov{i}})\subset V_{\ov{i}+g}$.
+
+% A \emph{Lie superalgebra} is a super vector space $\fg$ endowed with a bilinear degree-preserving map $[-,-]\colon\fg\otimes \fg\to\fg$, satisfying the following axioms:
+% \begin{IEEEeqnarray*}{Cl}
+%   [v,w] = -(-1)^{\abs{v}\abs{w}}[w,v]&\text{graded symmetry}\\{}
+%   [u,[v,w]] + (-1)^{\abs{u}(\abs{v}+\abs{w})}
+%   [v,[w,u]] + (-1)^{\abs{w}(\abs{u}+\abs{v})}[w,[u,v]] 
+%   = 0
+%   \qquad&\text{graded Jacobi identity}
+% \end{IEEEeqnarray*}
+% Given a super vector space $V$, the super vector space $\END_\ringfoam(V)$ is canonically as Lie superalgebra, setting $[f,g] \coloneqq f\circ g - (-1)^{\abs{f}\abs{g}}g\circ f$.
+% A \emph{representation} of a Lie superalgebra $\fg$ is the data of a Lie superalgebra morphism $\fg\to\END_\ringfoam(V)$ for some super vector space $V$.
+% Given two representations $V$ and $W$ of $\fg$, their tensor product $V\otimes W$ is endowed with a representation of $\fg$ as follows:
+% \begin{gather*}
+%   x\cdot (v\otimes w) = (x\cdot v)\otimes w + (-1)^{\abs{x}\abs{v}} v\otimes (x\cdot w).
+% \end{gather*}
+
+Recall the notion of a super Lie algebra from \cref{ex:Lie_algebra_as_graded_algebra} and the example of $\gloo$ from \cref{ex:defn_gloo}.
+Recall that a \emph{weight $\gloo$-representation} is a $\gloo$-representation whose underlying super vector space splits as a direct sum over the simultaneous eigenspaces of $h_1$ and $h_2$.
+Elements of these eigenspaces are called \emph{weight vectors}, and their pair of $h_1$- and $h_2$-eigenvalue their \emph{weight}.
+
+\medbreak
+
+We partially follow \cite{GW_Action$mathfrakgl1|1$Odd_2020}.
+Fix $\ring$ a generic commutative ring.
+One-dimensional $\gloo$-representations are parame\-trized by $\nu\in\ring$, with $e$ and $f$ acting as zero and $h_1$ and $h_2$ acting as multiplication by $\nu$ and $-\nu$, respectively. We denote $L^{(1)}(\nu)$ this representation.
+For $(r,s)\in\ring^2$, we define two-dimensional $\gloo$-representations $P^{(2)}(r,s)$ and $I^{(2)}(r,s)$ whose underlying super vector space has basis $\{v_1,v_x\}$ with $p(v_1)=\ov{0}$ and $p(v_x)=\ov{1}$, and actions:
+\begin{gather*}
+  P^{(2)}(r,s)\coloneqq
+  \qquad
+  \begin{gathered}
+    \liee\cdot v_1 = 0,\quad \liee\cdot v_x = (r+s)v_1,\quad \lief\cdot v_1 = v_x,\quad\lief\cdot v_x = 0,\\
+    \lieh_1\cdot v_1 = rv_1,\quad\lieh_1\cdot v_x = (r-1)v_x,\quad\lieh_2\cdot v_1 = s v_1,\quad\lieh_2\cdot v_x = (s+1)v_x
+  \end{gathered}
+\end{gather*}
+and
+\begin{gather*}
+  I^{(2)}(r,s)\coloneqq
+  \qquad
+  \begin{gathered}
+    \liee\cdot v_1 = 0,\quad \liee\cdot v_x = v_1,\quad \lief\cdot v_1 = (r+s)v_x,\quad\lief\cdot v_x = 0,\\
+    \lieh_1\cdot v_1 = rv_1,\quad\lieh_1\cdot v_x = (r-1)v_x,\quad\lieh_2\cdot v_1 = s v_1,\quad\lieh_2\cdot v_x = (s+1)v_x,
+  \end{gathered}
+\end{gather*}
+respectively.
+These representations are irreducible if and only if $r+s\neq 0$, and in which case once has $L^{(2)}(r,s)\coloneqq P^{(2)}(r,s)\cong I^{(2)}(r,s)$.
+We summarize these representations as follows:
+\begin{IEEEeqnarray*}{CcCcCcC}
+  \begin{tikzcd}[ampersand replacement=\&]
+    v_x \arrow[loop above,"h_1"]\arrow[loop below,"h_2"]
+    \arrow[r,bend left,"e"]
+    \&
+    v_1 \arrow[loop above,"h_1"]\arrow[loop below,"h_2"] \arrow[l,bend left,"f"]
+  \end{tikzcd}
+  \coloneqq
+  &&
+  \begin{tikzcd}[ampersand replacement=\&]
+    \bullet \arrow[loop above,"\nu"]\arrow[loop below,"-\nu"]
+  \end{tikzcd}
+  &&
+  \begin{tikzcd}[ampersand replacement=\&]
+    v_x \arrow[loop above,"r-1"]\arrow[loop below,"s+1"]
+    \arrow[r,bend left,"r+s"]
+    \&
+    v_1 \arrow[loop above,"r"]\arrow[loop below,"s"] \arrow[l,bend left,"1"]
+  \end{tikzcd}
+  &&
+  \begin{tikzcd}[ampersand replacement=\&]
+    v_x \arrow[loop above,"r-1"]\arrow[loop below,"s+1"]
+    \arrow[r,bend left,"1"]
+    \&
+    v_1 \arrow[loop above,"r"]\arrow[loop below,"s"] \arrow[l,bend left,"r+s"]
+  \end{tikzcd}
+  \\
+  &\mspace{50mu}&L^{(1)}(\nu)&\qquad&P^{(2)}(r,s)&\qquad&I^{(2)}(r,s)
+\end{IEEEeqnarray*}
+
+
+
+
+\subsection{\texorpdfstring{$\gloo$}{gl11}-action on the exterior algebra}
+\label{subsec:gloo_action_exterior_alg}
+
+Let $n\in\bN$.
+Denote $\wedge_{\ringfoam}(x_1,\ldots,x_n)$ the exterior algebra on $n$ generators $x_1,\ldots,x_n$ over ${\ringfoam}$.
+In other words, $\wedge_{\ringfoam}(x_1,\ldots,x_n)$ is the quotient of the free ${\ringfoam}$-algebra on generators $x_1,\ldots,x_n$ by the relations
+\[
+x^2_i = 0\quad 1\leq i \leq n
+\qquad\an\qquad
+x_ix_j= -x_jx_i\quad 1\leq i,j\leq n.
+\]
+A \emph{word} is a formal wedge product $x_{i_1}\wedge\ldots\wedge x_{i_k}$ where the indices $1\leq i_1,\ldots,i_k\leq n$ are pairwise distinct; words generate $\wedge_{\ringfoam}(x_1,\ldots,x_n)$ as a ${\ringfoam}$-module.
+We equip $\wedge_{\ringfoam}(x_1,\ldots,x_n)$ with a $\bZ$-grading, setting $\abs{x_{i_1}\wedge\ldots\wedge x_{i_k}}=k$. It descends to a $\bZ/2\bZ$-grading viewing the $\bZ$-grading modulo two.
+We write
+\[\epsilon(\lambda_1x_1+\ldots+\lambda_nx_n) =\lambda_1+\ldots+\lambda_n.\]
+
+Each choice of index $1\leq i\leq n$ defines a ${\ringfoam}$-linear map
+\[x_i\inprod (-)\colon \wedge_{\ringfoam}(x_1,\ldots,x_n)\to \wedge_{\ringfoam}(x_1,\ldots,x_n),\]
+called the \emph{inner product}, and defined on words as
+\begin{gather*}
+  x_i\inprod (x_{i_1}\wedge\ldots\wedge x_{i_k}) =
+  \begin{cases}
+    (-1)^{j-1}x_{i_1}\wedge\ldots \widehat{x}_{i_{j}} \ldots\wedge x_{i_k} & \text{if }i_j =i\text{ for some }1\leq j\leq k,\\
+    0 & \text{else.}
+  \end{cases}
+\end{gather*}
+Here the notation $\widehat{x}_{i_{j}}$ indicates that the letter $x_{i_j}$ is omitted.
+
+\begin{lemma}
+  \label{lem:properties_inner_product}
+  Let $n\in\bN$. For each $v,w\in \wedge_{\ringfoam}(x_1,\ldots,x_n)$, we have:
+  \begin{gather*}
+    x_i\inprod (x_i \inprod v) = 0
+    \quad\an\quad
+    x_i\inprod (x_j\inprod v) = - x_j\inprod (x_i\inprod v),
+    \\
+    x_i\inprod(v\wedge w)=(x_i\inprod v)\wedge w+(-1)^{\abs{v}}v\wedge(x_i\inprod w),
+    \\
+    x_i\inprod(x_i\wedge v)+x_i\wedge(x_i\inprod v)=v
+    \quad\an\quad
+    x_i\inprod(x_j\wedge v)+x_j\wedge(x_i\inprod v)=0
+    \quad\text{ if }i\neq j.
+  \end{gather*}
+\end{lemma}
+
+% \begin{definition}
+%   \label{defn:gloo_rep_exterior_alg}
+%   Given a choice of scalar $\nu\in{\ringfoam}$, we endow $\wedge_{\ringfoam}(x_1,\ldots,x_n)$ with a structure of a weight $\gloo$-representation, denoted $V^\nu(x_1,\ldots,x_n)$, as follows:
+%   \begin{gather*}
+%     \lief(\ul{x}) = \sum_{i=1}^n x_i\wedge \ul{x},
+%     \quad
+%     \liee(\ul{x}) = \sum_{j=1}^n (x_j\inprod \ul{x}), 
+%     \\
+%     \lieh_1(\ul{x}) = (\abs{\ul{x}}+\nu) \ul{x}
+%     \quad\an\quad
+%     \lieh_2(\ul{x}) = (n-\abs{\ul{x}}-\nu)\ul{x}.
+%   \end{gather*}
+% \end{definition}
+
+% \begin{definition}
+%   \label{defn:gloo_rep_exterior_alg}
+%   Given a choice of variable $x_i$ and a choice of scalar $\nu\in{\ringfoam}$, we endow $\wedge_{\ringfoam}(x_1,\ldots,x_n)$ with a structure of a weight $\gloo$-representation, denoted $V^{\nu;x_i}(x_1,\ldots,x_n)$, as follows:
+%   \begin{gather*}
+%     \lief(\ul{x}) = x_i\wedge \ul{x},
+%     \quad
+%     \liee(\ul{x}) = \sum_{j=1}^n (x_j\inprod \ul{x}), 
+%     \\
+%     \lieh_1(\ul{x}) = (\abs{\ul{x}}+\nu) \ul{x}
+%     \quad\an\quad
+%     \lieh_2(\ul{x}) = (1-\abs{\ul{x}}-\nu)\ul{x}.
+%   \end{gather*}
+% \end{definition}
+
+% \begin{lemma}
+%   In the terminology of \cref{subsec:gloo_basic_definitions}, we have
+%   \begin{gather*}
+%     V^\nu(x_1,\ldots,x_n)\cong \big(L^{(2)}(1,0)\big)^{\otimes n}\otimes L^{(1)}(\nu)
+%     \\\an\quad
+%     V^{\nu;x_i}(x_1,\ldots,x_n)\cong (I^{(2)}(0,0))^{\otimes (i-1)}\otimes L^{(2)}(1,0) \otimes (I^{(2)}(0,0))^{\otimes (n-i)}\otimes L^{(1)}(\nu).
+%   \end{gather*} 
+%   The weight of a word $\ul{x}$ is $(\abs{\ul{x}}+\nu,n-\abs{\ul{x}}-\nu)$ and $(\abs{\ul{x}}+\nu,1-\abs{\ul{x}}-\nu)$, respectively.
+% \end{lemma}
+
+% \begin{proof}
+%   Follows from the properties of the inner product \cref{lem:properties_inner_product}.
+%   \begin{align*}
+%     [\liee,\lief](\ul{x}) 
+%     &= \sum_{i,j=1}^n\big(x_i\wedge (x_j\inprod\ul{x}) +  x_j\inprod (x_i\wedge\ul{x})\big) = \ul{x} = (\lieh_1+\lieh_2)(\ul{x}).
+%   \end{align*}
+% \end{proof}
+
+
+
+\begin{definition}
+  \label{defn:gloo_rep_exterior_alg}
+  Given a linear combination of element $z=\lambda_1x_1+\ldots+\lambda_nx_n$ and a choice of scalar $\nu\in{\ringfoam}$, we endow $\wedge_{\ringfoam}(x_1,\ldots,x_n)$ with a structure of a weight $\gloo$-representation, denoted $V^{\nu;z}(x_1,\ldots,x_n)$, as follows:
+  \begin{gather*}
+    \lief(\ul{x}) = z\wedge \ul{x},
+    \quad
+    \liee(\ul{x}) = \sum_{j=1}^n (x_j\inprod \ul{x}), 
+    \\
+    \lieh_1(\ul{x}) = (\epsilon(z)-\abs{\ul{x}}-\nu)\ul{x}
+    \quad\an\quad
+    \lieh_2(\ul{x}) = (\abs{\ul{x}}+\nu) \ul{x}.
+  \end{gather*}
+\end{definition}
+
+\begin{proof}
+  We have $\liee(z)=\epsilon(z)$, and using that $x_i\inprod{}$ acts as a derivation (\cref{lem:properties_inner_product}), we have
+  \[\sum_{j=1}^nx_j\inprod(z\wedge w) = \epsilon(z)v-\sum_{j=1}^nz\wedge(x_j\inprod w).\]
+  It follows that $[\liee,\lief](w) = \epsilon(w)$.
+\end{proof}
+
+\begin{lemma}
+  Write $z=\lambda_1x_1+\ldots+\lambda_nx_n$.
+  In the terminology of \cref{subsec:gloo_basic_definitions}, we have
+  \begin{gather*}
+    V^{\nu;z}(x_1,\ldots,x_n)\cong I^{(2)}(\lambda_1,0)\otimes\ldots\otimes I^{(2)}(\lambda_n,0)\otimes L^{(1)}(-\nu).
+  \end{gather*} 
+  The weight of a word $\ul{x}$ is $(\epsilon(z)-\abs{\ul{x}}-\nu,\abs{\ul{x}}+\nu)$.\hfill\qed
+\end{lemma}
+
+The following extends \cite[Lemma~2.1]{Manion_SignAssignmentTotally_2014}:
+
+\begin{lemma}
+  \label{lem:merge_split_equivariant}
+  Fix $n\in\bN$, scalar $\nu\in{\ringfoam}$ and elements $z\in\wedge (y_1,y_2,x_1,\ldots,x_n)$ and $z'\in \wedge(y,x_1,\ldots,x_n)$ of homogeneous degree $1$.
+  \begin{enumerate}[(i)]
+    \item Consider the $\bZ$-linear map
+    \begin{align*}
+      M_{y_1,y_2;y}\colon V^{\nu;z}(y_1,y_2,x_1,\ldots,x_n)&\to
+      V^{\nu;z'}(y,x_1,\ldots,x_n)
+      \\
+      \ul{x}&\mapsto \ul{x}\vert_{y_1,y_2\mapsto y}
+    \end{align*}
+    Here $y_1,y_2\mapsto y$ means that we replace each instance of $y_1$ and $y_2$ by $y$ in $\ul{x}$.
+    If $z\vert_{y_1,y_2\mapsto y}=z'$, then $M_{y_1,y_2;y}$ is a morphism of $\gloo$-representations.
+
+    \item Consider the $\bZ$-linear map
+    \begin{align*}
+      S_{y;y_1,y_2}\colon V^{\nu+1;z'}(y,x_1,\ldots,x_n)&\to
+      V^{\nu;z}(y_1,y_2,x_1,\ldots,x_n)
+      \\
+      \ul{x} &\mapsto (y_1- y_2)\wedge\ul{x}\vert_{y\mapsto y_1} =  (y_1- y_2)\wedge\ul{x}\vert_{y\mapsto y_2}
+    \end{align*}
+    If $z\vert_{y_1,y_2\mapsto y}=z'$, then $S_{y;y_1,y_2}$ commutes with the action of $\lieh_1$ and $\lieh_2$, and anti-commutes with the action of $\lief$ and $\liee$.
+  \end{enumerate}
+\end{lemma}
+
+\begin{proof}
+  Equivariance (up to sign) with respect to $\lieh_1$, $\lieh_2$ and $\lief$ is clear.
+  Consider case (i).
+  It is clear that $M_{y_1,y_2;y}$ is equivariant with respect to $x_i\inprod{}$.
+  Equivariance (up to sign) with respect to $\liee$ then follows from the identity
+  \begin{gather*}
+    y\inprod (\ul{x}\vert_{y_1,y_2\mapsto y}) = (y_1\inprod\ul{x})\vert_{y_1,y_2\mapsto y} + (y_2\inprod\ul{x})\vert_{y_1,y_2\mapsto y}.
+  \end{gather*}
+  Similarly, case (ii) reduces to the identity
+  \begin{align*}
+    (y_1- y_2)\wedge(y\inprod \ul{x})\vert_{y\mapsto y_1} 
+    &=
+    (y_1- y_2)\wedge((y_1\inprod{}+y_2\inprod{}) \ul{x}\vert_{y\mapsto y_1})
+    \\
+    &= -(y_1\inprod{} + y_2\inprod{})\big((y_1- y_2)\wedge\ul{x}\vert_{y\mapsto y_1}\big),
+  \end{align*}
+  using distributivity and $(y_1\inprod{}+y_2\inprod{})(y_1-y_2)=0$.
+  % note that these two identities do not hold when the inner product is replaced by the wedge product, taking eg x=1.
+  % \begin{IEEEeqnarray*}{rCl}
+  %   \IEEEeqnarraymulticol{3}{l}{
+  %     \sum_{t=y_1,y_2,x_1,\ldots,x_n}t\inprod \big(\ul{x}\vert_{y\mapsto y_1}\wedge (y_1-y_2)\big)
+  %   }
+  %   \\
+  %   \qquad&=&
+  %   \sum_{t=y_1,y_2,x_1,\ldots,x_n}(t\inprod \ul{x}\vert_{y\mapsto y_1})\wedge (y_1-y_2)
+  %   +
+  %   \ul{x}\wedge\sum_{t=y_1,y_2,x_1,\ldots,x_n}t\inprod(y_1-y_2)
+  %   \\
+  %   &=&
+  %   \sum_{t=y,x_1,\ldots,x_n}(t\inprod \ul{x})\vert_{y\mapsto y_1}
+  %   \wedge (y_1-y_2)
+  %   \IEEEQEDhere
+  % \end{IEEEeqnarray*}
+\end{proof}
+
+
+
+
+\subsection{\texorpdfstring{$\gloo$}{gl11}-action on odd Khovanov homology}
+\label{subsec:defn_global_action_odd_Kh}
+
+We sketch how the dot action from \cite{Manion_SignAssignmentTotally_2014} extends to a $\gloo$-action on the original definition of odd Khovanov homology \cite{ORS_OddKhovanovHomology_2013}.
+To get a proper invariant of marked oriented link, one should further shift and twist using the orientation, as in \cref{thm:topological_invariance}; we ignore that.
+
+Let $D$ be a marked link diagram with $N$ crossings.
+For a resolution $r\in\{0,1\}^N$ of $D$, denote $c(r)$ the number of connected components in $r$, and let
+\[\nu(D;r)\coloneqq\frac{1}{2}(N-\abs{r}-c(r)).
+% \frac{1}{2}(2N_- - N_+-\abs{r}-c(r)) when considering orientation
+\]
+We associate to $r$ the state space
+\[
+V(D;r)\coloneqq V^{\nu(D;r);z(D;r)}(x_1,\ldots,x_{c(r)}).
+\]
+Here $z(D;r)=\epsilon_1(f)x_i+\ldots+\epsilon_n(f)x_n$, where $x_i$ is the variable associated to the $i$-circle and $\epsilon_i(f)$ is the sum of all the $\lief$-scalars associated to marked points on the $i$-circle.
+One then constructs a complex $\slOKh^Y(D)$
+using the ${\ringfoam}$-linear maps $M_{y_1,y_2;y}$ and $S_{y;y_1,y_2}$, respectively corresponding to a ``merge cobordism'' and to a ``split cobordism''.
+Finally, one fixes the signs, either using a type X or a type Y sign assignment; here we use type Y sign assignment.
+By \cref{lem:merge_split_equivariant}, it carries an action of $\gloo$, up to some signs.
+These signs can be fixed in an essentially unique way, following \cite[Proposition~2.2]{Manion_SignAssignmentTotally_2014}.
+This defines a chain complex $\slOKh^Y(D)$ endowed with a $\gloo$-action.
+Note that the quantum grading is precisely twice the eigenvalue of $\lieh_2$: $\lieh_2(v) = \frac{1}{2}\qdeg(v)\;v$.
+
+% \begin{corollary}
+%   \label{cor:global_invariance}
+%   Let $L$ be an oriented link and $D$ an oriented link diagram of $L$.
+%   Let $\cM$ be a choice of markings on $D$.
+%   Then the $\gloo$-action on $\slOKh^Y(D,\cM)$ only depends on the position of markings, which furthermore satisfy the following:
+%   \begin{gather*}
+%     \tikzpic{
+%       \coordinate (base) at (.5,.5);
+%       \webpcr
+%       \node[green_mark] (B) at (.3,.15) {};
+%       \node[below={-1pt} of B] {\scriptsize $\lambda$};
+%     }[baseline=(base),scale=.7]
+%     \simeq
+%     \tikzpic{
+%       \coordinate (base) at (.5,.5);
+%       \webpcr
+%       \node[green_mark] (B) at (1-.3,1-.15) {};
+%       \node[above={-1pt} of B] {\scriptsize $\lambda$};
+%     }[baseline=(base),scale=.7]
+%     \quad\an\quad
+%     \tikzpic{
+%       \coordinate (base) at (.5,.5);
+%       \webncr
+%       \node[green_mark] (B) at (.3,.15) {};
+%       \node[below={-1pt} of B] {\scriptsize $\lambda$};
+%     }[baseline=(base),scale=.7]
+%     \simeq
+%     \tikzpic{
+%       \coordinate (base) at (.5,.5);
+%       \webncr
+%       \node[green_mark] (B) at (1-.3,1-.15) {};
+%       \node[above={-1pt} of B] {\scriptsize $-\lambda$};
+%       \node[green_mark] (C) at (1-.3,.15) {};
+%       \node[below={-1pt} of C] {\scriptsize $2\lambda$};
+%     }[baseline=(base),scale=.7]
+%     \;.
+%   \end{gather*}
+%   If one considers type X instead, then the roles of the overcrossing and the undercrossing are swapped.
+% \end{corollary}
+
+\begin{remark}
+  We work over a ring where $2$ is invertible.
+  One could avoid this condition by either restricting to an action of $\sloo$, or by adding $\frac{1}{2}c(L)$ to $\nu(D;r)$, where $c(L)$ denotes the number of components of $L$.
+\end{remark}
+
+\begin{lemma}
+  \label{lem:action_on_reduced}
+  Let $D$ be a marked oriented link diagram.
+  Reduced odd Khovanov homology can be identified with the kernel (or image) of $\liee$:
+  \[\redOKh_\slt^Y(D)\cong \ker e=\im e.\]
+  Write $\epsilon(f)$ the sum of scalars over all markings.
+  Furthermore, if $\epsilon(f)=0$, then the $\gloo$-action on $\OKh(D)$ descends to a $\fgl_{1|1}^{\leq 0}$-action on $\redOKh(D)$.
+\end{lemma}
+
+Comparing with the work in progress of Migdail and Wehrli (see \cref{rem:literature_comparison_Migdail_Wehrli}), this is the same statement that the action of the coloring module descends to an action of the reduced coloring module on reduced odd Khovanov homology. 
+
+\begin{proof}
+  By definition, the following holds on $\slOKh^Y(D)$:
+  \[\liee\circ\lief+\lief\circ\liee = \epsilon(f)\id.\]
+  In particular, if $\epsilon(f)=1$, then $(\liee\circ\lief+\lief\circ\liee)(v) =v $ for all $v$; this shows that $\im e=\ker e$.
+  This also shows that if $\epsilon(f)=0$, then $\lief(\ker e)\subset\ker e$, so that the $\fgl_{1|1}^{\leq 0}$-action restricts to $\ker e$.
+
+  The reduced state space $\widetilde{\wedge}\subset\wedge(x_1,\ldots,x_n)$
+  is defined in \cite[section~4]{ORS_OddKhovanovHomology_2013} as the subalgebra generated by $\ker\epsilon$.
+  On homogeneous elements of degree one, we have $\liee=\epsilon$, so that $\widetilde{\wedge}\subset\ker\liee$.
+  Moreover:
+  \[\liee(x_{i_1}\ldots x_{i_k})=\sum_{j=1}^k(-1)^jx_{i_1}\ldots\widehat{x}_{i_j}\ldots x_{i_k} = (x_{i_2}-x_{i_1})\ldots(x_{i_k}-x_{i_1})\in\widetilde{\wedge},\]
+  so $\im e\subset\widetilde{\wedge}$. The fact that $\im e=\ker e$ concludes.
+  % \cite[Lemma~3.10]{Vaz_NotEvenKhovanov_2020}.
+\end{proof}
+ 
+
+% \begin{remark}
+%   \ls{to clean:}
+%   Consider the action of $\lief$ on reduced odd Khovanov homology as above, assuming $\epsilon(\cM)=0$.
+%   To be non-trivial, we must have that for some homological degree $i$, there exists a quantum degree $j$ such that $\redOKh_{i,j}(L,{\ringfoam})\neq 0$ and $\redOKh_{i,j+2}(L,{\ringfoam})\neq 0$.
+%   In particular,the link $L$ must be \emph{${\ringfoam} OH$-thick} (see \cite{Shumakovitch_PatternsOddKhovanov_2011}).
+%   Quasi-alternating links, and in particular non-split alternating links like $T(2,n)$, are ${\ringfoam} OH$-thin for any ring ${\ringfoam}$.
+%   In particular, the DG-structure is trivial.
+%   The first $\bZ OH$-thick knot is $8_{19}$. The knot $15^n_{41127}$ is $\bQ OH$-thick; this seems to be the first such knot.
+% \ls{to see if the action is non-trivial, we would need to compute (at least) for this 15 crossings knot...}
+% \end{remark}
+
+% Are there computations of either Szabo's homology, and the Heegaard-Floer homology of the branched double cover, for $8_{19}$ and $15^n_{41127}$?
+
+
+
+
+
+
+\subsection{Comparison with the local action}
+\label{subsec:comparison_local_global}
+
+
+In this subsection, we prove \cref{thm:equivalence_local_global}.
+We begin with the isomorphism at the level of state spaces.
+Write $\ov{V}^{\nu,z}(x_1,\ldots,x_n)$ the $\gloo$-representation identical to $V^{\nu,z}(x_1,\ldots,x_n)$, except that the action of $\lief$ and $\liee$ is multiplied by $-1$.
+
+\begin{lemma}
+  \label{lem:equivalence_local_global_state_space}
+  Let $W^{\greenmarking}$ be a marked closed web.
+  Order the components of $\undcomp(W)$ from $1$ to $n$.
+  Denote $\tau_i(\lief)$ the total $\lief$-marking on the $i$th component, $\#_i\text{split}$ the number of split webs in the $i$th component and $\#\text{split}$ the total number of splits.
+  Let
+  \[z=\epsilon_1x_1+\ldots+\epsilon_nx_n\]
+  for $\epsilon_i = \tau_i(\lief)+\#_i\text{split}$, and
+  \[\nu=\tau_{W^{\greenmarking}}(\lieh_2)+\frac{1}{2}\#\text{split}-\frac{n}{2}.\]
+  Then:
+  \begin{gather*}
+    \Hom_{\sfoam^{\greenmarking}}(\emptyset,W^{\greenmarking}) 
+    \cong \begin{cases}
+      V^{\nu,z}(x_1,\ldots,x_n) & \text{if $n$ is even},\\
+      \ov{V}^{\nu,z}(x_1,\ldots,x_n) & \text{if $n$ is odd},\\
+    \end{cases}
+  \end{gather*}
+  as $\gloo$-representations, where the isomorphism is the one used in the proof of Theorem 3.4 in \cite[subsubsection~3.3.3]{SV_OddKhovanovHomology_2023}, which shows the isomorphism between odd $\slt$- and $\glt$-Khovanov homology.
+\end{lemma}
+
+\begin{proof}
+  We first verify the lemma when $W^{\greenmarking}=\widetilde{W}^{\greenmarking}$ is of the form
+  \begin{gather*}
+    \widetilde{W}^{\greenmarking} = 
+    \tikzpic{
+      \webmMarkedB[0][0][$\omega_1$]\webs[1][0]
+      \begin{scope}[shift={(2,0)}]
+        \webmMarkedB[0][0][$\omega_2$]\webs[1][0]
+      \end{scope}
+      \node at (5,.5) {\ldots};
+      \begin{scope}[shift={(6,0)}]
+        \webmMarkedB[0][0][$\omega_n$]\webs[1][0]
+      \end{scope}
+    }[scale=.5][(0,.5*.5)]
+    \;.
+  \end{gather*}
+  To describe the isomorphism mentioned in the statement, one arbitrarily chooses (i) a ``cup foam'' $\beta^{W}\colon\emptyset\to W$, whose underlying surface is a union of disks, and (ii) an ordering on the components of $\undcomp(W^{\greenmarking})$.
+  For $\widetilde{W}$, we choose $\beta^{\widetilde{W}}$ as
+  \begin{gather*}
+    \beta^{\widetilde{W}} \;\coloneqq\;
+    \tikzpic{
+      \fill[foamshade1] (-.5,2) to 
+        (0,2) to[out=-90,in=180] ++(.5,-.7) to[out=0,in=-90] ++(.5,.7)
+        to ++(1,0) to[out=-90,in=180] ++(.5,-1) to[out=0,in=-90] ++(.5,1)
+        to ++(2,0) to[out=-90,in=180] ++(.5,-1.3) to[out=0,in=-90] ++(.5,1.3)
+        to ++(.5,0) to ++(0,-2) to (-.5,0) to (-.5,2);
+      \draw[foamdraw1] (0,2) to[out=-90,in=180] ++(.5,-.7) to[out=0,in=-90] ++(.5,.7);
+      \draw[foamdraw1] (2,2) to[out=-90,in=180] ++(.5,-1) to[out=0,in=-90] ++(.5,1);
+      \draw[foamdraw1] (5,2) to[out=-90,in=180] ++(.5,-1.3) to[out=0,in=-90] ++(.5,1.3);
+      \node at (4,1.5) {$\ldots$};
+    }[scale=.6]\;,
+  \end{gather*}
+  and the ordering from left to right when reading $\widetilde{W}$.
+  For $\epsilon\in\{0,1\}$, write $\tikzpic{\fhollowdot}_{\epsilon}$ for $\tikzpic{\fdot}$ if $\epsilon=1$, and nothing otherwise.
+  Explicitly, the isomorphism is given on basis elements by (here $\delta\in\{0,1\}^n$ and $\abs{\delta}=\delta_1+\ldots+\delta_n$)
+  \begin{gather*}
+    \tikzpic{
+      \fill[foamshade1] (-.5,2) to 
+        (0,2) to[out=-90,in=180] ++(.5,-.7) to[out=0,in=-90] ++(.5,.7)
+        to ++(1,0) to[out=-90,in=180] ++(.5,-1) to[out=0,in=-90] ++(.5,1)
+        to ++(2,0) to[out=-90,in=180] ++(.5,-1.3) to[out=0,in=-90] ++(.5,1.3)
+        to ++(.5,0) to ++(0,-2) to (-.5,0) to (-.5,2);
+      \draw[foamdraw1] (0,2) to[out=-90,in=180] ++(.5,-.7) to[out=0,in=-90] ++(.5,.7);
+      \draw[foamdraw1] (2,2) to[out=-90,in=180] ++(.5,-1) to[out=0,in=-90] ++(.5,1);
+      \draw[foamdraw1] (5,2) to[out=-90,in=180] ++(.5,-1.3) to[out=0,in=-90] ++(.5,1.3);
+      \node at (4,1.5) {$\ldots$};
+      %
+      \fill[foamshade1] (-.5,2) rectangle (0,3);
+      \draw[foamdraw1] (0,2) to (0,3);
+      \draw[foamdraw1] (1,2) to (1,3);
+      \fill[foamshade1] (1,2) rectangle (2,3);
+      \draw[foamdraw1] (2,2) to (2,3);
+      \draw[foamdraw1] (3,2) to (3,3);
+      \fill[foamshade1] (3,2) rectangle (5,3);
+      \draw[foamdraw1] (5,2) to (5,3);
+      \draw[foamdraw1] (6,2) to (6,3);
+      \fill[foamshade1] (6,2) rectangle (6.5,3);
+      %
+      \fhollowdot[.5][2.2]\node[below right=-3pt] at (.5,2.2) {\footnotesize $\delta_1$};
+      \fhollowdot[2.5][2.4]\node[below right=-3pt] at (2.5,2.5) {\footnotesize $\delta_2$};
+      \fhollowdot[5.5][2.8]\node[below right=-3pt] at (5.5,2.8) {\footnotesize $\delta_n$};
+    }[scale=.6]
+    \;\mapsto\;
+    (-1)^{\abs{\delta}n}
+    x_n^{\delta_n}\ldots x_2^{\delta_2}x_1^{\delta_1}\;.
+  \end{gather*}
+  One checks that the $\gloo$-action on super $\glt$-foams coincides with the $\gloo$-action in $V^{\nu,z}$, up to an extra sign $(-1)^n$ for $\liee$ and $\lief$.
+  For instance, assume $\omega_i=\roundmarking$ for each $i$, or in other words that $\tau_i(f)=-\#_i\text{split}=-1$ and $\tau(h_2)=-\frac{1}{2}\#\text{split}=-\frac{n}{2}$.
+  Then the action of $\lief$ on foams is zero, in agreement with $z=0$; and the action of $\lieh_2(\beta^{\widetilde{W}^{\greenmarking}})=-\frac{n}{2}\beta^{\widetilde{W}^{\greenmarking}}$, in agreement with $\nu=-\frac{n}{2}$.
+
+  We now show the lemma for generic $W^{\greenmarking}$.
+  First, note that there is a $\gloo$-equivariant isomorphism $W^{\greenmarking}\cong^{\gloo}\widetilde{W}^{\greenmarking}$ in $\sfoam^{\greenmarking}$.
+  Without the equivariance and ignoring markings, this statement was shown in \cite[subsubsection~6.3.3]{Schelstraete_OddKhovanovHomology_2024} (see also \cite[Lemma~2.13]{SV_OddKhovanovHomology_2023}).
+  To lift it to include equivariance and markings, we use the $\gloo$-equivariant isomorphisms from \cref{lem:twist_dot_slide_cup_cap} and \cref{lem:web_defining_relations_equivariance} (note that $z$ and $\nu$ do not change under these isomorphisms), together with the following lemma:
+
+  \begin{lemma}
+    Let $\omega=(\alpha,\beta_1,\beta_2)$ be a generic local twist.
+    In $\sfoam^{\greenmarking}$, there exists a $\gloo$-equivariant isomorphism
+    \begin{gather*}
+      \tikzpic{
+        \webmMarkedB[0][1][$\omega$]\webs[1][1]\webm[2][1]\draw[web1] (3,2) to (4,2);
+        \draw[web1] (0,0) to (3,0);\webs[3][0]
+        % \draw[web2] (4,.5) to (6,.5);
+      }[xscale=.4,yscale=.4][(0,1*.4)]
+      \;\cong^{\gloo}
+      \tikzpic{
+        % \draw[web2] (0,1.5) to (2,1.5);
+        \webm[2][1]\draw[web1] (3,2) to (6,2);
+        \draw[web1] (2,0) to (3,0);\webs[3][0]\webmMarkedB[4][0][$\omega$]\webs[5][0]
+      }[xscale=.4,yscale=.4][(0,1*.4)]
+      \;.
+    \end{gather*}
+  \end{lemma}
+
+  \begin{proof}
+    The $\gloo$-equivariant isomorphism is given by the linear combination
+    \begin{gather*}
+      \tikzpic{
+        \fill[foamshade2] (-.5,0) to (-.5,3) to (0,3) to[out=-90,in=90] (2,0) to (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+        \draw[foamdraw2] (0,3) to[out=-90,in=90] (2,0);
+        \draw[foamdraw2] (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+        %
+        \fill[foamshade1] (3,0) to[out=90,in=-90] (1,3) to (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3) to (3.5,3) to (3.5,0) to (3,0);
+        \draw[foamdraw1] (3,0) to[out=90,in=-90] (1,3);
+        \draw[foamdraw1] (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3);
+        %
+        \fdot[.5][.2][2]
+      }[scale=.4]
+      \;+\;
+      \tikzpic{
+        \fill[foamshade2] (-.5,0) to (-.5,3) to (0,3) to[out=-90,in=90] (2,0) to (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+        \draw[foamdraw2] (0,3) to[out=-90,in=90] (2,0);
+        \draw[foamdraw2] (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+        %
+        \fill[foamshade1] (3,0) to[out=90,in=-90] (1,3) to (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3) to (3.5,3) to (3.5,0) to (3,0);
+        \draw[foamdraw1] (3,0) to[out=90,in=-90] (1,3);
+        \draw[foamdraw1] (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3);
+        %
+        \fdot[2.5][2.8][1]
+      }[scale=.4]
+      \;,
+      \quad\text{ whose inverse is }\quad
+      \tikzpic{
+        \fill[foamshade2] (-.5,0) to (-.5,3) to (0,3) to[out=-90,in=90] (2,0) to (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+        \draw[foamdraw2] (0,3) to[out=-90,in=90] (2,0);
+        \draw[foamdraw2] (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+        %
+        \fill[foamshade1] (3,0) to[out=90,in=-90] (1,3) to (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3) to (3.5,3) to (3.5,0) to (3,0);
+        \draw[foamdraw1] (3,0) to[out=90,in=-90] (1,3);
+        \draw[foamdraw1] (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3);
+        %
+        \fdot[.5][.2][2]
+      }[scale=.4,yscale=-1]
+      \;+\;
+      \tikzpic{
+        \fill[foamshade2] (-.5,0) to (-.5,3) to (0,3) to[out=-90,in=90] (2,0) to (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+        \draw[foamdraw2] (0,3) to[out=-90,in=90] (2,0);
+        \draw[foamdraw2] (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+        %
+        \fill[foamshade1] (3,0) to[out=90,in=-90] (1,3) to (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3) to (3.5,3) to (3.5,0) to (3,0);
+        \draw[foamdraw1] (3,0) to[out=90,in=-90] (1,3);
+        \draw[foamdraw1] (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3);
+        %
+        \fdot[2.5][2.8][1]
+      }[scale=.4,yscale=-1]
+      \;.
+    \end{gather*}
+    One checks that both 2-morphisms are $\gloo$-equivariant. For instance:
+    \def\fscl{.3}
+    \begin{gather*}
+      \lief\cdot
+      \left(
+        \tikzpic{
+          \fill[foamshade2] (-.5,0) to (-.5,3) to (0,3) to[out=-90,in=90] (2,0) to (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+          \draw[foamdraw2] (0,3) to[out=-90,in=90] (2,0);
+          \draw[foamdraw2] (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+          %
+          \fill[foamshade1] (3,0) to[out=90,in=-90] (1,3) to (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3) to (3.5,3) to (3.5,0) to (3,0);
+          \draw[foamdraw1] (3,0) to[out=90,in=-90] (1,3);
+          \draw[foamdraw1] (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3);
+          %
+          \fdot[.5][.2][2]
+        }[scale=\fscl]
+        \;+\;
+        \tikzpic{
+          \fill[foamshade2] (-.5,0) to (-.5,3) to (0,3) to[out=-90,in=90] (2,0) to (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+          \draw[foamdraw2] (0,3) to[out=-90,in=90] (2,0);
+          \draw[foamdraw2] (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+          %
+          \fill[foamshade1] (3,0) to[out=90,in=-90] (1,3) to (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3) to (3.5,3) to (3.5,0) to (3,0);
+          \draw[foamdraw1] (3,0) to[out=90,in=-90] (1,3);
+          \draw[foamdraw1] (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3);
+          %
+          \fdot[2.5][2.8][1]
+        }[scale=\fscl]
+      \right)
+      \;=\;
+      \\
+      \alpha
+      \left(
+        \tikzpic{
+          \fill[foamshade2] (-.5,0) to (-.5,3) to (0,3) to[out=-90,in=90] (2,0) to (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+          \draw[foamdraw2] (0,3) to[out=-90,in=90] (2,0);
+          \draw[foamdraw2] (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+          %
+          \fill[foamshade1] (3,0) to[out=90,in=-90] (1,3) to (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3) to (3.5,3) to (3.5,0) to (3,0);
+          \draw[foamdraw1] (3,0) to[out=90,in=-90] (1,3);
+          \draw[foamdraw1] (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3);
+          %
+          \fdot[.5][.2][2]
+          %
+          \fdot[2.5][3.4][1]
+        }[scale=\fscl][(0,1.5*\fscl)]
+        \;+\;
+        \tikzpic{
+          \fill[foamshade2] (-.5,0) to (-.5,3) to (0,3) to[out=-90,in=90] (2,0) to (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+          \draw[foamdraw2] (0,3) to[out=-90,in=90] (2,0);
+          \draw[foamdraw2] (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+          %
+          \fill[foamshade1] (3,0) to[out=90,in=-90] (1,3) to (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3) to (3.5,3) to (3.5,0) to (3,0);
+          \draw[foamdraw1] (3,0) to[out=90,in=-90] (1,3);
+          \draw[foamdraw1] (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3);
+          %
+          \fdot[2.5][2.8][1]
+          %
+          \fdot[2.5][3.4][1]
+        }[scale=\fscl][(0,1.5*\fscl)]
+      \right)
+      +
+      \left(
+        {}-
+        \tikzpic{
+          \fill[foamshade2] (-.5,0) to (-.5,3) to (0,3) to[out=-90,in=90] (2,0) to (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+          \draw[foamdraw2] (0,3) to[out=-90,in=90] (2,0);
+          \draw[foamdraw2] (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+          %
+          \fill[foamshade1] (3,0) to[out=90,in=-90] (1,3) to (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3) to (3.5,3) to (3.5,0) to (3,0);
+          \draw[foamdraw1] (3,0) to[out=90,in=-90] (1,3);
+          \draw[foamdraw1] (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3);
+          %
+          \fdot[.5][.2][2]
+          %
+          \fdot[2.5][2.8][1]
+        }[scale=\fscl][(0,1.5*\fscl)]
+        \;+\;
+        \tikzpic{
+          \fill[foamshade2] (-.5,0) to (-.5,3) to (0,3) to[out=-90,in=90] (2,0) to (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+          \draw[foamdraw2] (0,3) to[out=-90,in=90] (2,0);
+          \draw[foamdraw2] (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+          %
+          \fill[foamshade1] (3,0) to[out=90,in=-90] (1,3) to (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3) to (3.5,3) to (3.5,0) to (3,0);
+          \draw[foamdraw1] (3,0) to[out=90,in=-90] (1,3);
+          \draw[foamdraw1] (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3);
+          %
+          \fdot[2.5][2.8][1]
+          %
+          \fdot[.5][.2][2]
+        }[scale=\fscl][(0,1.5*\fscl)]
+      \right)
+      -
+      \alpha
+      \left(
+        \tikzpic{
+          \fill[foamshade2] (-.5,0) to (-.5,3) to (0,3) to[out=-90,in=90] (2,0) to (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+          \draw[foamdraw2] (0,3) to[out=-90,in=90] (2,0);
+          \draw[foamdraw2] (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+          %
+          \fill[foamshade1] (3,0) to[out=90,in=-90] (1,3) to (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3) to (3.5,3) to (3.5,0) to (3,0);
+          \draw[foamdraw1] (3,0) to[out=90,in=-90] (1,3);
+          \draw[foamdraw1] (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3);
+          %
+          \fdot[.5][.2][2]
+          %
+          \fdot[.5][-.4][2]
+        }[scale=\fscl][(0,1.5*\fscl)]
+        \;+\;
+        \tikzpic{
+          \fill[foamshade2] (-.5,0) to (-.5,3) to (0,3) to[out=-90,in=90] (2,0) to (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+          \draw[foamdraw2] (0,3) to[out=-90,in=90] (2,0);
+          \draw[foamdraw2] (1,0) to[out=90,in=0] (.5,.7) to[out=180,in=90] (0,0);
+          %
+          \fill[foamshade1] (3,0) to[out=90,in=-90] (1,3) to (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3) to (3.5,3) to (3.5,0) to (3,0);
+          \draw[foamdraw1] (3,0) to[out=90,in=-90] (1,3);
+          \draw[foamdraw1] (2,3) to[out=-90,in=180] (2.5,2.3) to[out=0,in=-90] (3,3);
+          %
+          \fdot[2.5][2.8][1]
+          %
+          \fdot[.5][-.4][2]
+        }[scale=\fscl][(0,1.5*\fscl)]
+      \right)
+      = \;0\;.
+    \end{gather*}
+    This concludes.
+  \end{proof}
+
+  Denote $\gamma\colon \widetilde{W}^{\greenmarking}\to W^{\greenmarking}$ this $\gloo$-equivariant isomorphism.
+  By composition, it induces an isomorphism with either $V^{\nu,z}$ or $\ov{V}^{\nu,z}$, depending on $n$.
+  Finally, this isomorphism has the expected form, as the composition $\gamma\circ\beta^{\widetilde{W}}$ gives a choice of ``cup foam'' for $W$.
+\end{proof}
+
+We can now prove \cref{thm:equivalence_local_global}:
+
+\begin{proof}[Proof of \cref{thm:equivalence_local_global}]
+  Let $W$ be a marked closed tangled web with $N$ crossings and $D=\undcomp(W)$ its underlying marked link diagram.
+  In the construction of $\glKom(W)$, one associates to $r\in\{0,1\}^N$ a certain resolution of $W$, denoted $\langle W;r\rangle$, with extra marking $\roundmarking[2]$ for each split and extra shift $\langle-\frac{N-\abs{r}}{2},\frac{N-\abs{r}}{2}\rangle$.
+  It follows from \cref{lem:equivalence_local_global_state_space} that $\Hom_{\sfoam^{\greenmarking}}(\emptyset,\langle W;r\rangle)$ is isomorphic as a $\gloo$-representation to $V(D;r)$, up to some additional sign on $\lief$ and $\liee$.
+
+  Recall that in the definition of $\slOKh^Y(D)$, one must add signs to the action of $\lief$ and $\liee$ to get equivariance, and doing so is essentially unique.
+  We choose these signs so that the isomorphism defined by \cref{lem:equivalence_local_global_state_space} becomes $\gloo$-equivariant.
+  Finally, it was shown in \cite{SV_OddKhovanovHomology_2023} how one can add global signs to these isomorphisms an isomorphism of complexes; this does not affect $\gloo$-equivariance. Considering $\sfoam'$ instead, one gets an isomorphism with type X. This concludes.
+\end{proof}
+
+\newpage
+
+% \ls{archives}
+
+
+% \begin{lemma}
+%   Let $L$ be a link and $D$ be a link diagram presenting $L$ with $N$ ordered crossings.
+%   Let $r\in\{0,1\}^N$ be a resolution of $D$.
+%   If
+%   $c(L)$ denotes the number of components of the associated link $L$,
+%   $N_+$ (resp.\ $N_-$) denotes the number of positive (resp.\ negative) crossings of $D$, 
+%   $c(r)$ the number of components of $r$, and $\abs{r}=\sum_{i=1}^N r_i$, then
+%   \[\nu(D;r)\coloneqq \frac{1}{2}(c(L)+2N_- - N_+-\abs{r}-c(r))\]
+%   is an integer.
+% \end{lemma}
+
+% \begin{proof}
+%   The parity of $c(L)+N_+-\abs{r}-c(r)$ does not depend on the choice of resolution.
+%   %
+%   Apply a Reidemeister I move to $D$, and consider $r$ as a resolution of this new diagram. If the Reidemeister I is positive, then the parity of $N_+$ and $\abs{r}$ switches, while the parity of $c(r)$ is preserved; if the Reidemeister I is negative, all quantities are preserved.
+%   Apply a Reidemeister II move to $D$, and consider $r$ as a resolution of this new diagram. This switches the parity of $N_+$ and $\abs{r}$, while preserving the parity of $c(r)$.
+%   Apply a Reidemeister III move to $D$, and consider $r$ the resolution consisting of three straight strands in both sides of the Reidemeister III move. This preserves both $\abs{r}$ and $c(r)$.
+%   Hence the parity of $c(L)+N_+-\abs{r}-c(r)$ does not depend on the diagram $D$.
+%   %
+%   Taking the mirror of a crossing in $D$ while keeping $r$ unchanged switches the parity of $N_+$ and $\abs{r}$, while preserving the parity of $c(r)$. Hence the parity of $c(L)+N_+-\abs{r}-c(r)$ does not depend on $L$.
+%   %
+%   Finally, the quantity $c(L)+N_+-\abs{r}-c(r)$ is even for $D$ the diagram of the unlink.
+% \end{proof}
+
+% \begin{remark}
+%   Following the conventions of \cite{SV_OddKhovanovHomology_2023}, the quantum grading in odd Khovanov homology is:
+%   \[\qdeg x = 2\abs{x} + 2N_- - N_+ - c(r) -\abs{r} = 2\abs{x} + 2\nu(D;r) - c(L).\]
+%   Hence, the eigenvalue of the action of $\lieh_2$ is $\frac{1}{2}(\qdeg(x)+c(L))$.
+% \end{remark}

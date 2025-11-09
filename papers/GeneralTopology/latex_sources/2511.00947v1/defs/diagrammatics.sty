@@ -1,0 +1,263 @@
+% =================================
+% ===          SUMMARY          ===
+% =================================
+
+% GENERIC TIKZ
+% \tikzpic{#1}[#2][#3]
+
+% with parameters:
+% - #1 diagram
+% - #2 (optional) parameters, eg scaling (default=scale.8)
+% - #3 (optional) basepoint (default=center)
+
+
+% WEBS
+% - \webs[#1][#2] split web
+% - \webm[#1][#2] merge web
+% - \webpcr[#1][#2] positive crossing
+% - \webncr[#1][#2] negative crossing
+% - \webid[#1][#2] double single line
+% - \websMarkedT[#1][#2][#3] split with green marking on top
+% - \websMarkedB[#1][#2][#3] split with green marking on the bottom
+% - \webmMarkedT[#1][#2][#3] merge with green marking on top
+% - \webmMarkedB[#1][#2][#3] merge with green marking on the bottom
+% - \websRoundT[#1][#2][#3] split with green marking on top
+% - \websRoundB[#1][#2][#3] split with green marking on the bottom
+% - \websRoundT[#1][#2][#3] merge with green marking on top
+% - \websRoundB[#1][#2][#3] merge with green marking on the bottom
+
+% with parameters:
+% - #1 horizontal position
+% - #2 vertical position
+% - #3 (optional, for webid) length (default=2)
+% - #3 (optional, for marked webs) label of the green marking
+
+
+% SHADING DIAGRAMS
+% - \flst[#1][#2][#3][#4] strand with shading on the left
+% - \frst[#1][#2][#3][#4] strand with shading on the right
+% - \fdot[#1][#2][#3][#4] dot
+% - \fcup[#1][#2][#3] cup foam
+% - \fcap[#1][#2][#3] cap foam
+% - \funzip[#1][#2][#3] unzip = saddle with a shading on the bottom
+% - \fzip[#1][#2][#3] zip = saddle with a shading on the top
+% - \fbcro[#1][#2][#3][#4] crossing with shadings point downward
+% - \flcro[#1][#2][#3][#4] crossing with shadings point leftward
+% - \ftcro[#1][#2][#3][#4] crossing with shadings point upward
+% - \frcro[#1][#2][#3][#4] crossing with shadings point rightward
+
+% with parameters:
+% - #1 horizontal position; default = 0
+% - #2 vertical position; default = 0
+% - #3 (optional) colour of the strand; default = 1
+% - #4 (optional, for \flst and \frst) offset of the top point
+%   #4 (optional, for crossing) colour of the second strand
+%   #4 (optional, for dots) diameter of the dot, in points
+
+% For instance, \fcup[1][4][2] draws a cup at (1,4) coloured with the second colouring.
+
+
+% ==========================================
+% ===          TIKZ ENVIRONMENT          ===
+% ==========================================
+\NewDocumentCommand{\tikzpic}{mO{scale=.8}O{current bounding box.center}}{
+  \begin{tikzpicture}[
+    shape=rectangle,anchor=center,
+    baseline={([yshift=-.5ex]#3)},
+    #2
+  ]
+    #1
+  \end{tikzpicture}
+}
+
+% OVERDRAW
+\tikzset{
+    overdraw/.style={preaction={draw,white,line width=#1},>={Computer Modern Rightarrow[length=4.5pt]}},
+    overdraw/.default=5pt
+}
+
+
+% ==============================
+% ===          webs          ===
+% ==============================
+% BLACK/BLACK
+\definecolor{colour_web1}{RGB}{0, 0, 0}
+\definecolor{colour_web2}{RGB}{0, 0, 0}
+% BLACK/ORANGE
+% \definecolor{colour_web1}{RGB}{0, 0, 0}
+% \definecolor{colour_web2}{orange}
+
+\tikzset{web1/.style={draw=colour_web1, line width=1.2}}
+\tikzset{web2/.style={draw=colour_web2, double=colour_web2!30!white, double distance=1.5pt, thick}}
+
+% green mark
+\usetikzlibrary{shapes.geometric}
+\definecolor{green_mark_colour}{RGB}{120, 230, 103}
+\tikzset{
+  green_mark/.style={fill=green_mark_colour,circle,inner sep=#1},
+  green_mark/.default={2pt}
+}
+
+% round mark
+\tikzset{
+  round_mark/.style={fill=white,draw=green_mark_colour,circle,inner sep=#1,line width=1.5pt},
+  round_mark/.default={2pt}
+}
+
+% basic webs
+\NewDocumentCommand{\webs}{O{0}O{0}}{
+  \draw[web2] (.5+#1,.5+#2) to (1+#1,.5+#2);
+  \draw[web1] (0+#1,1+#2) to[out=0,in=90] (.5+#1,.5+#2);
+  \draw[web1] (0+#1,0+#2) to[out=0,in=-90] (.5+#1,.5+#2);
+}
+\NewDocumentCommand{\webm}{O{0}O{0}}{
+  \draw[web2] (0+#1,.5+#2) to (.5+#1,.5+#2);
+  \draw[web1] (.5+#1,.5+#2) to[out=90,in=180] (1+#1,1+#2);
+  \draw[web1] (.5+#1,.5+#2) to[out=-90,in=180] (1+#1,0+#2);
+}
+\NewDocumentCommand{\webncr}{O{0}O{0}}{
+  \draw[web1] (0+#1,1+#2) to[out=0,in=180] (1+#1,0+#2);
+  \draw[web1,overdraw=5pt] (0+#1,0+#2) to[out=0,in=180] (1+#1,1+#2);
+}
+\NewDocumentCommand{\webpcr}{O{0}O{0}}{
+  \draw[web1] (0+#1,0+#2) to[out=0,in=180] (1+#1,1+#2);
+  \draw[web1,overdraw=5pt] (0+#1,1+#2) to[out=0,in=180] (1+#1,0+#2);
+}
+\NewDocumentCommand{\webid}{O{0}O{0}O{2}}{
+  \draw[web1] (0+#1,1+#2) to (#3+#1,1+#2);
+  \draw[web1] (0+#1,0+#2) to (#3+#1,0+#2);
+}
+
+% mixed crossings
+\NewDocumentCommand{\webcrSD}{O{0}O{0}}{
+  \draw[web2] (0+#1,0+#2) to[out=0,in=180] (1+#1,1+#2);
+  \draw[web1,overdraw=5pt] (0+#1,1+#2) to[out=0,in=180] (1+#1,0+#2);
+}
+\NewDocumentCommand{\webcrDS}{O{0}O{0}}{
+  \draw[web2] (0+#1,1+#2) to[out=0,in=180] (1+#1,0+#2);
+  \draw[web1,overdraw=5pt] (0+#1,0+#2) to[out=0,in=180] (1+#1,1+#2);
+}
+\NewDocumentCommand{\webcrDD}{O{0}O{0}}{
+  \draw[web2] (0+#1,1+#2) to[out=0,in=180] (1+#1,0+#2);
+  \draw[web2] (0+#1,0+#2) to[out=0,in=180] (1+#1,1+#2);
+}
+
+% webs with green markings
+\NewDocumentCommand{\websMarkedB}{O{0}O{0}O{}}{
+  \webs[#1][#2]
+  \node[green_mark] (B) at (.35+#1,.15+#2) {};
+  \node[below right={-5pt} of B] {\scriptsize #3};
+}
+\NewDocumentCommand{\websMarkedT}{O{0}O{0}O{}}{
+  \webs[#1][#2]
+  \node[green_mark] (B) at (.35+#1,1-.15+#2) {};
+  \node[above right={-5pt} of B] {\scriptsize #3};
+}
+\NewDocumentCommand{\webmMarkedB}{O{0}O{0}O{}}{
+  \webm[#1][#2]
+  \node[green_mark] (B) at (1-.35+#1,.15+#2) {};
+  \node[below left={-5pt} of B] {\scriptsize #3};
+}
+\NewDocumentCommand{\webmMarkedT}{O{0}O{0}O{}}{
+  \webm[#1][#2]
+  \node[green_mark] (B) at (1-.35+#1,1-.15+#2) {};
+  \node[above left={-5pt} of B] {\scriptsize #3};
+}
+
+% webs with round markings
+\NewDocumentCommand{\websRoundMarkedB}{O{0}O{0}O{}}{
+  \webs[#1][#2]
+  \node[round_mark] (B) at (.35+#1,.15+#2) {};
+  \node[below right={-5pt} of B] {\scriptsize #3};
+}
+\NewDocumentCommand{\websRoundMarkedT}{O{0}O{0}O{}}{
+  \webs[#1][#2]
+  \node[round_mark] (B) at (.35+#1,1-.15+#2) {};
+  \node[above right={-5pt} of B] {\scriptsize #3};
+}
+\NewDocumentCommand{\webmRoundMarkedB}{O{0}O{0}O{}}{
+  \webm[#1][#2]
+  \node[round_mark] (B) at (1-.35+#1,.15+#2) {};
+  \node[below left={-5pt} of B] {\scriptsize #3};
+}
+\NewDocumentCommand{\webmRoundMarkedT}{O{0}O{0}O{}}{
+  \webm[#1][#2]
+  \node[round_mark] (B) at (1-.35+#1,1-.15+#2) {};
+  \node[above left={-5pt} of B] {\scriptsize #3};
+}
+
+
+
+
+% =========================================================
+% ===          SHADING DIAGRAMMATICS FOR FOAMS          ===
+% =========================================================
+% Foam diagrams can have three different colourings:
+% - colour_diag1: light blue
+% - colour_diag2: red
+% - colour_diag3: ~brown
+% - colour_diag4: dark blue
+% These colours are suitable for colour blind persons.
+
+\colorlet{colour_diag2}{ocre}
+\colorlet{colour_diag1}{metallic_blue}
+\colorlet{colour_diag3}{dark_brown}
+\colorlet{colour_diag4}{navy_blue}
+
+\newcommand{\foamlinewidth}{1.4}
+\newcommand{\shoffset}{.5}
+\newcommand{\foamopacity}{.25}
+
+\tikzset{foamdraw1/.style={colour_diag1,line width=\foamlinewidth}}
+\tikzset{foamdraw2/.style={colour_diag2,line width=\foamlinewidth}}
+\tikzset{foamdraw3/.style={colour_diag3,line width=\foamlinewidth}}
+\tikzset{foamdraw4/.style={colour_diag4,line width=\foamlinewidth}}
+
+\tikzset{foamshade1/.style={colour_diag1,opacity=\foamopacity}}
+\tikzset{foamshade2/.style={colour_diag2,opacity=\foamopacity}}
+\tikzset{foamshade3/.style={colour_diag3,opacity=\foamopacity}}
+\tikzset{foamshade4/.style={colour_diag4,opacity=\foamopacity}}
+
+\NewDocumentCommand{\fcap}{O{0}O{0}O{1}}{
+  \fill[foamshade#3] (1+#1,0+#2) to[out=90,in=0] (.5+#1,.7+#2) to[out=180,in=90] (0+#1,0+#2) to (#1-\shoffset,0+#2) to (#1-\shoffset,1+#2) to (#1+1+\shoffset,1+#2) to (1+\shoffset+#1,0+#2);
+  \draw[foamdraw#3] (0+#1,0+#2) to[out=90,in=180] (.5+#1,.7+#2) to[out=0,in=90] (1+#1,0+#2);
+}
+\NewDocumentCommand{\funzip}{O{0}O{0}O{1}}{
+  \fill[foamshade#3] (0+#1,0+#2) to[out=90,in=180] (.5+#1,.7+#2) to[out=0,in=90] (1+#1,0+#2);
+  \draw[foamdraw#3] (0+#1,0+#2) to[out=90,in=180] (.5+#1,.7+#2) to[out=0,in=90] (1+#1,0+#2);
+}
+\NewDocumentCommand{\fcup}{O{0}O{0}O{1}}{
+  \fill[foamshade#3] (1+#1,1+#2) to[out=-90,in=0] (.5+#1,.3+#2) to[out=180,in=-90] (0+#1,1+#2) to (0-\shoffset+#1,1+#2) to (0-\shoffset+#1,0+#2) to (1+\shoffset+#1,0+#2) to (1+\shoffset+#1,1+#2);
+  \draw[foamdraw#3] (0+#1,1+#2) to[out=-90,in=180] (.5+#1,.3+#2) to[out=0,in=-90] (1+#1,1+#2);
+}
+\NewDocumentCommand{\fzip}{O{0}O{0}O{1}}{
+  \fill[foamshade#3] (0+#1,1+#2) to[out=-90,in=180] (.5+#1,.3+#2) to[out=0,in=-90] (1+#1,1+#2);
+  \draw[foamdraw#3] (0+#1,1+#2) to[out=-90,in=180] (.5+#1,.3+#2) to[out=0,in=-90] (1+#1,1+#2);
+}
+\NewDocumentCommand{\flst}{O{0}O{0}O{1}O{0}}{
+  \fill[foamshade#3] (0+#1,0+#2) to[out=90,in=-90] (0+#1+#4,1+#2) to (0-\shoffset+#1+#4,1+#2) to[out=-90,in=90] (0-\shoffset+#1,0+#2);
+  \draw[foamdraw#3] (0+#1,0+#2) to[out=90,in=-90] (0+#1+#4,1+#2);
+}
+\NewDocumentCommand{\frst}{O{0}O{0}O{1}O{0}}{
+  \fill[foamshade#3] (0+#1,0+#2) to[out=90,in=-90] (0+#1+#4,1+#2) to (0+\shoffset+#1+#4,1+#2) to[out=-90,in=90] (0+\shoffset+#1,0+#2);
+  \draw[foamdraw#3] (0+#1,0+#2) to[out=90,in=-90] (0+#1+#4,1+#2);
+}
+\NewDocumentCommand{\fdot}{O{0}O{0}O{1}O{2}}{
+  \node[fill=colour_diag#3, circle, inner sep=#4pt] at (#1,#2) {};
+}
+\NewDocumentCommand{\fbcro}{O{0}O{0}O{1}O{2}}{
+  \frst[#1][#2][#3][1]\flst[{#1+1}][#2][#4][-1]
+}
+\NewDocumentCommand{\flcro}{O{0}O{0}O{1}O{2}}{
+  \flst[#1][#2][#3][1]\flst[{#1+1}][#2][#4][-1]
+}
+\NewDocumentCommand{\ftcro}{O{0}O{0}O{1}O{2}}{
+  \flst[#1][#2][#3][1]\frst[{#1+1}][#2][#4][-1]
+}
+\NewDocumentCommand{\frcro}{O{0}O{0}O{1}O{2}}{
+  \frst[#1][#2][#3][1]\frst[{#1+1}][#2][#4][-1]
+}
+
+\NewDocumentCommand{\fhollowdot}{O{0}O{0}O{1}O{2}}{
+  \node[draw=colour_diag#3, line width=1.5  pt, circle, inner sep=#4pt] at (#1,#2) {};
+}

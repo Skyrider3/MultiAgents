@@ -1,0 +1,438 @@
+% vim: redrawtime=10000 et sw=2
+
+% Some more packages used for macro defintions
+\usepackage{suffix}  % To define starred commands
+\usepackage{ifthen}
+\usepackage{xspace}
+
+% Switch the style for 1-categorical dg constructions
+\newif\ifdgcal
+\dgcaltrue    % Use caligraphic uppercase and italic lowercase.
+% \dgcalfalse     % Use roman.
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Standardize notation %
+%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\basecat{{\cat V}}       % The base category for our constructions.
+\newcommand\refined{refined }
+\let\simeq\cong
+\newcommand\dg{DG\xspace}
+\newcommand\Dg{DG\xspace}
+
+%%%%%%%%%%%%%%%%%%%
+% Useful notation %
+%%%%%%%%%%%%%%%%%%%
+\newcommand\isoto{\xrightarrow{\sim}}
+\newcommand{\xtwoheadrightarrow}[2][]{%   Extensible two-headed arrow (https://tex.stackexchange.com/a/260563/83)
+  \xrightarrow[#1]{#2}\mathrel{\mkern-14mu}\rightarrow
+}
+\mathchardef\mhyphen="2D    % hyphen in math environments (used in some macros below)
+
+
+%%%%%%%%%%%%%%%%%%%
+% Basic rings     %  
+%%%%%%%%%%%%%%%%%%%
+\newcommand\kk{{\mathbb{k}}}            % base field
+\newcommand\NN{{\mathbb{N}}}
+\newcommand\ZZ{{\mathbb{Z}}}
+\newcommand\CC{{\mathbb{C}}}
+
+%%%%%%%%%%%%%%%%%%%
+% Category theory %
+%%%%%%%%%%%%%%%%%%%
+\newcommand\cat\mathcal             % 1-categories
+\newcommand\bicat\mathbf            % 2-categories
+
+\DeclareMathOperator{\obj}{Ob}
+\newcommand\Hom{\operatorname{Hom}}
+\newcommand\End{\operatorname{End}}
+
+\newcommand\id{\operatorname{id}}
+\let\iden\id
+\let\Id\id
+
+\newcommand\Tr{\operatorname{Tr}}                   % Serre trace
+
+\newcommand\Cat{{\bicat{Cat}}}                      % bicategory of ordinary categories
+\newcommand\catfVect{\mathrm{Vect^f_{\kk}}}         % abelian cat of fd vector spaces
+\newcommand\catgrVect{\mathrm{gr\mhyphen Vect_{\kk}}} % cat of graded vector spaces
+
+\DeclareMathOperator\colim{colim}
+\DeclareMathOperator\Kar{Kar}                       % Karoubi completion
+\newcommand\addsym{\sym}                            % symmetric power of additive category
+
+
+%%%%%%%%%%%%%%%%%%%%%
+% Algebra           %
+%%%%%%%%%%%%%%%%%%%%%
+\newcommand\Ind{\operatorname{Ind}}     % induction functor
+\newcommand\Res{\operatorname{Res}}     % restriction functor
+\newcommand\dual{\vee}                  % dual object
+\DeclareMathOperator\Sym{Sym}           % Symmetric powers of a vector space
+\newcommand\SymGrp[1]{S_{#1}}           % Symmetric group
+\newcommand\sgn{\operatorname{sgn}}     % sign of an element of the symmetric group
+\newcommand\triv{{\mathrm{triv}}}       % trivial representation
+\newcommand\sign{{\mathrm{sign}}}       % sign representation
+\newcommand\SL{\mathrm{SL}}             % special linear group
+\newcommand\stimes{\vee}                % symmetric product times symbol
+\newcommand{\normord}[1]{:\mathrel{#1}:}
+\newcommand\hochhom{\mathrm{HH}}
+\newcommand\hochcx{\mathrm{HC}}
+
+\newcommand{\vac}{\vert 0 \rangle}      %vacuum vector
+\newcommand{\fix}{{\mathrm{Fix}}}       % fixed point set
+\newcommand{\cts}{{\mathrm{cts}}}    % Reduction to continuous chains map on Hochschild complex
+\newcommand{\redcts}{{\mathrm{\underline{Rdc}}}}    % Reduction to continuous chains map on Hochschild complex
+
+\newcommand{\chrc}{{\mathrm{char}}}    % Reduction to continuous chains map on Hochschild complex
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+% DG category theory %
+%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\DGCat{{\bicat{dgCat}}}                  % bicategory of dg categories
+\newcommand\DGCatone{{\bicat{dgCat}^1}}             % bicategory of dg categories
+\newcommand\DGCatdg{{\bicat{dgCat}^{dg}}}           % bicategory of dg categories
+\newcommand\DGModCat{{\bicat{dgModCat}}}            % bicategory of dg module categories
+\newcommand\DGBiMod{{\bicat{dgMor}}}                % bicategory of dg bimodules
+% \DeclareMathOperator{\hmtpy}{{Ho}}                % unused?
+\newcommand\HoDGCat{{\bicat{Ho}(\DGCat)}}           % homotopy cat of dg categories
+\newcommand\HoDGCatone{{\bicat{Ho}(\DGCatone)}}     % homotopy cat of dg categories
+% \DeclareMathOperator{\Morita}{{Mo}}               % unused?
+\newcommand\MoDGCat{{\bicat{Mor}(\DGCat)}}          % dg cats up to Morita equivalence
+\newcommand\MoDGCatdg{{\bicat{Mor}(\DGCat)^{dg}}}   % dg cats up to Morita equivalence
+\newcommand\MoDGCatone{{\bicat{Mor}(\DGCatone)}}    % dg cats up to Morita equivalence
+\def\EnhCat{{\bicat{EnhCat}}}                       % enhanced triangulated categories
+\def\EnhCatone{{\bicat{EnhCat}^1}}                  
+\def\EnhCatKC{{\bicat{EnhCat}_{kc}}}                % karoubi complete enhanced triangulated categories
+\def\EnhCatKCdg{{\bicat{EnhCat}_{kc}^{dg}}}         % karoubi complete enhanced triangulated categories
+\newcommand{\PDGCat}{\mathcal{P}dg\mathcal{C}at}    % category of dg categories with tuples of subcategories
+
+% 1-categories constructed from a given dg category
+\ifdgcal
+  \DeclareMathOperator{\modd}{\mathcal{M}\mkern-1.5mu\mathit{o\mkern-1mud}}                    % dg module category
+  \DeclareMathOperator{\hperf}{\mathcal{H}\mathit{perf}}                 % h-projective perfect modules (1-category version)
+  \DeclareMathOperator{\perf}{{\mathcal{P}\mkern-1.5mu\mathit{erf}}}
+  \DeclareMathOperator{\hproj}{\mathcal{P}}
+  \DeclareMathOperator{\pretriag}{{\mathcal{P}\mkern-1.5mu\mathit{re\mhyphen}\mkern-2mu\mathcal{T}\mkern-3mu\mathit{r}}}
+  \DeclareMathOperator{\DGFun}{{\mathcal{DGF}\mkern-1.5mu\mathit{un}}}
+  \DeclareMathOperator{\acyc}{\mathcal{A}\mathit{c}}
+\else
+  \DeclareMathOperator{\hperf}{Hperf}                 % h-projective perfect modules (1-category version)
+  \DeclareMathOperator{\modd}{Mod}                    % dg module category
+  \DeclareMathOperator{\perf}{Perf}
+  \DeclareMathOperator{\hproj}{P}
+  \DeclareMathOperator{\pretriag}{Pre\mhyphen Tr}
+  \DeclareMathOperator{\DGFun}{DGFun}
+  \DeclareMathOperator{\acyc}{Ac}
+\fi
+
+\DeclareMathOperator{\bihperf}{\bicat{Hperf}}               % h-projective perfect modules (2-category version)
+\DeclareMathOperator{\bipretriag}{\bicat{Pre\mhyphen Tr}}   % pretriangulated hull (2-category version)
+\newcommand{\lfrp}{\mathrm{lfrp}}                   % left flat, right perfect
+
+\newcommand\catdgfVect{\mathrm{dg\mhyphen Vect^f_{\kk}}} % dg cat of fd vector spaces
+
+\newcommand\sym{{\cat{S}}}                              % symmetric power of a dg category
+
+\newcommand\numGgp[1]{K_0^{\mathrm{num}}\ifthenelse{\equal{#1}{}}{}{(#1)}}      % numerical Grothendieck group
+
+% more module categories
+\newcommand\modbar{{\overline{\modd}}}              % dg module bar category
+% NOTE: the kerning in the following macros is for lmodern. Other fonts may need adaptations.
+\newcommand\rightmod[1]{{\modd\mkern-2mu\mhyphen #1}}   % right modules
+\newcommand\leftmod[1]{{#1\mhyphen\mkern-2.5mu\modd}}   % left modules
+\newcommand\bimod[2]{{#1\mhyphen\mkern-2.5mu\modd\mkern-2mu\mhyphen #2}}   % bimodules
+\newcommand\rightmodbar[1]{{\modbar\mhyphen #1}}        % right modules (no \mkern because of \overline)
+\newcommand\leftmodbar[1]{{#1\mhyphen\modbar}}          % left modules
+\newcommand\bimodbar[2]{{#1\mhyphen\modbar\mhyphen #2}} % bimodules
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Heisenberg-type objetcs %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Heisenberg algebras
+\newcommand\halg[1]{H_{#1}}              % Heisenberg algebra
+\newcommand\chalg[1]{\underline{H}_{#1}} % classical (not idempotent-modified) Heisenberg algebra
+\newcommand\chalga[1]{\underline{H}^{A}_{#1}} % classical (not idempotent-modified) Heisenberg algebra, A definition
+\newcommand\chalgpq[1]{\underline{H}^{PQ}_{#1}} % classical (not idempotent-modified) Heisenberg algebra, PQ definition
+\newcommand\falg[1]{F_{#1}}              % Fock space
+\newcommand\cfalg[1]{\underline{F}_{#1}} % classical (not idempotent-modified) Fock space
+\newcommand\walg[1]{\widehat{H}_{#1}}              % centrally extended Heisenberg algebra
+\newcommand\cwalg[1]{\widehat{\underline{H}}_{#1}} % classical (not idempotent-modified) centrally extended Heisenberg algebra
+\newcommand\valg[1]{V_{#1}}              % vertex algebra
+\newcommand\cvalg[1]{\underline{V}_{#1}} % classical (not idempotent-modified) Vertex algebra
+
+% The Heisenberg category
+\newcommand\hcat[1]{\bicat{H}_{#1}}                     % The Heisenberg 2-category
+\newcommand\vcat[1]{\bicat{V}_{#1}}                     % The vertex 2-category
+\newcommand\wcat[1]{\widehat{\bicat{H}}_{#1}}                     % The Heisenberg 2-category
+\WithSuffix\newcommand\hcat*[1]{\bicat{H}'_{#1}}        % The non-completed Heisenberg 2-category
+\newcommand\hcatadd[1]{\bicat{H}^{\mathrm{add}}_{#1}}                       % The additive Heisenberg 2-category
+\WithSuffix\newcommand\hcatadd*[1]{\bicat{H}^{\mathrm{add}\prime}_{#1}}     % The non-completed additiveHeisenberg 2-category
+\newcommand\monhcat[1]{\underline{\bicat{H}}_{#1}}                          % The monoidal Heisenberg category
+\WithSuffix\newcommand\monhcat*[1]{\underline{\bicat{H}}'_{#1}}             % The non-completed monoidal Heisenberg category
+\newcommand\PP{{\mathsf{P}}}            % 1-morphism P
+\newcommand\QQ{{\mathsf{Q}}}            % 1-morphism Q
+\newcommand\RR{{\mathsf{R}}}            % 1-morphism R
+\newcommand\hAA{{\mathsf{A}}}           % Hocschild chain A
+\newcommand\hunit{{\mathbb{1}}}         % The empty string 1-morphism
+\newcommand\ho{N}                       % an object in \hcat
+\WithSuffix\newcommand\ho*{N'}          % another object in \hcat
+
+% Fock category
+\newcommand\fcat[1]{\bicat{F}_{#1}}                   % The Fock space 2-category
+\WithSuffix\newcommand\fcat*[1]{\bicat{F}'_{#1}}      % The non-completed Fock space 2-category
+\newcommand\fcatadd[1]{\bicat{F}^{\mathrm{add}}_{#1}}                         % The additive Fock space 2-category
+\WithSuffix\newcommand\fcatadd*[1]{\bicat{F}^{\mathrm{add}\prime}_{#1}}       % The non-completed additive Fock space 2-category
+\newcommand\starmap[1]{\star_{#1}}                      % Image of the Serre-star 2-morphism
+
+% String diagrams
+\tikzset{dot/.style={circle, fill, inner sep=0, minimum size=4pt}}
+\tikzset{serre/.style={star, fill, star points=10, star point ratio = 2, scale=0.4}}
+\tikzset{up/.style={color=blue}}
+%\tikzset{up/.style={}}
+\tikzset{down/.style={color=red}}
+%\tikzset{down/.style={dashed}}
+\tikzset{cc/.style={color=green!50!black}}
+%\tikzset{cc/.style={dotted}}
+\tikzset{desc/.style={fill=white}}
+\tikzset{sym/.style={rectangle, draw, minimum width=1cm}}
+\tikzset{many/.style={very thick}}
+\newcommand\dcross[5]{\phi^{#1,#2}_{#3,#4,#5}}      % down-up double crossing
+\newcommand\sdcross[3]{\psi^{#1}_{#2,#3}}           % symmetric down-up double crossing
+
+%%%%%%%%%%%%%%%%%%%%%%
+% Algebraic geometry %
+%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\Spec{\operatorname{Spec}}   % spectrum of a ring
+\newcommand\as[1]{\mathbb{A}^{#1}}      % affine space
+\newcommand\ps[1]{\mathbb{P}^{#1}}      % projective space     
+\newcommand\sheaf\mathcal               % sheaves
+\newcommand\sO{{\sheaf O}}              % structure sheaf
+\newcommand\catDQCoh[1]{\mathrm{D}_{\mathrm{qc}}(#1)}               % (triangulated) unbounded derived cat of qcoh sheaves
+\newcommand\catDb[2][]{\mathrm{D}^{\mathrm{b}}_{#1}(#2)}
+\newcommand\catDbCoh[1]{\mathrm{D}^{\mathrm{b}}_{\mathrm{coh}}(#1)} % (triangulated) derived cat of coh sheaves
+\newcommand\catDGCoh[1]{\cat{I}(#1)}                                % dg enhanced derived cat of coh sheaves
+\newcommand\catPerf[1]{\cat{Perf}(#1)}                              % (dg category) of perfect complexes
+
+%%%%%%%%%%%%%%%%%%%%
+% Timothy's macros %
+%%%%%%%%%%%%%%%%%%%%
+% TODO: sort into above\below categories
+
+\DeclareMathOperator{\codim}{codim}
+\DeclareMathOperator{\krn}{Ker}
+\DeclareMathOperator{\adj}{Adj}
+\DeclareMathOperator{\cok}{Coker}
+\DeclareMathOperator{\chr}{char}
+\DeclareMathOperator{\img}{Im}
+\DeclareMathOperator{\homm}{Hom}
+\DeclareMathOperator{\tor}{Tor}
+%\DeclareMathOperator{\shhomm}{{\it\mathcal{H}om\rm}}
+\DeclareMathOperator{\eend}{End}
+%\DeclareMathOperator{\seend}{\it \mathcal{E}nd}
+\DeclareMathOperator{\autm}{Aut}
+%\DeclareMathOperator{\vectspaces}{\bf Vect}
+\DeclareMathOperator{\cone}{Cone}
+\DeclareMathOperator{\opp}{{opp}}
+%\DeclareMathOperator{\fg}{{\it fg}}
+%\DeclareMathOperator{\qrep}{\it \mathcal{Q}r}
+%\DeclareMathOperator{\bhproj}{\bar{\mathcal{P}}}
+%\DeclareMathOperator{\intmod}{{\it \mathcal{I}nt}}
+%\DeclareMathOperator{\semifree}{\mathcal{S}\mathcal{F}}
+%\DeclareMathOperator{\sffg}{\mathcal{S}\mathcal{F}_{\fg}}
+\DeclareMathOperator{\triag}{{Tr}}
+\DeclareMathOperator{\tria}{{Tria}}
+\DeclareMathOperator{\hilb}{{Hilb}}
+\DeclareMathOperator{\lder}{\bf L}
+\DeclareMathOperator{\rder}{\bf R}
+\DeclareMathOperator{\ldertimes}{\overset{\lder}{\otimes}}
+%\DeclareMathOperator{\rderhom}{\rder\homm}
+%\DeclareMathOperator{\rdershom}{\rder\shhomm}
+\DeclareMathOperator{\DGMod}{\it{\mathcal{D}\mathcal{G}\mathcal{M}od}}
+\DeclareMathOperator{\composition}{cmps}
+\DeclareMathOperator{\action}{act}
+\DeclareMathOperator{\unit}{unit}
+\DeclareMathOperator{\counit}{counit}
+\DeclareMathOperator{\eval}{eval}
+\DeclareMathOperator{\pseudof}{psdfnc}
+\DeclareMathOperator{\bimodapx}{{\underline{Apx}}}
+\DeclareMathOperator{\alghh}{{AHH}}
+\DeclareMathOperator{\algcat}{{{\mathcal{A}}lg}}
+\DeclareMathOperator{\catalg}{{{\mathcal{C}}at}}
+\DeclareMathOperator{\tensorfn}{{\underline{\otimes\vphantom{p}}}}  % "tensor functor" functor. (The \vphantom forces the underline the be at the same hight as for \bimodapx.)
+
+\def\barperf{{\it\mathcal{P}\overline{er}f}}
+\def\barperfA{{\barperf(\A)}}
+\def\barperfB{{\barperf(\B)}}
+\def\F{{\mathcal{F}}}
+\def\L{{\mathcal{L}}}
+\def\M{{\mathcal{M}}}
+\def\N{{\mathcal{N}}}
+\def\R{{\mathcal{R}}}
+\def\T{{\mathcal{T}}}
+\def\aA{\leftidx{_{a}}{\A}}
+\def\bA{\leftidx{_{b}}{\A}}
+\def\Aa{{\A_a}}
+\def\ha{{h_a}}
+\def\ah{\leftidx{_{a}}{h}{}}
+\def\Ea{E_a}
+\def\aE{\leftidx{_{a}}{E}{}}
+\def\Eb{E_b}
+\def\bE{\leftidx{_{b}}{E}{}}
+\def\Fa{F_a}
+\def\aF{\leftidx{_{a}}{F}{}}
+\def\Fb{F_b}
+\def\bF{\leftidx{_{b}}{F}{}}
+\def\aM{\leftidx{_{a}}{M}{}}
+\def\bM{\leftidx{_{b}}{M}{}}
+\def\aN{\leftidx{_{a}}{N}{}}
+\def\cN{\leftidx{_{c}}{N}{}}
+\def\aMb{\leftidx{_{a}}{M}{_{b}}}
+\def\bMa{\leftidx{_{b}}{M}{_{a}}}
+\def\bMc{\leftidx{_{b}}{M}{_{c}}}
+\def\aNb{\leftidx{_{a}}{N}{_{b}}}
+\def\bNc{\leftidx{_{b}}{N}{_{c}}}
+\def\rfRFa{\leftidx{_{\RF}}{\RF}{_{\A}}}
+\def\aRFrf{\leftidx{_{\A}}{\RF}{_{\RF}}}
+\def\biAMA{\leftidx{_{\A}}{M}{_{\A}}}
+\def\biAMC{\leftidx{_{\A}}{M}{_{\C}}}
+\def\biCMA{\leftidx{_{\C}}{M}{_{\A}}}
+\def\biCMC{\leftidx{_{\C}}{M}{_{\C}}}
+\def\biALA{\leftidx{_{\A}}{L}{_{\A}}}
+\def\biALC{\leftidx{_{\A}}{L}{_{\C}}}
+\def\biCLA{\leftidx{_{\C}}{L}{_{\A}}}
+\def\biCLC{\leftidx{_{\C}}{L}{_{\C}}}
+\def\Na{{N_a}}
+\def\partn{{Part}}
+\def\ordpartn{{OrdPart}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Shortcuts for categories %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% categories
+\def\A{{\cat{A}}}
+\def\B{{\cat{B}}}
+\def\C{{\cat{C}}}
+\def\D{{\cat{D}}}
+\def\I{{\cat{I}}}
+\def\Aopp{{\cat{A}^{\opp}}}
+\def\Bopp{{\cat{B}^{\opp}}}
+\def\Copp{{\cat{C}^{\opp}}}
+
+% 2-categories
+\def\biA{{\bicat{A}}}
+\def\biB{{\bicat{B}}}
+\def\biC{{\bicat{C}}}
+\def\biD{{\bicat{D}}}
+\def\biI{{\bicat{I}}}
+
+% perfect hulls
+\def\hperfA{{\hperf(\A)}}
+\def\hperfB{{\hperf(\B)}}
+\def\hperfC{{\hperf(\C)}}
+\def\hperfAopp{{\hperf(\Aopp)}}
+\def\hperfBopp{{\hperf(\Bopp)}}
+
+% right modules
+\def\modk{{\rightmod{\kk}}}
+\def\modA{{\rightmod \A}}
+\def\modB{{\rightmod B}}
+\def\modC{{\rightmod C}}
+\def\modD{{\rightmod D}}
+\def\modbarA{{\overline{\modd}\mhyphen \A}}
+\def\modbarAopp{{\overline{\modd}\mhyphen \Aopp}}
+\def\modbarB{{\overline{\modd}\mhyphen \B}}
+\def\modbarC{{\overline{\modd}\mhyphen \C}}
+\def\modbarD{{\overline{\modd}\mhyphen \D}}
+\def\modbarBopp{{\overline{\modd}\mhyphen \Bopp}}
+
+% left modules
+\def\Amod{{\leftmod \A}}
+
+% bimodules
+\def\AmodA{{\bimod{\A}{\A}}}
+\def\AmodB{{\bimod\A\B}}
+\def\BmodB{{\bimod\B\B}}
+\def\BmodA{{\bimod\B\A}}
+\def\AmodC{{\bimod\A\C}}
+\def\AmodD{{\bimod\A\D}}
+\def\BmodC{{\bimod\B\C}}
+\def\BmodD{{\bimod\B\D}}
+\def\CmodA{{\bimod\C\A}}
+\def\CmodB{{\bimod\C\B}}
+\def\CmodC{{\bimod\C\C}}
+\def\CmodD{{\bimod\C\D}}
+\def\DmodA{{\bimod\D\A}}
+\def\DmodB{{\bimod\D\B}}
+\def\DmodC{{\bimod\D\C}}
+\def\DmodD{{\bimod\D\D}}
+\def\AbimA{{\A\mhyphen\A}}
+\def\AbimB{{\A\mhyphen\B}}
+\def\AbimC{{\A\mhyphen\C}}
+\def\AbimD{{\A\mhyphen \A}}
+\def\BbimA{{\B\mhyphen \A}}
+\def\BbimB{{\B\mhyphen \B}}
+\def\BbimC{{\B\mhyphen \C}}
+\def\BbimD{{\B\mhyphen \C}}
+\def\CbimA{{\C\mhyphen \A}}
+\def\CbimB{{\C\mhyphen \B}}
+\def\CbimC{{\C\mhyphen \C}}
+\def\CbimD{{\C\mhyphen \C}}
+\def\DbimA{{\D\mhyphen \A}}
+\def\DbimB{{\D\mhyphen \B}}
+\def\DbimC{{\D\mhyphen \C}}
+\def\DbimD{{\D\mhyphen \C}}
+\def\AmodbarA{{\bimodbar\A\A}}
+\def\AmodbarB{{\bimodbar\A\B}}
+\def\AmodbarC{{\bimodbar\A\C}}
+\def\AmodbarD{{\bimodbar\A\D}}
+\def\BmodbarA{{\bimodbar\B\A}}
+\def\BmodbarB{{\bimodbar\B\B}}
+\def\BmodbarC{{\bimodbar\B\C}}
+\def\BmodbarD{{\bimodbar\B\D}}
+\def\CmodbarA{{\bimodbar\C\A}}
+\def\CmodbarB{{\bimodbar\C\B}}
+\def\CmodbarC{{\bimodbar\C\C}}
+\def\CmodbarD{{\bimodbar\C\D}}
+\def\DmodbarA{{\bimodbar\D\A}}
+\def\DmodbarB{{\bimodbar\D\B}}
+\def\DmodbarC{{\bimodbar\D\C}}
+\def\DmodbarD{{\bimodbar\D\D}}
+
+% others
+\def\Aperf{{\A\mhyphen\perf}}
+\def\Bperf{{\B\mhyphen\perf}}
+\def\hprojA{{\hproj(\A)}}
+\def\hprojB{{\hproj(\B)}}
+\def\perfA{{\perf(\A)}}
+\def\perfB{{\perf(\B)}}
+\def\barA{{\bar{\A}}}
+\def\barhom{{\mathrm H\overline{\mathrm{om}}}}
+\def\barend{{\overline{\eend}}}
+\def\bartimes{\mathrel{\overline{\otimes}}}
+\def\Ainfty{{A_{\infty}}}
+\def\degzero{{\mathrm{deg.\,0}}}
+
+% symmetric powers
+\newcommand\symbc[1]{{\sym^{#1}\basecat}}           % symmetric powers of \basecat (dg setting)
+\newcommand\addsymbc[1]{\addsym^{#1}\basecat}       % symmetric powers of \basecat (additive setting)
+\def\symbcn{{\symbc{\ho}}}
+\def\symbcnmone{{\symbc{\ho-1}}}
+\def\symbcnmtwo{{\symbc{\ho-2}}}
+\def\symbcnmk{{\symbc{\ho-k}}}
+\def\symbcnpone{{\sym^{\ho+1}\basecat}}
+
+
+% Hochschild stuff
+
+\def\euler{{\mathrm{eu}}}
+\def\strace{{\mathrm{strace}}}
+
+
+

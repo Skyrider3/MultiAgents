@@ -1,0 +1,240 @@
+\section{Reflection functors} \label{sec:reflections}
+
+In this section we give a new construction of abstract BGP reflection functors, that is, an adaptation of Bernstein, Gel'fand and Ponomarev's reflection functors \cite{BerGelPon73} in the context of representations over arbitrary stable $\infty$-categories.
+
+\subsection{Classical BGP reflection functors} \label{subsec:classicBGP}
+Let $Q$ be a (finite) quiver and $v \in Q_0$ any vertex. There is a \emph{reflected quiver} $\sigma_vQ$ which is obtained from $Q$ by changing the orientation of every arrow adjacent to $v$. This construction is especially relevant when $v$ is a \emph{source} (only has outgoing arrows) or a \emph{sink} (only has incoming arrows), and in that situation, BGP reflection functors relate the representation theory of $Q$ with that of $\sigma_vQ$. They were originally conceived to simplify Gabriel's proof of the classification of representation-finite hereditary algebras \cite{BerGelPon73}.
+
+Let us explain the classical construction when $v \in Q_0$ is a source. Write $Q' = \sigma_v Q$ and consider the categories of representations $\mathsf{rep}_k\, Q$ and $\mathsf{rep}_k\, Q'$ over a field $k$. The reflection of a representation $M: Q \to \mathsf{mod}\, k$ at $v$ consists of a representation $S^-_vM: Q' \to \mathsf{mod}\, k$. It is given on vertices by $(S^-_vM)_u = M_u$ if $u \neq v$ and 
+$$(S^-_vM)_v = \mathrm{coker}\left(M_v \to \textstyle\bigoplus\limits_{v \to w} M_w\right).$$
+For an arrow $\alpha: u \to u'$ in $Q$, we let $(S^-_vM)_\alpha = M_\alpha$ if $u \neq v$, and if $u = v$, we define $(S^-_vM)_\alpha$ as the composition
+$$M_{u'} \xrightarrow{\mathrm{inc}} \textstyle\bigoplus\limits_{v \to w} M_w \xrightarrow{\ \ } (S^-_vM)_v,$$
+where the second arrow is the canonical map to the cokernel. Using the universal property of the cokernel, this easily builds into a functor
+$$S_v^-: \mathsf{rep}_k\, Q \xrightarrow{\ \ } \mathsf{rep}_k\, Q'.$$
+Moreover, there is a dual construction for the sink case, which applied to $v \in Q'_0$ provides another functor
+$$S_v^+: \mathsf{rep}_k\, Q' \xrightarrow{\ \ } \mathsf{rep}_k\, Q.$$
+It can be verified that $S_v^-$ is left adjoint to $S_v^+$.
+
+The adjunction $S_v^-: \mathsf{rep}_k\, Q \rightleftarrows \mathsf{rep}_k\, Q' :S_v^+$ closely relates the representation theories of $Q$ and its reflected quiver $Q'$. For example, it induces a bijection between iso-classes of indecomposable representations of $Q$ and $Q'$, except for the simple representation $S(v)$ which is annihilated by both functors (see e.g. \cite{Kra08}). The adjunction $S_v^- \dashv S_v^+$ is \emph{never} an equivalence of categories. However, it follows from Happel's results \cite{Hap88} that it induces an equivalence of derived categories
+$$\begin{tikzcd} \mathbb{L}S_v^-: \mathsf{D}^b(kQ) \ar[r,shift left=2] \ar[r,phantom, "\scriptstyle\simeq"] & \mathsf{D}^b(kQ') :\mathbb{R}S_v^+. \ar[l,shift left=2] \end{tikzcd}$$
+Moreover, later on Ladkani \cite{Lad07} proved that the same equivalence exists for arbitrary abelian categories $\mathsf{D}(\mathcal{A}^Q) \simeq \mathsf{D}(\mathcal{A}^{Q'})$. The reason for this phenomenon is explained in the following sections. Namely, while kernel and cokernel do not form equivalences of abelian categories, fiber and cofiber do form them between stable $\infty$-categories (c.f. \ref{subsec:stable}).
+
+\subsection{The $n$-source and the $n$-sink} \label{subsec:source-sink}
+One on the key ingredients in the construction of abstract reflection functors is a way to turn a source (resp. sink) diagram into a single morphism to (resp. from) a product (resp. coproduct).
+
+Consider the small $\infty$-categories given by a vertex with $n$ outgoing arrows, the $n$-source $\Src$, and a vertex with $n$ incoming arrows, the $n$-sink $\Snk$. These can be defined by the following pushouts:
+\begin{equation} \label{eq:src-snk}
+\begin{tikzcd} 
+\coprod\limits_{i=1}^n \Delta^0 \arrow[r,"\coprod 0"] \arrow[d] \ar[rd,phantom, "\PO", pos=0.4] & \coprod\limits_{i=1}^n \Delta^1 \arrow[d] \\[-0.5em] \Delta^0 \arrow[r] & \Src 
+\end{tikzcd} \quad\quad\quad\quad 
+\begin{tikzcd} 
+\coprod\limits_{i=1}^n \Delta^0 \arrow[r,"\coprod 1"] \arrow[d] \ar[rd,phantom, "\PO", pos=0.4] & \coprod\limits_{i=1}^n \Delta^1 \arrow[d] \\[-0.5em] \Delta^0 \arrow[r] & \Snk
+\end{tikzcd}
+\end{equation}
+
+\begin{prop} \label{lemm:src-snk}
+Let $\mathcal{C}$ be an $\infty$-category with finite products (resp. coproducts). Then there is the left (resp. right) pullback in $\infCAT:$
+\begin{equation} \label{eq:src-hoPB}
+\begin{tikzcd} \mathcal{C}^\Src \arrow[r] \arrow[d] \ar[rd,phantom, "\hoPB"] & \mathcal{C}^{\Delta^1} \arrow[d,"1^*"] \\[.5em] \mathcal{C}^n \arrow[r,"\prod"'] & \mathcal{C} \end{tikzcd} \quad\quad\quad\quad\quad \begin{tikzcd} \mathcal{C}^\Snk \arrow[r] \arrow[d] \ar[rd,phantom, "\hoPB"] & \mathcal{C}^{\Delta^1} \arrow[d,"0^*"] \\[.5em] \mathcal{C}^n \arrow[r,"\coprod"'] & \mathcal{C} \end{tikzcd}
+\end{equation}
+\end{prop}
+
+\begin{rema}
+This result tells us that (up to equivalence) a diagram of the form
+$$\begin{tikzcd}[column sep=small, row sep=small]
+& y_1 \ar[dd,phantom, "\scriptstyle{\vdots}",pos=0.35] \\[-0.3em]
+x \ar[ur] \ar[dr] & \\[-0.3em]
+& y_n
+\end{tikzcd} \quad\quad \text{can be regarded as a pair} \quad\quad \left(\, x \to \textstyle\prod\limits_{i=1}^n y_i\, ,\, (y_i)_{i=1}^n \, \right),$$
+and similarly for a sink diagram and a morphism from the coproduct.
+\end{rema}
+
+The above \Cref{lemm:src-snk} is a consequence of a much more general construction:
+
+\begin{cons}[Gluing along a functor]
+For any functor $f: \mathcal{C} \to \mathcal{D}$, we define two $\infty$-categories $\mathcal{L}_*(f)$ and $\mathcal{L}^*(f)$ by the following (homotopy) pullbacks:
+\begin{equation} \label{eq:gluing}
+\begin{tikzcd}
+\mathcal{L}_*(f) \rar\dar \ar[rd,phantom, "\PBho", pos=0.45] & \Fun(\Delta^1,\mathcal{D}) \ar[d,"0^*"] \\[.5em]
+\mathcal{C} \ar[r,"f"'] & \mathcal{D}
+\end{tikzcd} \quad\quad\quad
+\begin{tikzcd}
+\mathcal{L}^*(f) \rar\dar \ar[rd,phantom, "\PBho", pos=0.45] & \Fun(\Delta^1,\mathcal{D}) \ar[d,"1^*"] \\[.5em]
+\mathcal{C} \ar[r,"f"'] & \mathcal{D}
+\end{tikzcd}
+\end{equation}
+Objects of $\mathcal{L}_*(f)$ are given by pairs $(c,f(c)\to d)$ where $c\in\mathcal{C}$ and $f(c)\to d$ is a morphism in $\mathcal{D}$. Similarly, objects of $\mathcal{L}^*(f)$ are given by pairs $(c,d \to f(c))$ where $c\in\mathcal{C}$ and $d \to f(c)$ is a morphism in $\mathcal{D}$.
+Because the right vertical map is a Joyal fibration and all objects are $\infty$-categories, these are homotopy pullbacks in the Joyal model structure, and hence pullbacks in $\infCAT$ (c.f. \ref{subsec:joyal}).
+\end{cons}
+
+\begin{lemm} \label{lemm:gluing-adjunction}
+Let $f: \mathcal{C} \leftrightarrows \mathcal{D}: g$ be an adjunction. There is a canonical equivalence\footnote{The author first learned about this result in \cite[p. 2]{Jas24}.} 
+\begin{equation*}
+\mathcal{L}_*(f) \xrightarrow{\ \, \simeq\ \, } \mathcal{L}^*(g), \quad\quad (c,\varphi: f(c) \to d) \ \longmapsto \ (d,\varphi^\sharp: c \to g(d))
+\end{equation*}
+where $\varphi^\sharp: c \to g(d)$ denotes the adjunct of $\varphi: f(c) \to d$.
+\end{lemm}
+\begin{proof}
+This is a simple consequence of the fact that, by \cite[Lemma 5.4.7.15]{Lur09} and its dual, both $\mathcal{L}_*(f)$ and $\mathcal{L}^*(g)$ compute the $\infty$-category of sections $\mathsf{Map}_{\Delta^1}(\Delta^1,\mathcal{E})$ of the bicartesian fibration $p: \mathcal{E} \to \Delta^1$ classified by the adjunction $f \dashv g$.
+\end{proof}
+
+\begin{proof}[Proof {\normalfont{(of \Cref{lemm:src-snk})}}]
+We prove the case of products, the one of coproducts being dual.
+Because $\mathcal{C}^{(-)}=\Fun(-,\mathcal{C})$ takes colimits to limits, we obtain from \eqref{eq:src-snk} the following (homotopy) pullback square of $\infty$-categories:
+\begin{equation} \label{eq:src-pb}
+\begin{tikzcd} 
+\mathcal{C}^\Src \arrow[r] \arrow[d] \ar[rd,phantom, "\PBho"] &[.5em] (\mathcal{C}^n)^{\Delta^1} \arrow[d,"0^*"] \\[0.5em] 
+\mathcal{C} \arrow[r,"\mathrm{ct}"'] & \mathcal{C}^n
+\end{tikzcd}
+\end{equation}
+where the lower map is the constant functor induced from $\coprod_{i=1}^n \Delta^0 \to \Delta^0$, which is left adjoint to the product functor $\prod: \mathcal{C}^n \to \mathcal{C}$. Observe that, by \Cref{prop:hoPB}, \eqref{eq:src-pb} is a pullback in $\infCAT$. Now the result follows from \Cref{lemm:gluing-adjunction}: there is a canonical equivalence $\mathcal{C}^\Src = \mathcal{L}_*(\mathrm{ct}) \simeq \mathcal{L}^*(\prod)$ giving the pullback in the statement.
+\end{proof}
+
+\subsection{Abstract BGP reflection functors}
+We now get to the general construction of abstract BGP reflection functors. Our construction substantially differs from that of \cite{DycJasWal21}; instead we follow an approach similar to that of \cite{GroSto18}. It consists of identifying $\mathcal{C}^Q$ with a \enquote{mesh} category of representations $\mathcal{C}^\Qpvmesh$ attached to an extended quiver $\Qpv$ containing both $Q$ and its reflection $\sigma_vQ$ (\Cref{theo:Qpv-mesh}). 
+
+\begin{cons}
+Let $Q$ be a (finite) quiver and $v \in Q_0$. We build an extended quiver $\Qpv$ by adding a new sink, suggestively denoted $\tau^{-1}v$ (c.f. \cref{sec:equiv-repet}), which is a reflection of the arrows $v \to w$. More precisely, $Q^+(v)$ has vertices $Q_0 \cup \{\tau^{-1}v\}$ and arrows those of $Q$ together with one arrow $w\to \tau^{-1}v$ for each $v\to w$ in $Q$. Dually, we can construct a quiver $\Qmv$ by adding a new source $\tau v$ which is a reflection of the arrows $w \to v$. If we let $n$ be the number of arrows from $v$ and $m$ the number of arrows to $v$, it follows from \Cref{rema:sset-quivers} that there are homotopy pushouts:
+\begin{equation} \label{eq:def-Qpv}
+\begin{tikzcd}[column sep=small, row sep=small] 
+\coprod\limits_{i=1}^n \Delta^0 \arrow[r, hook] \arrow[d] \ar[rd,phantom, "\hoPO", pos=0.3] & \Snk \arrow[d] \\[.5em] Q \arrow[r, hook] & \Qpv \end{tikzcd} \quad\quad\quad\quad \begin{tikzcd}[column sep=small, row sep=small] 
+\coprod\limits_{i=1}^m \Delta^0 \arrow[r, hook] \arrow[d] \ar[rd,phantom, "\hoPO", pos=0.3] & \Srcn{m} \arrow[d] \\[.5em] Q \arrow[r, hook] & \Qmv \end{tikzcd} 
+\end{equation}
+\end{cons}
+
+Let us fix a stable $\infty$-category $\mathcal{C}$. From now on, we focus on $\Qpv$, since the constructions for $\Qmv$ are symmetric. 
+
+\begin{prop}
+There exists a pullback in $\infCAT$ of the form
+\begin{equation} \label{eq:pb-Qpv} 
+\begin{tikzcd} \mathcal{C}^\Qpv \arrow[r] \arrow[d] \ar[rd,phantom, "\hoPB",pos=0.55] & \mathcal{C}^{\Lambda^2_1} \arrow[d,"01^*"] \\[0.5em] \mathcal{C}^Q \arrow[r] & \mathcal{C}^{\Delta^1} \end{tikzcd} 
+\end{equation}
+where the functor $\mathcal{C}^\Qpv \to \mathcal{C}^{\Lambda^2_1}$ sends
+$$X \in \mathcal{C}^\Qpv \quad\quad \longmapsto \quad\quad X_v \to \textstyle\bigoplus\limits_{v \to w} X_w \to X_{\tau^{-1}v}.$$
+\end{prop}
+\begin{proof}
+The proof is a pasting argument in several steps:
+\begin{enumerate}
+    \item Applying $\mathcal{C}^{(-)} = \Fun(-,\mathcal{C})$ in \eqref{eq:def-Qpv}, we get a homotopy pullback square of stable representations that is also a pullback in $\infCAT$ (\Cref{prop:hoPB}):
+    \begin{equation}
+    \begin{tikzcd} \mathcal{C}^\Qpv \arrow[r] \arrow[d] \ar[rd,phantom, "\hoPB",pos=0.5] & \mathcal{C}^{\Snk} \arrow[d] \\[0.5em] \mathcal{C}^Q \arrow[r] & \mathcal{C}^n \end{tikzcd} \label{eq:pb-Qpv1}  
+    \end{equation}
+    where $n$ is the number of arrows from $v$.
+    \item Next, by pasting of the pullbacks \eqref{eq:pb-Qpv1} and \eqref{eq:src-hoPB}, we get a pullback square in $\infCAT$:
+    \begin{equation} \label{eq:pb-Qpv2} 
+    \begin{tikzcd} \mathcal{C}^\Qpv \arrow[r] \arrow[d] \ar[rd,phantom, "\hoPB",pos=0.5] & \mathcal{C}^{\Delta^1} \arrow[d,"0^*"] \\[0.5em] \mathcal{C}^Q \arrow[r] & \mathcal{C}. \end{tikzcd} 
+    \end{equation}
+    \item The horn $\Lambda^2_1$ can be easily obtain by pasting two standard $1$-simplices along a vertex, as shown in the pushout below. Applying $\mathcal{C}^{(-)} = \Fun(-,\mathcal{C})$ to it we get a (homotopy) pullback square of stable representations that is also a pullback in $\infCAT$ (\Cref{prop:hoPB}):
+    \begin{equation} \label{eq:pb-Qpv3} 
+    \begin{tikzcd}
+    \Delta^0 \ar[r,"0"] \ar[d,"1"'] \ar[rd,phantom, "\PO",pos=0.5] & \Delta^1 \ar[d,"12"] \\
+    \Delta^1 \ar[r,"01"'] & \Lambda^2_1
+    \end{tikzcd} \quad\quad \Rightarrow \quad\quad \begin{tikzcd}
+    \mathcal{C}^{\Lambda^2_1} \ar[r,"12^*"] \ar[d,"01^*"'] \ar[rd,phantom, "\PBho",pos=0.6] & \mathcal{C}^{\Delta^1} \ar[d,"0^*"] \\[0.5em]
+    \mathcal{C}^{\Delta^1} \ar[r,"1^*"'] & \mathcal{C}^{\Delta^0}.
+    \end{tikzcd}
+    \end{equation}
+    \item We observe that the lower horizontal map in \eqref{eq:pb-Qpv2} is sending $X \in \mathcal{C}^Q$ to the object $\textstyle\bigoplus_{v \to w} X_w$ in $\mathcal{C}$, and it can be factored as a composition
+    $$\mathcal{C}^Q \xrightarrow{\ u^* \ } \mathcal{C}^{\Src} \xrightarrow{\ \phi \ } \mathcal{C}^{\Delta^1} \xrightarrow{\ 1^* \ } \mathcal{C}$$
+    where the first map is induced from $u: \Src \to Q$ that picks all arrows starting from $v$ and the second is the upper horizontal map in \eqref{eq:src-hoPB}.
+    \item Now we let $\mathcal{D}$ be the (homotopy) pullback of the left square above, which is also a pullback in $\infCAT$ (\Cref{prop:hoPB}).
+    \begin{equation}
+    \begin{tikzcd}
+    \mathcal{D} \ar[r] \ar[d] \ar[rd,phantom, "\PBho",pos=0.5] &[1em] \mathcal{C}^{\Lambda^2_1} \ar[r,"12^*"] \ar[d,"01^*"] \ar[rd,phantom, "\ \  \PBho"] &[1em] \mathcal{C}^{\Delta^1} \ar[d,"0^*"] \\[0.5em]
+    \mathcal{C}^Q \ar[r,"\phi\, \circ\, u^*"'] & \mathcal{C}^{\Delta^1} \ar[r,"1^*"'] & \mathcal{C}^{\Delta^0}.
+    \end{tikzcd}
+    \end{equation}
+    By pasting, the outer rectangle is a pullback (in $\infCAT$), and because of \eqref{eq:pb-Qpv2}, there is a canonical equivalence $\mathcal{D} \simeq \mathcal{C}^\Qpv$. \qedhere
+\end{enumerate}
+\end{proof}
+
+\begin{defi} \label{def:mesh-subcat}
+Let us denote $\mathcal{C}^{\square,\, \mathrm{cof}} = \Fun^\mathrm{cof}(\square,\mathcal{C})$ (c.f. \ref{subsec:stable}), and let $l:\Lambda^2_1 \hookrightarrow \square$ be the inclusion of the upper-right corner into the square. We define the \emph{mesh $\infty$-category} $\mathcal{C}^\Qpvmesh$ of $\Qpv$ by the following (homotopy) pullback:  
+\begin{equation} \label{eq:Qpv-mesh}
+\begin{tikzcd}
+\mathcal{C}^\Qpvmesh \ar[r] \ar[d] \ar[rd,phantom, "\PBho",pos=0.55]  & \mathcal{C}^{\square,\, \mathrm{cof}} \ar[d,"l^*"] \\[0.5em]
+\mathcal{C}^\Qpv \ar[r] & \mathcal{C}^{\Lambda^2_1},
+\end{tikzcd} 
+\end{equation}
+where the lower horizontal map is that of \eqref{eq:pb-Qpv}.
+
+Dually, we define the \emph{mesh $\infty$-category} $\mathcal{C}^\Qmvmesh$ of $\Qmv$ by the following (homotopy) pullback:  
+\begin{equation} \label{eq:Qmv-mesh}
+\begin{tikzcd}
+\mathcal{C}^\Qmvmesh \ar[r] \ar[d] \ar[rd,phantom, "\PBho",pos=0.55]  & \mathcal{C}^{\square,\, \mathrm{cof}} \ar[d,"l^*"] \\[0.5em]
+\mathcal{C}^\Qmv \ar[r] & \mathcal{C}^{\Lambda^2_1},
+\end{tikzcd} 
+\end{equation}
+where the lower horizontal map is that of the analog of \eqref{eq:pb-Qpv} for $\Qmv$, i.e. it sends $X \ \mapsto \ (X_{\tau v} \to \bigoplus\limits_{w\to v} X_w \to X_v)$.
+\end{defi}
+
+\begin{rema}
+The mesh $\infty$-category $\mathcal{C}^\Qpvmesh$ can be identified with pairs $(X,c)$ where $X$ is a representation $\Qpv \to \mathcal{C}$ and $c$ is a cofiber sequence 
+$$\begin{tikzcd} X_v \ar[r] \dar &[-0.6em] \bigoplus\limits_{v\to w} X_w \ar[d] \\[-0.3em] 0 \rar & X_{\tau^{-1}v} \end{tikzcd}$$
+realizing the value of $X$ at the extended vertex $\tau^{-1}v$ as the cofiber of $X_v \to \bigoplus\limits_{v\to w} X_w$.
+\end{rema}
+
+\begin{rema} \label{rema:functoriality}
+The construction of the mesh $\infty$-category, $\mathcal{C} \mapsto \mathcal{C}^\Qpvmesh$, is functorial with respect to exact functors. Indeed, any exact functor $f: \mathcal{C} \to \mathcal{D}$ between stable $\infty$-categories gives a commutative diagram in $\infCAT$
+$$\begin{tikzcd} \mathcal{C}^\Qpvmesh \rar \ar[d,"f_*"] & \mathcal{C}^{\Lambda^2_1} \ar[d,"f_*"] & \mathcal{C}^{\square,\, \mathrm{cof}} \lar \ar[d,"f_*"] \\
+\mathcal{D}^\Qpvmesh \rar & \mathcal{D}^{\Lambda^2_1} & \mathcal{D}^{\square,\, \mathrm{cof}} \lar
+\end{tikzcd}$$
+which, by the pullback \eqref{eq:Qpv-mesh}, induces a functor $f_*:\mathcal{C}^\Qpvmesh \to \mathcal{D}^\Qpvmesh$.
+\end{rema}
+
+\begin{theo} \label{theo:Qpv-mesh}
+Let $Q$ be a finite quiver and $v \in Q_0$. Restriction along the inclusion $Q \subset \Qpv$ induces a natural equivalence
+$\mathcal{C}^\Qpvmesh \isoarrow \mathcal{C}^Q$.
+\end{theo}
+\begin{proof}
+By pasting of the pullbacks \eqref{eq:pb-Qpv} and \eqref{eq:Qpv-mesh}, we obtain a pullback (in $\infCAT$)
+\begin{equation*}
+\begin{tikzcd} \mathcal{C}^\Qpvmesh \arrow[r] \arrow[d] \ar[rd,phantom, "\hoPB\, ",pos=0.55] & \mathcal{C}^{\square,\, \mathrm{cof}} \arrow[d] \\[0.5em] \mathcal{C}^Q \arrow[r] & \mathcal{C}^{\Delta^1}. \end{tikzcd} 
+\end{equation*}
+The right vertical map is an equivalence by \Cref{lemm:cof-eq}, hence so is the left one.
+\end{proof}
+
+We observe that \Cref{theo:Qpv-mesh} is a generalization of \Cref{lemm:cof-eq}, which corresponds to $Q$ equal to the Dynkin quiver $A_2$.
+
+\begin{rema}
+Keeping track of the precise nullhomotopy in the definition of the mesh $\infty$-category $\mathcal{C}^\Qpvmesh$ is crucial. Indeed, the forgetful functor $\mathcal{C}^\Qpvmesh \to \mathcal{C}^\Qpv$ is faithful but not full (on homotopy categories). For example, let $\mathcal{C}=\D{k}$ the derived category of a field, $Q = A_2$ and consider $c:\square \to \D{k}$ the trivial cofiber sequence $k \to 0 \to \Sigma k$. Then 
+\begin{equation*} \pushQED{\qed}
+\mathrm{End}_{h(\D{k}^{\square})}(c) \cong \mathrm{End}_{h(\D{k}^{\Delta^1})}(k \to 0) \cong k \not\cong k \times k \cong \mathrm{End}_{h(\D{k}^{\Lambda^2_1})}(k \to 0 \to \Sigma k). \qedhere\popQED
+\end{equation*}
+\end{rema}
+
+There is of course a version of \Cref{theo:Qpv-mesh} for the symmetric construction $\Qmv$ that we state here:
+
+\begin{theo} \label{theo:Qmv-mesh}
+Let $Q$ be a finite quiver and $v \in Q_0$. Restriction along the inclusion $Q \subset \Qmv$ induces an equivalence
+$\mathcal{C}^\Qmvmesh \isoarrow \mathcal{C}^Q$.
+\end{theo}
+
+\begin{coro}[Abstract reflection functors, {\cite{DycJasWal21}}] \label{coro:reflections}
+Let $Q$ be a finite quiver and $v \in Q_0$ a source. There is a natural equivalence of $\infty$-categories
+$\mathcal{C}^Q \simeq \mathcal{C}^{\sigma_v Q}$, for any $\mathcal{C}$ stable $\infty$-category. In particular, $Q$ and $\sigma_v Q$ are stably equivalent quivers.
+\end{coro}
+\begin{proof}
+The shapes $\Qpv$ and $\sigma_v\Qmv$ are clearly isomorphic, with an isomorphism sending $v \in \Qpv$ to $\tau v \in \sigma_v\Qmv$ and $\tau^{-1}v \in \Qpv$ to $v \in \sigma_v\Qmv$. Moreover, this isomorphism is compatible with the formation of the functors $\mathcal{C}^\Qpv \to \mathcal{C}^{\Lambda^2_1}$ and $\mathcal{C}^\Qmv \to \mathcal{C}^{\Lambda^2_1}$ in \eqref{eq:pb-Qpv}, in the sense that there is an isomorphism of cospans
+$$\begin{tikzcd}
+\mathcal{C}^\Qpv \ar[r] \ar[d,"\cong"] & \mathcal{C}^{\Lambda^2_1} \ar[d,"\mathrm{id}"] & \ar[l] \mathcal{C}^{\square,\, \mathrm{cof}} \ar[d,"\mathrm{id}"] \\
+\mathcal{C}^\Qmv \ar[r] & \mathcal{C}^{\Lambda^2_1} & \ar[l] \mathcal{C}^{\square,\, \mathrm{cof}}.
+\end{tikzcd}$$
+This induces an isomorphism $\mathcal{C}^\Qpvmesh \cong \mathcal{C}^{\sigma_v\Qmvmesh}$, and composing with the equivalences of \Cref{theo:Qpv-mesh,theo:Qmv-mesh} we get the desired equivalence:
+\begin{equation*}
+\mathcal{C}^Q \xleftarrow{\ \simeq\ } \mathcal{C}^\Qpvmesh \cong \mathcal{C}^{\sigma_v\Qmvmesh} \xrightarrow{\ \simeq\ } \mathcal{C}^{\sigma_vQ}.
+\end{equation*}
+The naturality follows from that of pullbacks and the fact that the equivalence $\mathcal{C}^\Qpvmesh \isoarrow \mathcal{C}^Q$ is natural with respect to exact functors, as it is the composition of the forgetful functor $\mathcal{C}^\Qpvmesh \to \mathcal{C}^\Qpv$ and the restriction $\mathcal{C}^\Qpv \to \mathcal{C}^Q$.
+\end{proof}
+
+We observe that \Cref{coro:reflections} is a generalization of the fiber-cofiber equivalence (\Cref{rema:fib-cof-equiv}), which corresponds to $Q$ equal to the Dynkin quiver $A_2$.
+
+\begin{rema}
+The equivalence $s^-:\mathcal{C}^Q \isoarrow \mathcal{C}^{\sigma_vQ}$ from \Cref{coro:reflections} acts as follows. First, it builds from $X:Q \to \mathcal{C}$ an extended representation $X^+: \Qpv \to \mathcal{C}$
+where $X^+$ is given by 
+$X^+_u = X_u$ if $u \neq \tau^{-1}v$ and $$X^+_{\tau^{-1}v} = \cof\left(X_v \to \textstyle\bigoplus\limits_{v \to w} X_w\right).$$ This is equivalently a representation $X^-: \sigma_v\Qmv \to \mathcal{C}$ with $X^-_u = X_u$ if $u \notin \{v,\tau v\}$, $X^-_v = X^+_{\tau^{-1}v}$ and $X^-_{\tau v} = X_v$. Finally, restricting to $s^-X:\sigma_vQ \to \mathcal{C}$ gives the homotopical analogue of the reflection formulas in \ref{subsec:classicBGP}.
+\end{rema}
+
+\begin{rema}[Generalized versions]
+We observe that, until \Cref{theo:Qpv-mesh}, $Q$ being a quiver (i.e. a free $\infty$-category) is only used to get the homotopy pushouts \eqref{eq:def-Qpv}. Hence, if we start with a small $\infty$-category $K$ and a vertex $v \in K$ with $n$ arrows out of it, we can define $K^+(v)$ as the homotopy pushout \eqref{eq:def-Qpv} and still get \Cref{theo:Qpv-mesh}. For \cref{coro:reflections} we would also need this $v \in K$ to be a free source, in the sense that there are no arrows ending in $v$ except for its identity. This includes the main results of \cite[Theorem 9.11]{GroSto18} and \cite[Corollary 2.6]{DycJasWal21}, where the case of a small category (resp. small $\infty$-category) with an attached free source is considered.
+\end{rema}

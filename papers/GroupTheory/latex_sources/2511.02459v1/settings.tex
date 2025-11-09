@@ -1,0 +1,225 @@
+%%% general packages
+\usepackage{amsmath, amsthm, amssymb}
+
+%%% typesetting packages
+\usepackage{microtype}
+\usepackage[hyphens]{url}
+\def\UrlBreaks{\do\/\do-}
+\usepackage{colonequals}
+\usepackage{caption}
+\usepackage[position=b]{subcaption}
+\usepackage[section]{placeins}
+\usepackage{mathtools}
+\usepackage{appendix}
+\usepackage{listofitems}
+\usepackage[dvipsnames]{xcolor}
+
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+
+\usepackage{listings}
+\lstset{%
+  language=Python,
+  commentstyle=\color{codegreen},
+  keywordstyle=\color{magenta},
+  stringstyle=\color{codepurple},
+  basicstyle=\fontfamily{pcr}\selectfont\scriptsize,  % footnotesize?
+  commentstyle=\bfseries,
+  numbers=left,
+}
+
+%%% Numbering and environments
+%%% see http://tex.stackexchange.com/questions/41299/how-to-identify-the-counter-of-equation-theorem-and-section                                                    
+
+\makeatletter
+\let\c@equation\c@subsection
+\let\c@figure\c@equation
+\let\c@table\c@equation
+\makeatother
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+
+\theoremstyle{plain}
+\newtheorem{theorem}[equation]{Theorem}
+\newtheorem{corollary}[equation]{Corollary}
+\newtheorem{lemma}[equation]{Lemma}
+\newtheorem{conjecture}[equation]{Conjecture}
+\newtheorem{proposition}[equation]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition/}[equation]{Definition}
+\newtheorem{example/}[equation]{Example}
+\newtheorem{question/}[equation]{Question}
+\newtheorem{algorithm/}[equation]{Algorithm}
+\newtheorem*{keywords}{keywords}
+
+\theoremstyle{remark}
+\newtheorem{remark/}[equation]{Remark}
+\newtheorem{remarks}[equation]{Remarks}
+
+\newtheoremstyle{dotless}{}{}{}{}{\bfseries}{}{ }{}
+\theoremstyle{dotless}
+\newtheorem*{ccode}{Mathematics Subject Classification 2010:}
+
+%%% https://tex.stackexchange.com/questions/291346/marking-the-end-of-a-definition
+%%% Using egreg's solution                                                      
+\newenvironment{definition}
+  {\renewcommand{\qedsymbol}{$\Diamond$}%
+   \pushQED{\qed}\begin{definition/}}
+  {\popQED\end{definition/}}
+
+\newenvironment{example}
+  {\renewcommand{\qedsymbol}{$\Diamond$}%
+   \pushQED{\qed}\begin{example/}}
+  {\popQED\end{example/}}
+
+\newenvironment{question}
+  {\renewcommand{\qedsymbol}{$\Diamond$}%
+   \pushQED{\qed}\begin{question/}}
+  {\popQED\end{question/}}
+
+\newenvironment{remark}
+  {\renewcommand{\qedsymbol}{$\Diamond$}%
+   \pushQED{\qed}\begin{remark/}}
+  {\popQED\end{remark/}}
+
+\usepackage[outline]{contour}
+\contourlength{0.1em}
+\newcommand{\outline}[1]{\contour*{white}{#1}}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{patterns}
+\usetikzlibrary{fadings}
+\usetikzlibrary{shapes.misc}
+\usetikzlibrary{shadows.blur}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{shapes.geometric}
+\tikzset{dot/.style={draw,shape=circle,fill=black,scale=0.4}}
+% Make the bounded boxes just a little bit bigger:
+\tikzset{
+every picture/.style={
+  execute at end picture={
+    \path (current bounding box.south west) +(-0.05, -0.05) (current bounding box.north east) +(0.05, 0.05);
+    }
+  }
+}
+
+\newcommand{\sqdiamond}{\tikz [x=1.2ex,y=1.85ex,line width=.1ex,line
+join=round, yshift=-0.285ex] \draw  (0,0.5) -- (0.75,1) -- (1.5,0.5) -- (0.75,0) -- cycle;}
+\renewcommand{\Diamond}{$\sqdiamond$} %%% fixes diamond
+
+\newcommand{\bdy}{\partial}
+\newcommand{\from}{\colon}
+\newcommand{\cross}{\times}
+\newcommand{\homeo}{\cong}
+\newcommand{\defeq}{\colonequals}
+
+\DeclareMathOperator{\MCG}{MCG}
+\DeclareMathOperator{\Mod}{Mod}
+\DeclareMathOperator{\Torelli}{Torelli}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\intersection}{\iota}
+\DeclareMathOperator{\move}{\textsc{Mov}}
+\DeclareMathOperator{\update}{\textsc{UMov}}
+\DeclareMathOperator{\ind}{index} %%% index
+\DeclareMathOperator{\shift}{shift} %%% shift
+\DeclareMathOperator{\trunc}{trunc} %%% truncate
+\DeclareMathOperator{\DCoord}{\textsc{DeltaCoordinate}}
+\DeclareMathOperator{\poly}{poly}
+
+\newcommand{\tightness}[1]{\# #1}
+\newcommand{\complexity}[1]{||#1||}
+\newcommand{\complexitybnd}[1]{\lceil \! \lceil #1 \rceil \! \rceil}
+\newcommand{\sharedsize}[1]{||#1||^\cap}
+\newcommand{\sharedsizebnd}[1]{\lceil \! \lceil #1 \rceil \! \rceil^\cap}
+\newcommand{\uncertainty}[1]{\epsilon( #1 )}
+\newcommand{\pair}[1]{\langle #1 \rangle}
+\newcommand{\length}[1]{\ell(#1)}
+
+\newcommand{\closure}[1]{\overline{#1}}
+
+\newcommand{\fdiv}{%
+  \mathbin{%
+    \mkern-6mu
+    \begin{tikzpicture}[baseline = -0.5ex]
+      \node[inner sep=0pt,outer sep=0pt,rotate=-110] at (0,0) {$\xrightarrow{}$};
+    \end{tikzpicture}
+    \mkern-3mu
+  }%
+}%
+\newcommand{\cdiv}{%
+  \mathbin{%
+    \mkern-6mu
+    \begin{tikzpicture}[baseline = -0.5ex]
+      \node[inner sep=0pt,outer sep=0pt,rotate=-110] at (0,0) {$\xleftarrow{}$};
+    \end{tikzpicture}
+    \mkern-3mu
+  }%
+}%
+
+% \newcommand{\calA}{\mathcal{A}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\Tau}{\boldsymbol{\tau}}
+\newcommand{\Id}{\textnormal{Id}}
+\newcommand{\II}{\mathbb{I}}
+\newcommand{\ZZ}{\mathbb{Z}}
+
+% Uniform constants.
+\newcommand{\bee}{\mathcal{B}}  % An upper bound on the number of branches.
+\newcommand{\cee}{\mathcal{C}}
+\newcommand{\dee}{\mathcal{D}}
+\newcommand{\eee}{\mathcal{E}}
+\newcommand{\fee}{\mathcal{F}}
+
+\newcommand{\inlineand}{\quad \textrm{and} \quad}
+\newcommand{\inlineQED}{\pushQED{\qed} \qedhere \popQED}
+\newcommand{\naive}{na\"{i}ve}
+
+\newcommand{\blfootnote}[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+\usepackage[pdfborderstyle={},pdfborder={0 0 0},pagebackref,pdftex]{hyperref}
+\renewcommand{\backreftwosep}{\backrefsep}
+\renewcommand{\backreflastsep}{\backrefsep}
+\renewcommand*{\backref}[1]{}
+\renewcommand*{\backrefalt}[4]{
+  \ifcase #1 %
+   [No citations.]%
+  \or
+   [#2]%
+  \else
+   [#2]%
+  \fi
+}
+
+%%% Pseudocode %%%
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\algnewcommand{\IfThen}[2]{\State \algorithmicif\ #1\ \algorithmicthen\ #2}
+
+% Clever references.
+% https://mirror.ox.ac.uk/sites/ctan.org/macros/latex/contrib/cleveref/cleveref.pdf
+\usepackage[capitalise,noabbrev]{cleveref}
+\newcommand{\crefpairconjunction}{~and~}
+\crefname{conclusion}{Conclusion}{Conclusions}
+
+%%% Appendix tables %%%
+\usepackage{booktabs}
+\usepackage{longtable}
+\newcounter{rown}
+\newcommand{\row}{\stepcounter{rown}\arabic{rown}}
+
+% For preparation (remove once done).
+\usepackage[textsize=tiny]{todonotes}

@@ -1,0 +1,410 @@
+\section{Linear algebra in the bit model}
+\label{APP:LA}
+The following proposition shows that one can compute an orthogonal basis of small bit size for the inverse image of a (one-dimensional) subspace under a rational matrix, and for its complement. This captures the linear algebra required in our proof of~\Cref{THM:quantstructure}. 
+\begin{proposition} \label{PROP:polytimeLA}
+    Let $A \in \Q^{M \times N}$, $M \geq N$, and $b \in \Q^M$. Define the subspaces
+    \[
+        \mL = \{v \in \R^N : A \cdot v \in \spann{b} \}, \quad \mU = \mL^\perp.
+    \]
+    We then have $\mL = \ker(A) \oplus \spann{w}$, where $w \in \ker(A)^\perp$ is either zero or $A \cdot w = b$.    
+    We can compute the vector $w$; an orthogonal basis $v_1, \ldots, v_\ell$ for $\ker (A)$; an orthogonal basis $u_1, \ldots, u_k$ for~$\mU$ in polynomial time in $\bc(A) + \bc(b)$. In particular, these have polynomial bit size in $\bc(A) + \bc(b)$.
+\end{proposition}
+\Cref{PROP:polytimeLA} follows from standard results on linear system solving and Gram-Schmidt orthogonalization in the bit model. We include a brief proof for completeness. We rely on the \emph{Hermite normal form} of an integer matrix, which is an integer analog of the echelon form. The same conclusion could be reached using a polynomial-time algorithm to compute the echelon form (over~$\Q$), as described, e.g., in~\cite{Schrijver1994}.
+
+\begin{lemma}[Hermite normal form] \label{LEM:HNF}
+Let $A \in \Z^{M \times N}$, $M \geq N$ be of column rank $R$. We can compute in time polynomial in $\bc(A)$ a decomposition
+\[
+    A \cdot 
+    \begin{bmatrix}
+    \begin{array}{c|c}
+    U & K
+    \end{array}
+    \end{bmatrix} = 
+    \begin{bmatrix}
+    \begin{array}{c|c}
+    H & 0
+    \end{array}
+    \end{bmatrix},
+\]
+where $U \in \Z^{N \times R}$, $K \in \Z^{N \times (N - R)}$ satisfy $[U \mid K] \in \mathrm{GL}_N(\Z)$, and $H \in \Z^{M \times R}$ is lower triangular. In particular these matrices have bit length polynomial in $\bc(A)$.    
+\end{lemma}
+\begin{proof}
+    Apply \cite[Proposition 6.3]{Storjohann2000} and \cite[Proposition 6.6]{Storjohann2000} to $A^\top$.
+\end{proof}
+
+\begin{lemma}[Gram-Schmidt orthogonalization] \label{LEM:LAGS}
+    Let $v_1, \ldots, v_k \in \Q^{N}$. Then, there exist pairwise orthogonal vectors $u_1, \ldots, u_k \in \Q^N$, such that
+    \[
+        \spann{u_1, \ldots, u_i} = \spann{v_1, \ldots, v_i} \quad (\forall i \leq k).
+    \]
+    Moreover, these vectors can be computed in polynomial time in $N$, $k$ and $B \coloneqq \max_{i}\bc(v_i)$. 
+\end{lemma}
+\begin{proof}
+    The only thing to check is that the recursively defined coefficients that appear in the Gram-Schmidt procedure do not grow too large. Such an analysis is carried out, e.g., in~\cite{Lenstra1982} or~\cite{ErlingssonKaltofenMusser:GramSchmidt}.
+\end{proof}
+
+
+\begin{proof}[Proof of~\Cref{PROP:polytimeLA}]
+    After multiplication by an integer of bit length $\poly(\bc(A))$, we may assume without loss of generality that $A$ is an integer matrix. Let $R$ be the column rank of $A$.
+    Compute the Hermite normal form $A \cdot [U \mid  K] = [H \mid 0]$ as in~\Cref{LEM:HNF}. Note that the columns of $[U \mid K]$ form a basis for $\R^N$, and that the columns of $K$ form a basis for~$\ker(A)$. The lower triangular system $H \cdot y = b$ can be solved via forward substitution; this either yields a solution $y \in \Q^{R}$ (of bit length at most $\poly(\bc(H))$), or shows that no solution exists at all. In the former case, $\hat w \coloneqq U\cdot y$ satisfies $A \cdot \hat w = b$ (and $\bc(\hat w) \leq \poly(\bc(U),\, \bc(H))$. It remains to orthogonalize: 
+    Apply \Cref{LEM:LAGS} to the columns of $K$, $\hat w$, and the columns of $U$, \emph{in that order}. This yields orthogonal vectors  $v_1, \ldots, v_{N-R}, \, w, \, u_{1}, \ldots, u_{R}$ (of appropriately bounded bit length). Note that $v_1,\ldots,v_{N-R}$ span $\ker(A)$, that $v_1,\ldots,v_{N-R}, w$ span $\mathcal{L}$, and that $u_1, \ldots, u_{R}$ span $\mathcal{L}^\perp$.
+    Note that either $w$, or exactly one of the $u_i$ will be zero. Discarding that vector completes the proof.
+\end{proof}
+
+
+\section{A polynomial with identically vanishing hessian} \label{APP:HessianCounterexample}
+We provide an example adapted from~\cite{Gordan1876, Garbagnati2009} of a polynomial whose Hessian is everywhere singular, but which does not have a direction of linearity. 
+Let $p(x) = x_1x_4^2 + 2x_2x_4x_5 + x_3x_5^2$.
+Then,
+\[
+\nabla^2 p (x) = \begin{pmatrix}
+0 & 0 & 0  & 2x_{4} & 0 \\
+0 & 0 & 0  & 2x_{5} & 2x_{4} \\
+0 & 0 & 0  & 0 & 2x_{5} \\
+2x_{4} & 2x_{5} & 0 & 2x_{1} & 2x_{2} \\
+0 & 2x_{4} & 2x_{5} & 2x_{2} & 2x_{3}
+\end{pmatrix}.
+\]
+One may verify that the Hessian of $p$ is singular for every $x \in \R^n$. On the other hand, we have
+\[
+    \nabla p(x) = (x_4^2,~2x_4x_5,~ x_5^2,~ 2x_1x_4 + 2x_2x_5,~ 2x_2x_4 + 2x_3x_5),
+\]
+and so $p$ has no direction of linearity (its directional derivatives are not affinely dependent). But, we do have an algebraic dependency of degree $2$, namely
+\[
+    \frac{\partial p}{\partial x_1} \cdot \frac{\partial p}{\partial x_3} = x_4^2 \cdot x_5^2 = \frac{1}{4}(2x_4x_5)^2 = \frac{1}{4} \left(\frac{\partial p}{\partial x_2} \right)^2.
+\]
+
+\section{Witnesses for polynomial programs}
+\label{APP:Complexity}
+In this appendix, we give a rational univariate convex polynomial of degree 4 that has an irrational minimizer (see \Cref{EX:convexdegree4irrationalminimizer}). 
+This shows that for the decision problem~\eqref{EQ:decision} for convex polynomials of degree at least 4, $x^*$ is not always a compact witness.
+We also give a rational univariate convex polynomial of degree 6 that has minimum value 0, but attains this at exactly one \emph{irrational} point (see \Cref{EX:convexdegree6irrationalminimizerrationalminimum}).
+This shows that for convex polynomials of degree at least 6, for some polynomials there is no compact witness at all.
+Finally, we give a proof that such a (univariate) polynomial cannot exist for degree 4.
+We show that for a rational univariate convex polynomial of degree 4, if the minimum value is rational, then also the minimizer is rational (see \Cref{LEM:convexdegree4ifminimumrationalthenminimizerrational}).
+Thus, for convex polynomials of degree 4, it could be that there is always a compact witness even though the minimizer might not be:
+If the minimizer is irrational, then the set $\{x: f(x) \leq 0\}$ does not contain just the minimizer since the minimum value is not $0$ (it is irrational).
+Thus, there will at least be a rational point in this set and it is unclear whether there might always be a compact witness.
+
+\begin{example}\label{EX:convexdegree4irrationalminimizer}
+    Consider the polynomial
+    \[
+        f(x) = x^4 + x.
+    \]
+    The second derivative is positive for all $x$, thus $f$ is convex.
+    The (unique) minimizer of $f$ is the point $x^*$ that satisfies $4{x^*}^3 + 1 = 0$, i.e., $x^* = -1/\sqrt[3]{4}$, which is irrational.
+\end{example}
+
+\begin{example}\label{EX:convexdegree6irrationalminimizerrationalminimum}
+    Consider the polynomial
+    \[
+        f(x) = (x^3 + x + 1)^2 = x^6 + 2x^4 + 2x^3 + x^2 + 2x + 1.
+    \]
+    The second derivative of $f$ is given by
+    \[
+        f''(x) = 30 x^4 + 24 x^2 + 12 x + 2 = 30 x^4 + 6x^2 + 2 \cdot (3x + 1)^2 \geq 0 \quad (\forall x \in \R)
+    \]
+    and hence $f$ is a convex polynomial.
+
+    We now want to determine the minimal value and the minimizer of $f$.
+    Note that $f$ is non-negative.
+    To determine the minimum and the minimizer, we want to examine the term ${g(x) = x^3 + x + 1}$.
+    As a cubic polynomial it has at least one real root.
+    Thus, the minimum value of $f$ is $0$ and the minimizer(s) of $f$ are exactly the root(s) of $g$.
+    
+    Cardano's formula states that a cubic polynomial $x^3 + px + q$ with $\frac{q^2}{4} + \frac{p^3}{27} > 0$ has in fact exactly one real root.
+    Furthermore, by the rational root theorem, if there is a rational root it is an integer divisor of $q$.
+    This implies that $g$ (for which $p=q=1$) has exactly one real root $x^*$.
+    Since $\pm 1$ (the only divisors of $q=1$) are not roots, this root is not rational, i.e. $x^* \in \R \backslash \Q$.
+    This $x^*$ is the (unique) minimizer of $f$.
+    In fact, we can even compute $x^*$ explicitly:
+    \[
+        x^* = \sqrt[3]{-\frac{1}{2}+\sqrt{\frac{1}{4}+\frac{1}{27}}} + \sqrt[3]{-\frac{1}{2}-\sqrt{\frac{1}{4}+\frac{1}{27}}}.
+    \]
+    
+    Hence, $f$ is a convex polynomial with minimum value $0$, but this is attained at exactly one (irrational) point $x^*$.
+\end{example}
+
+\begin{lemma}\label{LEM:convexdegree4ifminimumrationalthenminimizerrational}
+    Let $f \in \Q[x]$ be a convex (univariate) polynomial of degree $4$.
+    Assume the minimum value of $f$ is rational.
+    Then also the minimizer of $f$ is rational.
+\end{lemma}
+\begin{proof}
+    Let $x^* \in \R$ be the minimizer of $f$.
+    By convexity, $x^*$ is the unique minimizer and the unique critical point of $f$.
+    Consider the two polynomials (recall that by assumption $f(x^*) \in \Q$)
+    \[
+        g_1(x) = f(x) - f(x^*) \in \Q[x] \quad \text{and} \quad g_2(x) = f'(x) \in \Q[x].
+    \]
+    We have that $x^*$ is the unique (real) root of these two polynomials.
+    Consider $m \in \Q[x]$ the monic polynomial of minimal degree that has $x^*$ as a root.
+    Since $x^*$ is a root of $g_1$ and $g_2$, we have $m \mid g_1$ and $m \mid g_2$.\footnote{Formally, consider the field extension $\Q(x^*)/\Q$. Since $g_1(x^*) = 0$ and $g_1 \in \Q[x]$, $x^*$ is algebraic over $\Q$. Then, $m$ is the minimal polynomial of $x^*$ over $\Q$, i.e. the unique monic irreducible polynomial $m \in \Q[x]$ that has $x^*$ as a root \cite[Theorem A-3.87]{RotmanAlgebra}. Furthermore, $m$ generates the ideal of all polynomials in $\Q[x]$ that have $x^*$ as a root. Thus, $m$ divides any polynomial $g$ that has $x^*$ as a root \cite[Proof of Theorem A-3.87]{RotmanAlgebra}.}
+    Thus, there are polynomials $h_1, h_2 \in \Q[x]$ such that $g_1 = m \cdot h_1$ and $g_2 = m \cdot h_2$.
+    
+    Note that $\deg(h_1) = \deg(h_2) + 1$.
+    Thus one of $\deg(h_1)$ and $\deg(h_2)$ is odd.
+    Let $i \in \{1,2\}$ be the index such that $\deg(h_i)$ is odd.
+    Then $h_i$ has a real root.
+    Since $x^*$ is the unique real root of $g_i$, this root needs to be $x^*$.
+    But then we need to have $m \mid h_i$ and there is a polynomial $\Tilde{h}_i$ such that $g_i = m^2 \cdot \Tilde{h}_i$.
+    This implies $4 \geq \deg(g_i) \geq 2 \deg(m)$ and thus $\deg(m) \leq 2$.
+    
+    If $\deg(m) = 1$, then $m(x) = x + a_0$ and thus $x^* = -a_0 \in \Q$.
+    If $\deg(m) = 2$, then $m(x) = x^2 + a_1 x + a_0$.
+    The roots of this polynomial are $\frac{-a_1 \pm \sqrt{a_1^2-4a_0}}{2}$.
+    Since $x^*$ is the unique (real) root of $g_1$ (and thus of~$m$), we need to have that $a_1^2-4a_0 = 0$ and thus $x^* = \frac{-a_1}{2} \in \Q$, which completes the proof.
+\end{proof}
+
+\section{Ellipsoid method}
+\label{APP:Ellipsoid}
+In this appendix, we give a proof of \Cref{PROP:applicationellipsoid} about minimizing a convex polynomial over a polyhedron.
+\PROPapplicationellipsoid*
+
+All the ideas presented in this appendix are standard results on the ellipsoid method and can for example be found in \cite{GrötschelLovaszSchrijver:ellipsoid, Vishnoi:convexoptimization}.
+We combine these results to get the exact statement of \Cref{PROP:applicationellipsoid}.
+We include a full proof for completeness and in order to carry out the bit complexity analysis.
+
+
+\subsection{Additional preliminaries on the ellipsoid method}
+In this section, we discuss the necessary preliminaries to apply the ellipsoid method to our case.
+The section is adapted from different definitions and theorems from \cite{GrötschelLovaszSchrijver:ellipsoid}.
+We first define what a strong separation oracle is.
+\begin{definition}[Strong separation oracle]
+    A strong separation oracle for a convex set $K \subseteq \R^n$ is an oracle that, given as input $y \in \Q^n$ either asserts $y \in K$ or finds a separating hyperplane $c \in \Q^n$ such that $\max_{x \in K} c^\top x < c^\top y$.
+\end{definition}
+
+\begin{remark}
+    We always assume that given an input $y \in \Q^n$, the bit length of the output of the oracle is at most polynomial in $\bc(y)$ for a fixed polynomial. See also \cite[Assumption 1.2.1]{GrötschelLovaszSchrijver:ellipsoid}.
+\end{remark}
+
+For a polyhedron, there is always a strong separation oracle that runs in polynomial time in the bit length of the input and in $\enc{P}$.
+
+\begin{lemma}[{\cite[Example 2.16]{GrötschelLovaszSchrijver:ellipsoid}}]\label{LEM:seporacleforP}
+    For a polyhedron $P = \{Ax \leq b\}$ there is a strong separation oracle that runs on an input of bit length $k$ in time polynomial in $k$ and $\enc{P}$.
+\end{lemma}
+
+The idea for this separation oracle is to check for all constraints of $P$ whether $y$ satisfies them.
+If all constraints are satisfied, then $y \in P$.
+Otherwise, any violated constraint is a separating hyperplane.
+We now state a result on how we can apply the ellipsoid method to solve feasibility problems given strong separation oracles.
+
+\begin{proposition}[{\cite[Theorem 3.2.1]{GrötschelLovaszSchrijver:ellipsoid}}]\label{PROP:ellipsoidforconvexset}
+    There is an algorithm with the following guarantees:
+    Given as input $r > 0$, $R > 0$ and a strong separation oracle to a closed convex set $K \subseteq B_R(0)$, the algorithm outputs outputs one of the following:
+    \begin{enumerate}
+        \item a vector $a \in K$;\footnote{We note that the algorithm in \cite[Theorem 3.2.1]{GrötschelLovaszSchrijver:ellipsoid}, if given a strong separation oracle (instead of a weak one), in fact outputs $y \in K$ (as opposed to just $d(y,K) \leq r$).}
+        \item an ellipsoid $E$ such that $K \subseteq E$ and $\vol(E) \leq r$.
+    \end{enumerate}
+    In particular, if $\vol(K) > r$, then the algorithm outputs a vector in $K$.
+    The number of oracle calls and the runtime\footnote{Here, the runtime does not include the oracle call, but it does include the time needed to write down the input for the oracle and read the output of the oracle.} of the algorithm are polynomial in $n$, $\log(1/r)$ and $\log(R)$.
+\end{proposition}
+\begin{remark}
+    When we apply \Cref{PROP:ellipsoidforconvexset}, the oracle runs in polynomial time in $\enc{f}$, $\enc{P}$, $k$ on an input of bit length $k$.
+    Therefore, the total runtime of the algorithm will be polynomial in $\enc{f}$, $\enc{P}$, $\log(1/r)$ and $\log(R)$.
+\end{remark}
+
+To apply the statement above, we also need the following two statements that will allow us to reduce to the case where the polynomial has volume (i.e. the full-dimensional case).
+
+\begin{proposition}[{\cite[Theorems 6.4.9 and 6.5.5]{GrötschelLovaszSchrijver:ellipsoid}}]\label{PROP:getaffinehullofpolyhedron}
+    There is an algorithm with the following guarantees:
+    Let $P = \{Ax \leq b\} \subseteq \R^n$ be a polyhedron and let $\varphi$ be a bound on the maximum bit length of any constraint of $P$.
+    Given as input $n$, $\varphi$ and a strong separation oracle to $P$, the algorithms output affinely independent vectors $v_1, \ldots, v_k$ such that $\aff(P) = \aff(\{v_1, \ldots, v_k\})$.
+    The number of oracle calls and the runtime of the algorithm is polynomial in $n$ and $\varphi$.    
+\end{proposition}
+
+\begin{proposition}[{\cite[Lemmas 3.1.33 and 3.1.35]{GrötschelLovaszSchrijver:ellipsoid}}]\label{PROP:volumefulldimensionalcase}
+    Let $P=\{Ax \leq b\}$ be a polyhedron. If $P$ is full-dimensional, then
+    \[
+        \vol(P) \geq 2^{-\poly(\enc{P})}.
+    \]
+    In fact, there exist $v_1, \ldots, v_{n+1} \in P$ with $\|v_i\| \leq 2^{\poly(\enc{P})}$ such that
+    \[
+        \vol(\conv(\{v_1, \ldots, v_{n+1}\}) \geq 2^{-\poly(\enc{P})}.
+    \]
+\end{proposition}
+
+\subsection{\texorpdfstring{Proof of \Cref{PROP:applicationellipsoid}}{Proof}}
+In order to prove \Cref{PROP:applicationellipsoid} we want to reduce to the full-dimensional case, for which we then can apply \Cref{PROP:ellipsoidforconvexset}.
+We first prove the full-dimensional case of \Cref{PROP:applicationellipsoid}.
+\begin{proof}[{Proof of \Cref{PROP:applicationellipsoid} (full-dimensional case)}]
+    Consider the set $F_\tau \coloneqq \{x \in \R^n: f(x) \leq \tau\}$.
+    Our goal is to apply \Cref{PROP:ellipsoidforconvexset} to the sets $P \cap B_R(0) \cap F_\tau$ for different values of $\tau$.
+    Thus, we need to give a strong separation oracle for this set and find a value for $r$ such that $\vol(P \cap B_R(0) \cap F_\tau) \geq r$.
+
+    \paragraph{Strong separation oracle.}
+    By \Cref{LEM:seporacleforP} we have a strong separation oracle for $P$.
+    Clearly, there is also a strong separation oracle for $B_R(0)$ (check if $\|y\| \leq R$; if not, $y$ is a separating hyperplane) and thus it remains to argue that we can get a strong separation oracle for $F_\tau$.
+    Given $y \in \Q^n$, we can determine whether $f(y) \leq \tau$ and thus whether $y \in F_\tau$. If $y \not\in F_\tau$, then the gradient $\nabla f(y)$ is a separating hyperplane.
+    This is true since $f(x) - f(y) \geq \nabla f(y)^\top (x-y)$ for all $x \in \R^n$ and thus for $x \in F_\tau$ we have $f(x) \leq \tau < f(y)$ and thus $\max_{x \in F_\tau}\nabla f(y)^\top x < \nabla f(y)^\top y$.
+    Thus, we have strong separation oracles for $P$, $B_R(0)$ and $F_\tau$ and thus also a strong separation oracle for $P \cap B_R(0) \cap F_\tau$.
+    This separation oracle runs in time $\poly(\enc{f},\, \enc{P},\, \bc(\tau),\, \log(R),\, \bc(y))$ if given as input a point $y \in \Q^n$.
+
+    \paragraph{Bound on volume.}
+    Next, we want to bound $\vol(P \cap B_R(0) \cap F_\tau)$.
+    Let $x^*$ be a minimizer of~$f$ on $P \cap B_R(0)$ and let $f^*=f(x^*)$.
+    Note that $f$ is Lipschitz on $B_R(0)$ with Lipschitz constant ${L = 2^{\poly(\enc{f},\, \log(R))}}$.
+    If $\tau = f^* + c$, then we want to argue that we can lower bound the volume in terms of $c$.
+    Define $c' = c/L$.
+    Since $P$ is full-dimensional, by \Cref{PROP:volumefulldimensionalcase}, there are ${v_1, \ldots, v_{n+1} \in P}$ with $\|v_i\| \leq 2^{\poly(\enc{P})}$ such that
+    \[
+        \vol(\conv(\{v_1, \ldots, v_{n+1}\})) \geq 2^{-\poly(\enc{P})}.
+    \]
+    Without loss of generality, we assume $R \geq \|v_i\|$ for all $i$ such that $v_i \in P \cap B_R(0)$.\footnote{We can do this because $\|v_i\| \leq 2^{\poly(\enc{P})}$. Thus, if $R < 2^{\poly(\enc{P})}$, we can replace $R$ by $R' = 2^{\poly(\enc{P})}$, which satisfies $\log(R') = \poly(\enc{f})$.}
+    Let $d_i = \|x^* - v_i\|$ and let $d_{\max} = \max_{i \in \{1, \ldots n+1\}} d_i$.
+    We have, for some $i \in \{1, \ldots, n\}$,
+    \[
+        d_{\max} = \|x^* - v_i\| \leq \|x^*\| + \|v_i\| \leq R + 2^{\poly(\enc{P})}.
+    \]
+    If $d_{\max} \leq c'$, then, by Lipschitzness of $f$, we have 
+    \[
+        f(v_i) \leq f(x^*) + L \|v_i - x^*\| \leq f^* + L \cdot c' = f + c = \tau.
+    \]
+    Hence, $v_i \in P \cap B_R(0) \cap F_\tau$ and thus
+    \[
+        \vol(P \cap B_R(0) \cap F_\tau) \geq \vol(\conv(\{v_1, \ldots, v_{n+1}\})) \geq 2^{-\poly(\enc{P})}.
+    \]
+    If $d_{\max} > c'$, consider the points $\hat{v}_i \coloneqq x^* + \frac{c'}{d_{\max}}(v_i - x^*) \in P \cap B_R(0)$ (since $x^*, v_i \in P \cap B_R(0)$).
+    Then, we have, again by Lipschitzness of $f$,
+    \[
+        f(\hat{v}_i) \leq f(x^*) + L \left\|\frac{c'}{d_{\max}}(v_i - x^*)\right\| \leq f^* + L \cdot c' \cdot \frac{d_i}{d_{\max}} \leq f^* + L \cdot c' = \tau
+    \]
+    and hence $\hat{v}_i \in F_\tau$.
+    Thus, $\conv(\{\hat{v}_1, \ldots, \hat{v}_{n+1}\}) \subseteq P \cap B_R(0) \cap F_\tau$.
+    We have
+    \begin{align*}
+        \vol\left(\conv\left(\left\{\hat{v}_1, \ldots, \hat{v}_{n+1}\right\}\right)\right) &= \vol\left(\conv\left(\left\{x^* + \frac{c'}{d_{\max}}(v_i - x^*) : i \in \{1, \ldots, n+1\}\right\}\right)\right)\\
+        &= \left(\frac{c'}{d_{\max}}\right)^n \vol\left(\conv\left(\left\{v_i : i \in \{1, \ldots, n+1\}\right\}\right)\right)\\
+        &\geq \left(\frac{c'}{d_{\max}}\right)^n \cdot 2^{-\poly(\enc{P})}.
+    \end{align*}
+    Thus, we get that 
+    \[
+        \vol(P \cap B_R(0) \cap F_\tau) \geq \vol\left(\conv\left(\left\{\hat{v}_1, \ldots, \hat{v}_{n+1}\right\}\right)\right) \geq \left(R + 2^{\poly(\enc{P})}\right)^{-n} \cdot (c')^n \cdot 2^{-\poly(\enc{P})}.
+    \]
+    Thus, by choosing
+    \[
+        r = \min \left\{2^{-\poly(\enc{P})}, \left(R + 2^{\poly(\enc{P})}\right)^{-n} \cdot \left(\frac{\varepsilon}{2L}\right)^n \cdot 2^{-\poly(\enc{P})}\right\}
+    \]
+    we get that
+    \begin{equation}\label{EQ:taulargeimpliesvolumelarge}
+        \tau > f_{\min} + \frac{\varepsilon}{2} \quad \Longrightarrow \quad \vol(P \cap B_R(0) \cap F_\tau) > r,
+    \end{equation}
+    since if $\tau > f_{\min} + \frac{\varepsilon}{2}$, then $c > \frac{\varepsilon}{2}$ and thus $\vol(P \cap B_R(0) \cap F_\tau) > r$.
+    Note that, using that the Lipschitz constant $L$ satisfies $L = 2^{\poly(\enc{f},\, \log(R))}$, we get
+    \[
+        \log(1/r) = \poly(n,\, \enc{P},\, \log(R),\, \log(1/\varepsilon)).
+    \]
+    
+    \begin{algorithm}
+    \caption{}\label{ALG:algorithmfulldimensionalcase}
+    \begin{algorithmic}[1]
+    \Input A polynomial $f$, a matrix $A \in \Q^{m \times n}$, a vector $b \in \Q^m$, a bound $R$, an error parameter $\varepsilon$
+    \Output A point $\tilde{x} \in P$ with $f(\tilde{x}) \leq \min_{x \in P \cap B_R(0)} f(x) + \varepsilon$.
+    \State Let $\tau_\ell = -2^{\poly(\enc{f}, \, \log(R))}$ and $\tau_r = 2^{\poly(\enc{f}, \, \log(R))}$.
+    \While{$\tau_r-\tau_\ell \geq \frac{\varepsilon}{2}$}
+    \State $\tau = \frac{\tau_r + \tau_\ell}{2}$
+    \State{\parbox[t]{0.964\linewidth}{Run the algorithm from \Cref{PROP:ellipsoidforconvexset} with input $r$, $R$ and a strong separation oracle for the set ${P \cap B_R(0) \cap F_\tau}$.}}
+    \If{output is $x \in P \cap B_R(0) \cap F_\tau$ (i.e. we are in case (i))}
+    \State $\tau_r = \frac{\tau_r + \tau_\ell}{2}$
+    \Else{ (i.e. we are in case (ii))}
+    \State $\tau_\ell = \frac{\tau_r + \tau_\ell}{2}$
+    \EndIf
+    \EndWhile
+    \State{Run the algorithm from \Cref{PROP:ellipsoidforconvexset} with input $r$, $R$ and a strong separation oracle for the set $P \cap B_R(0) \cap F_{\tau_r}$.}
+    \State{\Return the point $\Tilde{x}$ that is output by this algorithm}
+    \end{algorithmic}
+    \end{algorithm}
+
+    \paragraph{Algorithm.}
+    Using binary search, we want to use this to get a point $\Tilde{x} \in P$ with the guarantee that ${f(\Tilde{x}) \leq \min_{x \in P \cap B_R(0)} f(x) + \varepsilon}$.
+    Consider \Cref{ALG:algorithmfulldimensionalcase}.
+    This algorithm and the analysis are a standard way to move from using the ellipsoid method to solve a feasibility problem to solving an optimization problem.
+    It can for example be found in \cite[Chapter 13]{Vishnoi:convexoptimization}.
+    We include it here for completeness and in order to carry out the bit complexity arguments in detail, which is needed for our result.
+    
+    We claim that the algorithm satisfies the following two invariants:
+    \begin{itemize}
+        \item For $\tau_r$, we always have that the output of the algorithm from \Cref{PROP:ellipsoidforconvexset} belongs to case (i) (given $r$, $R$ and a separation oracle to $P \cap B_R(0) \cap F_{\tau_r}$ as input).
+        \item For $\tau_\ell$, we always have $\tau_\ell \leq f^* + \frac{\varepsilon}{2}$.
+    \end{itemize}
+    This is true in the beginning because by Lipschitzness of $f$ and since $f(0) \leq 2^{\poly(\enc{f}, \, \log(R))}$, we know that on $B_R(0)$ the value of $f$ is in $[-2^{\poly(\enc{f}, \, \log(R))}, 2^{\poly(\enc{f}, \, \log(R))}]$.
+    Thus, for the first choice of $\tau_r$, we have $F_{\tau_r} \supseteq B_R(0)$ and hence $\vol(P \cap B_R(0) \cap F_{\tau_r}) = \vol(P \cap B_R(0)) > r$ (using \eqref{EQ:taulargeimpliesvolumelarge} for $\tau = \infty$).
+    For the first choice of $\tau_\ell$, we have $\tau_\ell \leq f^*$.
+    Furthermore, this stays true during the whole algorithm because we only update $\tau_r$ in case (i) of the algorithm from \Cref{PROP:ellipsoidforconvexset}, i.e. exactly when the invariant stays true.
+    If we update $\tau_\ell$, we are in case (ii) of the algorithm from \Cref{PROP:ellipsoidforconvexset}.
+    Then we need to have $\vol(P \cap B_R(0) \cap \tau_\ell) < r$ (for the updated $\tau_\ell$) and hence $\tau_\ell \leq f_{\min} + \frac{\varepsilon}{2}$ by \eqref{EQ:taulargeimpliesvolumelarge}.
+
+    Thus, the algorithm is well-defined (i.e., after the while-loop the algorithm from \Cref{PROP:ellipsoidforconvexset} does in fact output a point $\tilde{x}$). This point is in $P \cap B_R(0) \cap F_{\tau_r}$ for the final value of $\tau_r$. Hence, $f(\Tilde{x}) \leq f^* + \tau_r$.
+    Furthermore, we have $\tau_r \leq \tau_\ell + \frac{\varepsilon}{2} \leq f^* + \varepsilon$ and thus we output a point $\Tilde{x} \in P \cap B_R(0)$ with
+    \[
+        f(\Tilde{x}) \leq f^* + \varepsilon = \min_{x \in P \cap B_R(0)} f(x) + \varepsilon.
+    \]
+
+    It remains to argue the runtime of the algorithm.
+    We have $\poly(\enc{f},\, \log(R), \, \log(1/\varepsilon))$ iterations of the while-loop (we start with $\tau_r - \tau_\ell = 2^{\poly(\enc{f}, \, \log(R))}$, end with $\tau_r - \tau_\ell \leq \frac{\varepsilon}{2}$ and we half this distance in every step).
+    This then also implies that ${\bc(\tau_r), \bc(\tau_\ell) \leq \poly(\enc{f},\, \log(R), \, \log(1/\varepsilon))}$.
+    So, the separation oracle for $P \cap B_R(0) \cap F_{\frac{\tau_r + \tau_\ell}{2}}$ needs time $\poly(\enc{f},\, \enc{P},\, \log(R),\, \log(1/\varepsilon),\, k)$ on an input of bit length $k$.
+    Thus, one execution of the algorithm from \Cref{PROP:ellipsoidforconvexset} takes time
+    \[
+        \poly(n,\, \log(R),\, \log(1/r),\, \enc{f},\, \enc{P},\, \log(1/\varepsilon)).
+    \]
+    Using $\log(1/r) = \poly(n,\, \enc{P},\, \log(R),\, \log(1/\varepsilon))$ and $n \leq \enc{f}$, this runtime is
+    \[
+        \poly(\enc{f},\, \enc{P},\, \log(R),\, \log(1/\varepsilon)).
+    \]
+    Thus, since we have $\poly(\enc{f},\, \log(R),\, \log(1/\varepsilon))$ iterations the overall runtime of the algorithm is also
+    \[
+        \poly(\enc{f},\, \enc{P},\, \log(R),\, \log(1/\varepsilon)),
+    \]
+    which completes the proof of \Cref{PROP:applicationellipsoid} for the full-dimensional case.
+\end{proof}
+
+Finally, we want to prove \Cref{PROP:applicationellipsoid} for a general (not necessarily full-dimensional) polyhedron by reducing this to the full-dimensional case.
+\begin{proof}[Proof of \Cref{PROP:applicationellipsoid} (general case)]
+    By \Cref{PROP:getaffinehullofpolyhedron}, we can compute vectors $v_1, \ldots, v_k$ such that $\aff(P) = \aff(\{v_1, \ldots, v_k\})$.
+    Then, we also have that
+    \[
+        \aff(P) = v_1 \oplus \spann{v_2-v_1, \ldots, v_k-v_1}.
+    \]
+    By \Cref{LEM:LAGS}, we can replace the $v_2-v_1, \ldots, v_k - v_1$ by orthogonal vector $\hat{v}_2, \ldots, \hat{v}_k$ (this is not strictly necessary but makes the following argument simpler).
+    Define the following affine map
+    \[
+        L: \R^{k-1} \to \aff(P) \subseteq\R^n, \quad x' \mapsto v_1 + \sum_{i=2}^k x'_{i-1} \hat{v}_i.
+    \]
+    This map is a bijection from $\R^{k-1}$ to $\aff(P)$. In fact, the inverse is
+    \begin{equation}\label{EQ:ellispoidreductioninversemap}
+        L^{-1}: \aff(P) \to \R^{k-1}, \quad x \mapsto (\langle x-v_1, \hat{v}_2\rangle/\|\hat{v}_2\|^2, \ldots, \langle x-v_1, \hat{v}_k\rangle/\|\hat{v}_k\|^2).
+    \end{equation}
+    We can write $L$ as $L(x') = v_1 + Bx'$ for an appropriate matrix $B \in \Q^{n \times (k-1)}$.
+    We define
+    \[
+        P' = L^{-1}(P) = \{x' \in \R^{k-1} : v_1 + Bx' \in P\} = \{x' \in \R^{k-1}: (AB)x' \leq b - Av_1\} \subseteq \R^{k-1}
+    \]
+    and
+    \[
+        f': \R^{k-1} \to \R, \quad x' \mapsto f'(x') = f(L(x')).
+    \]
+    Note that $P'$ is a polyhedron in $\R^{k-1}$ and $f'$ is a $(k-1)$-variate polynomial.
+
+    On the polyhedron $P$, the algorithm from \Cref{PROP:getaffinehullofpolyhedron} runs in time $\poly(\enc{P})$ (recall that by \Cref{LEM:seporacleforP} the separation oracle for $P$ runs in time $\poly(k, \, \enc{P})$ on an input of size~$k$).
+    Also the orthogonalization then takes time $\poly(\enc{P})$ by \Cref{LEM:LAGS}.
+    Thus, we can bound the bit length of $B$ as $\bc(B) \leq \poly(\enc{P})$ and thus also $\enc{P'} \leq \poly(\enc{P})$.
+    Furthermore, this also implies that $\enc{f'} \leq \poly(\enc{f}, \, \enc{P})$.
+
+    Since the $v_1, \ldots, v_k$ are affinely independent, $P'$ is full-dimensional ($L^{-1}(v_1), \ldots, L^{-1}(v_k)$ are affinely independent points in $\aff(P')$ and thus by a dimension argument, $\aff(P') = \R^{k-1}$).
+    Let $R > 0$. Note that for $x \in P \cap B_R(0)$, using \eqref{EQ:ellispoidreductioninversemap}, we have
+    \[
+        \|L^{-1}(x)\| \leq \sum_{i=2}^{k} \frac{|\langle x-v_1 , \hat{v}_i\rangle|^2}{\|\hat{v_i}\|^2} \leq (R + \|v_1\|) \cdot \sum_{i=2}^k \frac{1}{\|\hat{v}_i\|}.
+    \]
+    Since $\bc(v_1), \bc(\hat{v}_i) \leq \poly(\enc{P})$, we have $\|v_1\|, \|\hat{v}_2\|^{-1}, \ldots, \|\hat{v}_k\|^{-1} \leq 2^{\poly(\enc{P})}$. Thus, by defining ${R' = (R+1) \cdot 2^{\poly(\enc{P})}}$ we get that $L^{-1}(P \cap B_R(0)) \subseteq P' \cap B_{R'}(0)$.
+
+    Thus, by the proof of the full-dimension case (applied with $R'$, $\varepsilon$, $f'$ and $P'$), we can compute a point $\Tilde{x}' \in P'$ with $f(\Tilde{x}') \leq \min_{x' \in P' \cap B_{R'}(0)} f'(x') + \varepsilon$ in time
+    \[
+        \poly(\enc{f'},\, \enc{P'},\, \log(R'),\, \log(1/\varepsilon)) \leq \poly(\enc{f},\, \enc{P},\, \log(R),\, \log(1/\varepsilon)).
+    \]
+    Since $P \cap B_R(0) \subseteq L(P' \cap B_{R'}(0))$, we have $\min_{x' \in P' \cap B_{R'}(0)} f'(x') \leq \min_{x \in P \cap B_R(0)} f(x)$.
+    Given a point~$\Tilde{x}'$ as above, we thus get a point $\Tilde{x} = L(\Tilde{x}') \in P$ with
+    \[
+        f(\Tilde{x}) = f'(\Tilde{x}') \leq \min_{x' \in P' \cap B_{R'}(0)} f'(x') + \varepsilon \leq \min_{x \in P \cap B_R(0)} f(x) + \varepsilon.\qedhere
+    \]
+\end{proof}

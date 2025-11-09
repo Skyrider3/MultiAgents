@@ -1,0 +1,91 @@
+\section{Introduction} \label{sec:intro}
+
+The field of topological data analysis (TDA) utilizes invariants from topology
+to study the shape of data.
+Among the invariants employed are homology and the original
+topological invariant: the Euler characteristic \cite{euler1758elementa}.
+In practice, a single invariant is not typically robust enough to capture the
+shape of data.
+For this reason, filtrations (i.e., nested sequences of shapes) are often
+constructed from data and topological invariants are then applied.
+This allows for significantly more information to be retained, leading to
+constructions such as persistence diagrams \cite{edel2002topological}
+(resulting from applying homology to filtrations) and Euler characteristic
+functions \cite{Serra1982} (resulting from applying the Euler characteristic
+to~filtrations).
+
+Topological transforms \cite{Turner2014PHT} further extend the idea of applying
+topological invariants to filtrations by constructing a parameterized family of
+filtrations and then applying topological invariants.
+The starting point for topological transforms is typically a geometric simplicial or cubical
+complex~$K$ in $\R^{n}$.
+For each direction vector $\vect{s} \in \sph^{n-1}$, a height filtration of~$K$
+is constructed and then a topological invariant is applied to each
+height filtration.
+Applying the Euler characteristic~(EC) to each height filtration results in the
+Euler characteristic transform~(ECT) \cite{Turner2014PHT,munch2023invitation},
+the focus of this paper.
+The ECT is a \emph{complete invariant}: a geometric simplicial complex $K$
+in $\R^{n}$ can be reconstructed solely from
+its~ECT~\cite{curry2022many,Ghrist2018}.
+In other words, no information is lost when passing from the simplicial
+complex~$K$ to its ECT.
+
+A useful variant of the ECT is the weighted Euler characteristic transform
+(WECT)~\cite{Jiang2020TheWE}.
+The WECT extends the ECT to the setting of weighted geometric complexes
+in~$\R^{n}$.
+Much like the ECT, the WECT is a complete invariant for weighted geometric
+complexes~\cite{Jiang2020TheWE}.
+Moreover,
+the WECT has been employed in a broad range of applications.
+In the field of oncology, the WECT has been used to predict survival rates of
+patients with glioblastoma multiforme brain tumors~\cite{crawford2020predicting}.
+In plant biology, the WECT has been used to classify seed phenotypes
+\cite{amezquita2022measuring}.
+The WECT has also proven particularly adept at image classification
+tasks~\cite{cisewski2023weighted, Jiang2020TheWE}.
+
+Numerous software packages already exist for computing the WECT, including
+\demeter~\cite{amezquita2022measuring}, \sinatra
+\cite{crawford2020predicting}, \eucalc
+\cite{lebovici2024efficientcomputationtopologicalintegral},
+and \fasttopology \cite{laky2024}.
+%
+The packages \demeter and \sinatra processes arbitrary
+geometric simplicial and cubical complexes in Euclidean
+spaces,
+but are not optimized for speed.
+%
+The packages \fasttopology and \eucalc are optimized for speed,
+but only apply to axis-aligned cubical complexes (i.e., grids) in $\R^2$
+or~$\R^3$.
+%
+Two other packages, \cite{roell2023differentiable} and
+\cite{saxena2025scalable}, provide vectorized implementations optimal for
+Graphics Processing Unit (GPU) hardware.
+%
+However, these packages compute an approximation of the ECT
+known as the \emph{differentiable Euler characteristic transform} (DECT).
+%
+Furthermore, \cite{saxena2025scalable} is an optimization for the specific
+case of unweighted cubical complexes in $\R^2$ or~$\R^3$.
+%
+As outlined in \cite{roell2023differentiable}, the DECT provides several
+advantages for computation in neural network applications.
+%
+However, our method is focused on exact computation of the WECT in full
+generality.
+
+\paragraph{Contributions}
+
+In this work, we provide a fully vectorized framework for computing WECFs and
+WECTs.
+Our implementation applies in full generality to arbitrary geometric simplicial
+and cubical complexes in Euclidean spaces, and supports automatic
+gradient computations.
+The vectorized operations are highly optimized for fast computation on
+modern GPU hardware.
+Moreover, our implementation significantly outperforms existing software
+packages, including the optimized packages
+\eucalc and \fasttopology.

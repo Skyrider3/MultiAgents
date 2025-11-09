@@ -1,0 +1,233 @@
+\label{SEC:TO}
+At a high level, we are concerned with understanding the quantitative behavior of the minimizers of a convex polynomial $f \in \Q[x]$ on a convex polyhedron $P = \{Ax \leq b\} \subseteq \R^n$.
+In particular, we will show that $f$ is either unbounded from below on~$P$, in which case this can be detected efficiently, or~$f$ attains its minimum on $P$ at a point $x^* \in P$ whose norm is at most exponential in the encoding lengths of $f$ and $P$. 
+In the latter case, the ellipsoid method can (approximately) identify this point in polynomial time. 
+Together, this yields our main results~\Cref{THM:mainpolyhedron} and~\Cref{COR:mainpolyhedron}.
+
+The main technical tool for establishing this dichotomy is a structure theorem  for convex polynomials (\Cref{THM:quantstructure}), which allows us to write $f$ as the sum of a linear function and a polynomial (of fewer variables) which is bounded from below by a $\mu$-strongly convex quadratic. 
+Namely, we show that any convex polynomial $f$ decomposes as
+\begin{equation} \label{EQ:TO:structurethm}
+    f(x) = f(x_\mathcal{U}) - \langle w, x \rangle \geq q(Ux) - \langle w, x \rangle \quad (\forall x \in \R^n),
+\end{equation}
+where $U \in \Q^{k \times n}$ is a matrix with orthogonal rows spanning a subspace $\mathcal{U} \subseteq \R^n$, $w \in \mU^\perp$ is a rational vector (possibly $w = 0$), and $q \in \Q[y]$ is a $k$-variate, $\mu$-strongly convex quadratic.
+Moreover, we show that $U, w$ can be computed in polynomial time in $\enc{f}$, and that $\mu \geq 2^{-\poly(\enc{f})}$.
+
+In the unconstrained case (when $P = \R^n$), this immediately gives us the desired norm bound on the minimizer of $f$. Indeed, we then have $f_{\min} = - \infty$ if and only if $w \neq 0$, in which case $\lim_{\lambda \to \infty} f(\lambda w) = - \infty$. On the other hand, if $w = 0$, the strongly convex lower bound~\eqref{EQ:TO:structurethm} on~$f$ implies that it has a global minimizer of small norm (in terms of $\mu$). 
+For general $P$, rather than checking whether $w = 0$, we will show that $f$ is unbounded from below on $P$ if and only if a certain linear system of inequalities (involving $U$ and $w$) is feasible. If not, Farkas' lemma provides an explicit witness of this fact, which we use to show that $f$ attains its minimum on $P$ at a point whose norm is at most singly-exponential in $\enc{f}$ and $\enc{P}$.
+We explain this in more detail in~\Cref{SEC:applystruct} below. First, we outline our proof of~\Cref{THM:quantstructure}, i.e., of the decomposition~\eqref{EQ:TO:structurethm}.
+
+\subsection{Structure theorem for convex polynomials}
+The key to our proof of~\Cref{THM:quantstructure} is to consider the \emph{Hessian determinant} (or just \emph{hessian}) of $f$, which is given by $h_f(x) \coloneqq \det \left( \nabla^2 f(x) \right)$. By convexity, $h_f(x) \geq 0$ for all $x \in \R^n$. Intuitively, the hessian captures whether the graph of $f$ is locally `curved' around a point $x \in \R^n$ ($h_f(x) > 0$), or `straight' in at least one direction~(${h_f(x) = 0}$), corresponding to a zero eigenvector of $\nabla^2 f(x)$. For our proof, we exhibit two complimentary local-to-global phenomena involving the hessian of $f$:
+\begin{enumerate}
+    \item If $h_f \not \equiv 0$, i.e., if $\nabla^2 f(a) \succ 0$ at even a single point $a \in \R^n$, then $f$ admits a \emph{global}, \mbox{$\mu$-strongly} convex lower bound of degree two. Moreover, we have $\mu \geq 2^{-\poly(\enc{f})}$ independently of~$a$.
+    \item If $h_f \equiv 0$, i.e., if $\nabla^2 f(x)$ is singular for all $x \in \R^n$, then $f$ admits a \emph{global} direction of linearity. That is, there is a nonzero $v \in \R^n$ such that the directional derivative $\mynabla{v} f$ is constant on~$\R^n$.
+    In other words, we have $f(x) = f(x_{\mV^\perp}) + c \langle x, v \rangle$ for all $x \in \R^n$, where $c \in \R$ and $\mV = \spann{v}$.
+\end{enumerate}
+At a high level, these observations allow us to prove~\Cref{THM:quantstructure} as follows: if $h_f \not \equiv 0$ is not identically zero, we are done immediately (setting $\mU = \R^n$ and $w = 0$). If $h_f \equiv 0$, we may conclude that $f$ has a direction of linearity. After projecting onto the complement of that direction, we are left with a polynomial in one fewer variable which differs from $f$ only by a linear term.
+Iterative application of this idea allows us to ``eliminate'' variables one at a time until the ``remaining'' polynomial has a nonzero hessian (and thus admits a strongly convex lower bound). For technical reasons, it turns out that it is preferable to eliminate all variables ``in one shot'', and we will show how to do so.
+In what follows, we explain in more detail how to prove the two observations above separately, and how to combine them to obtain the decomposition~\eqref{EQ:TO:structurethm}.
+
+\paragraph{Nonzero hessian implies a strongly convex lower bound.} We show that any convex polynomial $f \in \Q[x]$ with $h_f \not \equiv 0$ admits a $\mu$-strongly convex, quadratic lower bound, where $\mu$ is at least inverse exponential in the encoding size of $f$. Our starting point is the following lemma.
+\begin{restatable}[{\cite[Lemma 5]{Ahmadi2024}}]{lemma}{AhmadiLB}
+\label{LEM:stronglyconvex}
+    Let $p \in \R[x]$ be a convex polynomial. For any $a \in \R^n$, we have
+    \begin{equation} 
+    \label{EQ:stronglyconvexAhmadi}
+        p(\x) \geq p(a) + \langle \nabla p (a), 
+        \, \x-a \rangle + \frac{\langle x-a, \, \nabla^2 p(a) \cdot (x-a) \rangle}{4 \deg(p)^2} \quad (\forall x \in \R^n).
+    \end{equation}    
+\end{restatable}
+This lemma can be seen as an extension of the fact that a convex function is globally lower bounded by its tangents: The RHS of~\eqref{EQ:stronglyconvexAhmadi} is equal to the second-order Taylor expansion of $p$ around~$a$, up to a rescaling of the quadratic term by a factor $\approx 1/\deg(p)^2$. Its proof relies on a clever combination of basic facts on integration of low-degree (matrix) polynomials: Write the first-order error term of the Taylor series as an integral involving $\nabla^2 p$; apply a classical quadrature rule~\cite{ClenshawCurtis1960} to reduce the integral to a finite, weighted sum $\sum_{i}w_i \cdot \nabla^2 p(y^{(i)})$ with weights $\approx 1/\deg(p)^2$~\cite{Imhof63}; finally, use the fact that $\nabla p(x) \succeq 0$ for all $x$ to lower bound the sum by a single term $w_0 \cdot \nabla^2 p(a)$.
+
+From~\eqref{EQ:stronglyconvexAhmadi}, we get a strongly convex lower bound on $f$ if $h_f \not \equiv 0$. Namely, if $\nabla^2 f(a) \succ 0$, then
+    \begin{equation} \label{EQ:stronglyconvex}
+        f(\x) \geq q(x) \coloneqq f(a) + \langle \nabla f (a), \x-a \rangle + \frac{\lambda_{\min}\left(\nabla^2 f (a)\right)}{4 \deg(f)^2} \cdot \|x-a\|^2  \quad (\forall x \in \R^n).
+    \end{equation}
+This lower bound was used in~\cite{Ahmadi2024} to establish that convex polynomials with nonzero hessian are \emph{coercive}, and therefore have a unique global minimizer. For us, this is not enough; we need an explicit bound on the norm of that minimizer. 
+Note that~\eqref{EQ:stronglyconvex} actually gives us a $\mu$-strongly convex lower bound on $f$, where
+\begin{equation}
+    \label{EQ:mu}
+    \mu = \mu(a) = \frac{\lambda_{\min}(\nabla^2 f (a))}{2 \deg(f)^2} >0.
+\end{equation}
+Unfortunately, this $\mu$ could be arbitrarily close to $0$, as there is no way to control $\lambda_{\min}(\nabla^2 f (a))$. 
+We would need to find an $a \in \R^n$ such that $\mu(a)$ in~\eqref{EQ:mu} is at least inversely exponential in $\enc{f}$. Importantly, we need to do so without making any further assumptions on $f$. We show that this is possible by establishing the following two facts:
+\begin{itemize}
+    \item If $h_f \not \equiv 0$, then there exists an $a \in \Q^n$ such that $\nabla^2 f(a) \succ 0$ with $
+    \bc(a) \leq \poly(n,\, \deg(f))$. That is, if $h_f(a) \neq 0$ for \emph{any} $a \in \R^n$, then in fact $h_f(a) \neq 0$ for an $a \in \Q^n$ of small bit length. 
+    \item For any $a \in \Q^n$ with $\nabla^2 f(a) \succ 0$, we have 
+    $
+    \lambda_{\min}\big( \nabla^2 f(a) \big) \geq 2^{-\poly(\enc{f}, \, \bc(a))}.$ That is, for any $a$ of small bit length, the lower bound~\eqref{EQ:stronglyconvex} is $\mu$-strongly convex with $\mu > 0$ not too small.
+\end{itemize}
+Combined, these facts show that
+\begin{equation} \label{EQ:TO:stronglyconvexlb}
+    h_f \not \equiv 0 \implies f \text{ admits a $\mu$-strongly convex, quadratic lower bound, where } \mu \geq 2^{-\poly(\enc{f})}.
+\end{equation}
+
+To prove the first fact, note that the set of (real) zeroes of a nonzero polynomial has measure zero in~$\R^n$. Thus, if $h_f \not\equiv 0$, we intuitively expect virtually any point $a \in \Q^n$ to satisfy $\nabla^2 f(a) \succ 0$. This intuition can be made precise using the Schwartz-Zippel lemma (\Cref{LEM:ZS}), which gives an explicit set of points $B \subseteq \Z^n$, each of small bit length, such that $h_f(a) \neq 0$ for at least one $a \in B$.
+
+For the the second fact, note that $\nabla^2 f(a)$ is a positive definite, rational matrix whose bit length is bounded by $\poly(\enc{f},\, \bc(a))$. The eigenvalues of such matrices can be bounded away from $0$ using Cramer's rule (see~\Cref{LEM:integermatrix} and \Cref{COR:rationalmatrix}).
+
+\paragraph{Identically zero hessian implies direction of linearity.}
+In light of the above, we investigate when the hessian~$h_f$ of a convex polynomial $f$ is identically zero, i.e., when $\nabla^2 f$ is \emph{nowhere} definite. We show that this happens if, \emph{and only if} $f$ has a (global) direction of linearity. That is to say,
+\begin{equation}
+    \label{EQ:Hessianvanishes}
+    h_f \equiv 0 \iff \exists v \in \R^n \setminus \{ 0\}, \, c \in \R : \mynabla{v} f \equiv c.
+\end{equation}
+Note that the backward implication of~\eqref{EQ:Hessianvanishes} is immediate: if there exist (fixed) $v \in \R^n$, $c \in \R$ so that $\mynabla{v} f(x) = c$ for all $x \in \R^n$, then~$v$ is a kernel vector of $\nabla^2 f(x)$ for all $x \in \R^n$. The forward implication tells us that we may reverse the quantifiers: If $f$ has a \emph{local} direction of linearity for every~${x \in \R^n}$ (i.e, $\nabla^2 f(x)$ has a kernel vector $v = v(x)$ for all $x \in \R^n$), then in fact it has a \emph{global} direction of linearity.
+Its validity is more subtle; in particular it \emph{does not} hold for nonconvex polynomials. Interestingly, O. Hesse himself worked on this question, and (mistakenly) claimed the equivalence holds in the general case. We discuss this further below.
+
+To prove the forward implication of~\eqref{EQ:Hessianvanishes}, assume that $h_f \equiv 0$. We view the gradient~$\nabla f$ of $f$ as the smooth function~${\R^n \to \R^n}$ given by $x \mapsto \nabla f(x)$, and consider its range 
+\[
+\nabla f(\R^n) \coloneqq \{ \nabla f(x) : x \in \R^n \} \subseteq \R^n.
+\]
+We can deduce the following two properties of this set:
+\begin{itemize}
+    \item The Hessian $\nabla^2 f$ may be seen as the Jacobian of $\nabla f$. The fact that~${\det \big(\nabla^2 f\big) \equiv 0}$ means that every $x \in \R^n$ is a critical point of $\nabla f$. Thus,
+    Sard's theorem (\Cref{THM:Sard}) tells us that~$\nabla f(\R^n)$ has Lebesgue measure zero in~$\R^n$.
+\item The range of the gradient of a (sufficiently smooth) convex function is known to be an \emph{almost convex} set, meaning $\nabla f(\R^n)$ contains the interior of its convex hull.\footnote{This fact appears to be rather classical, going back at least to~\cite[Corollary 2]{Minty1964} (which proves a more general statement). For completeness, we include a short proof using convex conjugates (\Cref{LEM:convexgradient}). 
+} 
+\end{itemize}
+It follows that $\nabla f(\R^n)$ is contained in an affine hyperplane: If not, its convex hull would contain a full-dimensional simplex, and its interior would have positive measure. But that means that there is a $v \in \R^n$ and a $c \in \R$ such that~${\mynabla{v} f(x) \coloneqq \langle v, \nabla f(x) \rangle = c}$ for all $x \in \R^n$, meaning $f$ has a (global) direction of linearity.
+
+
+\paragraph{One-shot variable elimination: proof of the structure theorem.} \label{SEC:proofdecomp}
+Next, we explain how to combine the above
+to prove our structure theorem. Recall that we wish to write a convex polynomial $f \in \Q[x]$ as the sum of a linear function and a polynomial (in fewer variables) that is lower bounded by a strongly convex quadratic. If the hessian $h_f \not \equiv 0$ is not identically zero, we are done immediately by~\eqref{EQ:TO:stronglyconvexlb}. The idea is that this assumption is essentially without loss of generality in light of~\eqref{EQ:Hessianvanishes}, which tells us that if $h_f \equiv 0$, we can identify a direction in which $f$ is linear. Projecting onto the complement of this direction allows us to reduce to a problem in one fewer variable. 
+Successive application of this procedure yields a decomposition of $f$ into a linear function and a polynomial~$\hat f$ whose hessian is not identically zero (to which we may then apply~\eqref{EQ:TO:stronglyconvexlb}). 
+In what follows, we formalize this idea. In fact, we will show how to eliminate all variables ``in one shot''.
+
+First, we identify all directions of linearity of $f$, which make up a subspace $\mL \subseteq \R^n$. For this, note that the partial derivatives $\partial f / \partial x_i$ of $f$ are polynomials (in $x$). Thus, we can adopt a new way of viewing the gradient $\nabla f$, namely as the linear operator~${\R^n \to \R[x]}$ given by
+\[
+    \nabla f : v \mapsto \mynabla{v} f = \sum_{i=1}^n v_i \cdot \frac{\partial f}{\partial x_i} \in \R[x] \quad (v \in \R^n).
+\]
+Then, $\mL \subseteq \R^n$ is just the subspace of vectors mapped to a constant polynomial by $\nabla f$, i.e.,
+\[
+     \mL \coloneqq \{ v \in \R^n : \mynabla{v} f \equiv c \text{ for some } c \in \R \}.
+\]
+Clearly, $\mL \supseteq \ker( \nabla f)$.  
+In fact, since $\mL$ is the inverse image of a subspace of dimension $1$, we find that $\mL = \ker(\nabla f) \oplus \spann{w}$, where $w \in \ker(\nabla f)^\perp$ is either zero or satisfies $\mynabla{w} f \equiv -1$.
+Now, set $\mU = \mL^\perp$. Construct a matrix $U \in \R^{k \times n}$ whose rows $U_1, \ldots, U_k$ form an orthonormal basis of $\mU$. Let $\hat f \in \R[y_1, \ldots, y_k]$ be the polynomial defined by
+$\hat f(y) \coloneqq f(\sum_{i=1}^k y_iU_i)$, so that~${\hat f (Ux) = f(x_\mU)}$.
+By construction, 
+\begin{equation}
+\label{EQ:Hessiandecomp}
+  f(x) = f(x_\mU + x_{\mL}) = f(x_\mU) - \langle w, x \rangle = \hat f (Ux) - \langle w, x \rangle \quad (\forall x \in \R^n).  
+\end{equation}
+We claim that the hessian of $
+\hat f$ is not identically zero. By~\eqref{EQ:Hessianvanishes}, it suffices to show that $\hat f$ has no directions of linearity.
+For this, note that the partial derivatives of $\hat f$ are linear combinations of the partial derivatives of $f$ along directions in $\mU$. Thus, if $\hat f$ had a direction of linearity, this would imply that~$f$ has a direction of linearity in $\mU$, which contradicts the fact that $\mU = \mL^\perp$.
+
+\paragraph{Bit complexity.}
+We have shown how to construct a matrix $U \in \Q^{k \times n}$, a polynomial~$\hat f$ with nonzero hessian, and a vector $w$ with $Uw = 0$ so that $f(x) = \hat f(Ux) - \langle w, x \rangle$. As we noted, we may then apply~\eqref{EQ:TO:stronglyconvexlb} to~$\hat f$ to obtain the desired decomposition of $f$ into a linear function and a polynomial with a $\mu$-strongly convex, quadratic lower bound.
+A technical but important detail that we have ignored here is that in order to fully prove~\Cref{THM:quantstructure}, we need to make sure that this $\mu$ is sufficiently large, namely at least inverse exponential in $\enc{f}$. For that, it would suffice to show that $\enc{\hat{f}}$ is at most polynomial in $\enc{f}$.
+Moreover, we need to compute the matrix~$U \in \Q^{k \times n}$ and the vector~$w\in\Q^n$ in polynomial time in $\enc{f}$. In short, we need to show that the linear algebra used to construct $U, w$ and $\hat f$ above can be performed in polynomial time (in the bit model).
+
+The important observation is that, for $f \in \Q[x]$, the linear operator $\nabla f : v \mapsto \mynabla{v} f$ can be expressed as a rational matrix $\mat{\nabla f}$, whose columns represents the (monomial) expansion of the partial derivatives $\partial f / \partial x_i \in \Q[x]$. 
+This matrix has bit length at most $\poly(\enc{f})$. 
+Let $\mathds{1}$ denote the expansion of the constant polynomial $x \mapsto 1$. 
+It suffices to perform the following operations:
+\begin{enumerate}[noitemsep]
+    \item Find a $w \in \ker\left(\mat{\nabla f}\right)^\perp$ with $\mat{\nabla f} \cdot w = -\mathds{1}$, or set $w=0$ if no solution exists;
+    \item Compute an orthogonal basis for $\mU = \mL^{\perp}$, where $\mL \coloneqq \ker \left( \mat{\nabla f} \right) \oplus \spann{w}$.
+\end{enumerate}
+Both can be achieved in polynomial time via standard results on linear system solving and Gram-Schmidt orthogonalization in the bit model, see~\Cref{APP:LA}.
+A detail here is that ortho\emph{normalization} of a set of vectors is typically not possible in polynomial time (the resulting vectors might not be rational). For this reason, the matrix $U$ appearing in~\Cref{THM:quantstructure} has merely orthogonal rows.
+
+\paragraph{Some remarks on scope: Hesse's redemption.} \label{SEC:OHesse}
+One might wonder if the decomposition~\eqref{EQ:Hessiandecomp} of a polynomial into a linear part and a part with nonzero hessian holds for \emph{nonconvex} polynomials as well. We only use convexity at one point in its proof, namely to show that $h_f \equiv 0$ if and only if $f$ has a direction of linearity~\eqref{EQ:Hessianvanishes}. Intuitively, it seems plausible that this equivalence holds in general.
+It turns out that it does not, and the question has an interesting history. In particular, O. Hesse himself (mistakenly) made this claim~\cite{OHesse}, but was later corrected~\cite{Gordan1876}; 
+see also~\cite{Garbagnati2009}. Without convexity, we are only able to conclude from $h_f \equiv 0$ that the partial derivatives of $f$ are \emph{algebraically dependent}, i.e., there exists a nonzero polynomial $\pi$ such that $\pi(\partial f / \partial x_1, \ldots, \partial f / \partial x_n) \equiv 0$. There are examples where this $\pi$ has to be of degree at least $2$~\cite{Gordan1876}. For completeness, we include such an example in~\Cref{APP:HessianCounterexample}. On the other hand, Hesse's claim finds some redemption in this work: it holds for convex polynomials, and this is a crucial ingredient of our proof.
+
+A further subtlety here is that our proof of~\eqref{EQ:Hessianvanishes} does not actually make use of the fact that $f$ is a polynomial (although, we do use this fact to \emph{compute} the directions of linearity). Indeed, any (sufficiently smooth) convex function can be written as the sum of a linear function and a function whose Hessian matrix is not everywhere singular. 
+On the other hand, our primary motivation for deriving this decomposition was to then apply~\eqref{EQ:TO:stronglyconvexlb} to obtain a strongly convex, quadratic lower bound on the nonlinear part. 
+Such a bound cannot be obtained in general.
+For example, $t \mapsto \exp(t)$ is convex, with \emph{everywhere} definite Hessian, but it is not even coercive.
+
+\subsection{Applications in convex polynomial programming} \label{SEC:applystruct}
+In this section, we show how to apply our structure theorem (\Cref{THM:quantstructure}) to convex polynomial programming.
+Let $f \in \Q[x]$ be a convex polynomial, and let $P = \{Ax \leq b\}$ be a (nonempty) convex polyhedron. 
+Our goal is to show that $f$ is either unbounded from below on~$P$ (in which case we show that this can be determined efficiently) or it has a minimizer $x^*$ on $P$ of norm at most $2^{\poly(\enc{f}, \, \enc{P})}$ (which can then be identified efficiently by the ellipsoid method). Together, this yields~\Cref{THM:mainpolyhedron} and~\Cref{COR:mainpolyhedron}.
+Recall that the structure theorem gives us a decomposition
+\begin{equation}\label{EQ:structuretheoremforapplication}
+    f(x) = f(x_\mU) - \langle w,x \rangle \quad (\forall x \in \R^n),
+\end{equation}
+where $\mU \subseteq \R^n$ is a subspace spanned by the (orthogonal) rows of a matrix $U \in \Q^{k \times n}$, ${w \in \mU^\perp}$, and  $f(x_\mU) \geq q(Ux)$ for some $k$-variate, $\mu$-strongly convex quadratic, polynomial $q \in \Q[y]$.
+Furthermore, the bit lengths of $U$, $w$ and $q$ are all polynomial in~$\enc{f}$.
+
+\paragraph{Detecting unboundedness.}
+We first prove that $f$ is unbounded from below if and only if there exists a solution to a certain linear system of inequalities, which will allow us to detect unboundedness efficiently.
+Recall that in the unconstrained case (i.e., when $P = \R^n$), $f$ is unbounded from below if and only if $w \neq 0$.
+In the constrained case, we prove that unboundedness is equivalent to the feasibility of the following linear system of inequalities:
+\begin{equation}\label{EQ:conditionforunboundedness}
+    A x^0 \leq 0, \: Ux^0 = 0, \: \langle w, x^0 \rangle = 1.
+\end{equation}
+If $P = \R^n$, \eqref{EQ:conditionforunboundedness} reduces to $\exists x^0 : \: Ux^0 = 0, \: \langle w, x^0 \rangle = 1$ or in other words $w \neq 0$.
+Recall that, if $P = \R^n$ and $w \neq 0$, $f$ is unbounded from below since ${\lim_{\lambda \to \infty} f(\lambda w) = - \infty}$.
+For general $P$, the points $\lambda w$ need not be in $P$. However, for any solution $x^0$ to \eqref{EQ:conditionforunboundedness} and any $x \in P$, by~\eqref{EQ:structuretheoremforapplication},
+\[
+    x + \lambda x^0 \in P \: (\lambda \geq 0) \quad \text{and} \quad f(x + \lambda x^0) = f(x_\mU) - \langle w, x + \lambda x^0 \rangle = f(x) - \lambda \to -\infty \quad (\lambda \to \infty).
+\]
+This shows condition \eqref{EQ:conditionforunboundedness} is sufficient.
+To show it is also necessary, assume that $f$ is unbounded from below.
+This means there is a sequence $(x^\ell)_{\ell \geq 1} \subseteq P$ of points with $\lim_{\ell \to \infty} f(x^\ell) = -\infty$.
+Using a compactness argument, a subsequence of the normalized points $x^\ell/\|x^\ell\|$ converges to a unit vector~$x^0$.
+If $\mU \oplus \spann{w} = \R^n$, using~\eqref{EQ:structuretheoremforapplication}, we are able to show that this $x^0$ satisfies \eqref{EQ:conditionforunboundedness}.
+If not, we need to do a more careful limit argument to ensure that $x^0 \not\in (\mU \oplus \spann{w})^\perp$; see \Cref{SEC:fullproofconditionforunbounded}.
+
+\paragraph{Bounding the norm in a subspace.}
+From now on, we assume that $f$ is bounded from below on~$P$.
+Recall that our goal is to show that $f$ attains its minimum at a point of small norm.
+The structure theorem (cf. \eqref{EQ:structuretheoremforapplication}) shows that the value of $f(x)$ only depends on the component of $x$ in the subspace~${\mU \oplus \spann{w}}$.
+Thus, we cannot bound the norm of all minimizers.
+Instead, we first show that any minimizer has small norm in the subspace $\mU \oplus \spann{w}$, and then show we can lift to the full space without increasing the norm too much. 
+Using the structure theorem, after writing~$q$ as its degree-2 Taylor expansion around $0$ and using $\mu$-strong convexity of $q$, we get
+\begin{equation}\label{EQ:boundonf}
+    f(x) \geq q(0) -  \|\nabla q(0)\| \cdot \|Ux\| + \frac{\mu}{2} \|Ux\|^2 - \langle w, x \rangle  \quad (\forall x \in \R^n).
+\end{equation}
+We want to show that if $x^*$ is a minimizer of $f$ on $P$, then both $\|Ux^*\|$ and $|\langle w, x^*\rangle|$ are small.
+To do so, we will show that for any $x 
+\in P$, we have that $|\langle w, x\rangle|$ is large only if $\|Ux\|$ is large as well. Then, since $\|Ux\|$ appears quadratically in~\eqref{EQ:boundonf}, we can conclude that both quantities must be small for minimizers.
+
+Formally, since $f$ is bounded from below on $P$, there does not exist an $x^0$ as in~\eqref{EQ:conditionforunboundedness}.
+Farkas' lemma gives us a witness for this fact; namely a vector $\lambda \geq 0$ and a vector $z \in \R^n$ such that $A^\top \lambda + U^\top z - w = 0$. We thus get $\langle w, x\rangle = \langle z, Ux \rangle + \langle \lambda, Ax \rangle$ for any $x \in \R^n$.
+For $x \in P$, we have $Ax \leq b$.
+Together with $\lambda \geq 0$, this implies that $\langle \lambda, A x \rangle \leq \lambda^\top b$ is uniformly bounded for all $x \in P$.
+Thus, we have
+\begin{equation}\label{EQ:Farkasidentity}
+   |\langle w, x\rangle| \leq \|z\| \cdot \|Ux\| + \|\lambda\| \cdot \|b\| \quad (\forall x \in P).
+\end{equation}
+Using this in \eqref{EQ:boundonf} we get
+\begin{equation}\label{EQ:boundonf2}
+    f(x) \geq q(0) -  \|\nabla q(0)\| \cdot \|Ux\| - \|z\| \cdot \|Ux\| - \|\lambda\| \cdot \|b\| + \frac{\mu}{2} \|Ux\|^2 \quad (\forall x \in P).
+\end{equation}
+As the the right-hand side of \eqref{EQ:boundonf2} is a quadratic polynomial in $\|Ux\|$ with positive leading coefficient, $\|Ux^*\|$ needs to be small for any minimizer $x^*$ of $f$ on $P$.
+Combining this with \eqref{EQ:Farkasidentity}, this implies that $|\langle w, x^* \rangle |$ is small.
+To finish the argument, we need to relate these bounds to the bit length of the input.
+Before we do so, we first show how to lift this bound to the full space.
+
+
+\paragraph{Lifting to the full space.}\label{SEC:TO:norminVdirectionalsosmall}
+So far, we have shown that for any minimizer $x^*$ of $f$ on~$P$, the norm in the subspace $\mU \oplus \spann{w}$ needs to be small.
+The norm of $x^*$ in the full space might still be large and the projection to $\mU \oplus \spann{w}$ might not be feasible.
+Thus, it remains to lift this projection to a feasible solution in the full space without increasing the norm too much.
+This lifted point will automatically be a minimizer of $f$ on $P$ since adding any vector in $(\mU \oplus \spann{w})^\perp$ does not change the value of~$f$.
+Formally, let $x^*$ be any minimizer of $f$ on $P$.
+We want to find  
+\begin{equation}\label{EQ:smallnorminVsystem}
+    x' \in P: \:  x'_{\mU \oplus \spann{w}} = x^*_{\mU \oplus \spann{w}}
+\end{equation}
+with $x'$ having small norm.
+The condition \eqref{EQ:smallnorminVsystem} defines a linear system.
+It is feasible since $x^* \in P$.
+If this system had small bit length, we could conclude immediately that it has a solution $x'$ of small bit length.
+However, the right-hand side of \eqref{EQ:smallnorminVsystem} need not even be rational (we only know its norm is small).
+We show that the matrix of this linear system has small bit length and the vector of the system has small norm, which we use to show there is a solution of small norm; see~\Cref{SEC:fullproofboundinVdirection}.
+\paragraph{Bit complexity.}
+It remains to relate the norm bounds on $x^*$ derived above to  the bit length of the input.
+For this, we need to bound all the terms that occur in \eqref{EQ:Farkasidentity} and \eqref{EQ:boundonf2}.
+By the structure theorem we have that $\bc(q) \leq \poly(\enc{f})$ and $\mu \geq 2^{-\poly(\enc{f})}$ and thus the terms involving $q$ and $\mu$ can be bounded appropriately.
+Using a quantitative version of Farkas' lemma we also get that the terms involving $z$ and $\lambda$ can be bounded in terms of the bit length of the input.
+This allows us to conclude that the norm of any minimizer $x^*$ in the subspace $\mU \oplus \spann{w}$ is at most $2^{\poly(\enc{f}, \, \enc{P})}$.
+The lifting argument then also shows that there exists a minimizer $x^*$ that has norm at most $2^{\poly(\enc{f}, \, \enc{P})}$ in the full space, which completes the proof.
+
+

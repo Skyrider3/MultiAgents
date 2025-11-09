@@ -1,0 +1,175 @@
+\section{Experiments}
+
+In order to demonstrate the efficacy of our implementation,
+we evaluate and compare the runtime of Algorithm~\ref{alg:WECT} with existing
+methods on a variety of datasets.
+
+\subsection{Experimental Design}
+
+The following section outlines the experimental design, including the datasets used,
+the algorithms compared, and the parameters used in the experiments.
+Experiments were performed on a single node with a single CPU or a single GPU (where applicable).
+The CPU used was an EPYC Rome, and the GPU used was an NVIDIA A40.
+Run times were recorded using the \texttt{timeit} Python library with GPU synchronization
+(to prevent inaccurate timing from asynchronous GPU operations).
+
+\paragraph{Datasets}
+The methods were evaluated on both image and three-dimensional point cloud datasets.
+In particular, we use:
+\begin{itemize}
+    \item \textbf{Fashion-MNIST} \cite{xiaoFashionMNIST}.
+        Fashion-MNIST is a dataset consisting of $28 \times 28$ grayscale images of clothing items.
+        In our experiments we use the training set, which consists of $60,000$ images.
+
+    \item \textbf{ImageNet} \cite{deng2009ImageNet}.
+        The Large Scale Visual Recognition Challenge (ILSVRC) 2012-2017 subset of ImageNet was used.
+        From the $50,000$ validation images, we randomly selected $1,000$ images with a dimension (horizontal or vertical) of between
+        $200$ and $500$ pixels.
+        This creates a dataset of images that generate complexes large enough to demonstrate the computational efficiency of our method,
+        while still being small enough to avoid memory constraints in our computation environment.
+
+\end{itemize}
+
+\paragraph{Implementations}
+\secref{existing-frameworks} outlines a variety of existing methods for
+computing topological functions and transforms.
+As discussed in \remref{which-ecf}, methods like \eucalc, \demeter,
+and \sinatra compute the directional (W)ECF and (W)ECT,
+while methods like \fasttopology and \gpuecc compute the ECF.
+%
+For computation of the WECT, we compare our method with \eucalc
+\footnote{
+    The implementation of \eucalc was accessed at \url{https://github.com/HugoPasse/Eucalc}.
+}.
+Note that \demeter and \sinatra are not optimized for speed, and are thus not included in the comparison.
+Furthermore, \demeter is included in a comparison with \eucalc in \cite{lebovici2024efficientcomputationtopologicalintegral},
+where the implementation is shown to be significantly slower than \eucalc.
+%
+In the case of computing the ECF, we compare our method with \fasttopology
+\footnote{
+    The implementation of \fasttopology was accessed at \url{https://github.com/zavalab/ML/tree/master/FastTopology}.
+}.
+Note that the implementation of \gpuecc is only available on Windows operating systems,
+which was not available in our computation environment.
+
+\subsection{Results}
+We now present the experimental results, measured by the speedup factor,
+of our method over the existing methods.
+%
+Speedup factor is defined as the ratio of the average runtime of the existing
+baseline method (either \eucalc or \fasttopology)
+divided by the average runtime of the proposed method (\pyect).
+%
+The first section explores the computation of the WECT,
+while the second section explores the computation of the ECF.
+
+\subsubsection{WECT Computation}
+In this section, we present the results of computation of the WECT using our
+vectorized method.
+%
+We provide a comparison of the runtime of our method with \eucalc on the
+Fashion-MNIST and ImageNet datasets.
+%
+While \pyect significantly outperforms \eucalc on the Fashion-MNIST dataset, the
+speedup is far more pronounced on the ImageNet dataset.
+%
+This is because Fashion-MNIST consists of $28 \times 28$ pixel images while the
+images we selected from ImageNet are significantly bigger.
+
+The results for Fashion-MNIST are shown in \figref{results_fmnist_speedup}.
+%
+As the number of directions increases, the speedup of our method over \eucalc increases linearly.
+%
+We note that increasing the number of heights used in the vectorization of our method (which is not a parameter of \eucalc)
+does not have a significant effect on the speedup.
+%
+At $25$ directions, our method is approximately twice as fast as \eucalc.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\textwidth]{figs/experiments/fmnist_speedup_vs_num_dirs_multi_t}
+    \caption{Speedup of \pyect over \eucalc on WECT computation of Fashion-MNIST.
+    }
+    \label{fig:results_fmnist_speedup}
+\end{figure}
+
+The results for ImageNet are shown in \figref{results_imagenet_speedup}.
+%
+As with Fashion-MNIST, as the number of directions increases,
+the speedup of our method over \eucalc increases.
+%
+However, as the complexes are significantly larger,
+for $25$ directions the speedup of our method ranges from
+$25$ times to $170$ times.
+%
+As \eucalc does not explicitly depend on the number of heights,
+its runtime remained constant as the number of heights used increases.
+%
+However, our method's speedup factor increases as the number of
+heights increases (despite requiring more vector computation).
+%
+While this appears counterintuitive, in reality the vectorized code
+encounters less efficient memory access patterns at lower numbers of heights,
+which leads to a smaller advantage over \eucalc with the smaller tensor values.
+%
+For a technical description of memory access patterns specific to
+the GPU hardware used in these experiments, we refer the reader to
+\cite{gpu2025}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\textwidth]{figs/experiments/imagenet_speedup_vs_num_dirs_multi_t}
+    \caption{Speedup of \pyect over \eucalc on WECT computation of ImageNet.}
+    \label{fig:results_imagenet_speedup}
+\end{figure}
+
+For both of these datasets, \pyect demonstrates a significant speedup
+over \eucalc.
+%
+Note, however, that \eucalc computes exact height values for the WECT,
+whereas our method computes a vectorization of the WECT.
+%
+Of course, in many applied settings, vectorizations are more desirable than
+exact heights due to their utility in machine learning and statistical pipelines.
+%
+Obtaining a vectorization from \eucalc involves an additional step that further
+slows it down in comparison to \pyect.
+%
+The above experiments demonstrate that \pyect admits large speedups when
+compared to \eucalc, even without the additional step of producing a
+vectorization in \eucalc.
+
+\subsubsection{ECF Computation}
+In this section, we present the results of computation of the ECF using our vectorized method.
+%
+We compare our method with \fasttopology on the Fashion-MNIST and ImageNet datasets.
+%
+Additionally, a ``padded'' ImageNet dataset was added, which increased the dimensions of each image to
+a size of $1000 \times 1000$ pixels, with intensities drawn uniformly at random.
+%
+The padded dataset was added because for smaller datasets (e.g., Fashion-MNIST),
+the overhead of parallelization can mitigate the computational speedups due to
+the smaller size of the complexes.
+%
+For \pyect, the number of heights was fixed to $256$ to match that of \fasttopology
+(and compute across each intensity).
+%
+The results are presented in \figref{results_sublevel_speedup}.
+
+Across all datasets, \pyect demonstrates a significant speedup over \fasttopology.
+%
+For the single core case, due to the small size of the complexes in Fashion-MNIST, the results of the two methods are comparable.
+%
+However, in the single core case for the larger datasets, \pyect demonstrates a speedup of nearly $20$ times for the unpadded dataset,
+and nearly $30$ times for the padded dataset.
+%
+As the number of cores used in \fasttopology increased, the advantage of \pyect decreased slightly.
+%
+However, \pyect still demonstrated a speedup of nearly $5$ times for Fashion-MNIST, $10$ times for ImageNet, and $20$ times for the padded ImageNet dataset.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\textwidth]{figs/experiments/sublevel_speedup_vs_fasttopology_multiple_cores}
+    \caption{Speedup of \pyect over \fasttopology across multiple cores of ECF computation on Fashion-MNIST, ImageNet, and a padded ImageNet}
+    \label{fig:results_sublevel_speedup}
+\end{figure}

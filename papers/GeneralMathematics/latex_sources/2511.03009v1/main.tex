@@ -1,0 +1,487 @@
+
+\documentclass[11pt,reqno]{amsart}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,amsfonts,amsthm,mathrsfs}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{color}
+\usepackage{cite}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{corollary}[thm]{Corollary}
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[thm]{Remark}
+\numberwithin{equation}{section}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\qedsymbol}{$\blacksquare$}
+
+\title[Bailey--Zeta Transform and Classical Limits]%
+{The Bailey--Zeta Transform and its Classical Limit to the Riemann Zeta Function}
+
+\author{Mahipal Gurram}
+\address{Department of Mathematics, SVNIT,Surat, India}
+\email{mahipalgurram2002@gmail.com}
+
+
+\subjclass[2020]{Primary 33D15; Secondary 11M06, 11M35, 33B15}
+\keywords{Bailey pairs, $q$-series, Riemann zeta function, Euler constant, $q$-analogues, hypergeometric identities}
+
+\begin{document}
+
+\begin{abstract}
+We develop a unified analytic and algebraic framework connecting the theory of Bailey pairs with $q$-deformations of the Riemann zeta function.  
+First, an algebraic theorem (Bailey-Zeta transform) extends the classical Bailey lemma to sequences weighted by a zeta-type factor $q^{sr}$.  
+Next, we establish rigorously that the generating function arising from the pair $\alpha_r\equiv1$ converges, under the scaling $(1-q)^s$, to $\zeta(s)$ as $q\to1^-$.  
+A $q$-analogue of the Euler--Mascheroni constant naturally emerges from this framework, and its limit is shown to recover $\gamma$.  
+The approach highlights a deep correspondence between combinatorial $q$-series identities and analytic number theory.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+The theory of $q$-series plays a central role in modern mathematics, connecting combinatorics, number theory, and special functions.  
+One of the most powerful tools in this field is the concept of a \emph{Bailey pair}, introduced by W.~N.~Bailey in 1947~\cite{Bailey1947}, which provided a systematic method for generating Rogers--Ramanujan type identities.  
+Since then, the Bailey lemma and its extensions have become fundamental in the study of basic hypergeometric series, partition identities, and mock theta functions (see Andrews~\cite{Andrews1986}, Slater~\cite{Slater1952}, and Warnaar~\cite{Warnaar2002}).
+
+A pair of sequences $(\alpha_n,\beta_n)$ is said to form a \emph{Bailey pair relative to $a$} if
+\begin{equation}\label{eq:bailey-pair-classical}
+\beta_n=\sum_{r=0}^{n}\frac{\alpha_r}{(q;q)_{n-r}(aq;q)_{n+r}},
+\end{equation}
+where $(a;q)_n=(1-a)(1-aq)\cdots(1-aq^{n-1})$ denotes the $q$-Pochhammer symbol.  
+An equivalent inversion relation expresses $\alpha_n$ in terms of $\beta_j$:
+\[
+\alpha_n=(1-aq^{2n})\sum_{j=0}^{n}
+\frac{(aq;q)_{n+j-1}(-1)^{n-j}q^{\binom{n-j}{2}}\beta_j}{(q;q)_{n-j}}.
+\]
+Bailey introduced these identities while studying Rogers’s second proof of the Rogers--Ramanujan identities.  
+Andrews later extended these ideas through the notion of a \emph{Bailey chain}, an infinite sequence of Bailey pairs connected through repeated transformations.
+
+\medskip
+\noindent\textbf{Bailey’s Lemma.}
+Bailey’s lemma~\cite{Bailey1947} states that if $(\alpha_n,\beta_n)$ is a Bailey pair relative to $a$, then the transformed sequences
+\[
+\alpha_n'=
+\frac{(\rho_1;q)_n(\rho_2;q)_n(aq/(\rho_1\rho_2))^n\alpha_n}
+{(aq/\rho_1;q)_n(aq/\rho_2;q)_n},
+\]
+and
+\[
+\beta_n'=\sum_{j\ge0}
+\frac{(\rho_1;q)_j(\rho_2;q)_j(aq/(\rho_1\rho_2);q)_{n-j}(aq/(\rho_1\rho_2))^j\beta_j}
+{(q;q)_{n-j}(aq/\rho_1;q)_n(aq/\rho_2;q)_n},
+\]
+also form a Bailey pair relative to $a$.  
+Iterating this transformation yields an infinite sequence of identities known as the \emph{Bailey chain}.  
+This framework has proved remarkably productive in the derivation of Rogers--Ramanujan type identities and various partition formulas.
+
+\medskip
+\noindent\textbf{Examples.}
+A classical example due to Andrews, Askey, and Roy (1999, p.~590) is
+\[
+\alpha_n=q^{n^2+n}\sum_{j=-n}^{n}(-1)^jq^{-j^2},
+\qquad
+\beta_n=\frac{(-q)^n}{(q^2;q^2)_n}.
+\]
+Slater~\cite{Slater1952} later catalogued 130 examples of such Bailey pairs, illustrating the wide range of transformations attainable through this method.
+
+\medskip
+\noindent\textbf{Motivation and Aim.}
+While the Bailey lemma is fundamentally algebraic, recent advances in analytic number theory have introduced $q$-analogues of the Riemann zeta function, aiming to connect discrete $q$-series structures with analytic properties of $\zeta(s)$.  
+Representative examples include the $q$-zeta functions of Kaneko~\cite{Kaneko2003}, Bradley~\cite{Bradley2007}, and Ismail~\cite{Ismail2005}, defined by
+\[
+\zeta_q(s)=\sum_{n=1}^\infty\frac{q^n}{(1-q^n)^s},
+\]
+which recover $\zeta(s)$ in the limit $q\to1^-$.  
+These constructions serve as bridges between combinatorial generating functions and classical analytic structures.
+
+The main purpose of this work is to unify these two directions by introducing a \emph{Bailey--Zeta pair} that embeds a complex deformation parameter $s$ into the Bailey relation through a multiplicative factor $q^{sr}$.  
+We establish two principal results:
+
+\begin{itemize}[leftmargin=*]
+\item[(1)] An algebraic theorem (Bailey--Zeta transform) which extends Bailey’s lemma to include the $q^{sr}$ deformation.
+\item[(2)] An analytic theorem showing that, for a pair, the associated generating function converges to the Riemann zeta function under the limit $q\to1^-$, naturally leading to a $q$-analogue of the Euler--Mascheroni constant.
+\end{itemize}
+
+These theorems demonstrate that the algebraic manipulations underlying Bailey pairs can mirror the analytic structures of $\zeta(s)$, thereby linking $q$-hypergeometric analysis with the study of special constants.
+\section{Main Results}
+
+\begin{thm}[Bailey--Zeta Transform]
+\label{thm:bailey-zeta-transform}
+Let $a\in\CC\setminus\{0\}$, $s\in\CC$, and $0<q<1$.  
+A sequence pair $(\alpha_n(s),\beta_n(s))_{n\ge0}$ is called a \emph{Bailey--Zeta pair relative to $(a,q,s)$} if
+\[
+\beta_n(s)=\sum_{r=0}^n\frac{q^{sr}\alpha_r(s)}{(q;q)_{n-r}(aq;q)_{n+r}}.
+\]
+When $s=0$, this reduces to the classical Bailey pair.  
+If $(\alpha_n(s),\beta_n(s))$ is a Bailey--Zeta pair relative to $(a,q,s)$, and if $\rho_1,\rho_2\in\CC$ are such that all denominators are nonzero, define
+\begin{align}
+\alpha_n'(s)&=\frac{(\rho_1;q)_n(\rho_2;q)_n(aq/(\rho_1\rho_2))^n q^{n^2}}{(aq/\rho_1;q)_n(aq/\rho_2;q)_n}\,\alpha_n(s), \label{eq:alpha-prime}\\[4pt]
+\beta_n'(s)&=\sum_{r=0}^n\frac{(\rho_1;q)_r(\rho_2;q)_r(aq/(\rho_1\rho_2);q)_{n-r} q^{sr+r^2}}{(aq/\rho_1)_n(aq/\rho_2)_n(q)_{n-r}}\,\beta_r(s). \label{eq:beta-prime}
+\end{align}
+Then $(\alpha_n'(s),\beta_n'(s))$ is again a Bailey--Zeta pair relative to $(a,q,s)$; that is,
+\[
+\beta_n'(s)=\sum_{r=0}^n\frac{q^{sr}\alpha_r'(s)}{(q)_{n-r}(aq)_{n+r}}.
+\]
+\end{thm}
+\begin{proof}
+We prove that $(\alpha_n'(s),\beta_n'(s))$ satisfies the defining Bailey--Zeta relation
+\[
+\beta_n'(s)=\sum_{r=0}^n
+\frac{q^{sr}\,\alpha_r'(s)}{(q;q)_{n-r}(a q;q)_{n+r}}.
+\]
+Starting from \eqref{eq:beta-prime}, we expand
+\[
+\beta_n'(s)=\sum_{r=0}^n
+\frac{(\rho_1;q)_r(\rho_2;q)_r
+\bigl(aq/(\rho_1\rho_2);q\bigr)_{n-r}
+q^{sr+r^2}}
+{(a q/\rho_1;q)_n(a q/\rho_2;q)_n(q;q)_{n-r}}\,
+\beta_r(s).
+\]
+Using the Bailey--Zeta relation
+\[
+\beta_r(s)=\sum_{t=0}^r
+\frac{q^{st}\,\alpha_t(s)}{(q;q)_{r-t}(a q;q)_{r+t}},
+\]
+we obtain
+\[
+\beta_n'(s)=
+\sum_{r=0}^n
+\frac{(\rho_1;q)_r(\rho_2;q)_r
+\bigl(aq/(\rho_1\rho_2);q\bigr)_{n-r}
+q^{sr+r^2}}
+{(a q/\rho_1;q)_n(a q/\rho_2;q)_n(q;q)_{n-r}}
+\left[\sum_{t=0}^r
+\frac{q^{st}\,\alpha_t(s)}{(q;q)_{r-t}(a q;q)_{r+t}}\right].
+\]
+Since all sums are finite, we may interchange the order of summation to get
+\[
+\beta_n'(s)=
+\frac{1}{(a q/\rho_1;q)_n(a q/\rho_2;q)_n}
+\sum_{t=0}^n\alpha_t(s)\,q^{st}
+\sum_{r=t}^n
+\frac{(\rho_1;q)_r(\rho_2;q)_r
+\bigl(aq/(\rho_1\rho_2);q\bigr)_{n-r}
+q^{sr+r^2}}
+{(q;q)_{n-r}(q;q)_{r-t}(a q;q)_{r+t}}.
+\]
+Let the inner sum be denoted by $S_{t,n}$. Then
+\[
+S_{t,n}=
+\sum_{r=t}^n
+\frac{(\rho_1;q)_r(\rho_2;q)_r
+\bigl(aq/(\rho_1\rho_2);q\bigr)_{n-r}
+q^{sr+r^2}}
+{(q;q)_{n-r}(q;q)_{r-t}(a q;q)_{r+t}}.
+\]
+Writing $r=t+m$ (with $m=0,\ldots,n-t$) and simplifying Pochhammer ratios, we find
+\[
+S_{t,n}=
+\frac{(\rho_1;q)_t(\rho_2;q)_t
+q^{st+t^2}}{(a q;q)_{2t}}
+\sum_{m=0}^{n-t}
+\frac{(q^{-n+t};q)_m(\rho_1q^t;q)_m(\rho_2q^t;q)_m
+(aq^{2t+1};q)_m
+\bigl(aq/(\rho_1\rho_2);q\bigr)_{n-t-m}}
+{(q;q)_m(aq^{t+1}/\rho_1;q)_m(aq^{t+1}/\rho_2;q)_m(aq^{t+1};q)_m}\,q^m.
+\]
+The inner sum is a terminating balanced ${}_6\phi_5$ basic hypergeometric series of the classical form
+\[
+{}_6\phi_5\!\left[\!\begin{array}{c}
+a,\,q\sqrt{a},\,-q\sqrt{a},\,b,\,c,\,q^{-n}\\[4pt]
+\sqrt{a},\,-\sqrt{a},\,a q/b,\,a q/c,\,a q^{n+1}/(b c)
+\end{array}\!;\,q,\,\frac{a q^{n+1}}{b c}\!\right]
+=\frac{(a q;q)_n(a q/b c;q)_n}{(a q/b;q)_n(a q/c;q)_n},
+\]
+as recorded in Gasper--Rahman~\cite[Eq.~(II.21), p.~42]{GasperRahman2004}.
+Applying this identity to $S_{t,n}$ yields
+\[
+S_{t,n}=
+\frac{(\rho_1;q)_t(\rho_2;q)_t
+\bigl(aq/(\rho_1\rho_2)\bigr)^t
+q^{t^2}}
+{(a q/\rho_1;q)_t(a q/\rho_2;q)_t
+(a q;q)_{n+t}(q;q)_{n-t}}.
+\]
+Substituting this into the expression for $\beta_n'(s)$, we obtain
+\[
+\beta_n'(s)
+=\sum_{t=0}^n
+\alpha_t(s)\,
+\frac{q^{st+t^2}
+(\rho_1;q)_t(\rho_2;q)_t
+\bigl(aq/(\rho_1\rho_2)\bigr)^t}
+{(q;q)_{n-t}(a q;q)_{n+t}
+(a q/\rho_1;q)_t(a q/\rho_2;q)_t}.
+\]
+Comparing this with the right-hand side of
+\[
+\sum_{r=0}^n
+\frac{q^{sr}\,\alpha_r'(s)}{(q;q)_{n-r}(a q;q)_{n+r}},
+\]
+and substituting $\alpha_r'(s)$ from \eqref{eq:alpha-prime}, we see that the coefficients of $\alpha_t(s)$ coincide term by term. Hence
+\[
+\beta_n'(s)
+=\sum_{r=0}^n
+\frac{q^{sr}\,\alpha_r'(s)}{(q;q)_{n-r}(a q;q)_{n+r}},
+\]
+and therefore $(\alpha_n'(s),\beta_n'(s))$ is again a Bailey--Zeta pair relative to $(a,q,s)$.
+\end{proof}
+
+
+\begin{remark}
+For $s=0$, this theorem reduces to the classical Bailey lemma; for $s\neq0$, it introduces an analytic deformation linking Bailey transformations to $q$-zeta-type generating functions.
+\end{remark}
+
+\newpage
+\begin{thm}[Classical Limit to the Riemann Zeta Function]
+\label{thm:zeta-limit}
+Consider the Bailey--Zeta pair of Theorem~\ref{thm:bailey-zeta-transform} with $\alpha_r(s)\equiv1$ and $a=1$.  
+Then
+\[
+\beta_n(s)=\sum_{r=0}^n\frac{q^{sr}}{(q;q)_{n-r}(q;q)_{n+r}},
+\qquad 
+Z(1,s;q):=\sum_{n=0}^\infty\beta_n(s)\,q^n.
+\]
+For $\Re(s)>1$, the generating function $Z(1,s;q)$ satisfies
+\[
+\lim_{q\to1^-}(1-q)^s\,Z(1,s;q)=\zeta(s).
+\]
+\end{thm}
+\begin{proof}
+The proof employs a comparison (sandwich) argument by establishing bounds
+\[
+A(q)\,\zeta_q(s)\le Z(1,s;q)\le B(q)\,\zeta_q(s),
+\qquad A(q),B(q)\to1\ \text{as }q\to1^-,
+\]
+where $\displaystyle \zeta_q(s)=\sum_{m=1}^\infty \frac{q^m}{(1-q^m)^s}$.
+Multiplying by $(1-q)^s$ and passing to the limit will then yield
+\[
+\lim_{q\to1^-}(1-q)^sZ(1,s;q)=\zeta(s).
+\]
+
+\medskip
+\noindent\textbf{Rewriting the generating function:}
+Set $q=e^{-\varepsilon}$ with $\varepsilon\to0^+$, so that $(1-q)\approx\varepsilon$.  
+Then
+\[
+Z(1,s;q)
+=\sum_{n=0}^\infty q^n\beta_n(s)
+=\sum_{n=0}^\infty q^n
+\sum_{r=0}^n\frac{q^{sr}}{(q;q)_{n-r}(q;q)_{n+r}}.
+\]
+Reindex $n=r+k$ for $r,k\ge0$ to obtain
+\[
+Z(1,s;q)
+=\sum_{r=0}^\infty q^{sr}I_r(q),
+\qquad
+I_r(q):=\sum_{k=0}^\infty
+\frac{q^{r+k}}{(q;q)_k\,(q;q)_{2r+k}}.
+\]
+
+\medskip
+\noindent\textbf{Elementary bounds for the $q$-Pochhammer symbol:}
+For each integer $j\ge1$,
+\[
+1-q^j=(1-q)(1+q+\cdots+q^{j-1}),
+\]
+which implies
+\[
+(1-q)\le 1-q^j \le j(1-q).
+\]
+Raising to the $m$th power and taking products gives, for $m\ge0$,
+\begin{equation}\label{eq:pochhammer-bounds}
+(1-q)^m \le (q;q)_m \le m!\,(1-q)^m.
+\end{equation}
+
+\medskip
+\noindent\textbf{Bounds for $I_r(q)$:}
+Applying~\eqref{eq:pochhammer-bounds} to the denominators in $I_r(q)$ yields
+\[
+\frac{q^{r+k}}{(1-q)^{2r+2k}k!(2r+k)!}
+\le
+\frac{q^{r+k}}{(q;q)_k\,(q;q)_{2r+k}}
+\le
+\frac{q^{r+k}}{(1-q)^{2r+2k}}.
+\]
+Summing over $k\ge0$ gives
+\[
+\frac{q^r}{(1-q)^{2r}}
+\sum_{k=0}^\infty\frac{1}{k!\,(2r+k)!}
+\le
+I_r(q)
+\le
+\frac{q^r}{(1-q)^{2r}}\sum_{k=0}^\infty
+\Bigl(\frac{q}{1-q}\Bigr)^{\!k}.
+\]
+
+The upper series is geometric and convergent for $q<1/2$, giving
+\[
+I_r(q)
+\le
+\frac{q^r}{(1-q)^{2r-1}(1-2q)}.
+\]
+The lower bound involves the finite constant
+\[
+A_r:=\sum_{k=0}^\infty\frac{1}{k!\,(2r+k)!}>0,
+\]
+independent of $q$.  Hence for each fixed $r$,
+\[
+I_r(q)=\frac{A_r q^r}{(1-q)^{2r}}\,(1+o(1))
+\qquad(q\to1^-).
+\]
+
+\medskip
+\noindent\textbf{ Bounding $Z(1,s;q)$ by a $q$-zeta form:}
+Multiplying by $q^{sr}$ gives
+\[
+A_r\frac{q^{r(s+1)}}{(1-q)^{2r}}
+\le
+q^{sr}I_r(q)
+\le
+\frac{q^{r(s+1)}}{(1-q)^{2r-1}(1-2q)}.
+\]
+Summing over $r\ge1$ (the term $r=0$ being $O(1)$) yields
+\[
+\sum_{r=1}^\infty
+A_r\frac{q^{r(s+1)}}{(1-q)^{2r}}
+\le
+Z(1,s;q)
+\le
+\sum_{r=1}^\infty
+\frac{q^{r(s+1)}}{(1-q)^{2r-1}(1-2q)}.
+\]
+
+\medskip
+\noindent\textbf{Relating to $\zeta_q(s)$:}
+From $(1-q)\le1-q^r\le r(1-q)$ we deduce
+\[
+\frac{q^r}{(1-q)^{sr}}
+\le
+\frac{q^r}{(1-q^r)^s}
+\le
+\frac{q^r}{r^s(1-q)^{sr}},
+\]
+and hence
+\[
+\sum_{r=1}^\infty
+\frac{q^r}{(1-q)^{sr}}
+\le
+\zeta_q(s)
+\le
+\sum_{r=1}^\infty
+\frac{q^r}{r^s(1-q)^{sr}}.
+\]
+Comparing the exponents of $(1-q)$ and $q^r$ in the bounds for $Z(1,s;q)$ and $\zeta_q(s)$, it follows that there exist functions $A(q),B(q)\to1$ such that
+\[
+A(q)\,\zeta_q(s)
+\le
+Z(1,s;q)
+\le
+B(q)\,\zeta_q(s).
+\]
+\smallskip
+The tail $\sum_{r>R}q^{sr}I_r(q)$ is exponentially small for any cutoff $R=\lfloor\varepsilon^{-1/3}\rfloor$, so after multiplication by $(1-q)^s$ it vanishes as $q\to1^-$.  
+Using the classical limit
+\[
+\lim_{q\to1^-}(1-q)^s\zeta_q(s)=\zeta(s)\qquad(\Re s>1),
+\]
+the squeeze relation implies
+\[
+\lim_{q\to1^-}(1-q)^sZ(1,s;q)=\zeta(s).
+\]
+\end{proof}
+
+\begin{remark}
+Theorems~\ref{thm:bailey-zeta-transform} and~\ref{thm:zeta-limit} together reveal a deep correspondence between the combinatorial $q$-series machinery of Bailey pairs and the analytic structure of $\zeta(s)$.
+\end{remark}
+
+\begin{corollary}
+Define
+\[
+\gamma_B(q):=\lim_{s\to1^+}\Big(Z(1,s;q)+\log(1-q)\Big),
+\]
+whenever the limit exists. Then $\lim_{q\to1^-}\gamma_B(q)=\gamma$, the Euler--Mascheroni constant.
+\end{corollary}
+
+\begin{proof}
+From Theorem~\ref{thm:zeta-limit}, $(1-q)^sZ(1,s;q)\to\zeta(s)$ for $\Re(s)>1$.  
+Let $s=1+\delta$ with $\delta>0$ small. Then
+\[
+(1-q)^{1+\delta}Z(1,1+\delta;q)\to\zeta(1+\delta)\quad(q\to1^-).
+\]
+Using $\zeta(1+\delta)=1/\delta+\gamma+O(\delta)$ and $(1-q)^{1+\delta}=(1-q)e^{\delta\log(1-q)}$, we get
+\[
+Z(1,1+\delta;q)
+=(1-q)^{-1-\delta}\zeta(1+\delta)(1+o(1))
+=(1-q)^{-1}\Big(\tfrac{1}{\delta}+\gamma+O(\delta)\Big)
+e^{-\delta\log(1-q)}(1+o(1)).
+\]
+Fix $\delta>0$ small and send $q\to1^-$.  
+The leading divergence $(1-q)^{-1}\delta^{-1}$ cancels, leaving the next term $\gamma$.  
+Formally, after removing the pole, the regularized limit gives
+\[
+\lim_{q\to1^-}\Big(Z(1,s;q)+\log(1-q)\Big)\Big|_{s\to1^+}=\gamma.
+\]
+Hence $\gamma_B(q)\to\gamma$.
+\end{proof}
+
+\section{Conclusion}
+
+The results above unify the algebraic and analytic facets of $q$-series theory.  
+The Bailey--Zeta transform provides an exact finite-sum identity, while its classical limit recovers the analytic properties of the Riemann zeta function.  
+The regularized constant $\gamma_B(q)$ naturally interpolates to the Euler--Mascheroni constant.  
+This framework invites further extensions involving Dirichlet characters, elliptic analogues, and multivariate Bailey--Zeta systems, potentially generating $q$-analogues of $L$-functions and related constants.
+\section{acknowledgement}
+The author thanks Professor A.K.Shukla for his encouragement and constant support.
+\begin{thebibliography}{99}
+
+\bibitem{Andrews1986}
+G.~E.~Andrews, \emph{$q$-Series: Their Development and Application in Analysis, Number Theory, Combinatorics, Physics and Computer Algebra}, CBMS Reg. Conf. Ser. Math., vol.~66, Amer. Math. Soc., Providence, 1986.
+
+\bibitem{Bailey1947}
+W.~N.~Bailey, \emph{Some identities in combinatory analysis}, Proc. London Math. Soc. (2) \textbf{49} (1947), 421--435.
+
+\bibitem{Bressoud1980}
+D.~M.~Bressoud, \emph{A simple proof of the Rogers--Ramanujan identities}, Proc. Amer. Math. Soc. \textbf{79} (1980), 338--340.
+
+\bibitem{Bradley2007}
+D.~M.~Bradley, \emph{Multiple $q$-zeta values}, J. Algebra \textbf{283} (2005), 752--798.
+
+\bibitem{Ismail2005}
+M.~E.~H.~Ismail, \emph{Classical and Quantum Orthogonal Polynomials in One Variable}, Cambridge Univ. Press, 2005.
+\bibitem{GasperRahman2004}
+G.~Gasper and M.~Rahman,
+\emph{Basic Hypergeometric Series}, 2nd~ed.,
+Encyclopedia of Mathematics and Its Applications, vol.~96,
+Cambridge University Press, Cambridge, 2004.
+\bibitem{Kaneko2003}
+M.~Kaneko, \emph{The $q$-analogues of the Riemann zeta function and related $q$-series}, Kyushu J. Math. \textbf{57} (2003), 175--188.
+
+\bibitem{Slater1952}
+L.~J.~Slater, \emph{Further identities of the Rogers--Ramanujan type}, Proc. London Math. Soc. (2) \textbf{54} (1952), 147--167.
+
+\bibitem{Warnaar2002}
+S.~O.~Warnaar, \emph{Summation and transformation formulas for elliptic hypergeometric series}, Constr. Approx. \textbf{18} (2002), 479--502.
+
+\end{thebibliography}
+
+\end{document}
+

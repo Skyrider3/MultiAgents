@@ -1,0 +1,1918 @@
+\section{Local actions on odd and covering Khovanov homology}
+\label{sec:action_on_homology}
+
+In this section, we describe actions on odd and covering Khovanov homology.
+Following \cite{KR_PositiveHalfWitt_2016,QRS+_Symmetries$mathfrakgl_N$foams_2024a},
+\cref{subsec:relative_homotopy_category} introduces the relative homotopy category, which gives the formal framework where the invariant is defined.
+Our exposition is slightly different from \emph{op.\ cit.} (beyond using graded structures), as we avoid the use of triangulated categories.
+We then define the marked tangle invariant in \cref{subsec:defn_tangle_invariant}.
+Finally, \cref{subsec:topological_invariance} and \cref{subsec:marking_slide} show topological invariance and marking slide, respectively.
+
+\subsection{The relative homotopy category}
+\label{subsec:relative_homotopy_category}
+
+\begin{convention}
+  All chain complexes are bounded chain complexes.
+\end{convention}
+
+Let $A$ be a $\fg$-category.
+A \emph{$\fg$-equivariant chain complex} is a chain complex in $A$ whose differential has $\fg$-equivariant components.
+% In the sequel, we only consider $\fg$-equivariant chain complexes, referred to as ``(chain) complexes''.
+A chain morphism is said to be \emph{$\fg$-equivariant} if each of its components is $\fg$-equivariant.
+We denote $\Ch(A)$ the category of $\fg$-equivariant chain complexes and $\fg$-equivariant chain morphisms, and $\underline{\Ch}(A)$ the category of $\fg$-equivariant chain complexes and \emph{all} chain morphisms.
+There is an embedding $\Ch(A)\hookrightarrow\underline{\Ch}(A)$.
+
+Homotopies have the standard meaning; that is, homotopies for the pre-additive category underlying $A$. A \emph{$\fg$-equivariant homotopy equivalence} is a homotopy equivalence which is also $\fg$-equivariant as a chain morphism.
+Note that if $f$ is a $\fg$-equivariant homotopy equivalence, its inverse needs not be $\fg$-equivariant.
+A $\fg$-equivariant chain complex $C_\bullet$ is \emph{contractible} if it is contractible in the standard sense, that is, if the (necessarily $\fg$-equivariant) chain morphism $C_\bullet\to 0$ (or equivalently, $0\to C_\bullet$) is a homotopy equivalence.
+
+\begin{definition}
+  \label{defn:formal_relative_homotopy_category}
+  Let $A$ be a $\fg$-category.
+  The \emph{relative homotopy category} $\cK^\fg(A)$ is the localization of $\Ch(A)$ at $\fg$-equivariant homotopy equivalences.
+  We denote $\simeq^\fg$ an isomorphism in $\cK^\fg(A)$.
+\end{definition}
+
+We unpack the definition; see \cite[section~III.2.2]{GM_MethodsHomologicalAlgebra_2003} for a more thorough review of localization.
+Objects of $\cK^\fg(A)$ are the same objects as those in $\Ch(A)$; namely, $\fg$-equivariant chain complexes in $A$.
+In this context, a \emph{path} is formal composition of arrows
+\[u_0\overset{f_1}{\longrightarrow}u_1\overset{f_2}{\longrightarrow}\ldots\overset{f_n}{\longrightarrow}u_n,\]
+where $f_i\colon u_{i-1}\to u_i$ is either a $\fg$-equivariant chain morphism or the inverse of a $\fg$-equivariant homotopy equivalence.
+Two paths are \emph{equivalent} if they can be joined by a chain of the following elementary equivalences:
+\begin{itemize}
+  \item two consecutive arrows are replaced by their composition;
+  \item the composition of a $\fg$-equivariant homotopy equivalence with its inverse is replaced by the identity.
+\end{itemize}
+Morphisms in $\cK^\fg(A)$ are equivalences classes of paths.
+
+Denote $\cK(A)$ (resp.\ $\underline{\cK}(A)$) the homotopy category of $\Ch(A)$ (resp.\ $\underline{\Ch}(A)$), that is, the localization of $\Ch(A)$ (resp.\ $\underline{\Ch}(A)$) at $\fg$-equivariant homotopy equivalences with $\fg$-equivariant inverses (resp.\ at homotopy equivalences).
+The relative homotopy category $\cK^\fg(A)$ can be understood as sitting in between $\cK(A)$ and $\underline{\cK}(A)$, inverting homotopy equivalence that are $\fg$-equivariant but may not have $\fg$-equivariant inverses.
+Namely, there is a commutative diagram
+\begin{center}
+  \begin{tikzcd}
+    \cK(A) \ar[dr]\ar[rr] && \underline{\cK}(A)
+    \\
+    & \cK^\fg(A)\ar[ur]
+  \end{tikzcd}
+\end{center}
+with each arrow being the obvious quotient functor.
+The category $\cK^\fg(A)$ satisfies the universal property that if $F\colon \Ch(A)\to T$ is a functor sending $\fg$-equivariant homotopy equivalences to isomorphisms, then the functor $F$ factors through the quotient $\Ch(A)\to \cK^\fg(A)$.
+
+\begin{remark}
+  As a triangulated category, the category $\cK^\fg(\ring)$ coincides with the relative homotopy category $\cC^\fg(\ring)$ as defined in \cite{QRS+_Symmetries$mathfrakgl_N$foams_2024a}.
+\end{remark}
+
+If $C_\bullet$ is a $\fg$-equivariant chain complex in $\gMod$, its homology $H_\bullet(C)$ is canonically endowed with a structure of $\fg$-module, preserving the homological grading.
+If $f\colon C_\bullet\to D_\bullet$ is a $\fg$-equivariant chain morphism, it induces a linear map $[f]\colon H_\bullet(C)\to H_\bullet(D)$, preserving both the homological grading and the $\fg$-action.
+Furthermore, if $f$ is a homotopy equivalence then $[f]$ an isomorphism.
+Recall $\ugMod$ from \cref{ex:ugMod} and write $\cK^\fg(\ring)\coloneqq\cK^\fg(\ugMod)$.
+It follows from the above discussion and the universal property of $\cK^\fg(\ring)$ that the homology functor $H_\bullet$ descends to a functor from $\cK^\fg(\ring)$ to $(\gMod)^\bZ$.
+This justifies the definition of the relative homotopy category as the category capturing which $\fg$-equivariant complexes have the same homology, with the same induced $\fg$-action.
+
+If $A$ is a $\fg$-category, any choice of object $w$ in $A$ defines a representable functor
+\[\Hom_{A}(w,-)\colon A\to\ugMod.\]
+It descends to the relative homotopy categories, leading to a homology functor:
+\[\cK^\fg(A)\overset{\Hom_{A}(w,-)}{\longrightarrow} \cK^\fg(\ring)\overset{H_\bullet}{\longrightarrow}(\gMod)^\bZ.\]
+
+
+
+\subsection{Definition of the marked tangle invariant}
+\label{subsec:defn_tangle_invariant}
+
+In this subsection, we adapt the construction of the tangle invariant in \cite{SV_OddKhovanovHomology_2023} to carry a $\fg$-action.
+In this article, a tangle diagram always refers to a sliced tangle diagram.
+
+\medbreak
+
+In contrast with \cite{SV_OddKhovanovHomology_2023}, the construction in this article applies to ``marked tangles''.
+A \emph{marked tangle diagram} is a tangle diagram with extra markings $\greenmarking[2]$, each labelled with a triple of scalars, as for webs.
+For us, a \emph{marked tangle} is an equivalence class of marked tangle diagrams with respect to the standard relations on tangle diagrams, together with the relations (here $\omega=(\alpha,\beta_1,\beta_2)$ is a generic triple of scalars):
+\begin{gather}
+  \label{eq:marking_slide_through_cup_cap}
+  \tikzpic{
+    \draw[web1] (1,0) to[out=180,in=-90] (.5,.5) to[out=90,in=180] (1,1);
+    \node[green_mark] (B) at (1-.35,1-.15) {};
+    \node[above left={-5pt} of B] {\scriptsize $\omega$};
+  }[xscale=.8,yscale=.6][(0,.5*.6)]
+  \;\leftrightarrow\;
+  \tikzpic{
+    \draw[web1] (1,0) to[out=180,in=-90] (.5,.5) to[out=90,in=180] (1,1);
+    \node[green_mark] (B) at (1-.35,.15) {};
+    \node[below left={-5pt} of B] {\scriptsize $\omega$};
+  }[xscale=.8,yscale=.6][(0,.5*.6)]
+  \quad\an\quad
+  \tikzpic{
+    \draw[web1] (0,0) to[out=0,in=-90] (.5,.5) to[out=90,in=0] (0,1);
+    \node[green_mark] (B) at (.35,1-.15) {};
+    \node[above right={-5pt} of B] {\scriptsize $\omega$};
+  }[xscale=.8,yscale=.6][(0,.5*.6)]
+  \;\leftrightarrow\;
+  \tikzpic{
+    \draw[web1] (0,0) to[out=0,in=-90] (.5,.5) to[out=90,in=0] (0,1);
+    \node[green_mark] (B) at (.35,.15) {};
+    \node[below right={-5pt} of B] {\scriptsize $\omega$};
+  }[xscale=.8,yscale=.6][(0,.5*.6)]
+  \;.
+\end{gather}
+That is, markings can slide along strands, but (a priori) not over or under crossings.
+One could give a topological description, with markings being points where the tangle is ``glued onto the plane'' or ``attached to the point at infinity'', depending on the topological model. We omit the details.
+
+A \emph{(marked) tangled web} is a (marked) web where one may further use the following crossings:
+\begin{gather*}
+  \def\webscl{.6}
+  \tikzpic{
+    \webncr
+  }[scale=\webscl][(0,.5*\webscl)]
+  \qquad\an\qquad
+  \tikzpic{
+    \webpcr
+  }[scale=\webscl][(0,.5*\webscl)]
+  \;.
+\end{gather*}
+If $W$ is a marked tangled web, then $\undcomp(W)$ is a marked tangle diagram. As explained in \cite{SV_OddKhovanovHomology_2023} (and following \cite{LQR_KhovanovHomologySkew_2015}), we have that:
+
+\begin{lemma}
+  For any marked tangle diagram $T$, there exists a marked tangled web $W$ such that $\undcomp(W)=T$.
+\end{lemma}
+
+To realise the above lemma in practice, it is useful to introduce mixed crossings:
+\begin{gather*}
+  \tikzpic{\webcrDS}[xscale=.6,yscale=.4]\coloneqq
+  \tikzpic{
+    \webm[0][1]\draw[web1] (1,2) to (2,2);
+    \draw[web1] (0,0) to (1,0);\websRoundMarkedT[1][0]
+  }[xscale=.6,yscale=.4]
+  \qquad
+  %
+  \tikzpic{\webcrSD}[xscale=.6,yscale=.4]\coloneqq
+  \tikzpic{
+    \draw[web1] (0,2) to (1,2);\websRoundMarkedT[1][1]
+    \webm\draw[web1] (1,0) to (2,0);
+  }[xscale=.6,yscale=.4]
+  \qquad\an\qquad
+  %
+  \tikzpic{\webcrDD}[xscale=.6,yscale=.4]\coloneqq
+  \tikzpic{
+    \draw[web2] (0,1) to (1,1);
+    \draw[web2] (0,0) to (1,0);
+  }[xscale=.6,yscale=.4]
+  \;.
+\end{gather*}
+Two different tangled webs $D_1$ and $D_2$ can have the same underlying tangle diagram $\undcomp(D_1) =\undcomp(D_2)$. Indeed, we may have that $D_1\in\fg\foam_{d_1}$ and $D_2\in\fg\foam_{d_2}$ for $d_1\neq d_2$, as we can always add a double line on the top or bottom of a web; and even if $d_1=d_2$, the webs $D_1$ and $D_2$ may not have the same input and output coordinates; as we can always compose a web horizontally with a mixed crossing.
+Instead, we would want to think of tangled webs
+\begin{itemize}
+  \item up to adding double lines on the top or bottom of the web
+  \item and up to adding mixed crossings on the right or the left of the web.
+\end{itemize}
+This is formalize as follows.
+On the one hand, adding a double line to a web (resp.\ a 2-facet to a foam) on top (resp.\ on the back) defines a $\fg$-2-functor $\fg\foam_d^{\greenmarking}\to\fg\foam^{\greenmarking}_{d+2}$ (see also the front-back composition from \cref{rem:monoidal-2-categorical-structure}). In fact, it follows from the basis theorem shown in \cite{Schelstraete_RewritingModuloDiagrammatic_2025} that these $\fg$-2-functors are embeddings. We refer to this type of $\fg$-2-functors as ``adding double lines''.
+On the other hand, pre- and post-composing with mixed crossings define various $\fg$-2-functors $\fg\foam_d^{\greenmarking}(\lambda,\mu)\to\fg\foam_d^{\greenmarking}(\lambda',\mu')$, where $\lambda$ (resp.\ $\mu$) has the same number of $1$'s as $\lambda'$ (resp.\ $\mu'$). In fact, these $\fg$-2-functors are isomorphisms. We refer to this type of $\fg$-2-functors as ``changing the endpoints''.
+
+\begin{definition}
+  \label{defn:colimit_of_foam}
+  The $\fg$-2-category $\fg\foam^{\greenmarking}$ is the colimit over ``adding double lines'' and ``changing the endpoints'' $\fg$-2-functors.
+  % \begin{center}
+  %   \begin{tikzcd}
+  %     & \fg\foam^{\greenmarking}_d \ar[dl,hook']\ar[dr,hook]
+  %     \\
+  %     \fg\foam^{\greenmarking}_{d+2} && \fg\foam^{\greenmarking}_{d+2}
+  %   \end{tikzcd}
+  % \end{center}
+  % where the arrows are embeddings given by adding a 2-facet at the back and at the front, respectively.
+\end{definition}
+
+The tangle invariant in \cite{SV_OddKhovanovHomology_2023} is defined as a certain tensor product of chain complexes in $\fg\foam$.
+In this context, one needs a new notion of tensor product of chain complexes to account for the graded interchange law, which we review now.
+
+In practice, it means that there exists a graded analogue of the Koszul rule, suitably compatible with homotopy equivalence; this was shown in the second author's master thesis \cite{Schelstraete_SupercategorificationKhovanovlikeTangle_2020}.
+Recall that the usual tensor product of two chain complexes looks like a grid, and the Koszul rule is a way to assign signs to edges, such that each square has an odd number of signs; this makes the induced differential squares to zero.
+In fact, one does not need to follow the Koszul rule: any two ways of assigning signs to edges such that each square has an odd number of signs lead to isomorphic chain complexes.
+
+In a similar way, if $A_\bullet$ and $B_\bullet$ are two chain complexes with homogeneous differentials, the graded Koszul rule defines $A_\bullet\otimes B_\bullet$ by assigning invertible scalars to edges; denote it $\epsilon$, and view it as 1-cochain on the oriented grid.
+For each square
+\begin{center}
+  \begin{tikzcd}
+    \bullet \ar[r,"\alpha\otimes\id"] \ar[d,"\id\otimes\beta"'] & \bullet
+    \ar[d,"\id\otimes\beta"]\\
+    \bullet \ar[r,"\alpha\otimes\id"] & \bullet
+  \end{tikzcd}
+\end{center}
+in the grid, the assignment $\epsilon$ is such that $\partial\epsilon = \bil(\alpha,\beta)$.
+In fact, one does not need to follow the graded Koszul rule: any two ways of assigning invertible scalars to edges such that each square has this property lead to isomorphic chain complexes.
+One can proceed inductively and define a tensor product for ``sufficiently homogeneous complexes'', called ``homogeneous polycomplexes''.
+We refer to \cite{SV_OddKhovanovHomology_2023} for the precise definition.
+As for the classical tensor product, this graded tensor product is suitably compatible with homotopy equivalence.
+
+It is not hard to extend the above construction to the equivariant setting.
+We omit the details, and summarize the main points in the following proposition:
+
+\begin{proposition}
+  \label{prop:tensor_product_chain_complexes}
+  Let $\cA$ be an additive $\fg$-2-category.
+  For a certain family of complexes called \emph{$\fg$-equi\-va\-riant homogeneous polycomplexes}, there exists a procedure that, given two $\fg$-equi\-va\-riant homogeneous polycomplexes $A_\bullet$ and $B_\bullet$, defines a $\fg$-equi\-va\-riant homogeneous polycomplex $A_\bullet\otimes B_\bullet$.
+  We call it the \emph{graded tensor product of chain complexes}.
+  This procedure is such that:
+  \begin{equation*}
+    A_\bullet\simeq^\fg C_\bullet
+    \quad\an\quad
+    B_\bullet\simeq^\fg D_\bullet
+    \qquad\Rightarrow\qquad
+    A_\bullet\otimes B_\bullet\simeq^\fg C_\bullet\otimes D_\bullet,
+  \end{equation*} 
+  where $\simeq^\fg$ denotes isomorphism in the relative homotopy category $\cK^\fg(\cA)$.
+\end{proposition}
+
+We can now define the tangle invariant:
+
+\begin{definition} 
+\label{defn:tangle_invariant}
+  \def\webscl{.6}
+  Assume $2$ is invertible in $\ringfoam$.
+  Let $D$ be a diagram of tangled webs with markings.
+  The complex $\fg\glKom(D)\in\Ch(\fg\markedfoam[])$ is defined on elementary marked webs as follows (the homological degree zero is underlined):
+  \begin{gather*}
+    \tikzpic{
+      \draw[web1] (-1,0) to (1,0);
+      \node[green_mark] (B) at (0,0){};
+      \node[below={-3pt} of B] {\scriptsize $(\alpha,\beta_1,\beta_2)$};
+    }[scale=.7][(0,0)]
+    \mspace{10mu}\mapsto\mspace{10mu}
+    \tikzpic{
+      \draw[web1] (-1,0) to (1,0);
+      \node[green_mark] (B) at (0,0){};
+      \node[below={-3pt} of B] {\scriptsize $(\alpha,\beta_1,\beta_2)$};
+      \draw[decorate,decoration=snake] (-1,-1) to (1,-1);
+    }[scale=.7][(0,0)]
+    %
+    \mspace{60mu}
+    %
+    \tikzpic{
+      \webm
+    }[scale=\webscl][(0,.5*\webscl)]
+    \mspace{10mu}\mapsto\mspace{10mu}
+    \tikzpic{
+      \webm
+      \draw[decorate,decoration=snake] (0,-.5) to (1,-.5);
+    }[scale=\webscl][(0,.5*\webscl)]
+    %
+    \mspace{60mu}
+    %
+    \tikzpic{
+      \webs
+    }[scale=\webscl][(0,.5*\webscl)]
+    \mspace{10mu}\mapsto\mspace{10mu}
+    \tikzpic{
+      \websRoundMarkedB[0][0][]
+      \draw[decorate,decoration=snake] (0,-.5) to (1,-.5);
+    }[scale=\webscl][(0,.5*\webscl)]
+    \\[2ex]
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \tikzpic{
+      \webncr
+    }[scale=\webscl][(0,.5*\webscl)]
+    %
+    \quad\mapsto\quad
+    %
+    \tikzpic{
+      \websRoundMarkedB[0][0][]
+      \webm[1][0]
+    }[scale=\webscl][(0,.5*\webscl)]
+    \;\langle-\frac{1}{2},\frac{1}{2}\rangle
+    %
+    \quad
+    \xrightarrow{\tikzpic{\funzip}[scale=.6]}
+    \quad
+    %
+    \tikzpic{
+      \webid
+      \draw[decorate,decoration=snake] (0,-.5) to (2,-.5);
+    }[scale=\webscl][(0,.5*\webscl)]
+    \\[2ex]
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \tikzpic{
+      \webpcr
+    }[scale=\webscl][(0,.5*\webscl)]
+    %
+    \quad\mapsto\quad
+    %
+    \tikzpic{
+      \webid
+    }[scale=\webscl][(0,.5*\webscl)]
+    \;\langle-\frac{1}{2},\frac{1}{2}\rangle
+    %
+    \quad
+    \xrightarrow{\tikzpic{\fzip}[scale=.6]}
+    \quad
+    %
+    \tikzpic{
+      \websRoundMarkedB[0][0][]
+      \webm[1][0]
+      \draw[decorate,decoration=snake] (0,-.5) to (2,-.5);
+    }[scale=\webscl][(0,.5*\webscl)]
+  \end{gather*}
+  and extending to $D$ by taking graded tensor product of chain complexes, as given in \cref{prop:tensor_product_chain_complexes}.
+\end{definition}
+
+\begin{remark}
+  Contrary to \cite{QRS+_SymmetriesEquivariantKhovanovRozansky_2023}, twists do not only arise from crossings. This should be explained by the fact that while both theories are oriented (ie use webs), the setting of \cite{SV_OddKhovanovHomology_2023} uses the more restricted setting of directed webs.
+  At the time of writing, there is no non-directed model for odd (or covering) Khovanov homology.
+\end{remark}
+
+The next two subsections explore its property, namely topological invariance, and how markings can slide through crossings.
+
+
+
+\subsection{Topological invariance}
+\label{subsec:topological_invariance}
+
+In this subsection, we prove topological invariance:
+
+
+\begin{theorem}
+  \label{thm:topological_invariance}
+  Assume $2$ is invertible in $\ringfoam$.
+  Let $T$ be a marked tangle and $D$ a marked tangled web presenting $T$.
+  Denote $N_+$ (resp.\ $N_-$) the number of positive (resp.\ negative) crossings in $D$, and $w\coloneqq N_+-N_-$ its writhe.
+  In the relative homotopy category $\cK^\fg(\fg\markedfoam[])$, the object
+  \begin{gather*}
+    \fg\glKh(D)\coloneqq t^{N_+}\fg\glKom(D)\langle\frac{w+N_+}{2},-\frac{w+N_+}{2}\rangle
+  \end{gather*}
+  only depends on $T$, up to isomorphism.
+  We write $\glCKh(D)\coloneqq \fg\glKh(D)$ when $\fg=\grgl_2^\geq$ and $\glOKh(D)\coloneqq \fg\glKh(D)$ when $\fg=\gloo$.
+\end{theorem}
+
+Here we remind the reader that as defined in the beginning of \cref{subsec:twist_foam}, every twist $(\alpha,\beta_1,\beta_2)$ carries a shift in the quantum grading by $q^{\beta_2-\beta_1}$.
+Note that this theorem does not say anything on how markings can slide through crossings: this is discussed in the next subsection.
+
+\begin{remark}
+  \label{rem:local_invariant_2_invertible}
+  If one restricts $\grgl^\geq_2$ to $\grsl^\geq_2$ as in \cref{ex:defn_covering_sl2} (resp.\ $\gloo$ to $\sloo$ as in \cref{ex:defn_sloo}), then one can do away with the condition that $2$ is invertible in the ground ring $\ringfoam$.
+\end{remark}
+
+The remainder of this subsection is devoted to the proof of \cref{thm:topological_invariance}.
+The proof is adapted from the proof of invariance in \cite{SV_OddKhovanovHomology_2023}, incorporating $\fg$-equivariance as in the analogous proof in \cite{QRS+_SymmetriesEquivariantKhovanovRozansky_2023}.
+Given our description of the relative homotopy category given in \cref{subsec:relative_homotopy_category}, finding an isomorphism in $\cK^\fg(\fg\foam^{\greenmarking})$ amounts to finding a zigzag of $\fg$-equivariant homotopy equivalences in $\underline{\Ch}(\fg\foam^{\greenmarking})$.
+
+Thanks to the properties of the graded tensor product of complexes (\cref{prop:tensor_product_chain_complexes}), we can work locally.
+We first show invariance under planar isotopy in \cref{lem:invariance_planar_isotopies}, where a \emph{planar isotopy} between two marked tangles is a planar isotopy between the underlying tangles, such that markings do not slide through crossings. (In other words, it consists of the usual planar isotopy relations, together with \eqref{eq:marking_slide_through_cup_cap}).
+We then show invariance under Reidemeister I, Reidemeister II and Reidemeister III in \cref{lem:invariance_Reidemeister_I}, \cref{lem:invariance_Reidemeister_II} and \cref{lem:invariance_Reidemeister_III}, respectively.
+
+\begin{lemma}
+  \label{lem:invariance_planar_isotopies}
+  Let $D_1$ and $D_2$ be two marked tangled webs. If $\undcomp(D_1)$ and $\undcomp(D_2)$ are planar isotopic, then there is an equivariant isomorphism between $\fg\glKom(D_1)$ and $\fg\glKom(D_2)$ in $\Ch(\fg\markedfoam[])$.
+\end{lemma}
+
+\begin{proof}
+  We have already seen in \cref{lem:twist_dot_slide_cup_cap} that markings can slide through cups and caps.
+  Hence, it suffices to prove invariance under elementary planar isotopies (see \cite[Figure~3.2]{SV_OddKhovanovHomology_2023}), following the proof of Lemma 3.8 in \cite{SV_OddKhovanovHomology_2023}.
+  On the one hand,
+  invariance under planar isotopies interchanging two elementary tangles is realised by foam crossings, which are always $\fg$-equivariant;
+  on the other hand,
+  invariance under zigzags isotopies and pitchfork isotopies essentially use the isomorphisms given in \cref{lem:web_defining_relations_equivariance}, which we showed to be $\fg$-equivariant.
+  For instance, the isomorphism for one of the pitchfork isotopies is given as follows:
+  \begin{center}
+    \begin{tikzpicture}
+      \def\vspc{2}\def\hspc{5}
+      \def\webxscl{.4}\def\webyscl{.3}
+      \node (A1) at (0,\vspc) {
+        \tikzpic{
+          \websRoundMarkedT[1][0]
+          \webpcr[0][1]
+          \draw[web1] (0,0) to (1,0);
+          \draw[web1] (1,2) to (2,2);
+        }[xscale=\webxscl,yscale=\webyscl]
+      };
+      \node (A2) at (\hspc,\vspc) {
+        \tikzpic{
+          \websRoundMarkedT[1][0]
+          \draw[web1] (1,2) to (2,2);
+        }[xscale=\webxscl,yscale=\webyscl]
+        $\langle -\frac{1}{2},\frac{1}{2} \rangle$
+      };
+      \node (A3) at (2*\hspc,\vspc) {
+        \tikzpic{
+          \websRoundMarkedT[1][0]
+          \websRoundMarkedT[-1][1]\webm[0][1]
+          \draw[web1] (0,0) to (1,0);
+          \draw[web1] (1,2) to (2,2);
+          \draw[web1] (-1,0) to (0,0);
+        }[xscale=\webxscl,yscale=\webyscl]
+      };
+      %
+      \node (B1) at (0,0) {
+        \tikzpic{
+          \websRoundMarkedB[1][1]\webm[2][1]
+          \webncr[0][0]\websRoundMarkedB[3][0]
+          \draw[web1] (0,2) to (1,2);
+          \draw[web1] (3,2) to (4,2);
+          \draw[web1] (1,0) to (3,0);
+        }[xscale=\webxscl,yscale=\webyscl]
+      };
+      \node (B2) at (\hspc,0) {
+        \tikzpic{
+          \websRoundMarkedB[1][1]\webm[2][1]
+          \websRoundMarkedB[-1][0]\webm[0][0]\websRoundMarkedB[3][0]
+          \draw[web1] (-1,2) to (1,2);
+          \draw[web1] (3,2) to (4,2);
+          \draw[web1] (1,0) to (3,0);
+        }[xscale=\webxscl,yscale=\webyscl]$\langle -\frac{1}{2},\frac{1}{2} \rangle$
+      };
+      \node (B3) at (2*\hspc,0) {
+         \tikzpic{
+          \websRoundMarkedB[1][1]\webm[2][1]
+          \websRoundMarkedB[3][0]
+          \draw[web1] (3,2) to (4,2);
+          \draw[web1] (1,0) to (3,0);
+        }[xscale=\webxscl,yscale=\webyscl]
+      };
+      %
+      \draw[->] (A2) to (A3);
+      \node[above] at (1.5*\hspc,\vspc) {
+        \tikzpic{\fzip[-.5][0][2]\frst[1][0]}[scale=.4]
+      };
+      \draw[->] (B2) to (B3);
+      \node[above] at (1.5*\hspc,0) {
+        \tikzpic{\funzip[-.5][0]\frst[1][0][2]\flst[2][0][2]\frst[2.5][0]}[scale=.4]
+      };
+      %
+      \draw[->] (B2) to (A2);
+      \node[left] at (\hspc,.5*\vspc) {$\lambda\;
+        \tikzpic{
+          \clip (-2,0) rectangle (2,2);
+          \funzip[0][0][2]
+          \begin{scope}[scale=2]
+            \fcap[-.25][0]
+          \end{scope}
+          \draw[foamdraw1] (-1.5,0) to (-1.5,2);
+        }[scale=.4]$
+      };
+      \draw[->] (B3) to (A3);
+      \node[right] at (2*\hspc,.5*\vspc) {$\id$};
+      %
+      \node[right={5pt} of A1] {:};
+      \node[right={5pt} of B1] {:};
+    \end{tikzpicture}
+  \end{center}
+  where $\lambda$ is some scalar that we do not need to compute; here we use the squeezing relation. This concludes.
+\end{proof}
+
+Before proving invariance under Reidemeister moves, we recall the following homological fact.
+
+\begin{lemma}
+  \label{lem:abstract_homotopy_equivalence}
+  Let $A$ be an additive category and let
+  \[P_\bullet\overset{f}{\longrightarrow} C_\bullet\overset{g}{\longrightarrow} D_\bullet\overset{h}{\longrightarrow}Q_\bullet\]
+  be a chain complex in $A$ which is split exact at $C_\bullet$ and $D_\bullet$. If $P_\bullet$ and $Q_\bullet$ are contractible, then $g$ is a homotopy equivalence with inverse given by the splitting.
+\end{lemma}
+
+\begin{proof}
+  Let $\ov{f}$ and $\ov{g}$ the maps giving the splitting at $C_\bullet$, so that $f\circ\ov{f}+\ov{g}\circ g=\id_{C_\bullet}$.
+  Let $h^P$ be the homotopy between $\id_{P_\bullet}$ and $0$, so that $h^P\circ d_P+d_P\circ h^P=\id_P$.
+  The map $f\circ h^P\circ \ov{f}$ defines a homotopy between $\ov{g}\circ g$ and $\id_{C_\bullet}$, as one can check that:
+  \begin{align*}
+    (f\circ h^P\circ \ov{f})\circ d_{C_\bullet}+d_{C_\bullet}\circ (f\circ h^P\circ \ov{f})
+    &= 
+    f\circ h^P\circ d_{P_\bullet}\circ \ov{f}+f\circ d_{P_\bullet}\circ h^P\circ \ov{f}
+    \\
+    &=
+    f\circ\ov{f}
+    =
+    \id_{C_\bullet}-\ov{g}\circ g.
+  \end{align*}
+  A similar argument gives a homotopy between $g\circ\ov{g}$ and $\id_{D_\bullet}$.
+\end{proof}
+
+\begin{lemma}
+  \label{lem:invariance_Reidemeister_I}
+  Let $D$ be a marked tangled web.
+  In the relative homotopy category $\cK^\fg(\fg\foam^{\greenmarking})$, the object $\fg\glKh(D)$ is invariant under Reidemeister I moves, up to isomorphism.
+\end{lemma}
+
+\begin{proof}
+  We can proceed locally.
+  We must check that, in the relative homotopy category:
+  \begin{gather*}
+    \def\webxscl{.4}\def\webyscl{.3}
+    \tikzpic{
+      \draw[web1] (0,2) to (1,2);\webncr[1][1]\draw[web1] (2,2) to (3,2);
+      \webm[0][0]\draw[web1] (1,0) to (2,0);\websRoundMarkedB[2][0]
+    }[xscale=\webxscl,yscale=\webyscl][(0,1.25*\webyscl)]
+    \;\simeq^\fg\;
+    \tikzpic{
+      \draw[web1] (0,2) to (3,2);
+      \draw[web2] (0,.5) to (3,.5);
+    }[xscale=\webxscl,yscale=\webyscl]
+    \langle \frac{1}{2},-\frac{1}{2} \rangle
+    \quad\an\quad
+    \tikzpic{
+      \draw[web1] (0,2) to (1,2);\webpcr[1][1]\draw[web1] (2,2) to (3,2);
+      \webm[0][0]\draw[web1] (1,0) to (2,0);\websRoundMarkedB[2][0]
+    }[xscale=\webxscl,yscale=\webyscl][(0,1.25*\webyscl)]
+    \;\simeq^\fg\;
+    t^{-1}
+    \tikzpic{
+      \draw[web1] (0,2) to (3,2);
+      \draw[web2] (0,.5) to (3,.5);
+    }[xscale=\webxscl,yscale=\webyscl]
+    \langle -1,1 \rangle
+    \;.
+  \end{gather*}
+  Using a split exact sequence in the spirit of \cref{lem:web_defining_relations_equivariance}, we can fit each left-hand side in a sequence which is split exact at the two middle chain complexes (we omit labelling the arrows in the second case):
+  \begin{center}
+    \begin{tikzpicture}
+      \def\vspc{2}\def\hspc{4.5}
+      \def\webxscl{.4}\def\webyscl{.3}
+      \node (A2) at (\hspc,\vspc) {
+        \tikzpic{
+          \draw[web1] (0,1.5) to (3,1.5);
+          \draw[web2] (0,0) to (3,0);
+        }[xscale=\webxscl,yscale=\webyscl]
+      };
+      \node[left={-8pt} of A2] {\footnotesize $t^{-1}$};
+      \node (A3) at (2*\hspc,\vspc) {
+        \tikzpic{
+          \draw[web1] (0,1.5) to (3,1.5);
+          \draw[web2] (0,0) to (3,0);
+        }[xscale=\webxscl,yscale=\webyscl]
+      };
+      \node[right={-8pt} of A3] {\footnotesize $\langle -\frac{1}{2},\frac{1}{2} \rangle$};
+      %
+      \node (B2) at (\hspc,0) {
+        \tikzpic{
+          \websRoundMarkedB[1][1]\webm[2][1]
+          \webm[0][0]\websRoundMarkedB[3][0]
+          \draw[web1] (0,2) to (1,2);
+          \draw[web1] (3,2) to (4,2);
+          \draw[web1] (1,0) to (3,0);
+        }[xscale=\webxscl,yscale=\webyscl]
+      };
+      \node[left={-8pt} of B2] {\footnotesize $t^{-1}$};
+      \node (B3) at (2*\hspc,0) {
+        \tikzpic{
+          \draw[web1] (0,2) to (1,2);\webid[1][1][1]\draw[web1] (2,2) to (3,2);
+          \webm[0][0]\draw[web1] (1,0) to (2,0);\websRoundMarkedB[2][0]
+        }[xscale=\webxscl,yscale=\webyscl]
+      };
+      %
+      \node (C3) at (2*\hspc,-\vspc) {
+        \tikzpic{
+          \draw[web1] (0,1.5) to (3,1.5);
+          \draw[web2] (0,0) to (3,0);
+        }[xscale=\webxscl,yscale=\webyscl]
+      };
+      \node[right={-8pt} of C3] {\footnotesize $\langle \frac{1}{2},-\frac{1}{2} \rangle$};
+      \node (D3) at (2*\hspc,-2*\vspc) {$0$};
+      %
+      % EDGES
+      \draw[->] (A2) to (A3);
+      \node[above] at (1.6*\hspc,\vspc) {\tiny $\id$};
+      \draw[->] (B2) to (B3);
+      \node[above] at (1.6*\hspc,0) {\tiny 
+        \tikzpic{
+          \flst[-.5][0]\funzip[0][0][2]\frst[1.5][0]
+        }[scale=.3]
+      };
+      \draw[->] ($(B2.north)+(.1,0)$) to ($(A2.south)+(.1,0)$);
+      \draw[<-,dashed] ($(B2.north)-(.1,0)$) to ($(A2.south)-(.1,0)$);
+      \node[right] at (\hspc,.5*\vspc) {
+        \tikzpic{
+          \clip (-1,0) rectangle (2,2);
+          \funzip[0][0][2]
+          \begin{scope}[scale=2]
+            \fcap[-.25][0]
+          \end{scope}
+        }[scale=.2]
+      };
+      \node[left] at (\hspc,.5*\vspc) {\tiny $Z^{-1}
+        \tikzpic{
+          \clip (-1,0) rectangle (2,2);
+          \funzip[0][0][2]
+          \begin{scope}[scale=2]
+            \fcap[-.25][0]
+          \end{scope}
+        }[scale=.2,yscale=-1]\;$
+      };
+      \draw[->] ($(B3.north)+(.1,0)$) to ($(A3.south)+(.1,0)$);
+      \draw[<-,dashed] ($(B3.north)-(.1,0)$) to ($(A3.south)-(.1,0)$);
+      \node[right] at (2*\hspc,.5*\vspc) {
+        \tikzpic{\fcap}[scale=.3]
+      };
+      \node[left] at (2*\hspc,.5*\vspc) {\tiny $
+        \tikzpic{\fcup\fdot[.5][.8][2][1.5]}[scale=.3]
+        +XY
+        \tikzpic{\fcup\fdot[.5][.8][3][1.5]}[scale=.3]\;$
+      };
+      \draw[->] ($(C3.north)+(.1,0)$) to ($(B3.south)+(.1,0)$);
+      \draw[<-,dashed] ($(C3.north)-(.1,0)$) to ($(B3.south)-(.1,0)$);
+      \node[right] at (2*\hspc,-.5*\vspc) {
+        \tikzpic{\fcup}[scale=.3]
+      };
+      \node[left] at (2*\hspc,-.5*\vspc) {\tiny $
+        \tikzpic{\fcap\fdot[.5][.2][2][1.5]}[scale=.3]
+        -
+        \tikzpic{\fcap\fdot[.5][.2][3][1.5]}[scale=.3]\;$
+      };
+      \draw[->] (D3) to (C3);
+      %
+      \node[right={-8pt} of B2,fill=white,inner sep=1pt] {\footnotesize $\langle -\frac{1}{2},\frac{1}{2} \rangle$};
+      \node[right={-8pt} of A2,fill=white,inner sep=1pt] {\footnotesize $\langle -\frac{1}{2},\frac{1}{2} \rangle$};
+    \end{tikzpicture}
+    %
+    \hspace{1cm}
+    %
+    \begin{tikzpicture}
+      \def\vspc{2}\def\hspc{3.5}
+      \def\webxscl{.4}\def\webyscl{.3}
+      \node (A2) at (\hspc,\vspc) {
+        \tikzpic{
+          \draw[web1] (0,1.5) to (3,1.5);
+          \draw[web2] (0,0) to (3,0);
+        }[xscale=\webxscl,yscale=\webyscl]
+      };
+      \node[left={-8pt} of A2] {\footnotesize $t^{-1}$};
+      \node (A3) at (2*\hspc,\vspc) {
+        \tikzpic{
+          \draw[web1] (0,1.5) to (3,1.5);
+          \draw[web2] (0,0) to (3,0);
+        }[xscale=\webxscl,yscale=\webyscl]
+      };
+      %
+      \node (B2) at (\hspc,0) {
+        \tikzpic{
+          \draw[web1] (0,2) to (1,2);\webid[1][1][1]\draw[web1] (2,2) to (3,2);
+          \webm[0][0]\draw[web1] (1,0) to (2,0);\websRoundMarkedB[2][0]
+        }[xscale=\webxscl,yscale=\webyscl]
+      };
+      \node[left={-8pt} of B2] {\footnotesize $t^{-1}$};
+      \node (B3) at (2*\hspc,0) {
+        \tikzpic{
+          \websRoundMarkedB[1][1]\webm[2][1]
+          \webm[0][0]\websRoundMarkedB[3][0]
+          \draw[web1] (0,2) to (1,2);
+          \draw[web1] (3,2) to (4,2);
+          \draw[web1] (1,0) to (3,0);
+        }[xscale=\webxscl,yscale=\webyscl]
+      };
+      %
+      \node (C2) at (\hspc,-\vspc) {
+        \tikzpic{
+          \draw[web1] (0,1.5) to (3,1.5);
+          \draw[web2] (0,0) to (3,0);
+        }[xscale=\webxscl,yscale=\webyscl]
+      };
+      \node[left={-8pt} of C2] {\footnotesize $t^{-1}$};
+      \node[right={-8pt} of C2] {\footnotesize $\langle -1,1\rangle$};
+      \node (D2) at (\hspc,-2*\vspc) {$0$};
+      %
+      \draw[->] (A2) to (A3);
+      \draw[->] (B2) to (B3);
+      \draw[->] (A2) to (B2);
+      \draw[->] (B2) to (C2);
+      \draw[->] (C2) to (D2);
+      \draw[->] (A3) to (B3);
+      %
+      \node[right={-8pt} of B2,fill=white,inner sep=1pt] {\footnotesize $\langle -\frac{1}{2},\frac{1}{2} \rangle$};
+    \end{tikzpicture}
+  \end{center}
+  Colours $\textdot[1]$, $\textdot[2]$ and $\textdot[3]$ are labels $1$, $2$ and $3$, respectively.
+  The top chain complex is the cone of an identity while the bottom chain complex is zero: we are in the situation of \cref{lem:abstract_homotopy_equivalence}.
+  Finally, the middle chain morphism is $\fg$-equivariant, so that it defines a $\fg$-equivariant homotopy equivalence.
+\end{proof}
+
+\begin{lemma}
+  \label{lem:invariance_Reidemeister_II}
+  Let $D$ be a marked tangled web.
+  In the relative homotopy category $\cK^\fg(\fg\foam^{\greenmarking})$, the object $\fg\glKh(D)$ is invariant under Reidemeister II moves, up to isomorphism.
+\end{lemma}
+
+\begin{proof}
+  We can proceed locally.
+  We must check that, in the relative homotopy category:
+  \begin{gather*}
+    \tikzpic{\webpcr[0][0]\webncr[1][0]}[scale=.4]
+    \simeq^{\fg}
+    t^{-1}
+    \tikzpic{\webid}[scale=.4]
+    \langle -\frac{1}{2},\frac{1}{2}\rangle
+    \simeq^{\fg}
+    \tikzpic{\webncr[0][0]\webpcr[1][0]}[scale=.4]
+    \;.
+  \end{gather*}
+  We focus on the first isomorphism, the other one being the same up to reordering direct sums.
+  Using a split exact sequence in the spirit of \cref{lem:web_defining_relations_equivariance}, we can fit the left-hand side in a sequence which is split exact at the two middle chain complexes:
+  \begin{center}
+    \begin{tikzpicture}
+      \def\vspc{2.5}\def\hspc{6}
+      \def\webxscl{.4}\def\webyscl{.3}
+      %
+      % VERTICES
+      \node (Z2) at (\hspc,2*\vspc) {$0$};
+      %
+      \node (A1) at (0,\vspc) {$0$};
+      \node (A2) at (\hspc,\vspc) {
+        $\tikzpic{\webid}[xscale=\webxscl,yscale=\webyscl][(0,.5*\webyscl)]
+        \;\langle -\frac{1}{2},\frac{1}{2} \rangle$
+      };
+      \node (A3) at (2*\hspc,\vspc) {$0$};
+      %
+      \node (B1) at (0,0) {
+        $\tikzpic{\websRoundMarkedB\webm[1][0]}[xscale=\webxscl,yscale=\webyscl][(0,.5*\webyscl)]
+        \;\langle -1,1 \rangle$
+      };
+      \node (B2) at (\hspc,0) {
+        $\tikzpic{\webid}[xscale=\webxscl,yscale=\webyscl][(0,.5*\webyscl)]
+        \;\langle -\frac{1}{2},\frac{1}{2} \rangle
+        \;\oplus\;
+        \tikzpic{
+          \websRoundMarkedB\webm[1][0]\websRoundMarkedB[2][0]\webm[3][0]
+        }[xscale=\webxscl,yscale=\webyscl][(0,.5*\webyscl)]
+        \;\langle -\frac{1}{2},\frac{1}{2} \rangle$
+      };
+      \node (B3) at (2*\hspc,0) {
+        $\tikzpic{\websRoundMarkedB\webm[1][0]}[xscale=\webxscl,yscale=\webyscl][(0,.5*\webyscl)]$
+      };
+      %
+      \node (C1) at (0,-\vspc) {
+        $\tikzpic{\websRoundMarkedB\webm[1][0]}[xscale=\webxscl,yscale=\webyscl][(0,.5*\webyscl)]
+        \;\langle -1,1 \rangle$
+      };
+      \node (C2) at (\hspc,-\vspc) {
+        $\tikzpic{
+          \websRoundMarkedB\webm[1][0]
+        }[xscale=\webxscl,yscale=\webyscl][(0,.5*\webyscl)]
+        \;\langle -1,1 \rangle
+        \;\oplus\;
+        \tikzpic{
+          \websRoundMarkedB\webm[1][0]
+        }[xscale=\webxscl,yscale=\webyscl][(0,.5*\webyscl)]$
+      };
+      \node (C3) at (2*\hspc,-\vspc) {
+        $\tikzpic{
+          \websRoundMarkedB\webm[1][0]
+        }[xscale=\webxscl,yscale=\webyscl][(0,.5*\webyscl)]$
+      };
+      %
+      % EDGES
+      % horizontal
+      \draw[->] (A1) to (A2);
+      \draw[->] (A2) to (A3);
+      \draw[->] (B1) to (B2);
+      \node[above] at (.35*\hspc,0) {\scriptsize
+        $\left(\!\begin{array}{c}
+          \tikzpic{\funzip}[scale=.2] \\
+          \tikzpic{\frst[0][0]\flst[1][0]\fzip[2][0]}[scale=.2]
+        \end{array}\!\right)$
+      };
+      \draw[->] (B2) to (B3);
+      \node[above] at (1.7*\hspc,0) {\scriptsize
+        $\left(\!\begin{array}{cc}
+          \tikzpic{\fzip}[scale=.2] &
+          -Z\;\tikzpic{\funzip[0][0]\frst[2][0]\flst[3][0]}[scale=.2] 
+        \end{array}\!\right)$
+      };
+      \draw[->] (C1) to (C2);
+      \node[above] at (.5*\hspc,-\vspc) {$
+      \left(\!\begin{array}{c}
+        1 \\ 0
+      \end{array}\!\right)$};
+      \draw[->] (C2) to (C3);
+      \node[above] at (1.5*\hspc,-\vspc) {$
+      \left(\!\begin{array}{cc}
+        0 & 1
+      \end{array}\!\right)$};
+      %
+      % vertical
+      \draw[<-] (Z2) to (A2);
+      %
+      \draw[<-] ($(A2.south)+(.1,0)$) to ($(B2.north)+(.1,0)$);
+      \draw[->,dashed] ($(A2.south)-(.1,0)$) to ($(B2.north)-(.1,0)$);
+      \node[right] at (1*\hspc,.5*\vspc) {\scriptsize
+        $\left(\begin{array}{cc}
+          1 & -Z^{-3}\;\tikzpic{
+          \fcap[0][0][1]
+          \draw[foamdraw1] (-.5,0) to (-.5,1);
+          \draw[foamdraw1] (1.5,0) to (1.5,1);
+          \begin{scope}[scale=2]
+            \funzip[-.25][.5]
+          \end{scope}
+          }[scale=.2]
+        \end{array}\right)$
+      };
+      \node[left] at (1*\hspc,.5*\vspc) {\scriptsize
+        $\left(\begin{array}{c}
+          1\\
+          \tikzpic{
+          \fcap[0][0][1]
+          \draw[foamdraw1] (-.5,0) to (-.5,1);
+          \draw[foamdraw1] (1.5,0) to (1.5,1);
+          \begin{scope}[scale=2]
+            \funzip[-.25][.5]
+          \end{scope}
+          }[scale=.2,yscale=-1]
+        \end{array}\right)$
+      };
+      %
+      \draw[<-] ($(B1.south)+(.1,0)$) to ($(C1.north)+(.1,0)$);
+      \draw[->,dashed] ($(B1.south)-(.1,0)$) to ($(C1.north)-(.1,0)$);
+      \node[right] at (0,-.5*\vspc) {$\id$};
+      \node[left] at (0,-.5*\vspc) {$\id$};
+      %
+      \draw[<-] ($(B2.south)+(.1,0)$) to ($(C2.north)+(.1,0)$);
+      \draw[->,dashed] ($(B2.south)-(.1,0)$) to ($(C2.north)-(.1,0)$);
+      \node[right] at (1*\hspc,-.5*\vspc) {\scriptsize
+        $\left(\!\begin{array}{cc}
+          \tikzpic{\funzip}[scale=.2] & 0 \\
+          \tikzpic{\frst[0][0]\flst[1][0]\fzip[2][0]}[scale=.2] 
+          & -Z^{-3}\;\tikzpic{
+            \fcap[0][0][1]
+            \draw[foamdraw1] (-.5,0) to (-.5,1);
+            \draw[foamdraw1] (1.5,0) to (1.5,1);
+          }[scale=.2,yscale=-1]
+        \end{array}\!\right)$
+      };
+      \node[left] at (1*\hspc,-.5*\vspc) {\scriptsize
+        $\left(\!\begin{array}{cc}
+          0 & \tikzpic{
+            \fcap[0][0][1]
+            \draw[foamdraw1] (-.5,0) to (-.5,1);
+            \draw[foamdraw1] (1.5,0) to (1.5,1);
+          }[scale=.2]
+          \\
+          \tikzpic{\fzip}[scale=.2]
+          &
+          -Z\;\tikzpic{\funzip[0][0]\frst[2][0]\flst[3][0]}[scale=.2] 
+        \end{array}\!\right)$
+      };
+      %
+      \draw[<-] ($(B3.south)+(.1,0)$) to ($(C3.north)+(.1,0)$);
+      \draw[->,dashed] ($(B3.south)-(.1,0)$) to ($(C3.north)-(.1,0)$);
+      \node[right] at (2*\hspc,-.5*\vspc) {$\id$};
+      \node[left] at (2*\hspc,-.5*\vspc) {$\id$};
+    \end{tikzpicture}
+  \end{center}
+  % \ls{split thanks to super 4tu (see notes)}
+  We omitted the homological degree: the middle column is in homological degree zero.
+  The top chain complex is zero while the bottom chain complex is the cone of an identity: we are in the situation of \cref{lem:abstract_homotopy_equivalence}.
+  Moreover, the middle chain morphism is $\fg$-equivariant thanks to \cref{lem:crossing_complex_equivariant}, so that it defines a $\fg$-equivariant homotopy equivalence.
+\end{proof}
+
+\begin{lemma}
+  \label{lem:invariance_Reidemeister_III}
+  Let $D$ be a marked tangled web.
+  In the relative homotopy category $\cK^\fg(\fg\foam^{\greenmarking})$, the object $\fg\glKh(D)$ is invariant under Reidemeister III moves, up to isomorphism.
+\end{lemma}
+
+\begin{proof}
+    The proof is an equivariant version of the proof in \cite{SV_OddKhovanovHomology_2023}, following the general strategy of Bar-Natan \cite{Bar-Natan_KhovanovsHomologyTangles_2005}.
+\end{proof}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Marking slide}
+\label{subsec:marking_slide}
+
+In this subsection, we prove the following ``marking slide'' lemma:
+
+\begin{lemma}[marking slide lemma]
+  \label{lem:dot_slide_lemma}
+  Let $\omega=(\alpha,\beta_1,\beta_2)$ be a generic local twist.
+  The identity chain map induces an isomorphism in the relative homotopy category $\cK^{\gloo}(\sfoam^{\greenmarking})$:
+  \begin{gather*}
+    \tikzpic{
+      \webncr
+      \node[green_mark] (B) at (.3,.15) {};
+      \node[below={-1pt} of B] {\scriptsize $\omega$};
+    }[scale=.7][(0,.5*.7)]
+    \simeq^{\gloo}
+    \tikzpic{
+      \webncr
+      \node[green_mark] (B) at (1-.3,1-.15) {};
+      \node[above={-1pt} of B] {\scriptsize $\omega$};
+    }[scale=.7][(0,.5*.7)]
+    \;.
+  \end{gather*}
+  If one considers $\sfoam'$ (see \cref{rem:variant_graded_gl2_foams}) instead, then the roles of the overcrossing and the undercrossing are swapped.
+\end{lemma}
+
+
+
+
+\begin{remark}
+  \label{rem:marking_cannot_undercross}
+  By considering the example 
+  \begin{gather*}
+  \tikzpic{
+  \webpcr[0][0]\webncr[1][0]
+  \webs[2][1]\webs[2][-1]
+  \webm[-1][1]\webm[-1][-1]
+  \draw[web1] (0,2) to (2,2);
+  \draw[web1] (0,-1) to (2,-1);
+  \node[green_mark] (B) at (1,-1) {};
+  \node[above={-1pt} of B] {\scriptsize $-\omega$};
+  \node[green_mark] (C) at (1,1) {};
+  \node[above={-1pt} of C] {\scriptsize $\omega$};
+  }[scale=.5]
+  \;,
+\end{gather*}
+  one can check that indeed, the analogue statement for the other crossing does not hold:
+  \begin{gather*}
+    \tikzpic{
+      \webpcr
+      \node[green_mark] (B) at (.3,.15) {};
+      \node[below={-1pt} of B] {\scriptsize $\omega$};
+    }[scale=.7][(0,.5*.7)]
+    \not\simeq^{\gloo}
+    \tikzpic{
+      \webpcr
+      \node[green_mark] (B) at (1-.3,1-.15) {};
+      \node[above={-1pt} of B] {\scriptsize $\omega$};
+    }[scale=.7][(0,.5*.7)]
+    \;,
+  \end{gather*}
+  and vice-versa if one considers $\sfoam'$. Indeed, if both dot slides did hold, then we would have 
+  \begin{gather*}
+  \tikzpic{
+  %\webpcr[0][0]\webncr[1][0]
+  \webs[2][1]\webs[2][-1]
+  \webm[-1][1]\webm[-1][-1]
+  \draw[web1] (0,2) to (2,2);
+  \draw[web1] (0,-1) to (2,-1);
+  \draw[web1] (0,1) to (2,1);
+  \draw[web1] (0,0) to (2,0);
+  }[scale=.5][(0,.5*.5)]
+  \simeq^{\gloo}
+  \tikzpic{
+  \webs[2][1]\webs[2][-1]
+  \webm[-1][1]\webm[-1][-1]
+  \draw[web1] (0,2) to (2,2);
+  \draw[web1] (0,-1) to (2,-1);
+  \draw[web1] (0,1) to (2,1);
+  \draw[web1] (0,0) to (2,0);
+  \node[green_mark] (B) at (1,-1) {};
+  \node[above={-1pt} of B] {\scriptsize $-2\omega$};
+  \node[green_mark] (C) at (1,2) {};
+  \node[above={-1pt} of C] {\scriptsize $2\omega$};
+  }[scale=.5][(0,.5*.5)]
+  \;.
+\end{gather*}
+\end{remark}
+
+Before giving the proof, we discuss some consequences.
+
+\begin{lemma}
+  \label{lem:csq_dot_slide_lemma}
+  Let $\omega=(\alpha,\beta_1,\beta_2)$ be a generic local twist.
+  For each of the following cases, the identity chain map induces an isomorphism in the relative homotopy category $\cK^{\gloo}(\sfoam^{\greenmarking})$:
+  \begin{gather*}
+    \tikzpic{
+      \webpcr
+      \node[green_mark] (B) at (.3,.15) {};
+      \node[below={-1pt} of B] {\scriptsize $\omega$};
+    }[scale=.7][(0,.5*.7)]
+    \simeq^{\gloo}
+    \tikzpic{
+      \webpcr
+      \node[green_mark] (B) at (1-.3,1-.15) {};
+      \node[above={-1pt} of B] {\scriptsize $-\omega$};
+      \node[green_mark] (C) at (1-.3,.15) {};
+      \node[below={-1pt} of C] {\scriptsize $2\omega$};
+    }[scale=.7][(0,.5*.7)]
+    %
+    \;,\quad
+    \tikzpic{
+      \webncr
+      \node[green_mark] (B) at (.3,1-.15) {};
+      \node[above={-1pt} of B] {\scriptsize $\omega$};
+    }[scale=.7][(0,.5*.7)]
+    \simeq^{\gloo}
+    \tikzpic{
+      \webncr
+      \node[green_mark] (B) at (1-.3,.15) {};
+      \node[below={-1pt} of B] {\scriptsize $-\omega$};
+      \node[green_mark] (C) at (1-.3,1-.15) {};
+      \node[above={-1pt} of C] {\scriptsize $2\omega$};
+    }[scale=.7][(0,.5*.7)]
+    %
+    \quad\an\quad
+    \tikzpic{
+      \webpcr
+      \node[green_mark] (B) at (.3,1-.15) {};
+      \node[above={-1pt} of B] {\scriptsize $\omega$};
+    }[scale=.7][(0,.5*.7)]
+    \simeq^{\gloo}
+    \tikzpic{
+      \webpcr
+      \node[green_mark] (B) at (1-.3,.15) {};
+      \node[below={-1pt} of B] {\scriptsize $\omega$};
+    }[scale=.7][(0,.5*.7)]
+    \;.
+  \end{gather*}
+  If one considers $\sfoam'$ instead, then the roles of the overcrossing and the undercrossing are swapped.
+\end{lemma}
+
+\begin{proof}
+  The follows from \cref{lem:dot_slide_lemma} using invariance under planar isotopies \cref{lem:invariance_planar_isotopies} and the fact that in general, the identity chain map induces an isomorphism in $\cK^\gloo(\sfoam)$:
+  \begin{gather*}
+    \tikzpic{
+      \webncr
+      \node[green_mark] (B) at (.3,1-.15) {};
+      \node[above={-1pt} of B] {\scriptsize $-\omega$};
+      \node[green_mark] (B) at (.3,.15) {};
+      \node[below={-1pt} of B] {\scriptsize $\omega$};
+    }[scale=.7][(0,.5*.7)]
+    \simeq^\fg
+    \tikzpic{
+      \webncr
+      \node[green_mark] (B) at (1-.3,.15) {};
+      \node[below={-1pt} of B] {\scriptsize $\omega$};
+      \node[green_mark] (B) at (1-.3,1-.15) {};
+      \node[above={-1pt} of B] {\scriptsize $-\omega$};
+    }[scale=.7][(0,.5*.7)]
+  \end{gather*}
+  This concludes.
+\end{proof}
+
+The remainder of this subsection is devoted to the proof of \cref{lem:dot_slide_lemma}.
+The proof is inspired by the proof of the analogue result in \cite[lemma~4.4]{QRS+_SymmetriesEquivariantKhovanovRozansky_2023}; see also \cite[Lemma~5.2]{Roz_$mathfraksl_2$ActionLink_2023}. Their proof originates from \cite{KR_PositiveHalfWitt_2016}.
+
+We begin with an outline.
+Write $D_\bullet$ for the complex associated to the crossing, and ${}_\omega D_\bullet$ (resp.\ $D_\bullet^\omega$) for the complex with the additional $\omega$-twist at the top left (resp.\ bottom right).
+We aim to show that ${}_\omega D_\bullet\simeq^\fg D_\bullet^\omega$.
+The main idea is to add a circle to the web, and move the $\omega$-twist to that circle. More formally, we define in \cref{lem:web_resolution_twist} a partial resolution of a generic $\omega$-twist via $\omega$-twisted circles.
+Applying this to ${}_\omega D_\bullet$ gives another complex ${}_\omega C_\bullet$ together with a $\gloo$-equivariant homotopy equivalence ${}_\omega C_\bullet\to {}_\omega D_\bullet$; similarly, we find a $\gloo$-equivariant homotopy equivalence $C_\bullet^\omega\to D_\bullet^\omega$.
+We are then able to give an $\gloo$-equivariant isomorphism between ${}_\omega C_\bullet$ and $C_\bullet^\omega$.
+This leads to a zigzag of $\gloo$-equivariant homotopies between ${}_\omega D_\bullet$ and $D_\bullet^\omega$, and hence an isomorphism in the relative homotopy category.
+
+\medbreak
+
+We now give the details, beginning with some preliminary definitions.
+For a web $W$, we shall write $\Phi(W)$ the web obtained by extending $W$ forward with a marked circle, as shown below.
+\begin{gather*}
+  \Phi(W)
+  \coloneqq\quad
+  \tikzpic{
+    \node[anchor=mid,align=center] at (.4,1.7) {\footnotesize $t(W)$};
+    \node[anchor=mid,align=center] at (1.5,1.7) {$W$};
+    \node[anchor=mid,align=center] at (2.6,1.7) {\footnotesize $s(W)$};
+    \draw[web1,dashed] (1,0) to (2,0);
+    \draw[web1,dashed] (1,1) to (2,1);
+    \webmRoundMarkedB
+    \webs[2][0]
+    %
+    \draw[dotted] (1,-.3) to (1,2);
+    \draw[dotted] (2,-.3) to (2,2);
+  }
+  \qquad\an\qquad
+  \Phi_\omega(W)
+  \coloneqq\quad
+  \tikzpic{
+    \node[anchor=mid,align=center] at (.4,1.7) {\footnotesize $t(W)$};
+    \node[anchor=mid,align=center] at (1.5,1.7) {$W$};
+    \node[anchor=mid,align=center] at (2.6,1.7) {\footnotesize $s(W)$};
+    \draw[web1,dashed] (1,0) to (2,0);
+    \draw[web1,dashed] (1,1) to (2,1);
+    \webmRoundMarkedB
+    \websMarkedB[2][0][$\omega$]
+    %
+    \draw[dotted] (1,-.3) to (1,2);
+    \draw[dotted] (2,-.3) to (2,2);
+  }\;.
+\end{gather*}
+More formally, we define a family of superfunctors $\Phi\colon\sfoam^{\greenmarking}(n,m)\to\sfoam^{\greenmarking}(n,m)$, defined on objects as
+\[\Phi(W)\coloneqq(M^{\roundmarking}\mathrel{\square}\id_W)\mathrel{\square} (\id_{(1,1)}\otimes W)\otimes (S\mathrel{\square}\id_W),\]
+where $M^{\roundmarking}$ is a merge web with an extra marking $\roundmarking[2]$ and $S$ is a split web, and $\square$ is the front-back composition from \cref{rem:monoidal-2-categorical-structure}.
+We also define the variant $\Phi_\omega(W)$ where the circle carries an extra local marking $\omega$.
+
+
+
+Consider an identity web $W\in\sfoam^{\greenmarking}$ with a distinguished strand $i$:
+\begin{gather*}
+  W = \tikzpic{
+    \node at (1,.8){};
+    \node at (1,-.8){};
+    \node at (1,.5) {$\vdots$};
+    \draw[web1] (0,0) to (2,0);
+    \node at (1,-.3) {$\vdots$};
+    \node[right] at (2,0) {\footnotesize $i$};
+  }
+\end{gather*}
+Below we consider $\Phi(W)$ and $\Phi_\omega(W)$, using the color blue ($\textdot$) for the label of the added circle and the color red ($\textdot[2]$) for the label of the distinguished strand $i$ in $W$.
+
+\begin{lemma}
+  \label{lem:web_resolution_twist}
+  Let $\omega=(\alpha,\beta_1,\beta_2)$ be a generic local  marking.
+  The following is a sequence in $\sfoam^{\greenmarking}$, split exact at the two middle vertices, and with each forward (plain) arrow being $\gloo$-equivariant:
+  \begin{center} 
+  \begin{tikzpicture}
+    \def\hsh{3}
+    \def\wxscl{.5}
+    \def\wyscl{.35}
+    % \node (L) at (-\hsh+1*\wxscl,.5) {$\ldots$};
+    % \node at (-\hsh+3*\wxscl,1.5*\wyscl) {\footnotesize $\langle -3,3\rangle$};
+    % %
+    % \begin{scope}[xscale=\wxscl,yscale=\wyscl]
+    %   \node[shape=rectangle,anchor=center] at (1,3.7) {$\vdots$};
+    %   \draw[web1] (0,2.5) to (2,2.5);
+    %   \node[shape=rectangle,anchor=center] at (1,2) {$\vdots$};
+    %   \webmRoundMarkedB
+    %   \websMarkedB[1][0][$\omega$]
+    %   \node at (3,1.5) {\footnotesize $\langle -2,2\rangle$};
+    % \end{scope}
+    %
+    \begin{scope}[shift={(\hsh,0)},xscale=\wxscl,yscale=\wyscl]
+      \node[shape=rectangle,anchor=center] at (1,3.7) {$\vdots$};
+      \draw[web1] (0,2.5) to (2,2.5);
+      \node[shape=rectangle,anchor=center] at (1,2) {$\vdots$};
+      \webmRoundMarkedB
+      \websMarkedB[1][0][$\omega$]
+      \node at (3,1.5) {\footnotesize $\langle -\frac{3}{2},\frac{3}{2}\rangle$};
+    \end{scope}
+    %
+    \begin{scope}[shift={(2*\hsh,0)},xscale=\wxscl,yscale=\wyscl]
+      \node[shape=rectangle,anchor=center] at (1,3.7) {$\vdots$};
+      \draw[web1] (0,2.5) to (2,2.5);
+      \node[shape=rectangle,anchor=center] at (1,2) {$\vdots$};
+      \webmRoundMarkedB
+      \websMarkedB[1][0][$\omega$]
+      \node at (3,1.5) {\footnotesize $\langle -\frac{1}{2},\frac{1}{2}\rangle$};
+    \end{scope}
+    %
+    \begin{scope}[shift={(3*\hsh,0)},xscale=\wxscl,yscale=\wyscl]
+      \node[shape=rectangle,anchor=center] at (1,3.7) {$\vdots$};
+      \draw[web1] (0,2.5) to (2,2.5);
+      \node[green_mark=2.5pt] (M) at (1,2.5) {};
+      \node[below right={-1pt} of M] {\scriptsize $\omega$};
+      \node[shape=rectangle,anchor=center] at (1,1.8) {$\vdots$};
+      \draw[web2] (0,.5) to (2,.5);
+    \end{scope}
+    %
+    \node (R) at (3.7*\hsh,.5) {$0$};
+    % Arrow
+    % \draw[->,thick] (-\hsh+2*\wxscl,1.5) to[out=45,in=135] (0,1.5);
+    % \draw[->,thick] (2*\wxscl,1.5) to[out=45,in=135] (\hsh,1.5);
+    \draw[->,thick] (\hsh+2*\wxscl,1.5) to[out=45,in=135] (2*\hsh,1.5);
+    \draw[->,thick] (2*\hsh+2*\wxscl,1.5) to[out=45,in=135] (3*\hsh,1.5);
+    \draw[->,thick] (3*\hsh+2*\wxscl+.2,.5) -- (R);
+    %
+    % \node[above] at (-.5*\hsh+\wxscl,2) {%
+    %   $\tikzpic{
+    %     \flst\frst[1][0]\fdot[.5][.5]
+    %   }[scale=.5,xscale=.6]
+    %   -
+    %   \tikzpic{
+    %     \flst\frst[1][0]\fdot[.5][.5][2]
+    %   }[scale=.5,xscale=.6]
+    %   $};
+    % \node[above] at (.5*\hsh+\wxscl,2) {%
+    %   $\tikzpic{
+    %     \flst\frst[1][0]\fdot[.5][.5]
+    %   }[scale=.5,xscale=.6]
+    %   -
+    %   \tikzpic{
+    %     \flst\frst[1][0]\fdot[.5][.5][2]
+    %   }[scale=.5,xscale=.6]
+    %   $};
+    \node[above] at (1.5*\hsh+\wxscl,2) {%
+      $\tikzpic{
+        \flst\frst[1][0]\fdot[.5][.5]
+      }[scale=.5,xscale=.6]
+      -
+      \tikzpic{
+        \flst\frst[1][0]\fdot[.5][.5][2]
+      }[scale=.5,xscale=.6]
+      $};
+    \node[above] at (2.5*\hsh+\wxscl,2) {
+      $\tikzpic{
+        \fcap\fdot[.5][.3]
+      }[scale=.5,xscale=.6]
+      -
+      \tikzpic{
+        \fcap\fdot[.5][.3][2]
+      }[scale=.5,xscale=.6]
+      $};
+    %
+    % \draw[<-,thick,dashed] (-\hsh+2*\wxscl,-.5) to[out=-45,in=-135] (0,-.5);
+    % \draw[<-,thick,dashed] (2*\wxscl,-.5) to[out=-45,in=-135] (\hsh,-.5);
+    \draw[<-,thick,dashed] (\hsh+2*\wxscl,-.5) to[out=-45,in=-135] (2*\hsh,-.5);
+    \draw[<-,thick,dashed] (2*\hsh+2*\wxscl,-.5) to[out=-45,in=-135] (3*\hsh,-.5);
+    %
+    % \node[below=15pt] at (-.5*\hsh+\wxscl,-.5) {%
+    %   $\tikzpic{
+    %     \fcap\fcup[0][1]
+    %   }[scale=.3,xscale=1]
+    %   $};
+    % \node[below=15pt] at (.5*\hsh+\wxscl,-.5) {%
+    %   $\tikzpic{
+    %     \fcap\fcup[0][1]
+    %   }[scale=.3,xscale=1]
+    %   $};
+    \node[below=15pt] at (1.5*\hsh+\wxscl,-.5) {%
+      $\tikzpic{
+        \fcap\fcup[0][1]
+      }[scale=.3,xscale=1]
+      $};
+    \node[below=15pt] at (2.5*\hsh+\wxscl,-.5) {%
+      $\tikzpic{
+        \fcup
+      }[scale=.3,xscale=1]
+      $};
+  \end{tikzpicture}
+  \end{center}
+\end{lemma}
+
+\begin{proof}
+  The fact that the sequence split is a direct computation.
+  Equivariance with respect to $\lieh_1$ and $\lieh_2$ can be checked using \cref{lem:h-equivariance}.
+  Equivariance with respect to $\liee$ and $\lief$ follows from
+  \cref{lem:crossing_complex_equivariant} and respectively \cref{lem:e-equivariance} and \cref{lem:f-equivariance}.
+\end{proof}
+
+Using this partial resolution, we construct a partial resolution in $\underline{\Ch}(\sfoam^{\greenmarking})$ of ${}_\omega D_\bullet$, as pictured in \cref{fig:proof_dot_slide}.
+The fact that the complexes are $\gloo$-equivariant was checked already in \cref{lem:web_resolution_twist}. Note that up to scalar, we have ${}_\omega C_\bullet\cong\Cone(F)$ for $F\colon\Phi_\omega(C_\bullet)\to\Phi_\omega(C_\bullet)$ a $\gloo$-equivariant chain map consisting of dots.
+Note moreover that $P_\bullet=\Cone(\id_{\Phi_\omega(D_\bullet)}\langle-\frac{3}{2},\frac{3}{2}\rangle)$. In particular, the complex $P_\bullet$ is contractible.
+We are in the situation of \cref{lem:abstract_homotopy_equivalence}, and conclude that the chain map ${}_\omega C_\bullet\to{}_\omega D_\bullet$ is a ($\gloo$-equivariant) homotopy equivalence.
+
+Use the colour brown ($\textdot[3]$) for  the label of the backmost strand amongst to two strands involved in $D_\bullet$.
+The very same argument applies to $D_\bullet^\omega$, only replacing red dots ($\textdot[{2}]$) with brown dots ($\textdot[{3}]$), and swapping the dots from left to right in the two vertical arrows in the middle of the diagram.
+We get a ($\gloo$-equivariant) homotopy equivalence $C_\bullet^\omega\to D_\bullet^\omega$.
+
+\begin{figure}[p]
+  \begin{tikzpicture}
+    \def\hsh{5}\def\vsh{5}\def\hoplussh{.5}\def\voplussh{1}
+    \def\wxscl{.35}\def\wyscl{.35}
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % SOME DIAGRAMS
+    \def\tempwebA{
+      \webid[0][1.5][1]\websRoundMarkedB[1][1.5]\webm[2][1.5]\webid[3][1.5][1]
+      \webmRoundMarkedB\webid[1][0][1]\webid[2][0][1]\websMarkedB[3][0][$\omega$]
+    }
+    \def\tempwebB{
+      \webid[0][1.5][1]\webid[1][1.5]\webid[3][1.5][1]
+      \webmRoundMarkedB\webid[1][0][1]\webid[2][0][1]\websMarkedB[3][0][$\omega$]
+    }
+    \newcommand{\tempfoamid}{
+    \tikzpic{
+        \flst\frst[1][0]\fdot[.5][.5]
+      }[scale=.7,xscale=.5]
+      -
+      \tikzpic{
+        \flst\frst[1][0]\fdot[.5][.5][2]
+      }[scale=.7,xscale=.5]
+    }
+    \newcommand{\tempfoamdbid}{
+      \tikzpic{
+        \draw[fill,foamshade2] (1-.3,0) rectangle (1+.3,2);
+        \draw[foamdraw2] (1-.3,0) to (1-.3,2);
+        \draw[foamdraw2] (1+.3,0) to (1+.3,2);
+        %
+        \draw[fill,foamshade1] (-.5,0) rectangle (0,2);
+        \draw[foamdraw1] (0,0) to (0,2);
+        \draw[fill,foamshade1] (2.5,0) rectangle (2,2);
+        \draw[foamdraw1] (2,0) to (2,2);
+        %
+        \fdot[.4][1][1]
+      }[scale=.35]
+      -
+      \tikzpic{
+        \draw[fill,foamshade2] (1-.3,0) rectangle (1+.3,2);
+        \draw[foamdraw2] (1-.3,0) to (1-.3,2);
+        \draw[foamdraw2] (1+.3,0) to (1+.3,2);
+        %
+        \draw[fill,foamshade1] (-.5,0) rectangle (0,2);
+        \draw[foamdraw1] (0,0) to (0,2);
+        \draw[fill,foamshade1] (2.5,0) rectangle (2,2);
+        \draw[foamdraw1] (2,0) to (2,2);
+        %
+        \fdot[.4][1][2]
+      }[scale=.35]
+    }
+    \newcommand{\tempfoamdbunzip}{
+      \tikzpic{
+        \funzip[.5][0][2]
+        %
+        \draw[fill,foamshade1] (-.5,0) rectangle (0,2);
+        \draw[foamdraw1] (0,0) to (0,2);
+        \draw[fill,foamshade1] (2.5,0) rectangle (2,2);
+        \draw[foamdraw1] (2,0) to (2,2);
+      }[scale=.35]
+    }
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % VERTICES
+    %
+    % top layer
+    \node[] (T0) at (\hsh-\hoplussh,\vsh) {$\tikzpic{
+      \webid[0][1.5][1]\websRoundMarkedB[1][1.5]\webm[2][1.5]\webid[3][1.5][1]
+      \node[green_mark] (M) at (.5,1.5) {};
+      \node[below={-3pt} of M] {\scriptsize $\omega$};
+      \draw[web2] (0,.5) to (4,.5);
+    }[xscale=\wxscl,yscale=\wyscl]$};
+    \node[] (R0) at (2*\hsh,\vsh) {$\tikzpic{
+      \webid[0][1.5][4]
+      \node[green_mark] (M) at (.5,1.5) {};
+      \node[below={-3pt} of M] {\scriptsize $\omega$};
+      \draw[web2] (0,.5) to (4,.5);
+    }[xscale=\wxscl,yscale=\wyscl]$};
+    %
+    % middle layer
+    \node[] (L1) at (0,0) {$\tikzpic{\tempwebA}[xscale=\wxscl,yscale=\wyscl]$};
+    \node[] (T1) at (\hsh-\hoplussh,\voplussh) {$\tikzpic{\tempwebA}[xscale=\wxscl,yscale=\wyscl]$};
+    \node[anchor=mid] at (\hsh,.1) {$\bigoplus$};
+    \node[] (B1) at (\hsh+\hoplussh,-\voplussh) {$\tikzpic{\tempwebB}[xscale=\wxscl,yscale=\wyscl]$};
+    \node[] (R1) at (2*\hsh,0) {$\tikzpic{\tempwebB}[xscale=\wxscl,yscale=\wyscl]$};
+    %
+    % bottom layer
+    \node[] (L2) at (0,-\vsh) {$\tikzpic{\tempwebA}[xscale=\wxscl,yscale=\wyscl]$};
+    \node[] (T2) at (\hsh-\hoplussh,\voplussh-\vsh) {$\tikzpic{\tempwebA}[xscale=\wxscl,yscale=\wyscl]$};
+    \node[anchor=mid] at (\hsh,.1-\vsh) {$\bigoplus$};
+    \node[] (B2) at (\hsh+\hoplussh,-\voplussh-\vsh) {$\tikzpic{\tempwebB}[xscale=\wxscl,yscale=\wyscl]$};
+    \node[] (R2) at (2*\hsh,-\vsh) {$\tikzpic{\tempwebB}[xscale=\wxscl,yscale=\wyscl]$};
+    %
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % EDGES
+    % top layer
+    \draw[->] (T0) to[out=0,in=180] (R0);
+    \node[above] at (1.5*\hsh-.5*\hoplussh,\vsh) {\tikzpic{\funzip[0][0][2]}[scale=.7]};
+    %
+    % mid-top
+    \draw[->] (T1) to (T0);
+    \draw[->] (R1) to (R0);
+    \node[left=15pt] at (\hsh,.6*\vsh) {$
+      \tikzpic{
+        \clip (-.5,0) rectangle (2.5,2);
+        \begin{scope}[scale=2]
+          \fcap
+        \end{scope}
+        \draw[fill,foamshade2] (1-.3,0) rectangle (1+.3,2);
+        \draw[foamdraw2] (1-.3,0) to (1-.3,2);
+        \draw[foamdraw2] (1+.3,0) to (1+.3,2);
+        \fdot[.4][.5][1]
+      }[xscale=1,scale=.4]
+      -
+      \tikzpic{
+        \clip (-.5,0) rectangle (2.5,2);
+        \begin{scope}[scale=2]
+          \fcap
+        \end{scope}
+        \draw[fill,foamshade2] (1-.3,0) rectangle (1+.3,2);
+        \draw[foamdraw2] (1-.3,0) to (1-.3,2);
+        \draw[foamdraw2] (1+.3,0) to (1+.3,2);
+        \fdot[.4][.5][2]
+      }[xscale=1,scale=.4]
+    $};
+    \node[right] at (2*\hsh,.5*\vsh) {$
+      \tikzpic{
+        \fcap\fdot[.5][.3]
+      }[scale=.7,xscale=.5]
+      -
+      \tikzpic{
+        \fcap\fdot[.5][.3][2]
+      }[scale=.7,xscale=.5]
+    $};
+    %
+    % T2 to T1
+    \draw[->] ($(T2.north)+(-.2,0)$) to ($(T1.south)+(-.2,0)$);
+    %
+    % middle layer
+    \draw[->] (L1) to[out=20,in=180] (T1);
+    \draw[->] (T1) to[out=0,in=160] (R1);
+    \draw[->] (B1) to[out=0,in=-160] (R1);
+    \draw[{preaction={draw,white,line width=5pt}},->] (L1) to[out=-20,in=180] (B1);
+    %
+    \node[fill=white,inner sep=1pt] at (.4*\hsh-.5*\hoplussh,.25*\vsh) {$
+      \tempfoamdbid$};
+    \node[fill=white,inner sep=1pt] at (.4*\hsh+.5*\hoplussh,-.2*\vsh) {$-\;
+      \tempfoamdbunzip$};
+    \node[fill=white,inner sep=1pt] at (1.5*\hsh-.5*\hoplussh,.25*\vsh) {$-\;
+      \tempfoamdbunzip$};
+    \node[fill=white,inner sep=1pt] at (1.6*\hsh+.5*\hoplussh,-.2*\vsh) {$\tempfoamid$};
+    %
+    % bot-mid
+    \draw[->] (L2) to (L1);
+    \draw[->] (R2) to (R1);
+    \node[right] at (2*\hsh,-.5*\vsh) {$\tempfoamid$};
+    \node[left,fill=white,inner sep=1pt] at (1*\hsh,-.45*\vsh) {$\tempfoamdbid$};
+    \node[left] at (0,-.5*\vsh) {$\id$};
+    %
+    % bottom layer
+    \draw[->] (L2) to[out=20,in=180] (T2);
+    \draw[->,{preaction={draw,white,line width=5pt}}] (L2) to[out=-20,in=180] (B2);
+    \draw[->] (T2) to[out=0,in=160] (R2);
+    \draw[->] (B2) to[out=0,in=-160] (R2);
+    %
+    % SHIFTS
+    \node[right={-3pt} of T0,fill=white,inner sep=1pt] {\scriptsize $\langle -\frac{1}{2},\frac{1}{2}\rangle$};
+    %
+    \node[right={-9pt} of L1,fill=white,inner sep=1pt] {\scriptsize $\langle -2,2\rangle$};
+    \node[right={-12pt} of T1,fill=white,inner sep=1pt] {\scriptsize $\langle -1,1\rangle$};
+    \node[right={-12pt} of B1,fill=white,inner sep=1pt] {\scriptsize $\langle -\frac{3}{2},\frac{3}{2}\rangle$};
+    \node[right={-9pt} of R1,fill=white,inner sep=1pt] {\scriptsize $\langle -\frac{1}{2},\frac{1}{2}\rangle$};
+    %
+    \node[right={-12pt} of L2] {\scriptsize $\langle -2,2\rangle$};
+    \node[right={-9pt} of T2,fill=white,inner sep=1pt] {\scriptsize $\langle -2,2\rangle$};
+    \node[right={-12pt} of B2,fill=white,inner sep=1pt] {\scriptsize $\langle -\frac{3}{2},\frac{3}{2}\rangle$};
+    \node[right={-9pt} of R2] {\scriptsize $\langle -\frac{3}{2},\frac{3}{2}\rangle$};
+    %
+    \node[fill=white,inner sep=1pt] at (.4*\hsh-.5*\hoplussh,.2*\vsh-\vsh) {$
+      \id$};
+    \node[fill=white,inner sep=1pt] at (.4*\hsh+.5*\hoplussh,-.25*\vsh-\vsh) {$
+      -\;\tempfoamdbunzip$};
+    \node[fill=white,inner sep=1pt] at (1.5*\hsh-.5*\hoplussh,.25*\vsh-\vsh) {$
+      \tempfoamdbunzip$};
+    \node[fill=white,inner sep=1pt] at (1.6*\hsh+.5*\hoplussh,-.2*\vsh-\vsh) {$\id$};
+    %
+    % B2 to B1
+    \draw[{preaction={draw,white,line width=5pt}},->] ($(B2.north)+(.2,0)$) to ($(B1.south)+(.2,0)$);
+    \node[right=-8pt] at (\hsh+\voplussh,-.4*\vsh-\voplussh) {$\id$};
+    %
+    % below-bot
+    % \draw[->] ($(L2.south)-(0,.3*\vsh)$) to (L2);
+    % \draw[dashed] ($(L2.south)-(0,.5*\vsh)$) to[] ($(L2.south)-(0,.3*\vsh)$);
+    % \draw[->] ($(B2.south)+(.2,-.3*\vsh)$) to ($(B2.south)+(.2,0)$);
+    % \draw[dashed] ($(B2.south)+(.2,-.5*\vsh)$) to[] ($(B2.south)+(.2,-.3*\vsh)$);
+    % \draw[dashed] ($(T2.south)+(-.2,-.5*\vsh)$) to[] ($(T2.south)+(-.2,-.3*\vsh)$);
+    % \draw[->] ($(R2.south)-(0,.3*\vsh)$) to (R2);
+    % \draw[dashed] ($(R2.south)-(0,.5*\vsh)$) to[] ($(R2.south)-(0,.3*\vsh)$);
+    %
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % RIGHT BAR
+    \node (zero) at (2.6*\hsh,1.5*\vsh) {$0$};
+    \node (C) at (2.6*\hsh,\vsh) {${}_\omega D_\bullet$};
+    \node (P0) at (2.6*\hsh,0) {${}_\omega C_\bullet$};
+    \node (P1) at (2.6*\hsh,-\vsh) {$P_\bullet$};
+    \draw[->] (C) to (zero);
+    \draw[->] (P0) to (C);
+    \draw[->] (P1) to (P0);
+    % \draw[->] ($(P1.south)-(0,.3*\vsh)$) to (P1);
+    % \draw[dashed] ($(P1.south)-(0,.5*\vsh)$) to[] ($(P1.south)-(0,.3*\vsh)$);
+    \draw[dotted] (R0) to (C);
+    \draw[dotted] (R1) to (P0);
+    \draw[dotted] ($(R2.east)+(.7,0)$) to (P1);
+  \end{tikzpicture}
+  \caption{Partial resolution of the marked crossing ${}_\omega D_\bullet$. Colour blue ($\textdot[1]$) corresponds to the label of the foremost strand on the circle and colour red ($\textdot[2]$) corresponds to the label of the foremost strand amongst to two strands involved in $D_\bullet$.}
+  \label{fig:proof_dot_slide}
+\end{figure}
+
+Finally, we construct a $\gloo$-equivariant isomorphism ${}_\omega C_\bullet\to C_\bullet^\omega$, as follows:
+\begin{equation}
+  \label{eq:proof_dot_slide_isomorphism}
+  \begin{tikzpicture}
+    \def\hsh{5}\def\vsh{5}\def\hoplussh{.5}\def\voplussh{1}
+    \def\wxscl{.35}\def\wyscl{.35}
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % SOME DIAGRAMS
+    \def\tempwebA{
+      \webid[0][1.5][1]\websRoundMarkedB[1][1.5]\webm[2][1.5]\webid[3][1.5][1]
+      \webmRoundMarkedB\webid[1][0][1]\webid[2][0][1]\websMarkedB[3][0][$\omega$]
+    }
+    \def\tempwebB{
+      \webid[0][1.5][1]\webid[1][1.5]\webid[3][1.5][1]
+      \webmRoundMarkedB\webid[1][0][1]\webid[2][0][1]\websMarkedB[3][0][$\omega$]
+    }
+    \newcommand{\tempfoamid}{
+    \tikzpic{
+        \flst\frst[1][0]\fdot[.5][.5]
+      }[scale=.7,xscale=.5]
+      -
+      \tikzpic{
+        \flst\frst[1][0]\fdot[.5][.5][2]
+      }[scale=.7,xscale=.5]
+    }
+    \newcommand{\tempfoamdbid}{
+      \tikzpic{
+        \draw[fill,foamshade2] (1-.3,0) rectangle (1+.3,2);
+        \draw[foamdraw2] (1-.3,0) to (1-.3,2);
+        \draw[foamdraw2] (1+.3,0) to (1+.3,2);
+        %
+        \draw[fill,foamshade1] (-.5,0) rectangle (0,2);
+        \draw[foamdraw1] (0,0) to (0,2);
+        \draw[fill,foamshade1] (2.5,0) rectangle (2,2);
+        \draw[foamdraw1] (2,0) to (2,2);
+        %
+        \fdot[.4][1][1]
+      }[scale=.35]
+      -
+      \tikzpic{
+        \draw[fill,foamshade2] (1-.3,0) rectangle (1+.3,2);
+        \draw[foamdraw2] (1-.3,0) to (1-.3,2);
+        \draw[foamdraw2] (1+.3,0) to (1+.3,2);
+        %
+        \draw[fill,foamshade1] (-.5,0) rectangle (0,2);
+        \draw[foamdraw1] (0,0) to (0,2);
+        \draw[fill,foamshade1] (2.5,0) rectangle (2,2);
+        \draw[foamdraw1] (2,0) to (2,2);
+        %
+        \fdot[.4][1][2]
+      }[scale=.35]
+    }
+    \newcommand{\tempfoamdbunzip}{
+      \tikzpic{
+        \funzip[.5][0][2]
+        %
+        \draw[fill,foamshade1] (-.5,0) rectangle (0,2);
+        \draw[foamdraw1] (0,0) to (0,2);
+        \draw[fill,foamshade1] (2.5,0) rectangle (2,2);
+        \draw[foamdraw1] (2,0) to (2,2);
+      }[scale=.35]
+    }
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % VERTICES
+    %
+    % top layer
+    \node[] (L1) at (0,0) {$\tikzpic{\tempwebA}[xscale=\wxscl,yscale=\wyscl]$};
+    \node[] (T1) at (\hsh-\hoplussh,\voplussh) {$\tikzpic{\tempwebA}[xscale=\wxscl,yscale=\wyscl]$};
+    \node[anchor=mid] at (\hsh,.1) {$\bigoplus$};
+    \node[] (B1) at (\hsh+\hoplussh,-\voplussh) {$\tikzpic{\tempwebB}[xscale=\wxscl,yscale=\wyscl]$};
+    \node[] (R1) at (2*\hsh,0) {$\tikzpic{\tempwebB}[xscale=\wxscl,yscale=\wyscl]$};
+    %
+    % bottom layer
+    \node[] (L2) at (0,-\vsh) {$\tikzpic{\tempwebA}[xscale=\wxscl,yscale=\wyscl]$};
+    \node[] (T2) at (\hsh-\hoplussh,\voplussh-\vsh) {$\tikzpic{\tempwebA}[xscale=\wxscl,yscale=\wyscl]$};
+    \node[anchor=mid] at (\hsh,.1-\vsh) {$\bigoplus$};
+    \node[] (B2) at (\hsh+\hoplussh,-\voplussh-\vsh) {$\tikzpic{\tempwebB}[xscale=\wxscl,yscale=\wyscl]$};
+    \node[] (R2) at (2*\hsh,-\vsh) {$\tikzpic{\tempwebB}[xscale=\wxscl,yscale=\wyscl]$};
+    %
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % EDGES
+    %
+    % T2 to T1
+    \draw[->] ($(T2.north)+(-.3,0)$) to ($(T1.south)+(-.3,0)$);
+    \node[,fill=white,inner sep=1pt] at (.78*\hsh,-.4*\vsh) {$\id$};
+    %
+    % top layer
+    \draw[->] (L1) to[out=20,in=180] (T1);
+    \draw[->] (T1) to[out=0,in=160] (R1);
+    \draw[->] (B1) to[out=0,in=-160] (R1);
+    \draw[{preaction={draw,white,line width=5pt}},->] (L1) to[out=-20,in=180] (B1);
+    %
+    \node[right={-12pt} of L1] {\scriptsize $\langle -2,2\rangle$};
+    \node[right={-12pt} of T1,fill=white,inner sep=1pt] {\scriptsize $\langle -1,1\rangle$};
+    \node[right={-12pt} of B1,fill=white,inner sep=1pt] {\scriptsize $\langle -\frac{3}{2},\frac{3}{2}\rangle$};
+    \node[right={-12pt} of R1,fill=white,inner sep=1pt] {\scriptsize $\langle -\frac{1}{2},\frac{1}{2}\rangle$};
+    %
+    \node[fill=white,inner sep=1pt] at (.4*\hsh-.5*\hoplussh,.25*\vsh) {$
+      \tikzpic{
+        \draw[fill,foamshade2] (1-.3,0) rectangle (1+.3,2);
+        \draw[foamdraw2] (1-.3,0) to (1-.3,2);
+        \draw[foamdraw2] (1+.3,0) to (1+.3,2);
+        %
+        \draw[fill,foamshade1] (-.5,0) rectangle (0,2);
+        \draw[foamdraw1] (0,0) to (0,2);
+        \draw[fill,foamshade1] (2.5,0) rectangle (2,2);
+        \draw[foamdraw1] (2,0) to (2,2);
+        %
+        \fdot[1.6][1][1]
+      }[scale=.35]
+      -
+      \tikzpic{
+        \draw[fill,foamshade2] (1-.3,0) rectangle (1+.3,2);
+        \draw[foamdraw2] (1-.3,0) to (1-.3,2);
+        \draw[foamdraw2] (1+.3,0) to (1+.3,2);
+        %
+        \draw[fill,foamshade1] (-.5,0) rectangle (0,2);
+        \draw[foamdraw1] (0,0) to (0,2);
+        \draw[fill,foamshade1] (2.5,0) rectangle (2,2);
+        \draw[foamdraw1] (2,0) to (2,2);
+        %
+        \fdot[1.6][1][3]
+      }[scale=.35]$};
+    \node[fill=white,inner sep=1pt] at (.4*\hsh+.5*\hoplussh,-.2*\vsh) {$-\;
+      \tempfoamdbunzip$};
+    \node[fill=white,inner sep=1pt] at (1.5*\hsh-.5*\hoplussh,.25*\vsh) {$-\;
+      \tempfoamdbunzip$};
+    \node[fill=white,inner sep=1pt] at (1.6*\hsh+.5*\hoplussh,-.2*\vsh) {$
+      \tikzpic{
+        \flst\frst[1][0]\fdot[.5][.5]
+      }[scale=.7,xscale=.5]
+      -
+      \tikzpic{
+        \flst\frst[1][0]\fdot[.5][.5][3]
+      }[scale=.7,xscale=.5]
+    $};
+    %
+    % bot-top
+    \draw[->] (L2) to (L1);
+    \draw[->] (R2) to (R1);
+    \node[right] at (2*\hsh,-.5*\vsh) {$\id$};
+    \node[left] at (0,-.5*\vsh) {$\id$};
+    %
+    % bottom layer
+    \draw[->] (L2) to[out=20,in=180] (T2);
+    \draw[->,{preaction={draw,white,line width=5pt}}] (L2) to[out=-20,in=180] (B2);
+    \draw[->] (T2) to[out=0,in=160] (R2);
+    \draw[->] (B2) to[out=0,in=-160] (R2);
+    %
+    \node[right={-12pt} of L2] {\scriptsize $\langle -2,2\rangle$};
+    \node[right={-12pt} of T2,fill=white,inner sep=1pt] {\scriptsize $\langle -1,1\rangle$};
+    \node[right={-12pt} of B2,fill=white,inner sep=1pt] {\scriptsize $\langle -\frac{3}{2},\frac{3}{2}\rangle$};
+    \node[right={-12pt} of R2,fill=white,inner sep=1pt] {\scriptsize $\langle -\frac{1}{2},\frac{1}{2}\rangle$};
+    %
+    \node[fill=white,inner sep=1pt] at (.4*\hsh-.5*\hoplussh,.25*\vsh-\vsh) {$
+      \tempfoamdbid$};
+    \node[fill=white,inner sep=1pt] at (.4*\hsh+.5*\hoplussh,-.25*\vsh-\vsh) {$
+      -\;\tempfoamdbunzip$};
+    \node[fill=white,inner sep=1pt] at (1.5*\hsh-.5*\hoplussh,.25*\vsh-\vsh) {$
+      -\;\tempfoamdbunzip$};
+    \node[fill=white,inner sep=1pt] at (1.6*\hsh+.5*\hoplussh,-.2*\vsh-\vsh) {$\tempfoamid$};
+    %
+    % B2 to B1
+    \draw[{preaction={draw,white,line width=5pt}},->] ($(B2.north)+(.3,0)$) to ($(B1.south)+(.3,0)$);
+    \node[right=-8pt] at (\hsh+\voplussh,-.4*\vsh-\voplussh) {$\id$};
+    %
+    \draw ($(B2.north)+(.3,1)$) to[out=90,in=-90] ($(T1.south)+(-.3,-1.4)$);
+    \node[fill=white,inner sep=1pt] at (\hsh,-.5*\vsh) {$\tikzpic{
+        \fzip[.5][1][2]
+        %
+        \draw[fill,foamshade1] (-.5,0) rectangle (0,2);
+        \draw[foamdraw1] (0,0) to (0,2);
+        \draw[fill,foamshade1] (2.5,0) rectangle (2,2);
+        \draw[foamdraw1] (2,0) to (2,2);
+      }[scale=.3]$};
+  \end{tikzpicture}
+\end{equation}
+Equivariance follows from \cref{lem:crossing_complex_equivariant}, and the fact that this is indeed an isomorphism of complexes follows from the following two computations (in the first case, we additionally use dot migration to change from $\textdot[2]$ to $\textdot[3]$):
+\begin{IEEEeqnarray*}{rCll}
+  \tikzpic{
+    \draw[fill,foamshade2] (1-.3,0) rectangle (1+.3,2);
+    \draw[foamdraw2] (1-.3,0) to (1-.3,2);
+    \draw[foamdraw2] (1+.3,0) to (1+.3,2);
+    %
+    \draw[fill,foamshade1] (-.5,0) rectangle (0,2);
+    \draw[foamdraw1] (0,0) to (0,2);
+    \draw[fill,foamshade1] (2.5,0) rectangle (2,2);
+    \draw[foamdraw1] (2,0) to (2,2);
+    %
+    \fdot[1.6][1][1]
+  }[scale=.35]
+  -
+  \tikzpic{
+    \draw[fill,foamshade2] (1-.3,0) rectangle (1+.3,2);
+    \draw[foamdraw2] (1-.3,0) to (1-.3,2);
+    \draw[foamdraw2] (1+.3,0) to (1+.3,2);
+    %
+    \draw[fill,foamshade1] (-.5,0) rectangle (0,2);
+    \draw[foamdraw1] (0,0) to (0,2);
+    \draw[fill,foamshade1] (2.5,0) rectangle (2,2);
+    \draw[foamdraw1] (2,0) to (2,2);
+    %
+    \fdot[1.6][1][3]
+  }[scale=.35]
+  %
+  &=&
+  %
+  \tikzpic{
+    \draw[fill,foamshade2] (1-.3,0) rectangle (1+.3,2);
+    \draw[foamdraw2] (1-.3,0) to (1-.3,2);
+    \draw[foamdraw2] (1+.3,0) to (1+.3,2);
+    %
+    \draw[fill,foamshade1] (-.5,0) rectangle (0,2);
+    \draw[foamdraw1] (0,0) to (0,2);
+    \draw[fill,foamshade1] (2.5,0) rectangle (2,2);
+    \draw[foamdraw1] (2,0) to (2,2);
+    %
+    \fdot[.4][1][1]
+  }[scale=.35]
+  -
+  \tikzpic{
+    \draw[fill,foamshade2] (1-.3,0) rectangle (1+.3,2);
+    \draw[foamdraw2] (1-.3,0) to (1-.3,2);
+    \draw[foamdraw2] (1+.3,0) to (1+.3,2);
+    %
+    \draw[fill,foamshade1] (-.5,0) rectangle (0,2);
+    \draw[foamdraw1] (0,0) to (0,2);
+    \draw[fill,foamshade1] (2.5,0) rectangle (2,2);
+    \draw[foamdraw1] (2,0) to (2,2);
+    %
+    \fdot[.4][1][2]
+  }[scale=.35]
+  %
+  \mspace{10mu}-\mspace{10mu}
+  %
+  \tikzpic{
+    \funzip[.5][0][2]
+    \fzip[.5][1][2]
+    %
+    \draw[fill,foamshade1] (-.5,0) rectangle (0,2);
+    \draw[foamdraw1] (0,0) to (0,2);
+    \draw[fill,foamshade1] (2.5,0) rectangle (2,2);
+    \draw[foamdraw1] (2,0) to (2,2);
+  }[scale=.35]
+  %%%%%%%%%%%%%%%%%%%%
+  &
+  %%%%%%%%%%%%%%%%%%%%
+  \quad
+  \text{thanks to}
+  \quad
+  \tikzpic{
+    \funzip[.5][0][2]
+    \fzip[.5][1][2]
+  }[scale=.35]
+  =
+  \tikzpic{
+    \draw[fill,foamshade2] (0,0) rectangle (1,2);
+    \draw[foamdraw2] (0,0) to (0,2);
+    \draw[foamdraw2] (1,0) to (1,2);
+    \fdot[1.5][1][2]
+  }[scale=.35]
+  \;-\;
+  \tikzpic{
+    \draw[fill,foamshade2] (0,0) rectangle (1,2);
+    \draw[foamdraw2] (0,0) to (0,2);
+    \draw[foamdraw2] (1,0) to (1,2);
+    \fdot[-.5][1][2]
+  }[scale=.35]
+  %%%%%%%%%%%%%%%%%%%%
+  %%%%%%%%%%%%%%%%%%%%
+  %%%%%%%%%%%%%%%%%%%%
+  \\
+  \tikzpic{
+    \flst\frst[1][0]\fdot[.5][.5]
+  }[scale=.7,xscale=.5]
+  -
+  \tikzpic{
+    \flst\frst[1][0]\fdot[.5][.5][2]
+  }[scale=.7,xscale=.5]
+  &=&
+  \tikzpic{
+    \flst\frst[1][0]\fdot[.5][.5]
+  }[scale=.7,xscale=.5]
+  -
+  \tikzpic{
+    \flst\frst[1][0]\fdot[.5][.5][3]
+  }[scale=.7,xscale=.5]
+  %
+  \mspace{10mu}-\mspace{10mu}
+  %
+  \tikzpic{
+    \funzip[.5][1][2]
+    \fzip[.5][0][2]
+    %
+    \draw[fill,foamshade1] (-.5,0) rectangle (0,2);
+    \draw[foamdraw1] (0,0) to (0,2);
+    \draw[fill,foamshade1] (2.5,0) rectangle (2,2);
+    \draw[foamdraw1] (2,0) to (2,2);
+  }[scale=.35]
+  %%%%%%%%%%%%%%%%%%%%
+  &
+  %%%%%%%%%%%%%%%%%%%%
+  \quad
+  \text{thanks to}
+  \quad
+  \tikzpic{
+    \funzip[.5][2][2]
+    \fzip[.5][1][2]
+  }[scale=.35]
+  =
+  \tikzpic{
+    \fdot[0][0][2]
+  }[scale=.35]
+  \;-\;
+  \tikzpic{
+    \fdot[0][0][3]
+  }[scale=.35]
+\end{IEEEeqnarray*}
+This gives a zigzag of $\gloo$-equivariant homotopy equivalences between ${}_\omega D_\bullet$ and $D_\bullet^\omega$. One checks that their composition (or their inverse, using the splitting given in \cref{lem:web_resolution_twist}) is the identity.
+The last statement in \cref{lem:dot_slide_lemma} is discussed in the following remark.\hfill\qed
+
+\begin{remark}
+  Let us try to prove the understrand variant of \cref{lem:dot_slide_lemma}, namely that:
+  \[\tikzpic{
+      \webncr
+      \node[green_mark] (B) at (.3,1-.15) {};
+      \node[above={-1pt} of B] {\scriptsize $\omega$};
+    }[scale=.5][(0,.5*.5)]
+  \;\simeq\;
+  \tikzpic{
+    \webncr
+    \node[green_mark] (B) at (1-.3,.15) {};
+    \node[below={-1pt} of B] {\scriptsize $\omega$};
+  }[scale=.5][(0,.5*.5)]
+  \;.\]
+  The beginning of the proof would go through, and we could try to build an isomorphism as in \eqref{eq:proof_dot_slide_isomorphism}.
+  The only difference would be that red dots ($\textdot[2]$) are swapped with brown dots ($\textdot[3]$).
+  To get a chain map, we would need the following relations, with $\lambda$ some invertible scalar:
+  \begin{IEEEeqnarray*}{rCl}
+    \tikzpic{
+      \draw[fill,foamshade2] (1-.3,0) rectangle (1+.3,2);
+      \draw[foamdraw2] (1-.3,0) to (1-.3,2);
+      \draw[foamdraw2] (1+.3,0) to (1+.3,2);
+      %
+      \draw[fill,foamshade1] (-.5,0) rectangle (0,2);
+      \draw[foamdraw1] (0,0) to (0,2);
+      \draw[fill,foamshade1] (2.5,0) rectangle (2,2);
+      \draw[foamdraw1] (2,0) to (2,2);
+      %
+      \fdot[1.6][1][1]
+    }[scale=.35]
+    -
+    \tikzpic{
+      \draw[fill,foamshade2] (1-.3,0) rectangle (1+.3,2);
+      \draw[foamdraw2] (1-.3,0) to (1-.3,2);
+      \draw[foamdraw2] (1+.3,0) to (1+.3,2);
+      %
+      \draw[fill,foamshade1] (-.5,0) rectangle (0,2);
+      \draw[foamdraw1] (0,0) to (0,2);
+      \draw[fill,foamshade1] (2.5,0) rectangle (2,2);
+      \draw[foamdraw1] (2,0) to (2,2);
+      %
+      \fdot[1.6][1][2]
+    }[scale=.35]
+    %
+    &\overset{?}{=}&
+    %
+    \tikzpic{
+      \draw[fill,foamshade2] (1-.3,0) rectangle (1+.3,2);
+      \draw[foamdraw2] (1-.3,0) to (1-.3,2);
+      \draw[foamdraw2] (1+.3,0) to (1+.3,2);
+      %
+      \draw[fill,foamshade1] (-.5,0) rectangle (0,2);
+      \draw[foamdraw1] (0,0) to (0,2);
+      \draw[fill,foamshade1] (2.5,0) rectangle (2,2);
+      \draw[foamdraw1] (2,0) to (2,2);
+      %
+      \fdot[.4][1][1]
+    }[scale=.35]
+    -
+    \tikzpic{
+      \draw[fill,foamshade2] (1-.3,0) rectangle (1+.3,2);
+      \draw[foamdraw2] (1-.3,0) to (1-.3,2);
+      \draw[foamdraw2] (1+.3,0) to (1+.3,2);
+      %
+      \draw[fill,foamshade1] (-.5,0) rectangle (0,2);
+      \draw[foamdraw1] (0,0) to (0,2);
+      \draw[fill,foamshade1] (2.5,0) rectangle (2,2);
+      \draw[foamdraw1] (2,0) to (2,2);
+      %
+      \fdot[.4][1][3]
+    }[scale=.35]
+    %
+    \mspace{10mu}-\mspace{10mu}\lambda\;
+    %
+    \tikzpic{
+      \funzip[.5][0][2]
+      \fzip[.5][1][2]
+      %
+      \draw[fill,foamshade1] (-.5,0) rectangle (0,2);
+      \draw[foamdraw1] (0,0) to (0,2);
+      \draw[fill,foamshade1] (2.5,0) rectangle (2,2);
+      \draw[foamdraw1] (2,0) to (2,2);
+    }[scale=.35]
+    %%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%
+    \\
+    \tikzpic{
+      \flst\frst[1][0]\fdot[.5][.5]
+    }[scale=.7,xscale=.5]
+    -
+    \tikzpic{
+      \flst\frst[1][0]\fdot[.5][.5][3]
+    }[scale=.7,xscale=.5]
+    &\overset{?}{=}&
+    \tikzpic{
+      \flst\frst[1][0]\fdot[.5][.5]
+    }[scale=.7,xscale=.5]
+    -
+    \tikzpic{
+      \flst\frst[1][0]\fdot[.5][.5][2]
+    }[scale=.7,xscale=.5]
+    %
+    \mspace{10mu}-\mspace{10mu}\lambda\;
+    %
+    \tikzpic{
+      \funzip[.5][1][2]
+      \fzip[.5][0][2]
+      %
+      \draw[fill,foamshade1] (-.5,0) rectangle (0,2);
+      \draw[foamdraw1] (0,0) to (0,2);
+      \draw[fill,foamshade1] (2.5,0) rectangle (2,2);
+      \draw[foamdraw1] (2,0) to (2,2);
+    }[scale=.35]
+  \end{IEEEeqnarray*}
+  The first identity imposes $\lambda=1$, while the second imposes $\lambda=-1$: we do not have a chain map.
+  However, if we instead work with $\sfoam'$, then the bubble evaluation is replaced by the relation
+  \begin{gather*}
+    \tikzpic{
+      \funzip[.5][2][2]
+      \fzip[.5][1][2]
+    }[scale=.35]
+    =
+    \;-\;
+    \tikzpic{
+      \fdot[0][0][2]
+    }[scale=.35]
+    \;+\;
+    \tikzpic{
+      \fdot[0][0][3]
+    }[scale=.35]
+    \;,
+  \end{gather*}
+  so that setting $\lambda=1$ works.
+  In other words, if we work with $\sfoam$, \cref{lem:dot_slide_lemma} (overstrand) works but not its understrand variant; while if we work with $\sfoam'$, the understrand variant of \cref{lem:dot_slide_lemma} holds, but not \cref{lem:dot_slide_lemma} itself.
+\end{remark}
+

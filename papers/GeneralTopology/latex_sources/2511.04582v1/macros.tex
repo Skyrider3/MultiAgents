@@ -1,0 +1,274 @@
+%-----------------------------------------------------------
+% Packages
+%-----------------------------------------------------------
+
+\usepackage{amsmath,amssymb,amsthm,amsfonts,amscd,mathrsfs,mathtools}
+\usepackage[english]{babel}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[utf8]{inputenc}
+\usepackage{tikz,tikzscale}
+\usepackage{tikz-cd}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{amssymb}
+\usepackage{floatrow}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{rotating}
+\usepackage[sort=def,symbols,nomain,numberline]{glossaries}
+\usepackage[autostyle]{csquotes} % For quotation marks
+\newcommand{\listofsymbolsname}{List of Symbols} 
+%\makenoidxglossaries
+%\usepackage{spectralsequences}
+%\usepackage[rgb]{xcolor}
+
+%-----------------------------------------------------------
+% Formatting
+%-----------------------------------------------------------
+% FONT
+\usepackage{libertine}
+\usepackage{libertinust1math}
+\usepackage[mathscr]{euscript}
+\linespread{1.08}
+
+% COLOR
+\definecolor{darkred}{RGB}{139,0,0}
+\definecolor{darkblue}{RGB}{0,0,139}
+\definecolor{darkgreen}{RGB}{0,100,0}
+
+\hypersetup{
+	linktoc=all,
+	colorlinks   = true, 
+	urlcolor     = darkred, 
+	linkcolor    = darkred, 
+	citecolor   = darkgreen}
+
+
+
+%-----------------------------------------------------------
+% Tikz Diagram 
+%-----------------------------------------------------------
+\usetikzlibrary{backgrounds}
+\usetikzlibrary {arrows,arrows.meta,automata,positioning}
+\usetikzlibrary{shapes,shapes.geometric,shapes.misc}
+\usetikzlibrary{matrix,calc,decorations.pathreplacing,decorations.pathmorphing}
+\usetikzlibrary{calc,babel} % <--- IMPORTANT!
+% this style is applied by default to any tikzpicture included via \tikzfig
+\tikzstyle{tikzfig}=[baseline=-0.25em,scale=0.5]
+
+% standard layers used in .tikz files
+\pgfdeclarelayer{edgelayer}
+\pgfdeclarelayer{nodelayer}
+\pgfsetlayers{background,edgelayer,nodelayer,main}
+
+% style for blank nodes
+\tikzstyle{none}=[inner sep=0mm]
+
+% Edge styles
+\tikzstyle{open}=[Parenthesis-Parenthesis,darkred]
+\tikzstyle{left closed} = [Bracket-Parenthesis,darkred]
+\tikzstyle{right closed} = [Parenthesis-Bracket,darkred]
+\tikzstyle{arrow} = [{Hooks[right]}-{stealth},darkblue]
+
+
+% A TikZ style for curved arrows of a fixed height, due to AndréC.
+\tikzset{
+  curve/.style={
+    settings={#1},
+    to path={
+      (\tikztostart)
+      .. controls ($(\tikztostart)!\pv{pos}!(\tikztotarget)!\pv{height}!270:(\tikztotarget)$)
+      and ($(\tikztostart)!1-\pv{pos}!(\tikztotarget)!\pv{height}!270:(\tikztotarget)$)
+      .. (\tikztotarget)\tikztonodes
+    },
+  },
+  settings/.code={%
+    \tikzset{quiver/.cd,#1}%
+    \def\pv##1{\pgfkeysvalueof{/tikz/quiver/##1}}%
+  },
+  quiver/.cd,
+  pos/.initial=0.35,
+  height/.initial=0,
+}
+
+
+%-----------------------------------------------------------
+% Environments
+%-----------------------------------------------------------
+\newtheorem{bigthm}{Theorem}
+\newtheorem{bigcor}[bigthm]{Corollary}
+\newtheorem{biglem}[bigthm]{Lemma}
+\newtheorem{bigprop}[bigthm]{Proposition}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem*{nthm}{Theorem}
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{proposition}[thm]{Proposition}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{conjecture}[thm]{Conjecture}
+\newtheorem{claim}{Claim}
+
+\theoremstyle{definition}
+\newtheorem{definition}[thm]{Definition}
+\newtheorem{notation}[thm]{Notation}
+\newtheorem*{nconvention}{Convention}
+\newtheorem{convention}[thm]{Convention}
+\theoremstyle{remark}
+\newtheorem{example}[thm]{Example}
+\newtheorem*{nexample}{Example}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem*{nrem}{Remark}
+\newtheorem{construction}[thm]{Construction}
+\newtheorem{ass}[thm]{Assumption}
+
+\renewcommand{\thebigthm}{\Alph{bigthm}}
+
+%-----------------------------------------------------------
+% Setminus 
+%-----------------------------------------------------------
+\newsavebox{\mybox}
+\sbox{\mybox}{%
+  \tikz{\draw[line width=0.5pt,line cap=round] (3pt,0) -- (0,6pt);}%
+}
+
+
+\newcommand{\sminus}{\mkern2mu\mathord{\usebox{\mybox}}\mkern2mu}
+
+\newcommand{\wedg}{\mathop{\scalebox{1.2}[1.5]{$\vee$}}}
+
+%-----------------------------------------------------------
+% Shortcuts
+%-----------------------------------------------------------
+
+%Categories
+\newcommand{\cat}[1]{\mathrm{#1}} % category
+\newcommand{\topcat}[1]{\mathsf{#1}} % topological category
+\newcommand{\icat}[1]{\mathscr{#1}} % Single infinity category
+\newcommand{\twocat}[1]{\mathbf{#1}} % Single (infinity,2) category
+\renewcommand{\top}[1]{\mathsf{#1}} % topological things (e.g.functors)
+
+%Operations
+\newcommand{\lsh}[1]{{#1}_{!}} %(-)_{!} lower shriek
+\newcommand{\ust}[1]{{#1}^{\ast}} %(-)^{*} upper star
+\newcommand{\lst}[1]{{#1}_{\ast}} %(-)_{*} lower star
+
+\newcommand{\tensor}{\otimes}
+
+
+% Topological Categories
+\newcommand{\Top}{\mathsf{Top}}
+\newcommand{\sSet}{\mathsf{sSet}}
+\newcommand{\Kan}{\mathsf{Kan}}
+\newcommand{\tC}{\mathsf{C}} % a topological category
+\newcommand{\catTop}{\mathsf{Cat(Top)}} % category of topological categories
+
+
+% (Infinity,1) Categories
+\newcommand{\iC}{\mathscr{C}} % An infinity category
+\newcommand{\iD}{\mathscr{D}}
+\newcommand{\iE}{\mathscr{E}}
+\newcommand{\iM}{\mathscr{M}}
+\newcommand{\iS}{\mathscr{S}} % Infinity category of Spaces
+\newcommand{\pS}{\mathscr{S}_{\ast}} % Infinity category of pointed spaces
+\newcommand{\Psh}{\mathrm{Psh}} % Infinity category of Presheaves
+\newcommand{\Fun}{\mathrm{Fun}} % Infinity category of Functors
+\newcommand{\infCat}{\mathscr{C}\mathrm{at}_{\infty}} % Infinity category of small infnity categoryies
+\newcommand{\infLCat}{\mathscr{C}\mathrm{AT}_{\infty}} % Infinity category of large infinity categories  
+\newcommand{\inftwoCat}{\mathscr{C}\mathrm{at}_{(\infty,2)}} % Infinity category of infinity,2 categories
+\newcommand{\Spct}{\mathscr{S}\mathrm{p}}
+
+\newcommand{\Mfld}{\mathscr{M}\mathrm{fld}}
+\newcommand{\Disc}{\mathscr{D}\mathrm{isc}}
+\newcommand{\Discn}{{\mathscr{D}\mathrm{isc}}_{\leq n}}
+\newcommand{\DiscnN}{{{\mathscr{D}\mathrm{isc}}_{\leq n}}_{/N}}
+\newcommand{\PnS}{\mathscr{P}_{n}\mathscr{S}_\ast} % Goodwillie approximation for pointed spaces
+\newcommand{\Bord}{\mathscr{B}\mathrm{ord}}
+\newcommand{\ncBord}{\mathrm{nc}\mathscr{B}\mathrm{ord}}
+\newcommand{\coSpan}{\mathrm{coSpan}}
+
+
+\newcommand{\cO}{\mathscr{O}} % The poset of open subsets
+\newcommand{\uPnS}{{\mathscr{P}_{n}\mathscr{S}_{\ast}}^{\partial_c /}}
+\newcommand{\uS}{\mathscr{S}^{\partial_c /}}
+\newcommand{\uMfld}{\mathscr{M}\mathrm{fld}_{\partial}}
+\newcommand{\uMfldN}{{\mathscr{M}\mathrm{fld}_{\partial}}_{/N}}
+\newcommand{\uDisc}{{\mathscr{D}\mathrm{isc}}_{\partial}}
+\newcommand{\uDiscn}{{\mathscr{D}\mathrm{isc}}_{\partial,\leq n}}
+\newcommand{\uDiscnN}{{{\mathscr{D}\mathrm{isc}}_{\partial,\leq n}}_{/N}}
+\newcommand{\cP}{\mathscr{P}} % The poset of power set
+
+% (Infinity,2) Categories
+\newcommand{\twoinfCat}{\mathbf{Cat}_{\infty}} % (Infinity,2) category of Infinity categories
+
+% Basic Math Symbols
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\renewcommand{\S}{\mathbb{S}}
+
+% Font operator 
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+
+% Math operator
+\newcommand{\Gp}{\mathrm{Gp}}
+
+\newcommand{\Hom}{\mathrm{Hom}}
+\newcommand{\Aut}{\mathrm{Aut}}
+\newcommand{\Map}{\mathrm{Map}}
+
+\newcommand{\iso}{\cong}
+\newcommand{\eq}{\simeq}
+\newcommand{\set}[1]{\{#1\}}
+
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\const}{\mathrm{const}}
+\newcommand{\pr}{\mathrm{pr}}
+\newcommand{\diag}{\mathrm{diag}}
+\newcommand{\coh}{\mathrm{coh}}
+\newcommand{\inc}{\mathrm{inc}}
+\newcommand{\ob}{\mathrm{ob}}
+\newcommand{\mor}{\mathrm{mor}}
+\newcommand{\ev}{\mathrm{ev}}
+\newcommand{\res}{\mathrm{res}}
+
+\newcommand{\Imm}{\mathrm{Imm}}
+\newcommand{\emb}{\mathrm{Emb}}
+\newcommand{\bdemb}{\mathrm{Emb}_{\partial}}
+\newcommand{\ce}{\mathrm{CE}}
+\newcommand{\Diff}{\mathrm{Diff}}
+\newcommand{\B}{\mathrm{B}}
+\newcommand{\BAut}{\mathrm{BAut}}
+\newcommand{\BDiff}{\mathrm{BDiff}}
+\newcommand{\Th}{\mathrm{Th}}
+
+\newcommand{\nSigma}{\Sigma_n^\infty}
+\newcommand{\nOmega}{\Omega_n^\infty}
+\newcommand{\nmnSigma}{\Sigma_{n,n-1}^{\infty}}
+\newcommand{\inmn}{\iota_{n,n-1}}
+\newcommand{\ynmn}{{y_{n}^{n-1}}}
+\newcommand{\ovph}{\overline{\varphi}}
+\newcommand{\oph}{\overline{\phi}}
+\newcommand{\ops}{\overline{\psi}}
+\newcommand{\icpt}{\iota_{\mathrm{cpt}}}
+% Objects
+\newcommand{\kcirc}{\vee^{k} S^1}
+
+\DeclareMathOperator*{\colim}{colim}
+\DeclareMathOperator*{\fib}{fib}
+\DeclareMathOperator*{\cofib}{cofib}
+\DeclareMathOperator*{\holim}{holim}
+\DeclareMathOperator*{\tot}{tot}
+\DeclareMathOperator*{\im}{im}
+\DeclareMathOperator*{\coker}{coker}
+\DeclareMathOperator*{\op}{op}
+\DeclareMathOperator*{\lax}{lax}
+% \geometry{left=1in, right=1in, top=1in, bottom=1in}
+% \newcommand{\squarebox}{\ensuremath{\square}}
+% \newlist{todolist}{enumerate}{1}
+% \setlist[todolist,1]{label=\arabic*., left=0pt, labelsep=3mm, , font=\squarebox\;\bfseries}
+% \newlist{todolistt}{enumerate}{1}
+% \setlist[todolistt,1]{label=\arabic*., left=10pt, labelsep=1mm, , font=\squarebox\;\bfseries}
+\newcommand{\todo}[1]{{\color{blue}#1}}
+\newcommand{\done}{\hspace{-0.95cm}$\checkmark$\hspace{.659cm}}
+\newcommand{\donet}{\hspace{-0.75cm}$\checkmark$\hspace{.5cm}}
+

@@ -1,0 +1,475 @@
+\subsection{Truncated and gathered spectral sequences}
+
+For any spectrum $\Gamma$, write $\Gamma_*=\pi_*(\Gamma)$ its homotopy groups. The tower
+\begin{equation}
+  \begin{tikzcd}
+    ... \arrow[r] & Y_{n+1}^\infty \arrow[r] & Y_{n}^\infty \arrow[r] & Y_{n-1}^\infty \arrow[r] & ...
+  \end{tikzcd}
+\end{equation}
+gives a spectral sequence of the form
+\begin{equation}
+  (\mathcal{B}) : E^1 = \bigoplus_{n\in\Z} (Y_n^{n+1})_* \Rightarrow (Y_{-\infty}^\infty)_*.
+\end{equation}
+
+In the cases that are of interest to us, this spectral sequence will be strongly convergent by theorem 6.1 of \cite{boardman1999conditionally}.
+\begin{proposition} \label{prop:convergencessnicecase}
+  If for all $n\in\Z$, the spectra $Y^\infty_n$ are connective, then $(\mathcal{B})$ is a half-plane spectral sequence with exiting differential; if, moreover, its limit $\lim_{n\in\Z}(Y^\infty_n)_*$ is zero, then it is strongly convergent toward its colimit $(Y^\infty_{-\infty})_*$.
+\end{proposition}
+
+For any integers $a\leq b$, we can truncate the tower at $a$ and $b$, and thus the spectral sequence $(\mathcal{B})$.
+Let $X$ be the tower such that:
+\begin{equation}
+  X_n=
+  \begin{cases}
+      Y_b^\infty \mbox{ if } n\geq b \\
+      Y_a^\infty \mbox{ if } n\leq a \\
+      Y_n^\infty \mbox{ otherwise}
+    \end{cases}
+  \end{equation}
+with identities when necessary and maps induced by the original tower. This defines a truncated spectral sequence:
+\begin{equation}
+  (\mathcal{T}_a^b) : E^1 = \bigoplus_{a\leq n < b} (Y_n^{n+1})_* \Rightarrow (Y_{a}^b)_*.
+\end{equation}
+Remark that the tower quotiented by the limit has components:
+\begin{equation}
+  X'_n=
+  \begin{cases}
+    Y_b^b\simeq * & \mbox{ if } n\geq b \\
+    Y_a^b & \mbox{ if } n\leq a \\
+    Y_n^b &  \mbox{ otherwise.}
+  \end{cases}
+\end{equation}
+
+For any strictly increasing map $\phi:\Z\rightarrow\Z$, consider the tower whose $n$-th level is $Y_{\phi(n)}^\infty$ and maps the composition of the maps in the original tower. This defines a gathered spectral sequence:
+\begin{equation}
+  ({}^\phi \mathcal{B}) : E^1 = \bigoplus_{n\in\Z} (Y_{\phi(n)}^{\phi(n+1)})_* \Rightarrow (Y_{-\infty}^\infty)_*.
+\end{equation}
+
+If $\phi$ is the multiplication by 2, the pages of $({}^\phi \mathcal{B})$ are gathered two-by-two; the first differential $d^1$ of $({}^\phi \mathcal{B})$ contains information about the $d^2$ and $d^3$ of $(\mathcal{B})$, the second about $d^4$ and $d^5$, etc.
+
+If one wants to compute $(Y_{-\infty}^\infty)_*$, this gives two ways to do it: computing $(\mathcal{B})$, or computing each $(Y_{\phi(n)}^{\phi(n+1)})_*$ by means of $(\mathcal{T}_{\phi(n)}^{\phi(n+1)})$ and thereafter computing $({}^\phi \mathcal{B})$. These two computations are not independent. Let us represent our spectral sequences graphically with the following grading: the $n$ in $(Y_n)_*$ (the filtration degree) is the $y$-coordinate, and the $x$-coordinate is such that $*=x+y$. With such bidegree, the differentials will have $|d^r|=(-r-1,r)$ when we let the exact couple given by the tower of spectra be the $E^1$ page.  We will draw first quadrant spectral sequences, but our results apply to whole plane spectral sequences.
+
+\begin{figure}
+  \begin{tikzpicture}[scale=0.85]
+    \tikzset{->/.style={-{Latex}}}
+    \draw[step=1cm, gray, thin, dotted] (-0.2,-0.2) grid (12.2,6.2);
+    \draw[->] (-0.2,0) -- (12.4,0) node[below] {x};
+    \draw[->] (0,-0.2) -- (0,6.4) node[left] {y};
+    \foreach \x in {0,...,12}
+    {
+      \foreach \y in {0,...,6}
+      {
+        \node (\x\y) at (\x,\y) {$\bullet$};
+      }
+    }
+    \foreach \y in {0,...,6}
+    {
+      \pgfmathsetmacro\ypu{int(\y+1)}
+      \node () at (-0.6,\y) {$(Y_\y^\ypu)_*$};
+    }
+    \draw[->] (41) --  node[above right] {$d^1$} (22);
+    \draw[->] (103) --  node[above right] {$d^2$} (75);
+    \draw[->] (80) --  node[above right] {$d^4$} (34);
+  \end{tikzpicture}
+  \caption{\label{fig:ss-B} Example of the spectral sequence $(\mathcal{B})$.}
+\end{figure}
+
+For each of \crefrange{fig:ss-B}{fig:ss-Bphi}, a $\bullet$ represent a copy of a field $\F$ on the $E^1$-page, and the $\bullet^n$ in \cref{fig:ss-Bphi} represent $n$ copies of $\F$. On the \cref{fig:ss-B} we have figured 3 non-zero differentials of different size. We will choose our function $\phi:\Z \rightarrow \Z$ such that $\phi(0)=0$, $\phi(1)=3$ and $\phi(2)=7$. Our first result  is that the $d^1$ and $d^2$ figured will respectively be seen in $(\mathcal{T}_0^4)$ and $(\mathcal{T}_4^7)$, as seen in \cref{fig:ss-T0} and \cref{fig:ss-T4}. Conversely, having such differentials in $(\mathcal{T}_0^4)$ or $(\mathcal{T}_4^7)$ will ensure a differential in $(\mathcal{B})$. This discussion is \cref{prop:totalandsmall}.
+
+\begin{figure}
+  \begin{tikzpicture}[scale=0.85]
+    \tikzset{->/.style={-{Latex}}}
+    \draw[step=1cm, gray, thin, dotted] (-0.2,-0.2) grid (12.2,6.2);
+    \draw[->] (-0.2,0) -- (12.4,0) node[below] {x};
+    \draw[->] (0,-0.2) -- (0,6.4) node[left] {y};
+    \foreach \x in {0,...,12}
+    {
+      \foreach \y in {0,...,2}
+      {
+        \node (\x\y) at (\x,\y) {$\bullet$};
+      }
+    }
+    \foreach \y in {0,...,2}
+    {
+      \pgfmathsetmacro\ypu{int(\y+1)}
+      \node () at (-0.6,\y) {$(Y_\y^\ypu)_*$};
+    }
+    \draw[->] (41) --  node[above right] {$d^1$} (22);
+  \end{tikzpicture}
+  \caption{\label{fig:ss-T0} The spectral sequence $(\mathcal{T}_0^3)$ corresponding to the $(\mathcal{B})$ of \cref{fig:ss-B}.}
+\end{figure}
+
+\begin{figure}
+  \begin{tikzpicture}[scale=0.85]
+    \tikzset{->/.style={-{Latex}}}
+    \draw[step=1cm, gray, thin, dotted] (-0.2,-0.2) grid (12.2,6.2);
+    \draw[->] (-0.2,0) -- (12.4,0) node[below] {x};
+    \draw[->] (0,-0.2) -- (0,6.4) node[left] {y};
+    \foreach \x in {0,...,12}
+    {
+      \foreach \y in {3,...,6}
+      {
+        \node (\x\y) at (\x,\y) {$\bullet$};
+      }
+    }
+    \foreach \y in {3,...,6}
+    {
+      \pgfmathsetmacro\ypu{int(\y+1)}
+      \node () at (-0.6,\y) {$(Y_\y^\ypu)_*$};
+    }
+    \draw[->] (103) --  node[above right] {$d^2$} (75);
+  \end{tikzpicture}
+  \caption{\label{fig:ss-T4} The spectral sequence $(\mathcal{T}_3^7)$ corresponding to the $(\mathcal{B})$ of \cref{fig:ss-B}.}
+\end{figure}
+
+However, the differentials $d^4$ is too long and is ``jumping'' from the area covered by $(\mathcal{T}_0^3)$ to that covered by $(\mathcal{T}_3^7)$, and thus is not visible in either of the truncated spectral sequences. When computing $(Y_0^3)_*$ with $(\mathcal{T}_0^3)$, in the end all the remaining classes are gathered on the $y=0$ line (see \cref{fig:ss-result-T0}) to compute this line in the $E^1$-page of $({}^\phi \mathcal{B})$.
+
+\begin{figure}
+  \begin{tikzpicture}[scale=0.85]
+    \tikzset{->/.style={-{Latex}}}
+%
+    \draw[->] (-0.2,0) -- (12.4,0) node[below] {x};
+    \draw[->] (0,-0.2) -- (0,2.4) node[left] {y};
+    \foreach \x in {0,...,12}
+    {
+      \foreach \y in {0,...,2}
+      {
+        \node (\x\y) at (\x,\y) {\ifthenelse{\(\x=2 \AND \y=2\) \OR \(\x=4 \AND \y=1\)}{}{$\bullet$}};
+      }
+    }
+    \foreach \x in {0,...,10}
+    {
+      \draw[dotted] (\x, 2) to (\x+2,0);
+    }
+    \draw[dotted] (0,1) to (1,0);
+    \draw[dotted] (11,2) to (12,1);
+  \end{tikzpicture}
+  \caption{\label{fig:ss-result-T0} The $E^\infty$ page of $(\mathcal{T}_0^3)$, isomorphic to $(Y_0^3)_*$. The lines fix the degree.}
+\end{figure}
+
+
+The $d^4$ differential will be visible in $({}^\phi \mathcal{B})$, as we will prove in \cref{prop:totaltotruncated}; in the \cref{fig:ss-Bphi}, we  see that it gives a $d^1$ between the class in $(Y_0^3)_*$ represented by its source, and the class in $(Y_3^7)_*$ represented by its target. It is to be noted that differentials in $(\mathcal{B})$ between the zone covered by $(\mathcal{T}_0^3)$ and $(\mathcal{T}_3^7)$ all give $d^1$ in $({}^\phi \mathcal{B})$ regardless of their original length. Generally, differentials between the zone of $(\mathcal{T}_{\phi(n)}^{\phi(n+1)})$ and $(\mathcal{T}_{\phi(n+m)}^{\phi(n+m+1)})$ will be $d^m$ in $({}^\phi \mathcal{B})$. Some regularity in the length of the differentials in $({}^\phi \mathcal{B})$ can be recovered when $\phi$ is linear; this is not the case in our example, but it will be later when comparing Bockstein spectral sequences obtained by filtering with multiplication by an element and by some power of the same element.
+
+\begin{figure}
+  \begin{tikzpicture}[scale=0.85]
+    \tikzset{->/.style={-{Latex}}}
+    \foreach \x in {1,...,12}
+    {
+      \draw[gray, thin, dotted] (\x,-0.2) to (\x, 6.2);
+    }
+    \draw[gray, thin, dotted] (-0.2,3) to (12.2,3);
+    \draw[->] (-0.2,0) -- (12.4,0) node[below] {x};
+    \draw[->] (0,-0.2) -- (0,6.4) node[left] {y};
+    \foreach \x in {1,...,12}
+    {
+      \node (b\x) at (\x,0) {$\bullet$};
+      \node () at (\x+.1,0.1) {\ifthenelse{\x=1 \OR \x=4 \OR \x=5}{$^2$}{$^3$}};
+    }
+    \foreach \x in {2,...,12}
+    {
+      \node (h\x) at (\x,3) {$\bullet$};
+      \node () at (\x+.1,3.1) {\ifthenelse{\x=2 \OR \x=9 \OR \x=10}{$^3$}{$^4$}};
+    }
+    \node (b0) at (0,0) {$\bullet$};
+    \node (h0) at (0,3) {$\bullet$};
+    \node (h1) at (1,3) {$\bullet$};
+    \node () at (1.1,3.1) {$^2$};
+    \draw[->] (b8) --  node[above right] {$d^1=\tilde{d^4}$} (h4);
+    \node () at (-0.6,0) {$(Y_0^3)_*$};
+    \node () at (-0.6,3) {$(Y_3^7)_*$};
+  \end{tikzpicture}
+  \caption{\label{fig:ss-Bphi} The spectral sequence $({}^\phi \mathcal{B})$ corresponding to the $(\mathcal{B})$ of \cref{fig:ss-B}.}
+\end{figure}
+
+Finally, \cref{prop:truncatedtototal} deals with the case of transferring a differential of $({}^\phi \mathcal{B})$ into $(\mathcal{B})$, and \cref{prop:nulldiffs} deals with the null differentials in $(\mathcal{B})$ and $({}^\phi \mathcal{B})$.
+
+Consider an unrolled exact couple:
+\begin{equation}
+  \begin{tikzcd}[column sep = small]
+    ... \ar[rr, "i"] & & A_{n+1} \ar[rr, "i"] & & A_n \ar[rr, "i"] \ar[dl, "j"] & & ... \\
+     & & & E_n^1 \ar[ul, "k"] & & &
+  \end{tikzcd}
+\end{equation}
+For $r\geq 0$, let $Z_n^r$ and $B_n^r$ be the groups of $r$-cycles and of $r$-boundaries in $E_n^1$, that is:
+\begin{equation}
+  \begin{gathered}
+    Z_n^r = k^{-1}(Im(i^{r-1}:A_{n+r}\rightarrow A_{n+1})) \\
+    B_n^r = j(Ker(i^{r-1}:A_n\rightarrow A_{n-r+1})).
+  \end{gathered}
+\end{equation}
+We let $E^r$ be the quotient $Z^{r}/B^{r}$ for $r\geq 1$, and the differential $d^r$ will be a map $E^r_n\rightarrow E^r_{n+r}$. We will write ${}^\phi Z_n^r$ and ${}^\phi B_n^r$ for the $r$-cycles and $r$-boundaries in the spectral sequence $({}^\phi \mathcal{B})$ to distinguish them from those in $(\mathcal{B})$.
+\begin{definition}\label{prop:diffdiagram}
+  For $x\in E^r_n$ and $y\in E^r_{n+r}$, we write $d^r(x)=y$ when for some $\bar{x}\in Z^{r}_n$ representing $x$ in the quotient and some $\bar{y}\in Z^{r}_{n+r}$ representing $y$, $k(\bar{x})$ can be lifted $r-1$ times through $i$, and the image of the $(r-1)$-th lift by $j$ is $\bar{y}$.
+\end{definition}
+Let us also remark that stating $y\neq 0$ is stating that $r$ is maximal for such lift of $k(\bar{x})$.
+
+We can visualize this in the exact couple diagram:
+\begin{equation}
+  \begin{tikzcd}[column sep = small]
+   A_{n+r+1} \ar[rr, "i"] & & A_{n+r} \ar[rr, "i"] \ar[dl, "j"] & & ... \ar[rr, "i"] & & A_{n+1} \ar[rr, "i"] & & A_n \ar[dl, "j"] \\
+   & E_{n+r}^1 \ar[ul, "k"] & & &   & & & E_n^1 \ar[ul, "k"] & \\
+  & & \alpha \ar[rr, mapsto] \ar[dl, mapsto] & & ... \ar[rr, mapsto] & & i^{r-1}(\alpha) & & \\
+   & \bar{y} & & &   & & & \bar{x} \ar[ul, mapsto] &
+  \end{tikzcd}
+\end{equation}
+
+We now describe how the differential in the spectral sequences $(\mathcal{B})$, $({}^\phi \mathcal{B})$ and $(\mathcal{T}_{\phi(n)}^{\phi(n+1)})$ are interlinked.
+
+First, we see how a differential in $(\mathcal{B})$ short enough to fit in $(\mathcal{T}_{\phi(n)}^{\phi(n+1)})$ will occur.
+\begin{theorem} \label{prop:totalandsmall}
+  Let $n$, $r$ and $N$ be integers such that $\phi(N)\leq n\leq n+r < \phi(N+1)$, and let $x\in Z^r_n$ and $y\in Z^r_{n+r}$ in $(\mathcal{B})$.
+
+  Then there is an equivalence between these propositions:
+  \begin{itemize}
+  \item $d^r(x)=y$ in $(\mathcal{B})$.
+  \item $d^r(x)=y$ in $(\mathcal{T}_{\phi(N)}^{\phi(N+1)})$.
+  \end{itemize}
+  where $x$ and $y$ stand for the quotients in the respective $E^r$-pages of the two spectral sequences.
+\end{theorem}
+\begin{proof}
+  This is seen directly in the differential diagram after \cref{prop:diffdiagram}. Remark that the cycles are not the same generally between $(\mathcal{B})$ and $(\mathcal{T}_{\phi(N)}^{\phi(N+1)})$, but here we have $r < \phi(N+1) - \phi(N)$ so that the $r$-cycles are indeed the same.
+\end{proof}
+
+We then need a technical lemma to describe the longer differentials.
+\begin{lemma}\label{lem:technicallemmafordiff}
+  For integers $a \leq b \leq c$, if the commutative diagram
+  \begin{equation}
+    \begin{tikzcd}
+            (Y_b^{b+1})_* \ar[d, "f"]  & (Y_b^{c})_* \ar[d, "e"] \ar[r] \ar[l, "p"] & (Y_{a}^{c})_* \ar[d] \\
+      (Y_{b+1}^{\infty})_{*-1}  & (Y_{c}^{\infty})_{*-1} \ar[l, "i^{c-b-1}"] \ar[r, "id"] & (Y_{c}^{\infty})_{*-1}
+    \end{tikzcd}
+  \end{equation}
+  can be populated with classes
+  \begin{equation}
+    \begin{tikzcd}
+      x \ar[d, mapsto] & & \\
+      i^{c-b-1}(\beta) & \beta \ar[l, mapsto] \ar[r, mapsto] & \beta 
+    \end{tikzcd}
+  \end{equation}
+  then there exists lifts
+  \begin{equation}
+    \begin{tikzcd}
+      x \ar[d, mapsto] & \tilde{x}-i(u) \ar[d, mapsto] \ar[r, mapsto] \ar[l, mapsto] & \hat{x} \ar[d, mapsto]  \\
+      i^{c-b-1}(\beta) & \beta \ar[l, mapsto] \ar[r, mapsto] & \beta 
+    \end{tikzcd}
+  \end{equation}
+\end{lemma}
+\begin{proof}
+  The diagram of the statement is commutative because of \cref{prop:cofiber2}, which can also be used to check that the following diagram is commutative and has rows and column exact:
+  \begin{equation}
+    \begin{tikzcd}
+      & (Y_{b}^{\infty})_{*} \rar["id"] \dar &  (Y_{b}^{\infty})_{*} \dar & \\
+      (Y_{b+1}^{c})_{*} \rar["i"] \dar["id"] & (Y_{b}^{c})_{*} \rar["p"] \dar["e"] & (Y_{b}^{b+1})_{*} \dar["f"] \rar["g"] & (Y_{b+1}^{c})_{*-1} \dar["id"] \\
+      (Y_{b+1}^{c})_{*} \rar["\delta"] & (Y_{c}^{\infty})_{*-1} \rar["i^{c-b-1}"] \dar["i^{c-b}"] & (Y_{b+1}^{\infty})_{*-1} \dar["i"] \rar & (Y_{b+1}^{c})_{*-1} \\
+      & (Y_{b}^{\infty})_{*-1}\rar["id"] & (Y_{b}^{\infty})_{*-1}
+      \end{tikzcd}
+  \end{equation}
+  Here we can see that $x\in (Y_{b}^{b+1})_{*}$ can be lifted through $p$ to $(Y_b^{c})_*$: indeed, $f(x) = i^{c-b-1}(\beta)$ so $g(x) = 0$, and then there exists $\tilde{x}\in(Y_b^{c})_*$ such that $p(\tilde{x})=x$.
+
+ In the central square of the diagram, we have chosen two elements in $(Y_{c}^\infty)_{*-1}$, $\beta$ and $e(\tilde{x})$, whose images by $i^{c-b-1}$ are equal. By pushing $\beta - e(\tilde{x})$ in the bottom square, we can see that it is in the image of $e$, and thus so is $\beta$. Write $\tilde{x}'$ such that $e(\tilde{x}')=\beta$, and $x'$ the image of $\tilde{x}'$ in $(Y_b^{b+1})_*$ by $p$.
+
+  Now in the central square, $i^{c-b-1}(e(\tilde{x}-\tilde{x}'))=0$, so that there exists $u\in (Y_{b+1}^{c})_*$ with $\delta(u)=e(\tilde{x}-\tilde{x}')$. But the map $\delta$ factors through $(Y_{b}^{c})_*$ as $e\circ i$, and $i(u)\in (Y_{b}^{c})_*$ has image 0 in $(Y_b^{b+1})_*$ by $p$ since $u\in (Y_{b+1}^{c})_*$.
+
+  Consider the element $\tilde{x}-i(u)\in (Y_{b}^{c})_*$:
+  \begin{equation}
+    \begin{aligned}
+      e(\tilde{x}-i(u))& = e(\tilde{x})-\delta(u) \\
+      & = e(\tilde{x})-e(\tilde{x}-\tilde{x}') \\
+      & = e(\tilde{x}') \\
+      & = \beta
+    \end{aligned}
+  \end{equation}
+  \begin{equation}
+    \begin{aligned}
+      p(\tilde{x}-i(u)) & = p(\tilde{x}) \\
+      & = x.
+    \end{aligned}
+  \end{equation}
+
+  It remains to push $\tilde{x}-i(u)\in (Y_{b}^{c})_*$ into $(Y_{a}^{c})_*$, and we have:
+   \begin{equation}
+    \begin{tikzcd}
+      x \ar[d] & \tilde{x}-i(u) \ar[d, mapsto] \ar[r, mapsto] \ar[l, mapsto] & \hat{x} \ar[d, mapsto]  \\
+      i^{c-b-1}(\beta) & \beta \ar[l, mapsto] \ar[r, mapsto] & \beta 
+    \end{tikzcd}
+  \end{equation}
+\end{proof}
+
+We now describe how a longer differential in $(\mathcal{B})$ occurs in the gathered spectral sequence $({}^\phi \mathcal{B})$. We need the following definition:
+\begin{definition}
+  An infinite cycle $x\in (Y_n^{n+1})_*$ in the spectral sequence $(\mathcal{B})$ is said to \emph{represent} an element $\hat{x}$ of the target group $(Y^\infty_{-\infty})_*$ of $(\mathcal{B})$ when:
+  \begin{itemize}
+  \item $x$ is not a boundary, i.e.\ is not the target of a differential.
+  \item $x$ lifts through the map $(Y^\infty_n)_*\rightarrow (Y_n^{n+1})_*$ to an element $\tilde{x}\in (Y_n^\infty)_*$ whose image in $(Y_{-\infty}^\infty)_*$ is $\hat{x}$.
+  \end{itemize}
+\end{definition}
+
+\begin{theorem} \label{prop:totaltotruncated}
+  Let $n$, $m$, $N$ and $M$ be integers such that
+  \begin{equation}
+ \phi(N) \leq n < \phi(N+1) \leq \phi(M) \leq m < \phi(M+1)
+\end{equation}
+  and let $x\in Z^{m-n}_n$ and $y\in Z^{m-n}_{m}$ be classes in $(\mathcal{B})$ such that $d^{m-n}(x)=y\neq 0$.
+
+  Then:
+  \begin{itemize}
+  \item $x$ is an infinite cycle in $(\mathcal{T}_{\phi(N)}^{\phi(N+1)})$, thus represent a class $\hat{x}\in (Y_{\phi(N)}^{\phi(N+1)})_*$.
+  \item $y$ is an infinite cycle in $(\mathcal{T}_{\phi(M)}^{\phi(M+1)})$, thus represent a class $\hat{y}\in (Y_{\phi(M)}^{\phi(M+1)})_{*-1}$.
+  \item There is a differential $d^{M-N}(\hat{x})=\hat{y}$ in $({}^\phi \mathcal{B})$.
+  \end{itemize}
+\end{theorem}
+\begin{proof}
+  We see that $x$ and $y$ are infinite cycles in the truncated spectral sequences using \cref{prop:diffdiagram}.
+
+  The canonical maps assemble into a commutative diagram (it can be checked that each square is commutative using \cref{prop:cofiber2}):
+  \begin{equation} \label{eq:prooftotaltotruncated}
+    \begin{tikzcd}
+      (Y_n^{n+1})_* \ar[d, "f"]  & (Y_n^{\phi(N+1)})_* \ar[d, "e"] \ar[r] \ar[l, "p"] & (Y_{\phi(N)}^{\phi(N+1)})_* \ar[d] \\
+      (Y_{n+1}^{\infty})_{*-1}  & (Y_{\phi(N+1)}^{\infty})_{*-1} \ar[l] \ar[r, "id"] & (Y_{\phi(N+1)}^{\infty})_{*-1} \\
+      (Y_{m}^{\infty})_{*-1} \ar[u] \ar[d]  & (Y_{m}^{\infty})_{*-1} \ar[u] \ar[l, "id"] \ar[d] \ar[r] & (Y_{\phi(M)}^{\infty})_{*-1} \ar[u] \ar[d] \\
+      (Y_{m}^{m+1})_{*-1}  & (Y_{m}^{\phi(M+1)})_{*-1} \ar[r] \ar[l] & (Y_{\phi(M)}^{\phi(M+1)})_{*-1}  \\
+    \end{tikzcd}
+  \end{equation}
+  Remark that $x\in (Y_n^{n+1})_*$ and $y\in (Y_{m}^{m+1})_{*-1}$.
+
+  Having a differential $d^{m-n}(x)=y$ is having a class $\alpha\in (Y_{m}^\infty)_{*-1}$ with
+   \begin{equation}
+    \begin{tikzcd}[row sep=tiny]
+      (Y_{m}^{m+1})_{*-1} & (Y_{m}^{\infty})_{*-1} \ar[l] \ar[r] & (Y_{n+1}^{\infty})_{*-1} & (Y_n^{n+1})_* \ar[l] \\
+      y & \alpha \ar[l, mapsto] \ar[r, mapsto] & i^{m-n-1}(\alpha) & x. \ar[l, mapsto]
+    \end{tikzcd}
+  \end{equation}
+  This is the left column of our diagram.
+
+   Having $y$ represent a class $\hat{y}\in (Y_{\phi(M)}^{\phi(M+1)})_*$ in $(\mathcal{T}_{\phi(M)}^{\phi(M+1)})$ is having an element $\tilde{y}\in(Y_{m}^{\phi(M+1)})_*$ such that
+  \begin{equation}
+    \begin{tikzcd}[row sep=tiny]
+      (Y_{m}^{m+1})_{*-1}  & (Y_{m}^{\phi(M+1)})_{*-1} \ar[r] \ar[l] & (Y_{\phi(M)}^{\phi(M+1)})_{*-1} \\
+      y & \tilde{y} \ar[l, mapsto] \ar[r, mapsto] & \hat{y}.
+    \end{tikzcd}
+  \end{equation}
+  We choose $\hat{y}$ and $\tilde{y}$ by pushing $\alpha$ in the bottom right square.
+
+
+  We now have populated our commutative diagram with the elements
+  \begin{equation}
+    \begin{tikzcd}
+      x \ar[d] & & \\
+      i^{m-n-1}(\alpha) & i^{m-\phi(N+1)}(\alpha) \ar[l, mapsto] \ar[r, mapsto] & i^{m-\phi(N+1)}(\alpha)  \\
+      \alpha \ar[d, mapsto] \ar[u, mapsto] & \alpha \ar[l, mapsto] \ar[u, mapsto] \ar[d, mapsto] \ar[r, mapsto] & i^{m-\phi(M)}(\alpha) \ar[d, mapsto] \ar[u, mapsto] \\
+      y & \tilde{y} \ar[l, mapsto] \ar[r, mapsto] & \hat{y} \\
+    \end{tikzcd}
+  \end{equation}
+
+  We use \cref{lem:technicallemmafordiff} with $a = \phi(N)$, $b = n$ and $c = \phi(N+1)$, and with $\beta = i^{m-\phi(N+1)}(\alpha)$, that is on our first two rows. We thus get lifts:
+   \begin{equation}
+    \begin{tikzcd}
+      x \ar[d] & \tilde{x}-i(u) \ar[d, mapsto] \ar[r, mapsto] \ar[l, mapsto] & \hat{x} \ar[d, mapsto]  \\
+      i^{m-n-1}(\alpha) & i^{m-\phi(N+1)}(\alpha) \ar[l, mapsto] \ar[r, mapsto] & i^{m-\phi(N+1)}(\alpha)  \\
+      \alpha \ar[d, mapsto] \ar[u, mapsto] & \alpha \ar[l, mapsto] \ar[u, mapsto] \ar[d, mapsto] \ar[r, mapsto] & i^{m-\phi(M)}(\alpha) \ar[d, mapsto] \ar[u, mapsto] \\
+      y & \tilde{y} \ar[l, mapsto] \ar[r, mapsto] & \hat{y} \\
+    \end{tikzcd}
+  \end{equation}
+
+  The right column states that $d^{M-N}(\hat{x})=\hat{y}$ in $({}^\phi \mathcal{B})$.
+\end{proof}
+
+The next result describes how differentials in $({}^\phi \mathcal{B})$ have counterparts in $(\mathcal{B})$.
+\begin{theorem} \label{prop:truncatedtototal}
+  Let $N < M$ be integers and let $x\in {}^\phi Z^{M-N}_N$ and $y\in {}^\phi Z^{M-N}_M$ be classes in $({}^\phi \mathcal{B})$ such that $d^{M-N}(x)=y\neq 0$. For some unique $\phi(N)\leq n <\phi(N+1)$ and $\phi(M) \leq m < \phi(M+1)$, $x$ and $y$ are represented by $\check{x}\in (Y_n^{n+1})_*$ and $\check{y}\in (Y_m^{m+1})_{*-1}$ in the spectral sequence $(\mathcal{T}_{\phi(N)}^{\phi(N+1)})$ and $(\mathcal{T}_{\phi(M)}^{\phi(M+1)})$. Let $\check{x}$ and $\check{y}$ be fixed.
+  
+Then there is a unique integer $n'$ such that  $\phi(N)\leq n \leq n' < \phi(N+1)$, and there is an element $x'\in (Y_{\phi(N)}^{\phi(N+1)})_*$ which is represented by $\check{x}'\in (Y_{n'}^{n'+1})_*$ in the spectral sequence $(\mathcal{T}_{\phi(N)}^{\phi(N+1)})$, that supports a differential $d^{M-N}(x')=y$ in $({}^\phi \mathcal{B})$, and such that there is a differential $d^{m-n'}(\check{x}')=\check{y} \neq 0$ in $(\mathcal{B})$. Moreover, $n'$ does not depend on the choice of the representative $\check{x}$ and $\check{y}$.
+\end{theorem}
+\begin{proof}
+  We work again in diagram \eqref{eq:prooftotaltotruncated}. Remark that $x\in (Y_{\phi(N)}^{\phi(N+1)})_{*}$ and that $y\in (Y_{\phi(M)}^{\phi(M+1)})_{*-1}$.
+
+  First fix let's write $i^{m-\phi(N+1)}(\alpha)$ for the image of $x$ in $(Y_{\phi(N+1)}^\infty)_{*-1}$, with $m$ maximal for such lift $\alpha$ in $(Y_m^\infty)_{*-1}$. Necessarily, $\phi(M)\leq m < \phi(M+1)$. By definition, the image of $i^{m-\phi(M)}(\alpha)$ in $(Y_{\phi(M)}^{\phi(M+1)})_{*-1}$ is $y$ up to a boundary of ${}^\phi B_M^{M-N}$; without loss of generality, we can suppose that it is $y$.
+
+  We can then push $\alpha$ to get $\tilde{y}\in (Y_m^{\phi(M+1)})_{*-1}$ and $\check{y}\in (Y_m^{m+1})_{*-1}$. By definition, $n$ is such that $x$ can be lifted to $(Y_n^{\phi(N+1)})_*$ but not to $(Y_{n+1}^{\phi(N+1)})_*$. Denote $\tilde{x}$ such a lift and $\check{x}$ its non-zero image in $(Y_n^{n+1})_*$.
+
+  Our diagram is populated as such:
+  \begin{equation}
+    \begin{tikzcd}
+      \check{x} \ar[d] & \tilde{x} \ar[d, mapsto] \ar[r, mapsto] \ar[l, mapsto] & x \ar[d, mapsto]  \\
+      i^{m-n-1}(\alpha) & i^{m-\phi(N+1)}(\alpha) \ar[l, mapsto] \ar[r, mapsto] & i^{m-\phi(N+1)}(\alpha)  \\
+      \alpha \ar[d, mapsto] \ar[u, mapsto] & \alpha \ar[l, mapsto] \ar[u, mapsto] \ar[d, mapsto] \ar[r, mapsto] & i^{m-\phi(M)}(\alpha) \ar[d, mapsto] \ar[u, mapsto] \\
+      \check{y} & \tilde{y} \ar[l, mapsto] \ar[r, mapsto] & y \\
+    \end{tikzcd}
+  \end{equation}
+  It is however possible that $i^{m-n-1}(\alpha)$ is null.
+
+  Let $n'$ be the biggest integer such that $i^{m-n'}(\alpha) = 0 \in (Y_n^\infty)_{*-1}$. Since $i^{m-n-1}(\alpha)=f(\check{x})$, $i^{m-n}(\alpha)=0$ so $n\leq n'$. We now work in diagram \eqref{eq:prooftotaltotruncated} with $n$ replaced by $n'$: $i^{m-n'-1}(\alpha)$ can be lifted to $(Y_{n'}^{n'+1})_*$ since $i^{m-n'}(\alpha)=0$. Denote $\check{x}'$ such a lift. Again using \cref{lem:technicallemmafordiff} on our first two rows we can construct classes $\tilde{x}'\in (Y_{n'}^{\phi(N+1)})_*$ and $x'\in (Y_{\phi(N)}^{\phi(N+1)})_*$ to complete the diagram and get the result.
+\end{proof}
+
+Remark that with this level of generality, a better the statement cannot be made regarding the fact that we may have to change $\check{x}$ into $\check{x}'$ to get the differential in $(\mathcal{B})$. In fact, let us consider the tower of spectra such that:
+\begin{equation}
+  Y_n =
+  \begin{cases}
+    * & \mbox{if $n\geq 3$} \\
+    H\Z & \mbox{if $n=2$} \\
+    * & \mbox{if $n=1$} \\
+    \Sigma H\Z & \mbox{if $n\leq 0$}
+  \end{cases}
+\end{equation}
+and the integer function $\phi$ such that:
+\begin{equation}
+  \phi(n) =
+  \begin{cases}
+    n & \mbox{if $n\leq 0$} \\
+    n+1 & \mbox{if $n\geq 1$.}
+  \end{cases}
+\end{equation}
+
+We will figure the interesting part the tower of spectra for each spectral sequence with the cofibers below. Remark that with $(\mathcal{T}_0^2)$ we quotient the tower by the limit which is $Y_2$, and that we put between braces the name of a generator for the homotopy.
+
+\begin{equation}
+ (\mathcal{B}): \quad
+  \begin{tikzcd}
+    Y_3 \rar & Y_2 \rar \dar & Y_1 \rar \dar & Y_0 \dar \\
+    & Y_2^3 & Y_1^2 & Y_0^1 \\
+    * \rar & H\Z \rar \dar & * \rar \dar & \Sigma H\Z \dar \\
+    & H\Z\{\bar{y}\} & \Sigma H\Z\{\hat{x}'\} & \Sigma H\Z\{\hat{x}-\hat{x}'\} \\
+  \end{tikzcd}
+\end{equation}
+In $(\mathcal{B})$ there is a differential $d(\hat{x}')=\bar{y}$.
+
+\begin{equation}
+ (\mathcal{T}_0^2): \quad
+  \begin{tikzcd}
+    Y_2^2 \rar & Y_1^2 \rar \dar & Y_0^2 \dar \\
+    & Y_1^2 & Y_0^1 \\
+    * \rar & \Sigma H\Z\{\bar{x}'\} \rar \dar & \Sigma H\Z\{\bar{x}'\}\vee \Sigma H\Z\{\bar{x}-\bar{x}'\} \dar \\
+    & \Sigma H\Z\{\hat{x}'\} & \Sigma H\Z\{\hat{x}-\hat{x}'\} \\
+  \end{tikzcd}
+\end{equation}
+In $(\mathcal{T}_0^2)$ there is no non-zero differential.
+
+\begin{equation}
+ ({}^\phi \mathcal{B}): \quad
+  \begin{tikzcd}
+    Y_3 \rar & Y_2 \rar \dar & Y_0 \dar \\
+    & Y_2^3 & Y_0^2 \\
+    * \rar & H\Z \rar \dar & \Sigma H\Z \dar \\
+    & H\Z\{\bar{y}\} & \Sigma H\Z\{\bar{x}'\}\vee \Sigma H\Z\{\bar{x}-\bar{x}'\} \\
+  \end{tikzcd}
+\end{equation}
+In $({}^\phi \mathcal{B})$ there are differentials $d(\bar{x}')=\bar{y}$, and $d(\bar{x}-\bar{x}')=0$. But now, with slightly different notation from \cref{prop:truncatedtototal}, we have a class $\bar{x}=(\bar{x}-\bar{x}')+\bar{x}'$ such that $d(\bar{x})=\bar{y}$ in $({}^\phi \mathcal{B})$, and that class is represented by $\hat{x}-\hat{x}'$ at the end of $(\mathcal{T}_0^2)$ since $\hat{x}'$ is of lower filtration. But in $(\mathcal{B})$, $d(\hat{x}-\hat{x}')=0$, the differential is really supported by $\hat{x}'$. Thus, we cannot get a better result. However, this will not be an issue in the practical application following, since we will be able to prove a better result on the Bockstein spectral sequences we will compute.
+
+Statements can also be made regarding null differentials.
+\begin{theorem} \label{prop:nulldiffs}
+  \begin{enumerate}[(a)]
+  \item   Let $x\in (Y_{\phi(N)}^{\phi(N+1)})_*$ be an $M-N$-cycle in $({}^\phi \mathcal{B})$, that is $d^{i}(x)=0$ for $i\in\{1,\,\dots,\, M-N\}$. Then any  $\hat{x}\in (Y_n^{n+1})_*$ representing $x$ in $(\mathcal{T}_{\phi(N)}^{\phi(N+1)})_*$ is such that $d^{m-n}(\hat{x})=0$ in $(\mathcal{B})$ for any m such that $n < m \leq \phi(M+1)$.
+  \item Let $\hat{x}\in (Y_n^{n+1})_*$ be an $m-n$-cycle in $(\mathcal{B})$. Then there exists a class  $x\in (Y_{\phi(N)}^{\phi(N+1)})_*$ represented by $\hat{x}$ in $(\mathcal{T}_{\phi(N)}^{\phi(N+1)})_*$ such that $x$ is an $M-N$-cycle in $({}^\phi \mathcal{B})$ for any $M$ such that $\phi(N+1) < \phi(M+1) \leq m$.
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  First point is direct in diagram \eqref{eq:prooftotaltotruncated}.
+
+  Second point is using \cref{lem:technicallemmafordiff} to get a class represented by $\hat{x}$ whose image in $(Y_{\phi(N+1)}^\infty)_{*-1}$ can be lifted as much as the image of $\hat{x}$ in $(Y_{n+1}^\infty)_{*-1}$.
+\end{proof}
+
+
+%
+%
+%
+%

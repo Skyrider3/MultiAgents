@@ -1,0 +1,486 @@
+
+\subsection{Graded structures}
+
+% \begin{verbatim}
+%   NOTATIONS
+%   - generic ring: \ring
+%   - generic group: \grp
+%   - elements of \grp: g, h
+%   - generic bilinear map: \bil
+%   - scalars: \lambda, (\mu)
+
+%   - generic category: A
+%   - objects in category: u, v, w
+%   - morphisms in category: \alpha, \beta, \gamma
+  
+%   - generic 2-category: \cA
+%   - objects in 2-categories: i, j, k
+%   - 1-morphisms in 2-categories: u, v, w
+%   - 2-morphisms in 2-categories: \alpha, \beta, \gamma
+
+%   - vertical composition: \circ
+%   - horizontal composition: \otimes
+% \end{verbatim}
+
+% \newpage
+
+In this subsection, we describe the super, and more generally graded, analogue of various structures familiar in the commutative setting.
+After defining graded associative algebras and graded Lie algebras, we review graded-2-categories from \cite{SV_OddKhovanovHomology_2023}, and define a $\fg$-2-category as a graded-2-category endowed with an action of a graded Lie algebra $\fg$; this specializes to the notion of $\slt$-categories from \cite{EQ_Actions$mathfraksl_2$Algebras_2023}.
+Finally, we describe the graded analogue of twists \cite{KR_PositiveHalfWitt_2016,QRS+_Symmetries$mathfrakgl_N$foams_2024a}.
+
+We fix throughout a commutative ring $\ring$, an abelian group $\grp$ and a pairing $\bil\colon\grp\times\grp\to\ring^\times$, that is, a bilinear map.
+We further assume that $\bil$ is \emph{symmetric}, in the sense that
+\[\bil(g,h)\bil(h,g)=1\quad\forall g,h\in\grp.\]
+We write $\deg(v)$ the degree of an element $v$ in a $G$-graded object, although we often abuse notation and write $\mu(\deg v,\deg w)$ simply as $\mu(v,w)$.
+Given two $G$-graded $\ring$\nbd-modules $M$ and $N$, we write $\Hom(M,N)$ the $\ring$\nbd-module of degree-preserving $\ring$-linear maps between $M$ and $N$, and $\uHom(M,N)$ the $\grp$-graded $\ring$-module of all $\ring$-linear maps, not necessarily degree-preserving.
+We write $\End(M)\coloneqq\Hom(M,M)$ and $\uEnd(M)\coloneqq\uHom(M,M)$.
+
+We denote $\Mod_{\grp,\bil}$ the closed symmetric monoidal category of $\grp$-graded $\ring$-modules and deg\-ree-preserving linear maps.
+Its monoidal structure is the usual one on $G$-graded $\ring$-modules; note that it does not depend on $\bil$, and we write $\Mod_{\grp}=\Mod_{\grp,\bil}$ when considered only as a monoidal category.
+The symmetric structure is given by $(x,y)\mapsto\bil(x,y)(y,x)$ and the inner Hom is given by $\uHom$.
+% \[\underline{\Hom}_{\Mod_{\grp,\bil}}(M,N)=\uHom(M,N).\]
+
+We denote $\uMod_{\grp,\bil}$ the symmetric monoidal category whose objects are $\grp$-graded $\ring$-modules (the same as $\Mod_{\grp,\bil}$) and with $\uHom(M,N)$ as $G$-graded homspace between $M$ and $N$.
+In other words, the category $\uMod_{\grp,\bil}$ is the $\Mod_{\grp,\bil}$-enriched category determined by the closed monoidal structure of $\Mod_{\grp,\bil}$; as an $\Mod_{\grp,\bil}$-enriched category, its underlying category is $\Mod_{\grp,\bil}$ (see e.g.\ \cite[section~3.4]{Riehl_CategoricalHomotopyTheory_2014}).
+
+We sometimes simplify notation and write $\Mod=\Mod_{\grp,\bil}$ and $\uMod=\uMod_{\grp,\bil}$.
+
+\subsubsection{Graded associative algebras}
+\label{subsubsec:graded_associative_algebras}
+
+\begin{definition}
+  A \emph{$\grp$-graded (associative) algebra} is a unital associative algebra object in the monoidal category $\Mod_{\grp}$.
+\end{definition}
+
+That is, a $\grp$-graded algebra is a unital and associative algebra $(A,\cdot_A,1_A)$, such that $A$ is $\grp$-graded as a $\ring$-module, the multiplication is degree-preserving and the unit has trivial degree.
+Similarly, a \emph{morphism of $\grp$-graded algebras} is a morphism of unital associative algebra objects in the monoidal category $\Mod_{\grp}$; that is, a degree-preserving linear map preserving the unit and the product.
+
+\medbreak
+
+Let $M$ be a $\grp$-graded $\ring$-module. The algebra $\uEnd(M)$ of linear maps on $M$ has a canonical structure of $\grp$-graded algebra. If $A$ is a $\grp$-graded algebra, an \emph{action of $A$ on $M$} is morphism of $\grp$-graded algebra $A\to\uEnd(M)$. We say that $M$ is an \emph{$A$-module}, and a \emph{morphism of $A$-modules} is a degree-preserving linear map intertwining the actions.
+
+\begin{definition}
+  \label{defn:graded-commutative}
+  A \emph{$(\grp,\bil)$-graded commutative algebra} is a commutative unital associative algebra object in the symmetric monoidal category $\Mod_{\grp,\bil}$.
+\end{definition}
+
+That is, a $(\grp,\bil)$-graded commutative algebra is a $\grp$-graded algebra where for every homogeneous $x$ and $y$, we have $xy=\bil(x,y)yx$.
+Note that a $\grp$-graded algebra is always an algebra, while a $(\grp,\bil)$-graded commutative algebra needs not be a commutative algebra.
+
+
+
+
+\subsubsection{Graded Lie algebras}
+\label{subsubsec:graded_lie_algebras}
+
+\begin{definition}
+  A \emph{$(\grp,\bil)$-graded Lie algebra} is a Lie algebra object in the symmetric monoidal category $\Mod_{\grp,\bil}$.
+\end{definition}
+
+That is, a $(\grp,\bil)$-graded Lie algebra is a $\grp$-graded $\ring$-module $\fg$ equipped with a degree-preserving map $[-,-]\colon\fg\otimes\fg\to\fg$ such that
+\begin{gather*}
+  [x,y]+\bil(x,y)[y,x]=0\\
+  % \bil(y,x)\bil(z,x)\bil(z,y)[x,[y,z]]+\bil(z,y)[y,[z,x]]+\bil(y,x)[z,[x,y]]=0\\
+  % \Leftrightarrow
+  [x,[y,z]]+\bil(x,y+z)[y,[z,x]]+\bil(x+y,z)[z,[x,y]]=0
+\end{gather*}
+Similarly, a \emph{morphism of $\grp$-graded Lie algebras} is a morphism of Lie algebra objects in the monoidal category $\Mod_{\grp}$; that is, a degree-preserving linear map preserving the bracket.
+
+\medbreak
+
+Let $A$ be a $\grp$-graded algebra.
+We endow $A$ with the structure of a $(\grp,\bil)$-graded Lie algebra, stating that:
+\begin{gather*}
+  [f,g]\coloneqq f\circ g -\bil(f,g)\;g\circ f.
+\end{gather*}
+This applies in particular if $A=\uEnd(M)$ for some $\grp$-graded $\ring$-module $M$.
+If $\fg$ is a $(\grp,\bil)$-graded Lie algebra, an \emph{action of $\fg$ on $M$} is a morphism of $(\grp,\bil)$-graded Lie algebras $\fg\to\uEnd(M)$. We say that $M$ is a \emph{$\fg$-module}, and a \emph{morphism of $\fg$-modules} is a degree-preserving linear map intertwining the $\fg$-action.
+Given two $\fg$-modules $M$ and $N$, we write $\Hom^\fg(M,N)$ the $\ring$-module of morphisms of $\fg$-modules.
+Abusing notation, we denote $\uHom(M,N)$ the $G$-graded $\ring$-module of all linear maps, now endowed with the following $\fg$-action:
+\begin{equation}
+  \label{eq:inner_hom_g_categories}
+  g\cdot \alpha \coloneqq\tau_g^M\circ\alpha - \bil(g,\alpha)\;\alpha\circ\tau_g^N,
+\end{equation}
+for $g\in\fg$ and $\alpha\in\uHom(M,N)$, and where $\tau_g^M$ (resp.\ $\tau_g^N$) denotes the action of $g$ on $M$ (resp.\ $N$).
+
+
+
+
+\begin{example}
+  \label{ex:Lie_algebra_as_graded_algebra}
+  If $(\grp,\bil)$ is trivial, a $(\grp,\bil)$-graded Lie algebra is a Lie algebra over $\ring$. If only $\bil$ is trivial, a $(\grp,\bil)$-graded Lie algebra is a Lie algebra over $\ring$ equipped with a $\grp$-grading.
+\end{example}
+
+\begin{example}[super Lie algebra]
+  \label{ex:super_Lie_algebra_as_graded_algebra}
+  If $\grp=\bZ/2\bZ=\{\ov{0},\ov{1}\}$ and $\bil(n,m) = (-1)^{nm}$, a $(\grp,\bil)$-graded Lie algebra is a super Lie algebra over $\ring$.
+  In this setting, we often write $\abs{v}\coloneqq\deg v$.
+  Explicitly, a \emph{Lie superalgebra} is a super vector space $\fg$ endowed with a bilinear degree-preserving map $[-,-]\colon\fg\otimes \fg\to\fg$, satisfying the following axioms:
+  \begin{IEEEeqnarray*}{Cl}
+    [v,w] = -(-1)^{\abs{v}\abs{w}}[w,v]&\text{graded symmetry}\\{}
+    [u,[v,w]] + (-1)^{\abs{u}(\abs{v}+\abs{w})}
+    [v,[w,u]] + (-1)^{\abs{w}(\abs{u}+\abs{v})}[w,[u,v]] 
+    = 0
+    \qquad&\text{graded Jacobi identity}
+  \end{IEEEeqnarray*}
+\end{example}
+
+\begin{example}[$\gloo$]
+  \label{ex:defn_gloo}
+  The Lie superalgebra $\gloo$ is presented by generators $\{\lieh_1,\lieh_2,\liee,\lief\}$, where $\abs{\lieh_1}=\abs{\lieh_2}=\ov{0}$ and $\abs{\liee}=\abs{\lief}=\ov{1}$, and relations
+  \begin{align*}
+    [\liee,\lief] &= \lieh_1+\lieh_2 & [\liee,\liee]&=[\lief,\lief]=[\lieh_i,\lieh_j]=0\\
+    [\lieh_1,\liee] &=\liee & [\lieh_1,\lief] &=-\lief\\
+    [\lieh_2,\liee] &=-\liee & [\lieh_2,\lief] &=\lief
+  \end{align*}
+\end{example}
+
+\begin{example}[$\sloo$]
+  \label{ex:defn_sloo}
+  Setting $\lieh\coloneqq\lieh_1+\lieh_2$ defined the Lie super algebra $\sloo$ as a sub-algebra $\sloo\subset\gloo$.
+  In other words, the Lie superalgebra $\sloo$ presented by generators $\{\lieh,\liee,\lief\}$, where $\abs{\lieh}=\ov{0}$ and $\abs{\liee}=\abs{\lief}=\ov{1}$, and relations
+  \begin{align*}
+    [\liee,\lief] &= \lieh & [\liee,\liee]&=[\lief,\lief]=[\lieh,\lieh]=0\\
+    [\lieh,\liee] &=0 & [\lieh,\lief] &=0
+  \end{align*}
+\end{example}
+
+Anticipating, we give some specific data for $\ring$, $\grp$ and $\bil$ which will be used in the definition of graded $\glt$-foams, and define certain ``covering'' Lie algebras.
+
+\begin{definition}
+  \label{defn:graded_structure_foam}
+  Let $\ringfoam$ be a commutative ring together with three invertible elements $X$, $Y$ and $Z\in{\ringfoam}^\times$ such that $X^2=Y^2=1$.
+  Given this data, let $\bilfoam$ be the following bilinear form for the abelian group $G\coloneq \bZ^2$:
+  \begin{align*}
+    \bilfoam\colon \bZ^2\times\bZ^2 &\to {\ringfoam}^\times,\\
+    ((a,b),(c,d)) &\mapsto X^{ac}Y^{bd} Z^{ad-bc}.
+  \end{align*}
+  We say ``restrict to the even case'' to mean choosing $X=Y=Z=1$, and ``restrict to the odd, or super, case'' to mean choosing $X=Z=1$ and $Y=-1$.
+\end{definition}
+
+\begin{example}[$\grgl_2$]
+  \label{ex:defn_covering_gl2}
+  Let $\ringfoam$ and $\bilfoam$ as in \cref{defn:graded_structure_foam}.
+  Let $\grgl_2$, called \emph{covering $\fgl_2$}, be the $(\bZ^2,\bilfoam)$-graded Lie algebra defined as follows.
+  As a $\ringfoam$-module, $\grgl_2$ is generated by the following homogeneous vectors:
+  \begin{gather*}
+    \deg(\lief)=(1,1),\;
+    \deg(\liee)=(-1,-1),\;
+    \deg(\lieh_1)=(0,0)
+    \an\deg(\lieh_2)=(0,0).
+  \end{gather*}
+  The structure of graded Lie algebra is then given as follows:
+  \begin{align*}
+    [\liee,\lief] &= \lieh_1+XY\lieh_2 & [\liee,\liee]&=[\lief,\lief]=[\lieh_i,\lieh_j]=0\\
+    [\lieh_1,\liee] &=\liee & [\lieh_1,\lief] &=-\lief\\
+    [\lieh_2,\liee] &=-\liee & [\lieh_2,\lief] &=\lief. 
+  \end{align*}
+  % Leibniz: (automatically of if two of f,g,h are equal)
+  % [e,[h_1,h_2]]: e-e=0
+  % [f,[h_1,h_2]]: f-f=0
+  % [e,[f,h_1]]: [e,f]+\bil(e,f)[f,e]=0
+  We further denote $\grgl_2^-\coloneqq\langle\lief\rangle$ and $\grgl_2^{\leq}\coloneqq\langle\lief,\lieh_1,\lieh_2\rangle$, and $\grgl_2^+\coloneqq\langle\liee\rangle$ and $\grgl_2^{\geq}\coloneqq\langle\liee,\lieh_1,\lieh_2\rangle$.
+  Restricting to even and odd, we have $\grgl_2^{\leq}\vert_{X=Y=Z=1}=\fgl_2^{\leq}$ and $\grgl_2^{\leq}\vert_{X=Z=1,Y=-1}=\gloo$, respectively.
+\end{example}
+
+\begin{example}[$\grsl_2$]
+  \label{ex:defn_covering_sl2}
+  Following \cref{ex:defn_covering_gl2}, set $\lieh\coloneqq\lieh_1-XY\lieh_2$. The $(\bZ^2,\bilfoam)$-graded Lie algebra $\grsl_2\subset\grgl_2$, called \emph{covering $\fsl_2$}, is defined as generated by $\lief$, $\liee$ and $\lieh$.
+  In other words, it has the following defining relations:
+  \begin{align*}
+    [\liee,\lief] &= \lieh & [\liee,\liee]&=[\lief,\lief]=[\lieh,\lieh]=0\\
+    [\lieh,\liee] &=(1+XY)\liee & [\lieh,\lief] &=-(1+XY)\lief
+  \end{align*}
+  Evaluating to even recovers $\slt\subset\glt$, while evaluating to odd recovers $\mathfrak{sl}_{1|1}\subset \mathfrak{gl}_{1|1}$.
+  Note that when working over a field of characteristic two, $\fsl_2=\fsl_{1|1}$.
+  %
+  Similarly to \cref{ex:defn_covering_gl2}, one can define $\grsl_2^-$, $\grsl_2^{\leq 0}$, $\grsl_2^+$ and $\grsl_2^{\geq 0}$.
+\end{example}
+
+
+
+
+\subsubsection{$\fg$-categories}
+\label{subsubsec:g-categories}
+
+We denote $\gMod$ the closed symmetric monoidal category of $\fg$-mo\-dules and morphisms of $\fg$\nbd-mo\-dules.
+Its closed symmetric monoidal structure coincides with the closed symmetric monoidal structure of $\Mod_{\grp,\bil}$ via the forgetful functor; to complete the definition of the structure, it suffices to define the relevant $\fg$-actions.
+For the monoidal structure, the $\fg$-action on the monoidal unit $\ring$ is trivial, and the $\fg$-action on the tensor product $M\otimes N$ is defined as
+\[
+g\cdot (m\otimes n)\coloneqq (g\cdot m)\otimes n + \bil(g,m) \,m\,(g\otimes n).
+\]
+One could view this symmetric monoidal structure as coming from some graded Hopf structure on the enveloping algebra of $\fg$; we omit this point of view.
+The inner Hom is $\uHom$ with the structure of $\fg$-module given in \eqref{eq:inner_hom_g_categories}.
+
+% Recall that given a monoidal category $\cV$, there is a notion of $\cV$-enriched category (see e.g.\ \cite[Chapter~6]{Borceux_HandbookCategoricalAlgebra_1994a}).
+
+\begin{definition}
+  A \emph{$\fg$-category} (resp.\ a \emph{$\fg$-functor}) is a $(\gMod)$-enriched category (resp.\ a $(\gMod)$-enriched functor).
+\end{definition}
+
+Note that this definition does not depend on the symmetric structure on $\gMod$.
+
+We unpack the definition.
+Given the forgetful functor $\gMod\to\Mod_{\grp}$, a $\fg$-category $A$ is in particular a $\grp$-graded category.
+In addition, the $\fg$-category $A$ carries a family of linear maps
+\begin{equation}
+  \label{eq:g-cat-family-of-actions}
+\fg\to \uEnd(\Hom_A(u,v))
+\end{equation}
+for each pair of objects $(u,v)$, that satisfies the \emph{$(\grp,\bil)$-graded Leibniz rule}:
+\begin{equation}
+  \label{eq:graded_Leibniz_rule}
+  g\cdot (\alpha\circ\beta) = (g\cdot \alpha)\circ \beta + \bil(g,\alpha)\, f\circ(g\cdot \beta),
+\end{equation}
+where $\alpha$ and $\beta$ are suitably composable morphisms of $A$.
+Whenever a $\grp$-graded category $A$ is equipped with a family of $\fg$-module morphisms as in \eqref{eq:g-cat-family-of-actions} satisfying the graded Leibniz rule \eqref{eq:graded_Leibniz_rule}, we say that \emph{$\fg$ acts by derivation on $A$}.
+
+\begin{lemma}
+  A $\fg$-category is the same as $\grp$-graded category equipped with an action of $\fg$ by derivation.\hfill\qed
+\end{lemma}
+
+\begin{remark}
+  If $w$ is an object of $A$, it follows from the graded Leibniz rule that $g\cdot \id_w = g\cdot(\id_w\circ\id_w) = g\cdot \id_w + g\cdot \id_w$, so that $g\cdot \id_w=0$.
+\end{remark}
+
+\begin{example}
+  \label{ex:ugMod}
+  Let $\ugMod$ be the symmetric monoidal category whose objects are $\fg$-modules and with $\uHom(M,N)$ as the $\fg$-module homspace between $M$ and $N$.
+  By definition, the category $\ugMod$ is a $\fg$-category.
+  In fact, it is the $(\gMod)$-enriched category determined by the closed monoidal structure on $\gMod$, whose underlying category (as a $(\gMod)$-enriched category) is $\gMod$.
+\end{example}
+
+\begin{definition}
+  \label{defn:g_equivariant}
+  Let $A$ be a $\fg$-category. A morphism $\alpha$ is said to be \emph{$\fg$-equivariant} if $g\cdot\alpha=0$ for all $g\in\fg$.
+\end{definition}
+
+If $A=\ugMod$, then a morphism $\alpha$ is $\fg$-equivariant in the sense of \cref{defn:g_equivariant} if and only if it is $\fg$-equivariant in the usual sense, that is, if $\alpha$ intertwines the $\fg$-action on its source and target.
+
+% Given a $\fg$-category $A$, one can consider the contravariant Yoneda embedding:
+% \begin{align}
+%   \label{eq:yoneda_embedding}
+%   Y^{\mathrm{op}}\colon A^{\mathrm{op}}&\to \Fun(A,\gMod),\\
+%   w&\mapsto\Hom_A(-,w),
+% \end{align}
+
+
+
+\subsubsection{$\fg$-2-categories}
+\label{subsubsec:g-2-categories}
+
+Recall that if $\cV$ is a symmetric monoidal category, then the category $\cV\md\cC at$ of $\cV$-enriched categories is itself symmetric monoidal, and one can enriched over $\cV\md\cC at$. A \emph{$\cV$-enriched 2-category} is a $(\cV\md\cC at)$-enriched category.
+
+\begin{definition}[{\cite[Remark~2.7]{SV_OddKhovanovHomology_2023}}]
+  A $(\grp,\bil)$-graded-2-category is a $(\Mod_{\grp,\bil})$-enriched 2-cate\-gory.
+\end{definition}
+
+Unpacking the definition, a $(\grp,\bil)$-graded-2-category is akin to a $\grp$-graded $\ring$-linear strict 2-category, except that the interchange law is replaced by the \emph{graded interchange law}:
+\begin{equation*}
+  \tikzpic{
+    \draw (0,2) node[above] {\scriptsize $v'$} to
+      node[fill=black,circle,inner sep=2pt,pos=.3] {}
+      node[right,pos=.3] {\scriptsize $\beta$}
+        (0,0) node[below] {\scriptsize $u'$};
+    \draw (1,2) node[above] {\scriptsize $v$} to
+      node[fill=black,circle,inner sep=2pt,pos=.7] {}
+      node[right,pos=.7] {\scriptsize $\alpha$}
+        (1,0) node[below] {\scriptsize $u$};
+  }[scale=0.8]
+  \;=\;\bil(\deg\alpha,\deg\beta)
+  \tikzpic{
+    \draw (0,2) node[above] {\scriptsize $v'$} to
+      node[fill=black,circle,inner sep=2pt,pos=.7] {}
+      node[right,pos=.7] {\scriptsize $\beta$}
+        (0,0) node[below] {\scriptsize $u'$};
+    \draw (1,2) node[above] {\scriptsize $v$} to
+      node[fill=black,circle,inner sep=2pt,pos=.3] {}
+      node[right,pos=.3] {\scriptsize $\alpha$}
+      (1,0) node[below] {\scriptsize $u$};
+  }[scale=0.8]
+\end{equation*}
+
+\begin{definition}
+  A \emph{$\fg$-2-category} (resp.\ $\fg$-2-functor) is a $(\gMod)$-enriched 2-category (resp.\ $(\gMod)$-enriched 2-functor).
+  A \emph{$\fg$-monoidal category} is a one-object $\fg$-2-category.
+\end{definition}
+
+We unpack the definition.
+A $\fg$-2-category is in particular a $(\grp,\bil)$-graded-2-category, denoting its horizontal (resp.\ vertical) composition by $\otimes$ (resp.\ $\circ$). In addition, for each pair of objects $(x,y)$ the hom-category $\Hom(x,y)$ is a $\fg$-category.
+Furthermore, the action of $\fg$ satisfy the $(\grp,\bil)$-graded Leibniz rule with respect to the horizontal composition;
+equivalently, the action commutes with horizontal whiskering:
+\begin{equation}
+  \label{eq:axiomC_gcategories}
+  \fg\cdot(\id_u\otimes\alpha\otimes\id_v) = \id_u\otimes(\fg\cdot\alpha)\otimes\id_v,
+\end{equation}
+where $u,v$ are 1-morphisms and $\alpha$ is a 2-morphism, suitably composable.
+
+A $(\grp,\bil)$-graded-2-category $\cA$ equipped with a family of $\fg$-module morphisms
+\[\fg\to\uEnd(\Hom_\cA(u,v))\]
+indexed by pair of 1-morphisms $(u,v)$ with the same source and target, such that the action of $\fg$ defines an action by derivation on each Hom-category $\Hom_\cA(i,j)$ for pair of objects $(i,j)$, and furthermore verifies axiom \eqref{eq:axiomC_gcategories}, we say that \emph{$\fg$ acts by derivation on $\cA$}.
+
+\begin{lemma}
+  \label{lem:equivalent_defn_g2cat}
+  A $\fg$-2-category is the same as a $(\grp,\bil)$-graded-2-category equipped an action of $\fg$ by derivation.\hfill\qed
+\end{lemma}
+
+
+
+
+\begin{example}
+  \label{ex:sl2category_as_gcategory}
+  Following up on \cref{ex:Lie_algebra_as_graded_algebra}, if $\ring=\bZ$, if $(\grp,\bil)=(\bZ,1)$ and if $\fg=\fsl_2$ equipped with the $\bZ$-grading $\abs{\lief}=2$, $\abs{\liee}=-2$ and $\abs{\lieh}=0$, then a $\fg$-monoidal category is an $\slt$-category in the sense of \cite{EQ_Actions$mathfraksl_2$Algebras_2023}.
+\end{example}
+
+\begin{example}
+  \label{ex:dg_as_gcategory}
+  Let $(\grp,\bil)=(\bZ,1)$ and $\ring$ a ring of characteristic $p$.
+  If $\fg=\ring\partial$ is the one-dimensional abelian $(\grp,\bil)$-graded Lie algebra concentrated in degree $\abs{\partial}=2$, a $\fg$-monoidal category is a graded monoidal category equipped with an action by derivation $\partial$ of degree $2$.
+  If this action is $p$-nilpotent, then this category is a $p$-DG-category in the sense of hopfological algebra \cite{Khovanov_HopfologicalAlgebraCategorification_2016,KQ_ApproachCategorificationSmall_2015,Qi_HopfologicalAlgebra_2014}.
+\end{example}
+
+\begin{example}
+  \label{ex:super_dg_as_gcategory}
+  Let $(\grp,\bil)$ as in \cref{ex:super_Lie_algebra_as_graded_algebra}.
+  If $\fg=\ring\partial$ is the one-dimensional abelian super Lie algebra concentrated in degree $\abs{\partial}=\ov{1}$, then a $\fg$-2-category is a dg-2-super\-ca\-te\-gory in the sense of \cite{EL_DGStructuresOdd_2020}.
+\end{example}
+
+\begin{example}
+  \label{ex:graded_commutative_dg_algebra}
+  A $\fg$-2-category with one object and one morphism is a $(\grp,\bil)$-graded-com\-mu\-ta\-tive algebra equipped with an action of $\fg$ by derivation.
+  In the setting of , then $(\grp,\bil)$-graded-commutativity recovers graded-commutativity in the usual sense, and if further the action of $\partial$ is nilpotent, we recover the notion of a graded-com\-mu\-ta\-tive DG-algebra.
+\end{example}
+
+\begin{remark}
+  \label{rem:derivation_uniquely_defn_on_generators_of_A}
+  If $\cA$ is a $(\grp,\bil)$-graded-2-category defined by generators and relations, an action by derivation is soly determined by the action on the generators. Conversely, to define an action by derivation, it suffices to define it on the generators and verify that it preserves the defining relations.
+  The graded interchange law needs not be verified: it follows from the graded Leibniz rule that any action by derivation preserves the graded interchange law.
+\end{remark}
+
+\begin{remark}
+  \label{rem:action_uniquely_defn_by_generators_of_g}
+  If $\cA$ is a $(\grp,\bil)$-graded-2-category and $\fg$ is a $(\grp,\bil)$-graded Lie algebra defined by generators and relations, an action of $\fg$ on $\cA$ by derivation is solely determined by the action of the generators of $\fg$.
+  Conversely, to define an action $\fg$ on $\cA$ by derivation, it suffices to define it on the generators of $\fg$, and verify that it satisfies the defining relations of $\fg$.
+  % Indeed, the bracket of two elements that verify the graded Leibniz rule also verifies the graded Leibniz rule, the bracket of two elements that commute with the horizontal whiskering also commute with the horizontal whiskering.
+  % \begin{align*}
+  %   [f,g](xy)
+  %   =&(f\circ g -\bil(f,g)g\circ f)(xy)
+  %   =fg(xy)-\bil(f,g)gf(xy)
+  %   \\
+  %   =&fg(x)y+\bil(f,g(x))g(x)f(y)+\bil(g,x)f(x)g(y)+\bil(f,x)\bil(g,x)xfg(y)
+  %   \\
+  %   &{}-\bil(f,g)\big[gf(x)y+\bil(g,f(x))f(x)g(y)+\bil(f,x)g(x)f(y)+\bil(g,x)\bil(f,x)xgf(y)\big]
+  %   \\
+  %   =&[f,g](xy)+\bil(f+g,x)x[f,g](y)
+  % \end{align*}
+\end{remark}
+
+
+
+
+\subsubsection{Twisting $\fg$-2-categories}
+\label{subsubsec:twisting_g2categories}
+
+Let $\cA$ be a $\fg$-2-category.
+Consider a family of degree-preserving linear maps
+\[\tau = (\tau_w\colon\fg\to\End_\cA(w))_w,\]
+indexed by 1-morphisms $w$ of $\cA$.
+We say that $\tau$ is \emph{flat} if for each $w$, we have
+\begin{gather*}
+  \tau_w([g,h])=g\cdot\tau_w(h)-\bil(g,h)\, h\cdot\tau_w(g),
+\end{gather*}
+
+\begin{definition}
+  \label{defn:family_of_twists}
+  Let $\cA$ be a $\fg$-2-category.
+  A family $\tau$ as above is said to be a \emph{a family of twists} if it is flat, satisfies the Leibniz rule and has a graded-com\-mu\-ta\-tive image.
+\end{definition}
+
+Here ``satisfies the Leibniz rule'' means that $\tau_{u\otimes v}(g) = \tau_{u}(g)\otimes v + u\otimes\tau_v(g)$ and ``has a graded-com\-mu\-ta\-tive image'' means that the image of each $\tau_w$ is $(\grp,\bil)$-graded-com\-mu\-ta\-tive (see \cref{defn:graded-commutative}).
+
+\begin{remark}
+  \label{rem:twist_only_check_on_generators}
+  A family of twists is determined by its value on generators of 1-morphisms. Moreover, flatness and graded-com\-mu\-ta\-tive image need only be checked on the generators.
+  % \begin{align*}
+  %   \tau_{u\otimes v}([g,h]) 
+  %   &= \tau_{u}([g,h])\otimes v + u\otimes\tau_v([g,h])\\
+  %   &=\big(g\cdot\tau_u(h)-\bil(g,h)\, h\cdot\tau_u(g)\big)\otimes v 
+  %   + u\otimes\big(g\cdot\tau_v(h)-\bil(g,h)\, h\cdot\tau_v(g)\big)\\
+  %   &= g\cdot\tau_{u\otimes v}(h)-\bil(g,h)\, h\cdot\tau_{u\otimes v}(g)
+  % \end{align*}
+\end{remark}
+
+\begin{proposition}
+  \label{prop:family_of_twists_gives_g2cat}
+  Let $\cA$ be a $\fg$-2-category and $\tau$ a family as above.
+  For each pair of 1-morphisms $(u,v)$ with the same source and target, define a degree-preserving linear map
+  \[\fg\to\uEnd(\Hom_\cA(u,v)),\quad g\mapsto g\cdot_\tau (-)\]
+  where for $\alpha\colon u\to v$  a 2-morphism in $\cA$:
+  \begin{gather*}
+    g\cdot_\tau \alpha \coloneqq \tau_v(g)\circ\alpha + g\cdot \alpha - \bil(g,\alpha)\,\alpha\circ\tau_u(g).
+  \end{gather*}
+  Let $\cA^\tau$ be the underlying $(\grp,\bil)$-graded-2-category of $\cA$ equipped with this family of maps. If $\tau$ is a family of twists, then $\cA^\tau$ is a $\fg$-2-category.
+\end{proposition}
+
+\begin{proof}
+  We first check that the action is well-defined; that is, each map $\fg\to\uEnd_\ring(\Hom_\cA(u,v))$ is a $\fg$-morphism.
+  For a 2-morphism $\alpha\colon u\to v$, we compute:
+  \begin{IEEEeqnarray*}{rCl}
+    g\cdot_\tau(h\cdot_\tau \alpha)
+    &=&
+    g\cdot_\tau(\tau_v(h)\circ \alpha + h\cdot \alpha - \bil(h,\alpha)\;\alpha\circ\tau_u(h))
+    \\[1ex]
+    &=&
+    \tau_v(g)\;(\tau_v(h)\circ\alpha + h\cdot \alpha - \bil(h,\alpha)\;\alpha\circ\tau_u(h))
+    \\
+    &&{}+
+    g\cdot(\tau_v(h)\circ\alpha + h\cdot \alpha - \bil(h,\alpha)\;\alpha\circ\tau_u(h))
+    \\
+    &&{}-\bil(g,h+\alpha)\;
+    (\tau_v(h)\circ\alpha + h\cdot \alpha - \bil(h,\alpha)\;\alpha\circ\tau_u(h))\;
+    \tau_u(g)
+    \\[1ex]
+    &=&
+    \tau_v(g)\;(\underline{\tau_v(h)\circ\alpha}_1 + \underline{h\cdot \alpha}_2 - \underline{\bil(h,\alpha)\;\alpha\circ\tau_u(h)}_3)
+    \\
+    &&{}+
+    \underline{(g\cdot\tau_v(h))\circ\alpha}_4 + \underline{\bil(g,h)\;\tau_v(h)\circ(g\cdot \alpha)}_2
+    + \underline{g\cdot (h\cdot \alpha)}_5
+    \\
+    &&{}- \bil(h,\alpha) \big[\underline{(g\cdot \alpha)\circ\tau_u(h)}_6 + \underline{\bil(g,\alpha)\;\alpha\;g\cdot \tau_u(h)}_7\big]
+    \\
+    &&{}-\bil(g,h+\alpha)\;
+    (\underline{\tau_v(h)\;\alpha}_3 + \underline{h\cdot \alpha}_6 - \underline{\bil(h,\alpha)\;\alpha\;\tau_u(h)}_8)\;
+    \tau_u(g)
+  \end{IEEEeqnarray*}
+  Here we labelled each term with a number according to how they simplify in the computation below:
+  \begin{IEEEeqnarray*}{rCl}
+    g\cdot_\tau(h\cdot_\tau \alpha)-\bil(g,h)h\cdot_\tau(g\cdot_\tau \alpha)
+    &=&
+    \underline{\tau_v([g,h])\;\alpha}_4 + \underline{[g,h]\cdot \alpha}_5 - \underline{\bil(h+g,\alpha)\;\alpha\;\tau_u([g,h])}_7
+    \\
+    &=& [g,h]\cdot_\tau \alpha.
+  \end{IEEEeqnarray*}
+  Terms 4 and 7 simplify thanks to flatness, term 5 simplify as $\cdot$ is an action of $\fg$, and the remaining terms cancel, with terms 1 and 8 cancelling thanks to graded commutativity.
+
+
+  Following \cref{lem:equivalent_defn_g2cat},
+  it remains to check that the $\fg$-action verifies the Leibniz rule and commutes with horizontal whiskering.
+  The former follows from graded Leibniz rule for $\cdot$, and the latter follows from the fact that $\tau$ .
+\end{proof}
+
+% \begin{remark}
+%   It follows directly from the graded Leibniz rule that:
+%   \begin{align*}
+%     \partial^2(xy)&= \partial\big[\partial(x)y+\bil(\partial,x)x\partial(y)\big]\\
+%     &=\partial^2(x)y+\big[\bil(\partial,\partial(x))+\bil(\partial,x)\big]\partial(x)\partial(y)+\bil(\partial,x)^2x\partial^2(y)\\
+%     &=\partial^2(x)y+\big[\bil(\partial,\partial)+1\big]\bil(\partial,x)\partial(x)\partial(y)+\bil(\partial,x)^2x\partial^2(y)
+%   \end{align*}
+%   Assume $\partial^2(x)=\partial^2(y)=0$.
+%   On the one hand, if $\bil(\partial,\partial)=-1$ (super case), then $\partial^2(xy)=0$.
+%   On the other hand, if $\bil(\partial,\partial)=1$ and if the characteristic of $\ring$ is two ($2$-DG case), then $\partial^2(xy)=0$.
+%   In particular, if we are in one of the above cases and $\partial^2$ is zero on a set of generators of $A$, then $(A,\partial)$ is a $(\grp,\bil)$-graded dg-algebra.
+% \end{remark}
+
+
+

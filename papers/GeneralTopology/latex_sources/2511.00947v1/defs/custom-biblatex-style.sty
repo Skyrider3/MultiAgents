@@ -1,0 +1,114 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%          bibliography          %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[
+  backend=biber,
+  % style=ext-numeric,
+  style=alphabetic,
+  sortcites,
+  url=false,
+  doi=false,
+  isbn=false,
+  eprint=false,
+  giveninits,
+  date=year,
+  maxbibnames=99,
+  backref
+]{biblatex}
+\usepackage{mathscinet}
+
+\DefineBibliographyStrings{english}{
+  bathesis = {bachelor's thesis},
+}
+\DefineBibliographyStrings{english}{
+  mathesis = {master's thesis},
+}
+\DefineBibliographyStrings{english}{
+  phdthesis = {Ph.D.\ thesis},
+}
+
+% justify bib right
+\appto{\bibsetup}{\raggedright}
+
+% Commas as separators
+% https://tex.stackexchange.com/a/6749/203954
+\renewcommand*{\newunitpunct}{\addcomma\space}
+
+% Comma before and after journal volume
+\renewbibmacro*{volume+number+eid}{%
+  \setunit*{\addcomma\space}% NEW
+  \printfield{volume}%
+%  \setunit*{\adddot}% DELETED
+  \setunit*{\addcomma\space}% NEW
+  \printfield{number}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}}
+
+% Prefixes for journal volume and number
+\DeclareFieldFormat[article]{volume}{\bibstring{volume}~#1}% volume of a journal
+\DeclareFieldFormat[article]{number}{\bibstring{number}~#1}% number of a journal
+
+% DOI link on title
+% https://tex.stackexchange.com/a/48409/203954
+\newbibmacro{string+doiurlisbn}[1]{%
+  \iffieldundef{doi}{%
+    \iffieldundef{url}{%
+      \iffieldundef{isbn}{%
+        \iffieldundef{issn}{%
+          #1%
+        }{%
+          \href{http://books.google.com/books?vid=ISSN\thefield{issn}}{#1}%
+        }%
+      }{%
+        \href{http://books.google.com/books?vid=ISBN\thefield{isbn}}{#1}%
+      }%
+    }{%
+      \href{\thefield{url}}{#1}%
+    }%
+  }{%
+    \href{http://dx.doi.org/\thefield{doi}}{#1}%
+  }%
+}
+% (also remove quotation marks on title)
+\DeclareFieldFormat[article,incollection,book,unpublished,thesis]{title}%
+    {\usebibmacro{string+doiurlisbn}{{#1}}}
+
+% Lower case title / require adding ext- to the style
+% https://tex.stackexchange.com/a/509406/203954
+\DeclareFieldFormat*{titlecase:title}{\MakeSentenceCase*{#1}}
+
+% remove in: only for articles
+% https://tex.stackexchange.com/a/10686/203954
+\renewbibmacro{in:}{%
+  \ifentrytype{article}{}{\printtext{\bibstring{in}\intitlepunct}}}
+
+% Use journal abbreviation
+% isdot ensures that there is a comma after abbreviated titles: see https://tex.stackexchange.com/a/540970/203954
+\DeclareFieldFormat*{journaltitle}{%
+  \iffieldundef{shortjournal}{%
+    \mkbibemph{\thefield{journaltitle}}}{%
+    \mkbibemph{\thefield{shortjournal}\isdot}%
+  }%
+}
+
+% Add arxiv number only for unpublished, without url and fuss
+\ExecuteBibliographyOptions[unpublished]{eprint=true}
+\DeclareFieldFormat{eprint:arxiv}{%
+  \printfield{eprinttype}\addcolon\space%
+  #1%
+  \iffieldundef{eprintclass}{}{\addspace[\printfield{eprintclass}]}%
+}
+
+% preprint before date
+\DeclareFieldFormat[unpublished]{pubstate}{%
+  pre\-print
+}
+\DeclareFieldFormat[unpublished]{date}{\printfield{pubstate}\addspace\thefield{year}}
+\renewbibmacro*{addendum+pubstate}{%
+  \printfield{addendum}%
+  \newunit\newblock
+  \iffieldundef{year}
+    {\printfield{pubstate}}
+    {}}
+

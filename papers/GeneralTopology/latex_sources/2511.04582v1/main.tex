@@ -1,0 +1,1149 @@
+\documentclass[a4paper,reqno]{amsart}
+\input{macros}
+
+
+
+\begin{document}
+
+\title{Embedding Calculus, Goodwillie calculus and link invariants}
+\author{Hyeonhee Jin}
+\address{Max Planck Institute for Mathematics, Vivatsgasse 7, 53111 Bonn, Germany}
+\email{hh17wlog@gmail.com}
+
+
+\setcounter{tocdepth}{1}
+
+\begin{abstract}
+We study Goodwillie-Weiss' embedding calculus through its relationship with Goodwillie’s functor calculus.
+Specifically, building on a result of Tillmann and Weiss, we construct a functorial complement for \(T_{n}\)-embeddings that takes values in Heuts’ categorical $n$-excisive approximation of pointed spaces.
+We also establish an analogue of Stallings' theorem for lower central series in the context of \(T_{n}\)-embeddings of \(P \times I\) into \(D^{d}\) for any compact manifold \(P\).
+As an application, we show that the embedding tower of string links detects Milnor invariants.
+\end{abstract}
+
+
+\maketitle
+
+
+
+\section{Introduction}
+The study of embedding spaces $\emb(M,N)$ between manifolds $M$ and $N$ is an important topic in geometric topology.  
+One powerful homotopical tool for analyzing such spaces is the \emph{embedding calculus} of Goodwillie and Weiss.  
+A closely related but distinct framework is Goodwillie’s functor calculus on the identity functor of pointed spaces.
+In this paper, we investigate how these two frameworks interact and show that this relationship yields new insight into the embedding tower; in particular, the embedding tower detects Milnor invariants of string links.
+
+Embedding calculus approximates the space of embeddings \(\emb(M,N)\) by a sequence of \enquote{polynomial} approximations.
+\[\begin{tikzcd}[ampersand replacement=\&,cramped,column sep=tiny]
+	{\emb(M,N)} \& {T_{\infty}\emb(M,N)} \& \cdots \& {T_2\emb(M,N)} \& {T_1\emb(M,N)}
+	\arrow[from=1-1, to=1-2]
+	\arrow[from=1-2, to=1-3]
+	\arrow[from=1-3, to=1-4]
+	\arrow[from=1-4, to=1-5]
+\end{tikzcd}\]
+Each \(n\)-th stage records how collections of configurations of up to \(n\) disjoint discs in \(M\) can be embedded into \(N\), together with the compatibility data of these embeddings.
+The first stage records immersions, and the fibers of the map \(T_{n}\emb(M,N) \to T_{n-1} \emb(M,N)\) admit an explicit description.
+Thus, the tower provides an inductive procedure for interpolating between immersions and embeddings.
+
+A recurring idea in geometric topology is to understand embeddings via their complements. 
+In the context of embedding calculus, one might hope to extract information about the complement of an embedding from the complements of the embedded discs.
+Tillmann and Weiss \cite{TW16} showed that this approach is effective when the codimension is at least three:
+for an embedding \(e \colon M \hookrightarrow N\), 
+\[
+    N \sminus e(M) \to \holim_{U \in \Disc(M)} N \sminus e(U)
+\]
+is a weak equivalence when \(\dim N - \dim M \geq 3\).
+
+Moreover, they note that after passing to the \(n\)-th Goodwillie approximation of spaces, the above map becomes an equivalence in all codimensions:
+\[
+    P_{n}(\id_{\pS})(N \sminus e(M)) \xrightarrow{\simeq} \holim_{U \in \Discn(M)} P_{n}(\id_{\pS})(N \sminus e(U))
+\]
+Since the Goodwillie tower of pointed spaces converges for simply connected spaces, this recovers the previous equivalence when \(N\) is simply connected, \(\dim N - \dim M \geq 3\), and \(n= \infty\).
+
+
+The result of Tillmann and Weiss suggests the existence of a well-defined notion of complement for the space of \(T_{n}\)-embeddings \(T_{n}\emb(M,N)\), taking values in the categorical \(n\)-th Goodwillie approximation of pointed spaces \(\PnS\) introduced in \cite{H18a}.
+We construct such a notion by lifting Tillmann and Weiss' result to the level of \(\infty\)-categories.
+This yields the \emph{\(T_{n}\)-complement} functor: 
+
+\begin{bigthm}\label{theorem: embedding calc}
+   Let \(M\) be a compact manifold with boundary and let \(N\) be a manifold with boundary. Fix an embedding \(i \colon \partial M \hookrightarrow \partial N\) and a base point \(x\) in \(\partial N \sminus i(\partial M)\).
+    There is a commutative diagram of \(\infty\)-categories
+    \[ \begin{tikzcd}
+            {\bdemb(M,N)} \arrow[r,"C"] \arrow[d] & \pS^{\partial/} \arrow[d,"\nSigma"] \\
+            {T_n\bdemb(M,N)} \arrow[r,"C_n"]        & \PnS^{\nSigma \partial/}                   
+        \end{tikzcd}
+    \]
+    where \(C\) sends an embedding \(e \in \bdemb(M,N)\) to the pointed map \((\partial{N}\sminus i(\partial{M}),x) \to (N\sminus e(M),x)\). 
+    The commutativity of the diagram shows that \(C_{n}\) extends the complement functor from embeddings to \(T_{n}\)-embeddings. 
+\end{bigthm}
+
+Here \(\pS^{\partial/}\) is the category of pointed spaces under \(\partial \coloneq \partial N \sminus i(\partial M)\) and the right vertical map is the induced map on undercategories determined by \(\nSigma \colon \pS \to \PnS\), the \(n\)-excisive approximation to \(\pS\). 
+
+\begin{remark}
+    The restriction to manifolds with boundary is to ensure that a canonical basepoint can be chosen in the complement.
+    We expect an analogous statement for manifolds without boundary and unpointed spaces.
+\end{remark}
+
+When \(n=1\), we can describe \(C_{1}\) as follows. The following description was suggested by Oscar Randal-Williams.
+For an embedding \(f \colon M \hookrightarrow N\) there is a homotopy cofiber sequence in \(\pS\)
+\[
+    N\sminus f(M)_{+} \to N_{+} \to M^{\nu_f}
+\]
+where \(M^{\nu _{f}}\) denotes the Thom space of the normal bundle \(\nu _{f}\). 
+Passing to spectra and taking Spanier-Whitehead duals gives a cofiber sequence in \(\Spct\)
+\[
+    D(\Sigma^{\infty}_{+} N\sminus f(M)) \leftarrow N^{-TN} \leftarrow M^{-\nu _{f} -TM}
+\]
+For a general bundle monomorphism \(F \in  T_{1}\emb(M,N)\simeq \mathrm{Mono}(TM,TN)\), 
+we replace \(\nu _{f}\) by \(V_{F} \coloneq F^{*}TN/TM\) and define \(C_{1}(F)\) to be the spectrum \(D(\cofib(M^{-V_{F}-TM}\to N^{-TN}))\).
+This provides a continuous \enquote{complement} functor for general immersions.
+
+\subsection*{Stallings' theorem for \(T_{n}\)-complements in \(D^{d}\)}
+
+For a finite pointed space \(X\), the \(n\)-excisive approximation \(P_{n}(\id_{\pS})(X)\) has vanishing \((n+1)\)-fold iterated Whitehead products \cite{BD10,SC15}. 
+Hence each \(n\)-th stage of the Goodwillie tower for spaces can be regarded as a homotopical analogue of the \(n\)-nilpotent quotients of groups. 
+
+Stallings' theorem for lower central series \cite{S65} states that for groups \(A,B\) if a group homomorphism \(\phi \colon A \to B\) induces an isomorphism on the first group homology and surjection on the second group homology, then it induces isomorphisms on all nilpotent quotients: 
+\[
+    \phi_{n} \colon A/A_{n+1} \xrightarrow{\cong} B/B_{n+1} \quad \textrm{for all } n \in \N 
+\]
+Here \(\{A_{n}\} \) and \(\{B_{n}\}\) denote the lower central series of \(A\) and \(B\), respectively. 
+
+Analogously, for pointed spaces \(X,Y\), a homology equivalence \(f \colon X \to Y\) induces equivalences on all \(n\)-nilpotent approximations:
+\[
+    P_{n}(f) \colon P_{n}(X) \xrightarrow{\simeq} P_{n}(Y) \quad \textrm{for all } n \in \N
+\]
+
+As an example, consider an embedding \(e \colon P \times I \hookrightarrow D^{d-1} \times I \cong D^{d}\) that restricts to an embedding \(i \colon P \hookrightarrow D^{d-1}\) on \(P \times \set{0}\). 
+The boundary inclusion induces a map on complements
+\[
+    D^{d-1}\sminus i(P)  \rightarrow D^{d}\sminus e(P\times I) 
+\]
+which is a homology equivalence by Alexander duality. 
+By the discussion above, it follows that the induced map on \(n\)-nilpotent approximations is an equivalence:
+\[
+    P_{n}(D^{d-1}\sminus i(P)) \xrightarrow{\simeq} P_{n}(D^{d} \sminus e(P \times I)) 
+\]
+
+We extend this statement to the complements of \(T_{n}\)-embeddings of \(P \times I\) to \(D^{d}\).
+
+
+\begin{bigthm}\label{thm:D^n eq}
+    Let \(P\) be a compact manifold. Let \(i\) be an embedding of \(P\) into the interior of \(D^{n-1}\).
+    For all \(n \in \N\), the \(T_{n}\)-complement functor \(C_{n}\) lands in the subcategory of equivalences
+    \[
+        T_{n}\bdemb(P \times I,D^{d}) \xrightarrow{C_{n}} ({\PnS}^{\simeq})^{\nSigma D^{d-1} \setminus i(P)/}
+    \]
+    i.e. For \(\eta \in T_{n}\bdemb(P \times I, D^{d})\), the boundary inclusion induced map \(\nSigma(D^{d-1}\sminus i(P)) \to C_{n}(\eta)\) is an equivalence in \(\PnS\). 
+\end{bigthm}
+
+
+
+\subsection*{Artin Representation for string links}
+
+We now apply Theorem~\ref{thm:D^n eq} to the case of string links and show that the Artin representation for string links factors through the embedding tower.
+
+
+The classical Artin representation is a group homomorphism
+\[
+     PB(k) \to \Aut_{\Gp}(F(k)),
+\]
+from the pure braid group on \(k\)-strands to the automorphism group of the free group on \(k\) generators. 
+It can be described as follows. 
+For each pure braid \(\beta \in \pi_{1}\mathrm{Emb}(\underline{k},D^{2})\), where \(\ul{k} \coloneq \{1,\cdots,k\}\), there are inclusions 
+\[
+    (D^{2}\sminus \ul{k})\times \{0\} \xhookrightarrow[\simeq]{i_0(\beta)} D^{3} \sminus \beta \xhookleftarrow[\simeq]{i_{1}(\beta)} (D^{2}\sminus\ul{k}) \times \{1\}.
+\]
+Both \(i_{0}(\beta)\) and \(i_{1}(\beta)\) are homotopy equivalences. 
+Composing \(i_{0}(\beta)\) with a homotopy inverse of \(i_{1}(\beta)\) yields a homotopy automorphism of \(D^{2} \sminus \ul{k}\), and hence an automorphism of the free group \(F(k)= \pi_{1}(D^{2} \sminus \ul{k})\). 
+
+
+Similarly, for a string link \(L \in \pi_{0}\bdemb(kD^{1},D^{3})\), where \(kD^{1} \coloneq \sqcup^{k}D^{1}\), we have inclusions of the top and bottom complements \(i_0(L),i_{1}(L) \colon D^{2}\sminus \ul{k} \hookrightarrow D^{3} \sminus L\).
+Here \(i_0(L)\) and \(i_{1}(L)\) are homology equivalences by Alexander duality, but not homotopy equivalences in general. Nevertheless, by Stallings' theorem, both maps induce isomorphism on the \(n\)-nilpotent quotients of the fundamental groups. 
+The composition of these isomorphisms defines, for each \(n\), the \textit{Artin representation for string links}
+\[
+    {A_{n}} \colon {\pi_{0}\bdemb(kD^{1},D^{3})} \rightarrow {\Aut_{\Gp}(F(k)/F(k)_{n+1})} \quad n\in \N
+\]
+These representations encode rich information:
+Milnor's \(\bar{\mu}\)-invariants \cite{M54} can be extracted from them via the Magnus expansion, and Habegger and Lin \cite{HL90} showed that they completely classify string links up to link homotopy.
+
+The discussion in the previous subsection shows that there exists a space-level analogue of the Artin representation 
+\[
+    \bdemb(kD^{1}, D^{3}) \to \Aut_{\PnS}(\nSigma \kcirc )
+\] which factors through the space of \(T_{n}\)-embeddings.
+
+Using the result of Biedermann and Dwyer \cite{BD10} which identifies \(\pi_{1}P_{n}(\id_{\pS})(\kcirc)\) as \(F(k)/F(k)_{n+1}\), we identify the induced map on \(\pi_{0}\) as the Artin representation for string links.
+
+\begin{bigcor}\label{corollary: Artin}
+    There exists a map of spaces
+\[
+       {\bdemb(kD^{1},D^3)} \rightarrow {T_n\bdemb(kD^{1},D^3)} \xrightarrow{\mathscr{A}_{n}} \Aut_{\PnS}(\nSigma\kcirc)
+\]
+such that the induced map on path components 
+\[
+    \pi_{0} {\bdemb(kD^{1},D^3)}  \to \pi_{0}\Aut_{\PnS}(\nSigma\kcirc) \cong \Aut_{\mathrm{Gp}}(F(k)/F(k)_{n+1})
+\] is the Artin representation for string links. In particular, the \(n\)-th stage of the embedding tower for string links detects Milnor invariants of length \(\leq n+1\). 
+\end{bigcor}
+
+\subsection*{Related Works}
+Koytcheff \cite{K16} showed, using configuration space integrals, that Milnor's triple linking number \(\mu_{123}\) factors through the \((2,2,2)\)-stage of the multi-variable embedding tower for string links.
+In \cite{CKKS17}, it was shown that Koschorke's \(\kappa\)-invariant \cite{K97} can be recovered from the \((1,\cdots,1)\)-stage of the multi-variable tower for link maps of string links \(T_{(1,\cdots,1)}\mathrm{Link}_{\partial}(kD^{1},D^{3})\).
+Another closely related work by Munson \cite{M11} connects Koschorke's \(\kappa\) invariant to the map between the layers of embedding and functor calculus towers. 
+An explicit map comparing the Lie bracket structure in homogeneous layers of embedding tower of \(\bdemb(D^{1},D^{3})\) and those of \(P_{n}(\id_{\pS})\) is given in \cite{K25}.
+Malin \cite{M24b} showed that for a framed manifold \(M\), the Lie structures on the stable embedding functor \(\Sigma_{+}^{\infty}E(-,M)\) arising from embedding calculus and from functor calculus coincides. 
+
+\subsection*{Acknowledgements} 
+I would like to thank Manuel Krannich and Jaco Ruit for helpful conversations. 
+Special thanks go to Luciana Basualdo Bonatto and Peter Teichner for discussions on Milnor invariants and the embedding tower of string links and to Samuel Mu\~noz-Ech\'aniz for suggesting the use of Lemma \ref{lemma : P_n of complement is n sheaf}. 
+I am grateful to Kaif Hilman for suggestions on the formulation of Theorem \ref{Prop: commutativity with emb} and discussions on naturality statements. 
+I sincerely thank Oscar Randal-Williams for generously sharing the key ideas for the proof of Theorem \ref{prop: Bordism equivalence}, discussing functorial approaches to taking complements and giving feedback on the first draft.
+
+
+\section{Preliminaries}
+
+In this section, we fix notation and review results in the literature needed for the remainder of the paper.
+
+\subsection{Conventions}\label{sec:conventions}
+Unless specified otherwise, we follow the notations and conventions of \cite{L09}. 
+\begin{itemize}
+    \item For a natural number \(n\), let \(\ul{n}\) denote \(\set{1,\cdots,n}\).
+    \item \(\iS\) denotes the \(\infty\)-category of spaces.
+    \item The letters \(\icat{A},\icat{B},\icat{C},\cdots\) stand for \(\infty\)-categories.
+    \item The letters \(\topcat{A},\topcat{B},\topcat{C},\cdots\) stand for \(\Top\) or \(\mathrm{Kan}\)-enriched categories.
+    \item For \(\iC\) and \(\infty\)-category and \(c \in \iC\) an object, let \(\iC_{/c}\) be the \textit{over category} of \(\iC\) and \(\iC^{c/}\) be the \textit{under category} of \(\iC\). 
+    \item \(\iC_{/c}^{\op}\) and \({\iC^{c/}}^{\op}\) will denote \((\iC_{/c})^{\op}\) and \((\iC^{c/})^{\op}\) respectively.
+    \item Given a functor \(f \colon \iC \to \iD\) and an \(\infty\)-category \(\iE\), we let \(f^{\ast} \colon \Fun(\iD,\iE) \rightarrow \Fun(\iC,\iE)\) denote the precomposition with \(f\), \(f_{!} \colon \Fun(\iC,\iE) \to \Fun(\iD,\iE) \) the left Kan extension along \(f\) and \(f_{*} \colon \Fun(\iD,\iE) \to \Fun(\iC,\iE)\) the right Kan extension along \(f\).
+    \item For adjunctions, 
+    \[\begin{tikzcd}[ampersand replacement=\&,cramped]
+	    \iC \& \iD
+	    \arrow["F", shift left, from=1-1, to=1-2]
+	    \arrow["G", shift left, from=1-2, to=1-1]
+    \end{tikzcd}\]
+    left adjoints will be written at the top and the right adjoints will be written at the bottom.
+\end{itemize}
+
+
+\subsection{Goodwillie Calculus}\label{sec:goodwillie calc} 
+
+\subsubsection{Goodwillie calculus on functors}
+For a finite set \(S\), let \(\mathscr{P}(S)\) denote the poset category of subsets of \(S\) ordered by inclusion. Let \(\mathscr{P}_{  i}(S)\)
+and \(\mathscr{P}_{>i}(S)\) denote the subposets spanned by subsets of cardinality at most and greater than \(i\),respectively.
+
+\begin{definition} Let \(\iC\) be a \(\infty\)-category. An \textit{n-cube} in \(\iC\) is a functor from \(\mathscr{P}(\ul{n})\) to \(\iC\). 
+    An n-cube is called \textit{cartesian} if it is a limit diagram and \textit{strongly cocartesian} if every two-dimensional face is a pushout. 
+\end{definition}
+
+
+\begin{definition}[n-excisive functors]
+	A functor \(F \colon \iC \to \iD\) is \textit{\(n\)-excisive} if it sends strongly cocartesian \((n+1)\)-cubes to cartesian ones. 
+	Let \(\mathrm{Exc}^{n}(\iC,\iD)\) denote the full subcategory of \(\Fun(\iC,\iD)\) spanned by the \(n\)-excisive functors. 
+\end{definition}
+
+
+When \(\iC\) and \(\iD\) admit suitable limits and colimits, every functor \(F \colon \iC \to \iD\) admits a tower of universal excisive approximations.
+
+\begin{proposition}[Goodwillie towers]\cite{G03}\cite[Chapter 6]{L17}
+	Let \(\iC\) be an \(\infty\)-category which admits finite colimits and has a final object, and let \(\iD\) be a compactly generated \(\infty\)-category. 
+    
+    \begin{enumerate}
+        \item For each \(n\), the inclusion
+        \[       
+            \mathrm{Exc}^{n}(\iC,\iD) \hookrightarrow \Fun(\iC,\iD)
+        \] admits a left exact left adjoint \(P_{n}\).
+
+        \item If \(n \leq m\), every \(n\)-excisive functor is \(m\)-excisive. Hence we have inclusions
+        \[
+           \Fun(\iC,\iD) \supset \cdots \supset \mathrm{Exc}^{2}(\iC,\iD) \supset \mathrm{Exc}^{1}(\iC,\iD) 
+        \] and for each \(F \in \Fun(\iC,\iD)\) we obtain a natural tower of functors
+        \[
+            F \to \cdots \to P_{2}F \to P_{1}F
+        \]
+    \end{enumerate}
+\end{proposition}
+
+The unit map \(F \to P_{n}F\) is called the \textit{\(n\)-excisive approximation} of \(F\).
+
+\begin{example}[Goodwillie tower of the identity on pointed spaces]\label{eg: Goodwillie tower of spaces}
+    The Goodwillie tower of the identity functor \(\id_{\pS}\) has the following properties:
+    \begin{enumerate}[label={(\alph*)}]
+        \item \(P_{1}\id_{\pS} \simeq \Omega^{\infty}\Sigma^{\infty}\). Hence the Goodwillie tower of \(\id_{\pS}\) interpolates between the stable homotopy type and the unstable homotopy type.     
+        \item The \(n\)-th \emph{layer} of the tower,
+        \(
+            D_{n}(\id_{\pS}) \eqcolon \fib (P_{n}(\id_{\pS})\to P_{n-1}(\id_{\pS}))
+        \) is equivalent to the infinite loop space 
+        \[
+            D_{n}(\id_{\pS}) \simeq \Omega^{\infty}((\partial_{n}\id \wedge (\nSigma X)^{\smash n})_{h\Sigma_{n}})
+        \]
+        where \(\partial_{n}\id\) is a spectrum with \(\Sigma_{n}\) action, equivalent to the \(n\)-th term of the desuspended spectral Lie operad~\cite{C05}. 
+        \item For a finite pointed space \(X\), its \(n\)-th approximation \(P_{n}(X)\) has vanishing iterated \((n+1)\)-fold Whitehead products~\cite{SC15}. 
+        Moreover, \(\pi_{1}P_{n}(\kcirc)\) is isomorphic to the \(n\)-th nilpotent quotient of the free group with \(k\) generators \(F(k)/F(k)_{n+1}\)~\cite{BD10}.
+    \end{enumerate}
+\end{example}
+
+
+
+\subsubsection{Goodwillie calculus on categories}
+In this paper, we work with the categorical Goodwillie calculus defined by Heuts in \cite{H18a}.
+This assigns to each pointed compactly generated \(\infty\)-category \(\iC\), a tower of pointed compactly generated \(\infty\)-categories \(\{\mathscr{P}_{n}\iC\}_{n \in \N}\) together with adjunctions
+
+\[\begin{tikzcd}[ampersand replacement=\&]
+	\iC \& {\mathscr{P}_n\iC}
+	\arrow["\nSigma", shift left, from=1-1, to=1-2]
+	\arrow["{\Omega_n^{\infty}}", shift left, from=1-2, to=1-1]
+\end{tikzcd}\]
+
+which is called the \emph{\(n\)-excisive approximation to \(\iC\)}.
+
+
+We recall the following properties of categorical \(n\)-excisive approximation:
+
+    \begin{enumerate}[label={(\alph*)}]
+        \item The identity functor \(\id_{\mathscr{P}_{n}\iC}\) is \(n\)-excisive.
+        \item The unit \(\eta \colon \id_{\iC} \to \Omega_{n}^{\infty}\nSigma\) is equivalent to the \(n\)-excisive approximation of the identity functor \(\id_{\iC} \to P_{n}(\id_{\iC})\).
+        \item \(\Sigma_{1}^{\infty} \colon \iC \to \mathscr{P}_{1}\iC\) is the stabilisation of \(\iC\). In particular, \(\mathscr{P}_{1}\pS \simeq \Spct\).
+        \item For each \(m \leq n\), there is a canonical equivalence \(\mathscr{P}_{m}(\mathscr{P}_{n}\iC) \simeq \mathscr{P}_{m}\iC\). 
+        The corresponding adjunctions 
+            \[\begin{tikzcd}[ampersand replacement=\&]
+                {\mathscr{P}_{n}\iC} \& {\mathscr{P}_{m}\iC}
+                \arrow["{\Sigma_{n,m}^{\infty}}", shift left, from=1-1, to=1-2]
+                \arrow["{\Omega_{n,m}^{\infty}}", shift left, from=1-2, to=1-1]
+            \end{tikzcd}\]
+        assemble to a \textit{Goodwillie tower} of \(\iC\):
+        \[\begin{tikzcd}[ampersand replacement=\&,cramped]
+        \iC \\
+        \cdots \& {\mathscr{P}_{3}\iC} \& {\mathscr{P}_{2}\iC} \& {\mathscr{P}_{1}\iC}
+        \arrow[from=1-1, to=2-1]
+        \arrow["{\Sigma_{3}^{\infty}}"{description}, from=1-1, to=2-2]
+        \arrow["{\Sigma_{2}^{\infty}}"{description}, curve={height=-6pt}, from=1-1, to=2-3]
+        \arrow["{\Sigma_{1}^{\infty}}"{description}, curve={height=-12pt}, from=1-1, to=2-4]
+        \arrow[from=2-1, to=2-2]
+        \arrow["{\Sigma_{3,2}^{\infty}}"', from=2-2, to=2-3]
+        \arrow["{\Sigma_{2,1}^{\infty}}"', from=2-3, to=2-4]
+        \end{tikzcd}\]
+    \end{enumerate}
+
+
+
+
+
+\subsection{Embedding Calculus}\label{sec:embedding calculus}
+
+\begin{notation}
+Let \(\topcat{Mfld}_{d}\) denote the topologically enriched category of smooth \(d\)-dimensional manifolds and codimension 0 embeddings.  
+Denote the \(\infty\)-category obtained by taking its coherent nerve by \(\Mfld_{d}\). 
+Let \(\Disc_{d}\) be the full subcategory spanned by manifolds diffeomorphic to finite disjoint unions of \(\R^{d}\), and \(\Disc_{\leq n,d}\) denote the full subcategory spanned by manifolds diffeomorphic to \(S \times \R^{d}\) with \(|S| \leq n\). 
+We write \(\iota_{n} \colon \Disc_{\leq n,d} \hookrightarrow \Mfld_{d}\) for the inclusion functor.
+\end{notation}
+
+
+
+
+
+Let \(\iC\) be a \(\infty\)-category with small limits. 
+
+There is a reflective adjunction of \(\infty\)-categories
+\[\begin{tikzcd}
+	{\Fun(\Mfld_{d}^{\op},\iC)} & {\Fun(\Disc_{\leq n,d}^{\op},\iC)}
+	\arrow[""{name=0, anchor=center, inner sep=0}, "{\iota_{n}^*}", shift left, from=1-1, to=1-2]
+	\arrow[""{name=1, anchor=center, inner sep=0}, "{{\iota_{n}}_{*}}", shift left, hook', from=1-2, to=1-1]
+\end{tikzcd}\]
+
+\begin{definition}[Manifold \(n\)-excisive functors]
+A functor \( F \in \Fun(\Mfld_{d}^{\op},\iC) \) is called \emph{manifold \(n\)-excisive} if the unit of the adjunction
+\[
+	F \longrightarrow \lst{\iota_{n}}\ust{\iota_{n}}F \eqcolon T_{n}F
+\]
+is an equivalence.  
+\end{definition}
+
+
+The following characterisation of manifold \(n\)-excisive functors for \(\iC = \iS\) is due to \cite{W99a} and \cite[Theorem~7.2]{dW12};
+For general \(\iC\), see \cite[Theorem~5.3]{A24}.
+
+\begin{definition}[Good functors]
+    A functor \(F \in \Fun(\Mfld_{d}^{\op},\iC)\) is called \textit{good} if for all \(M \in \Mfld_{d}\) and all increasing sequence of open subsets \(U_{0} \subset U_{1} \subset \cdots \subset M \) with \(\cup_{i}U_{i} = M\), the natural map
+    \[
+        F(M) \to \lim_{i}F(U_{i})
+    \]
+    is an equivalence.  
+\end{definition}
+
+\begin{notation}
+    Let \(M \in \Mfld_{d}\), and let \(A_{0},\cdots,A_{n} \subset M\) be pairwise disjoint closed subsets. 
+    For each \(S \subset \ul{n}\) denote \(\cup_{i \in S} A_{i}\) by \(A_{S}\). 
+    Let \(X_{(M,\ul{A})}\) denote the contravariant \((n+1)\)-cube in \(\Mfld_{d}\)
+    \[
+       X_{(M,\ul{A})} \colon \mathscr{P}(\ul{n+1})^{\op} \to \Mfld_{d}, \quad X_{(M,\ul{A})} (S) = M \sminus A_{S}
+    \]
+\end{notation}
+
+\begin{thm}\cite{W99a,dW12,A24}\label{thm: original}
+   Let \(\iC\) be an \(\infty\)-category with small limits and let \(F \in \Fun(\Mfld_{d}^{\op},\iC)\). The following are equivalent.
+    \begin{enumerate}
+        \item \(F\) is manifold \(n\)-excisive.
+        \item \(F\) is good and for all \(M \in \Mfld_{d}\) and pairwise disjoint closed subsets \(A_{0},\cdots,A_{n} \subset M\), \(F\) sends \(X_{(M,\ul{A})}\) to a cartesian \((n+1)\)-cube. i.e. the canonical map
+    \[
+      F(M) \to \lim_{\emptyset \neq S \subset \ul{n+1}}F(M \sminus A_{S})
+    \]
+    is an equivalence.
+    \end{enumerate}
+\end{thm}
+
+
+In this paper we use a variant of the above result for manifolds with boundary.
+In addition, to work with a category whose objects are \(T_{n}\)-embeddings rather than whose morphisms are, we consider presheaves on an overcategory.
+
+
+
+\begin{notation}\label{Notation: Mfld partial /N}
+For each natural number \(d\) fix a \((d-1)\)-dimensional manifold \(P_{d}\), and For each \(d \leq d'\), fix an embedding \(i_{d,d'} \colon P_{d} \hookrightarrow P_{d'}\), taking \(i_{d,d} = \id\).
+Let \(\topcat{Mfld}_{\partial,A}\) denote the topologically enriched category whose objects are manifolds \(M\) of any dimension with boundary equipped with a diffeomorphism \(\partial M \cong P_{\mathrm{dim}(M)}\), and whose morphisms are neat embeddings that restrict to the prescribed boundary maps.
+Let \(\topcat{Mfld}_{\partial,d}\) to be the full subcatgory of \(\topcat{Mfld}_{\partial,A}\) spanned by \(d\)-manifolds,
+and let \(\topcat{Disc_{\leq n,\partial,d}}\) be the full subcategory of \(\topcat{Mfld}_{\partial,d}\) spanned by objects that are diffeomorphic to \(P_{d} \times [0,1) \sqcup S \times \R^{d}\) where \(|S| \leq n\).
+Denote the \(\infty\)-categories obtained by taking coherent nerve by \(\Mfld_{\partial,A}\),\(\Mfld_{\partial,d}\) and \(\Disc_{ \leq n, \partial,d}\). 
+Fix \(N \in \Mfld_{\partial}\) of \(\dim(N)>d\) and let \(\uMfldN\) and \(\uDiscnN\) denote \(\Mfld_{\partial,d} \times_{\Mfld_{\partial,A}} {\Mfld_{\partial,A}}_{/N}\) and \(\Disc_{\partial,\leq n,d} \times_{\Mfld_{\partial,A}} {\Mfld_{\partial,A}}_{/N}\) respectively. 
+From now on, we fix \(d\) and omit it from the notation.
+\end{notation}
+
+\begin{remark}For \(M \in \uMfld\), denote by \( E_{M} \) the representable presheaf \(\bdemb(-,M)\) by \(E_{M}\).
+Since the presheaf category of an over category is equivalent to the over category of presheaf category,
+we have \(\Psh(\uMfldN) \simeq \Psh(\uMfld)_{/E_{N}}\) and \(\Psh(\uDiscnN) \simeq \Psh(\uDiscn)_{/\ust{\iota_{n}}E_{N}}\).
+The fiber of the right fibration 
+\[
+    \Psh({\uDiscn}_{/N}) \simeq \Psh({\uDiscn})_{/{\iota_n}^{\ast}E_{N}} \to \Psh({\uDiscn})
+\]
+at \({\iota_n}^{\ast}E_{M}\) is \(\Map_{\Psh({\uDiscn})}({\iota_n}^{\ast}E_{M},{\iota_n}^{\ast}E_{N}) \simeq T_{n}\bdemb(M,N)\).
+\end{remark}
+
+
+We define the variant of the above notions for \(\Fun(\uMfldN^{\op},\iC)\).
+
+
+
+
+
+\begin{definition}
+A functor \( F \in \Fun(\uMfldN^{\op},\iC)\) is called \emph{manifold \(n\)-excisive} if it lies in the image of the right Kan extension
+\(
+    \Fun(\uDiscnN^{\op},\iC) \xrightarrow{\ust{\iota_{n}}} \Fun(\uMfldN^{\op},\iC).
+\)
+
+\end{definition}
+
+
+Each embedding \(e \colon M \hookrightarrow N \in \uMfldN\) determines a functor \(L_{e} \colon \cO(M) \longrightarrow \uMfldN\) from \(\cO(M)\), the poset of open subsets of \(M\), such that the diagram
+\begin{equation}\label{eq:Le}
+   \begin{tikzcd}[ampersand replacement=\&,cramped]
+        \& \uMfldN \\
+        {\cO(M)} \& \uMfld
+        \arrow[from=1-2, to=2-2]
+        \arrow["L_{e}",from=2-1, to=1-2]
+        \arrow[from=2-1, to=2-2]
+    \end{tikzcd}
+\end{equation}
+commutes.
+
+
+\begin{definition}
+    A functor \(F \in \Fun(\uMfldN^{\op},\iC)\) is called \textit{good} 
+    if for all \(e \colon M \hookrightarrow N \in \uMfldN\) and increasing sequence of open subsets \(U_{0} \subset U_{1} \subset \cdots \subset M \) with \(\cup_{i}U_{i} = M\), the natural map
+    \[
+        F(L_{e}(M)) \to \lim_{i}F(L_{e}(U_{i}))
+    \]
+    is an equivalence.  
+\end{definition}
+
+
+
+\begin{notation}\label{notation: manifold cube}
+    Let \(M\) be a \(d\)-manifold which admits a finite handle decomposition.
+    Let \(A_{0},\cdots,A_{n} \subset M\) be pairwise disjoint closed subsets in the interior of \(M\) such that  \(M \sminus A_{S}\) again admits a finite handle decomposition. 
+    and let \(L_{e}\) be the functor of \eqref{eq:Le}.
+    We let \(X^{e}_{(M,\ul{A})}\) denote the contravariant \((n+1)\)-cube in \(\uMfldN\) defined as 
+    \(X^{e}_{(M,A)} (S) = L_{e}(M \sminus A_{S})\) for each \(S \subset \ul{n+1}\).
+\end{notation}
+
+Theroem \ref{thm: original} generalises to this setting.
+
+\begin{lemma}\label{lemma: characterising n-sheaves}
+   Let \(\iC\) be an \(\infty\)-category with small limits and let \(F \in \Fun(\uMfldN^{\op},\iC)\). The following are equivalent:
+    \begin{enumerate}[label={(\alph*)}]
+        \item \(F\) is manifold \(n\)-excisive. 
+        \item \(F\) is good, and for all \(e \colon M\to N \in \uMfldN\) and pairwise disjoint closed subsets \(A_{0},\cdots,A_{n}\) in the interior of \(M\) that satisfy the assumption of \ref{notation: manifold cube}, \(F\) sends \(X^{e}_{(M,A)}\) to a cartesian \((n+1)\)-cube. i.e. the canonical map
+    \[
+      F(L_{e}(M)) \to \lim_{\emptyset \neq S \subset \ul{n+1}}F(L_{e}(M \sminus A_{S}))
+    \]
+    is an equivalence.
+    \end{enumerate}
+\end{lemma}
+
+
+\begin{proof}
+First we note that although condition (b) is usually stated for arbitrary disjoint closed subsets \(A_{0},\cdots,A_{n}\) of \(M\), inspection of the proofs shows that it suffices to verify the condition for cubes satisfying~\ref{notation: manifold cube}. 
+The argument of \cite[Section 3,Section 5]{A24} generalises easily to this setting, using the contractibility of the space of collars is contractible and the fact that \(\uMfldN \to \Mfld_{\partial}\) is a right fibration so the discussion of \cite[Remark 5.7.]{A24} applies. 
+\end{proof}
+
+\begin{remark}\label{rem: discrete to infinity}
+There is an equivalence of \(\infty\)-categories
+\[
+    \Fun^{\le n}(\uMfldN^{\op},\iC)
+    \;\simeq\;
+    \Fun_{\mathrm{istp}}^{\le n}(\cO_{d}(N)^{\op},\iC),
+\]
+\nolinebreak
+where \(\Fun^{\le n}(\uMfldN^{\op},\iC)\) denotes the essential image of \(\iota_{n\ast}\) 
+and \(\cO_{d}(N)\) denotes the poset of \(d\)-dimensional submanifolds of \(N\) ordered by inclusion.
+\(\Fun_{\mathrm{istp}}^{\le n}(\cO_{d}(N),\iC)\) is the full subcategory of isotopy-invariant functors on \(\cO_{d}(N)\) which are right Kan extended from the subposet \(\cO_{d,\leq n}(N)\) of submanifolds diffeomorphic to \(\R^{d} \times S\) with \(|S| \le n\).
+The analogous statements of Lemma~\ref{lemma: characterising n-sheaves} for \(\cO_{d}(N)\) also holds. 
+(This is shown in \cite[Lemma~3.13]{A24} in the case \(\dim(M)=\dim(N)\), but the same argument applies verbatim in the present setting.)
+\end{remark}
+
+
+
+\section{\(T_{n}\)-complements}\label{sec: Tn complement}
+
+In this section we construct a functor
+\(
+	\varphi_{n} \colon \uMfldN^{\op} \longrightarrow \uPnS
+\)
+which sends an embedding of a compact manifold into a \(N\) to the \(n\)-th Goodwillie approximation of its complement.  
+We then extend this construction to \emph{\(T_{n}\)-embeddings}, i.e.\ objects of \(\Psh(\uDiscnN)\).
+
+Since for any \(\infty\)-category \(\iC\), the Yoneda embedding \(\iC \hookrightarrow \Psh(\iC)\) exhibits \(\Psh(\iC)\) as the free cocompletion of~\(\iC\), a natural approach to defining an extension out of \(\Psh(\uDiscnN)^{\op}\) is to specify it as the unique limit-preserving functor restricting to a prescribed functor on~\(\uDiscnN\).  
+Accordingly, we define the \emph{\(T_{n}\)-complement} functor
+\(
+	\overline{\varphi}_{n} \colon \Psh(\uDiscnN)^{\op} \longrightarrow \uPnS
+\)
+to be the unique limit-preserving functor which sends an embedding \(e_{U}\colon U \hookrightarrow N\) of at most \(n\) discs into \(N\) to the \(n\)-th Goodwillie approximation of its complement \(\nSigma N \sminus e_{U}(U)\).
+
+By \cite{TW16}, the functor \(\varphi_{n}\) is manifold \(n\)-excisive, and hence determined by its restriction to \(\DiscnN\). 
+We therefore obtain a commutative diagram of \(\infty\)-categories:
+\begin{equation}\label{eq:recovers genuine emb}
+    \begin{tikzcd}[ampersand replacement=\&,cramped]
+        {\uMfldN^{\op}} \arrow[r, "\varphi_{n}"] \arrow[d] 
+        \& \uPnS \\
+        {\Psh(\uDiscnN)^{\op}} \arrow[ur, "\overline{\varphi}_{n}"']
+    \end{tikzcd}
+\end{equation}
+where the vertical map takes an embedding \(M \hookrightarrow N\) to the induced map \(\ust{\iota_{n}}E_{M} \to \ust{\iota}E_{N}\) on presheaves on \(\Discn\).
+
+In particular, this shows that every \(T_{n}\)-embedding admits a well-defined complement in \(\PnS\).  
+This stands in contrast to the situation when one considers the full homotopy type of the complement, rather than its \(n\)-nilpotent approximation: the natural map in \(\iS\)
+\[
+	N \setminus e(M) \longrightarrow \lim_{U \in \Disc(M)} N \setminus e(U)
+\]
+is an equivalence only when \(\dim N - \dim M \ge 3\).
+
+The layers of the embedding tower and the Goodwillie tower admit accessible descriptions.
+This motivates constructing a map between the towers that allows us to compare the layers.
+We show that the collection \(\{\overline{\varphi}_{n}\}_{n \ge 1}\) assembles into a lax map of towers---that is, for each \(n\) there exists a natural transformation fitting into a diagram
+\[\begin{tikzcd}
+	{\Psh(\uDiscnN)^{\op}} & \uPnS \\
+	{\Psh({\Disc_{\partial, \leq n-1}}_{/N})^{\op}} & {{\mathscr{P}_{n-1}\mathscr{S}_{\ast}}^{\partial_c /}}
+	\arrow["{\overline{\varphi}_n}", from=1-1, to=1-2]
+	\arrow[from=1-1, to=2-1]
+	\arrow[Rightarrow, from=1-2, to=2-1]
+	\arrow[from=1-2, to=2-2]
+	\arrow["{\overline{\varphi}_{n-1}}"', from=2-1, to=2-2]
+\end{tikzcd}\]
+
+For each \(\eta \in \Psh(\DiscnN)\), the natural transformation evaluated at \(\eta\) is a map of the form
+\[
+    \nmnSigma\ovph_{n}(\eta) \simeq  \nmnSigma\lim_{e_{U} \in {\DiscnN}_{/\eta}} \nSigma N\sminus e_{U}(U) \to \lim_{e_{V} \in {{{\mathscr{D}\mathrm{isc}}_{\leq n-1}}_{/N}}_{/\eta}} \Sigma^{\infty}_{n-1} N \sminus e_{V}(V) \simeq \ovph_{n-1}\iota_{n,n-1}^{\ast}(\eta).
+\]
+
+For an actual embedding \( e \colon M \hookrightarrow N \) of a compact manifold, both the source and target of this map are equivalent to \( \Sigma_{n-1}^{\infty}(N \setminus e(M)) \) by \eqref{eq:recovers genuine emb}, and the natural transformation evaluated at the image of \(e\) is an equivalence.
+In particular, this induces a map on layers for the path components lying in the image of the evaluation map \(\Psh(\mathscr{M}\mathrm{fld}_{\partial /N}^{\mathrm{cpt}}) \to \Psh(\DiscnN)\).
+
+
+
+\bigskip
+
+We will keep track of a chosen inclusion of a sub–CW–complex in the complement of the boundary throughout the construction, using the following notation.
+
+\begin{notation}[\(\partial_{c}\)]
+    Let \(\uMfldN\) be the category defined in \ref{Notation: Mfld partial /N}. 
+    Fix a nonempty pointed sub-CW-complex \(\partial_c \subset \partial N \sminus i(P_{d})\).
+    We write \(\uPnS\) for the undercategory of \( \mathscr{P}_{n}\mathscr{S}_{\ast} \) under \( \nSigma\partial_{c} \).
+\end{notation}
+
+
+
+ 
+
+
+\subsection{\(n\)-th approximation of the complement}
+In this subsection we define the functor
+\[
+    \varphi_{n} \colon \uMfldN^{\op} \rightarrow \uPnS
+\]
+which assigns to an embedding \(e \colon M \hookrightarrow N\) of a manifold admitting a finite handle decomposition, the \(n\)-th Goodwillie approximation \(\nSigma \partial_{c} \rightarrow \nSigma N \sminus e(M)\),
+and show that \(\varphi_n\) is manifold \(n\)-excisive. 
+
+\medskip
+We do so by constructing a functor \(\varphi_{n}'\) from the poset \(\cO_{d}(N)\) of \(d\)-manifolds in \(N\)  to \(\uPnS\).
+We then verify that \(\varphi_{n}'\) is isotopy invariant, good, and manifold \(n\)-excisive.  
+By Remark~\ref{rem: discrete to infinity}, this promotes to a manifold \(n\)-excisive functor \(\varphi_{n} \colon \uMfldN \to \uPnS\).
+
+
+\begin{notation}
+Let \(\cO_{d}^{\mathrm{cpt}}(N)\) denote the subposet of \(\cO_{d}(N)\) spanned by \(d\)-dimensional submanifolds admitting a finite handle decomposition. 
+Note that the subposet \(\cO_{d, n}(N)\) consisting of submanifolds diffeomorphic to disjoint unions of at most \(n\) copies of \(\R^{d}\) is contained in \(\cO_{d}^{\mathrm{cpt}}(N)\).
+\end{notation}
+
+
+Define a functor from \(\cO_{d}^{\mathrm{cpt}}(N)\) to \(\Top_{*}^{\partial_{c}/}\) by assinging to each \(M \in \cO_{d}^{\mathrm{cpt}}(N)\)
+\[
+   i_{M} \colon \partial_{c} \hookrightarrow \partial N \sminus i(\partial M) \hookrightarrow N \sminus M.
+\]
+Applying the coherent nerve yields \(\cO_{d}^{\mathrm{cpt}}(N) \longrightarrow \uS\).
+We now define \(\varphi_{n}'\) to be the right Kan extension of the composite \(\cO_{d}^{\mathrm{cpt}}(N) \rightarrow \uS \xrightarrow{\nSigma} \uPnS \) along the inclusion \(\cO_{d}^{\mathrm{cpt}}(N) \hookrightarrow \cO_{d}(N)\).
+
+The argument of \cite[Lemma~1.3.1]{TW16} shows that \(\varphi_{n}'\) is good and carries isotopy equivalences to equivalences. 
+It is also observed in \cite[Remark~1.3.2]{TW16} that \(\varphi_{n}'\) is manifold \(n\)-excisive; 
+We include the proof here for reader's convenience.
+
+
+\begin{lemma}\cite[Remark~1.3.2]{TW16}\label{lemma : P_n of complement is n sheaf}
+    \(\varphi_{n}'\) is manifold \(n\)-excisive.
+\end{lemma}
+
+\begin{proof}
+    By lemma~\ref{lemma: characterising n-sheaves} and the remark following it, it is enough to check that \(\varphi_{n}'\) sends each \(X_{(M,\ul{A})}\) satisfying the conditions of \ref{notation: manifold cube} to a cartesian cube.
+    By assumtion, \(M \sminus A_{S} \in \cO_{d}^{\mathrm{cpt}}(N)\) and
+    \[
+      \varphi_{n}'(M) \to \lim_{\emptyset \neq S \subset \ul{n+1}} \varphi_{n}'(M \sminus A_{S})
+    \]
+    is equivalent to
+    \[
+       (\nSigma\partial_{c} \to \nSigma N \sminus M) \to \lim_{\emptyset \neq S \subset \ul{n+1}}(\nSigma\partial_{c} \to \nSigma N \sminus (M \sminus A_{S}))
+    \]
+    Since the forgetful functor \(\uPnS \to \PnS\) reflects limits, it's enough to show that
+    \[
+       \nSigma N \sminus M \to \lim_{\emptyset \neq S \subset \ul{n+1}}\nSigma N \sminus (M \sminus A_{S})
+    \]
+    is an equivalence. 
+    This cube is the image under \(\nSigma\) of a \((n+1)\)-cube in \(\pS\) whose two-dimensional faces are of the form
+    \[
+        \begin{tikzcd}
+            N \backslash (M\backslash A_{S\cap T}) \arrow[d] \arrow[r] & N \backslash (M\backslash A_{T}) \arrow[d] \\
+            N \backslash(M \backslash A_{S}) \arrow[r]                 & N \backslash(M\backslash A_{S\cup T})     
+        \end{tikzcd}
+    \] for subsets \(S,T \subset \ul{n+1}\). Since \(N \backslash(M\backslash A_{S\cup T}) = (N \backslash(M\backslash A_{S})) \cup (N \backslash(M\backslash A_{T}))\) and
+    \(N \backslash(M\backslash A_{S\cap T}) = (N \backslash(M\backslash A_{S})) \cap (N \backslash(M\backslash A_{T}))\), each such square is cocartesian in \(\pS\).
+    Now \(\nSigma\) is a left adjoint and every strongly cocartesian \((n+1)\)-cube is cartesian in \(\PnS\), and the claim follows.
+\end{proof}
+
+Let \(\varphi_{n} \colon \Mfld_{\partial/N}^{\op} \to \uPnS\) denote the manifold \(n\)-excisive functor corresponding to \(\varphi_{n}'\) under the equivalence of Remark~\ref{rem: discrete to infinity}.  
+Note that if \(e_{M} \colon M \hookrightarrow N\) is an object of \(\Mfld_{\partial/N}^{\mathrm{cpt}}\), then
+\[
+    \varphi_{n}(e_{M}) \simeq 
+    \bigl(\,\nSigma\partial_{c} \longrightarrow \nSigma (N \setminus e_{M}(M))\,\bigr)
+    \in \uPnS.
+\]
+
+\begin{remark}
+A more categorically natural construction should be possible at the level of the bordism double category \(\Bord\) of \cite{KK22}, using the complement presheaves developed in \cite[Section~4]{KK25}.  
+\end{remark}
+
+
+
+
+\subsection{\(T_{n}\)-complement}
+
+
+In this subsection we define the \(T_{n}\)-complement functor
+\[
+	\overline{\varphi}_{n} \colon \Psh(\uDiscnN)^{\op} \longrightarrow \uPnS
+\]
+and show that these functors assemble into a lax morphism of towers.  
+Intuitively, \(\overline{\varphi}_{n}\) encodes the \(n\)-th Goodwillie approximation of complements not only for genuine embeddings but also for their \(T_{n}\)-analogues represented by a map of presheaves.
+
+
+To make this precise, recall that for an \(\infty\)-category \(\icat{C}\), the Yoneda embedding
+\[
+	y_{\icat{C}} \colon \icat{C} \hookrightarrow \Psh(\icat{C})
+\]
+exhibits \(\Psh(\icat{C})\) as the free cocompletion of~\(\icat{C}\).  
+Thus, if \(\icat{E}\) admits small limits, precomposition with \(y_{\icat{C}}^{\op}\) induces an equivalence
+\[
+    \Fun^{R}(\Psh(\icat{C})^{\op},\icat{E}) \xlongrightarrow[\simeq]{\ust{y_{\iC}^{\op}}} \Fun(\icat{C}^{\op},\icat{E}),
+\]
+where \(\Fun^{R}(-,-)\) denotes the full subcategory of \(\Fun(-,-)\) spanned by functors that preserve small limits. 
+This universal property allows us to extend the Goodwillie \(n\)-th approximation of complements \(\varphi_{n}\) to arbitrary presheaves on \(\uDiscnN\);
+
+\begin{definition}[\(T_{n}\)-complement]
+    Let \(\overline{\varphi}_{n}\) be the essentially unique object of \(\Fun^{R}(\Psh(\uDiscnN)^{\op},\uPnS)\) such that 
+    \(\overline{\varphi}_{n}y_{\Disc} \simeq \varphi_{n}\iota_{n} \in \Fun(\uDiscnN^{\op},\uPnS)\).
+	We refer to \(\overline{\varphi}_{n}\) as the \emph{\(T_{n}\)-complement functor}.
+\end{definition}
+
+
+The following shows that the \(T_{n}\)-complement functor recovers the \(n\)-nilpotent approximation of the complement of genuine embeddings. 
+
+\begin{thm}\label{Prop: commutativity with emb}
+	There is a commutative diagram of \(\infty\)-categories:
+	\[
+	\begin{tikzcd}
+		{\uMfldN^{\op}} \arrow[r, "\varphi_{n}"] \arrow[d, "y_{\Mfld}^{\op}"'] 
+			& \uPnS \\
+		{\Psh(\uMfldN)^{\op}} 
+			\arrow[d, "(\iota_{n}^{\ast})^{\op}"'] 
+			& \\
+		{\Psh(\uDiscnN)^{\op}} 
+			\arrow[uur, "\overline{\varphi}_{n}"']
+	\end{tikzcd}
+	\]
+\end{thm}
+
+\begin{proof}
+    Consider the sequence of natural transformations
+    \begin{equation*}
+        \begin{split}        
+            \varphi_{n} &\rightarrow \lst{\iota_{n}}\iota_{n}^{*}\varphi_{n} \\
+                & \simeq \lst{\iota_{n}} y_{\Disc_{  n}}^{*}\ovph_{n} \\
+                & \simeq y_{\Mfld}^{*}(\iota_{n}^{*})^{*}\ovph_{n}
+        \end{split}
+    \end{equation*}
+    The first map is an equivalence by Lemma \ref{lemma : P_n of complement is n sheaf}. 
+    The second equivalence is the definition of \(\ovph_{n}\). 
+    The final equivalence arises from the compatibility between the Yoneda embedding and full subcategory inclusions.  
+    For a full subcategory inclusion \(\iota \colon \iC_{0} \subset \iC\) and an \(\infty\)-category \(\icat{E}\) admitting small limits, the following diagram commutes~\cite[Lemma~5.2.6.7]{L09}:
+    \[\begin{tikzcd}
+	{\Fun^{R}(\Psh(\icat{C})^{\op},\icat{E})} & {\Fun^{R}(\Psh(\icat{C}_0)^{\op},\icat{E})} \\
+	{\Fun(\icat{C}^{\op},\icat{E}) } & {\Fun(\icat{C}_0^{\op},\icat{E}) }
+	\arrow["{y_{\iC}^*}"', from=1-1, to=2-1]
+	\arrow["{(\iota^*)^*}"', from=1-2, to=1-1]
+	\arrow["{y_{\iC_0}^*}", from=1-2, to=2-2]
+	\arrow["{\iota_{*}}", from=2-2, to=2-1]
+\end{tikzcd}\]
+\end{proof}
+
+
+The layers of the embedding tower and the Goodwillie tower admit accessible descriptions.
+This motivates constructing a map between the towers that allows us to compare the layers.
+We show that the collection \(\{\overline{\varphi}_{n}\}_{n \ge 1}\) assembles into a lax map of towers, which restricts to a map of towers on the image of genuine embeddings of compact manifolds.  
+In particular, this induces a map on layers for the path components lying in the image of the evaluation map \(\Psh(\uMfldN) \to \Psh(\DiscnN)\).
+
+Recall that the adjunction \(\nmnSigma  \colon\PnS \rightleftarrows {\mathscr{P}_{n-1}\pS} \colon \Omega^{\infty}_{n,n-1}\) induces a sliced adjunction,
+which we continue to denote by \(\nmnSigma  \colon\uPnS \rightleftarrows {\mathscr{P}_{n-1}\pS}^{\partial_{c}/}\colon \Omega^{\infty}_{n,n-1}\). 
+
+\begin{proposition}\label{prop: lax map of towers}
+    There is a natural transformation of functors fitting into the following diagram:
+\[\begin{tikzcd}
+	{\Psh(\uDiscnN)^{\op}} & \uPnS \\
+	{\Psh({\Disc_{\partial,\leq n-1}}_{/N})^{\op}} & {{\mathscr{P}_{n-1}\mathscr{S}_{\ast}}^{\partial_c /}}
+	\arrow["{\overline{\varphi}_n}", from=1-1, to=1-2]
+	\arrow["{(\inmn^*)^{\op}}"', from=1-1, to=2-1]
+	\arrow[Rightarrow, from=1-2, to=2-1]
+	\arrow["\nmnSigma", from=1-2, to=2-2]
+	\arrow["{\overline{\varphi}_{n-1}}"', from=2-1, to=2-2]
+\end{tikzcd}\]
+    This natural transformation becomes an equivalence after precomposition with \((\iota_{n}^{*})^{\op}y_{\Mfld}^{\op}(\icpt)^{\op}\).
+\end{proposition}
+
+
+
+    
+
+\begin{proof}
+For this proof, we work in the opposite categories and adopt the following notations:
+\begin{itemize}
+        \item \(\iD_{0} \coloneqq \Mfld_{\mathrm{cpt}}\) and \(\iD \coloneqq \Mfld\). Denote the inclusion \(\iD_{0} \hookrightarrow \iD\) by \(k\);
+		\item \(\iE_{n} \coloneqq (\uPnS)^{\op}\);
+		\item \(G \coloneqq (\nmnSigma)^{\op}\);
+		\item \(\iC_{n} \coloneqq \uDiscnN\) and \(\iC_{n-1} \coloneqq {\Disc_{\partial,\le n-1}}_{/N}\);
+		\item \(\phi_{n} \coloneqq \varphi_{n}^{\op}\) and \(\overline{\phi}_{n} \coloneqq \overline{\varphi}_{n}^{\op}\);
+		\item \(\ops_{n}\) denotes the right adjoint of \(\overline{\phi}_{n}\).
+	\end{itemize}
+Note that \(\overline{\phi}_{n} \colon \Psh(\iC_{n})\to\iE_{n}\) is the unique colimit preserving functor that restricts to \(\iota_{n}^{\ast}\phi_{n} \colon \iC_{n} \to \iE_{n}\).
+The right adjoint \(\ops_{n}\) exists and is given by \(i_{n}^{\ast}\phi_{n}^{\ast}y_{\iE_{n}}\)~\cite[5.2.6.5]{L09}. 
+
+\subsubsection*{Construction of the natural transformation.}
+We construct the desired natural transformation as the Beck-Chevalley mate of a natrual tranformation \(A \colon \iota_{n,n-1}^{\ast}\ops_{n} \to \ops_{n-1}G\).
+\[\begin{tikzcd}
+	{\Psh(\iC_n)} & {\iE_n} \\
+	{\Psh(\iC_{n-1})} & {\iE_{n-1}}
+	\arrow["{\inmn^*}"', from=1-1, to=2-1]
+	\arrow["A"{description}, Rightarrow, from=1-1, to=2-2]
+	\arrow["{\ops_{n}}"', from=1-2, to=1-1]
+	\arrow["G", from=1-2, to=2-2]
+	\arrow["{\ops_{n-1}}", from=2-2, to=2-1]
+\end{tikzcd}\]
+More precisely, our desired natural transformation is the composite
+\[
+    \oph_{n-1}\inmn^{*} \to \oph_{n-1}\inmn^{*}\ops_{n}\oph_{n} \to \oph_{n-1}\ops_{n-1}G\oph_{n} \to G\oph_{n}
+\]
+where the first arrow is induced by the unit of adjunction, the second arrow by \(A\), and the last arrow by the counit. 
+
+\(A\) is defined as the composite
+\begin{align*}
+    \inmn^{*}\ops_{n} &\simeq \inmn^{*}i_{n}^{*}\phi_{n}^{*}y_{\iE_{n}}\\
+                    &\rightarrow \inmn^{*}i_{n}^{*}\phi_{n}^{*}{G}^{*}y_{\iE_{n-1}}G \\
+                    &\simeq i_{n-1}^{*}\phi_{n-1}^{*}y_{\iE_{n-1}}G \\
+                    &\simeq \ops_{n-1}G.
+\end{align*}
+
+The second arrow is induced by the natural tranformation \(y_{\iE_{n}} \to {G}^{*}y_{\iE_{n-1}}G\) corresponding to the canonical map \(\Map_{\iE_{n}}(-,-) \to \Map_{\iE_{n-1}}(G(-),G(-))\).
+The third line follows from \(\iota_{n}\inmn \simeq \iota_{n-1}\) and \(G \phi_{n}\iota_{n-1} \simeq \phi_{n-1}\iota_{n-1}\).
+
+
+\subsubsection*{The natural transformation on representables.}
+To prove that the defined natural transformation becomes an equivalence when precomposed with \(i_{n}^{*}y_{\iD}k\), first note that the composite  
+\[\oph_{n-1}\inmn^{*}i_{n}^{*}y_{\iD}k \to \oph_{n-1}\inmn^{*}\ops_{n}\oph_{n}i_{n}^{*}y_{\iD} k \to \oph_{n-1}\ops_{n-1}G\oph_{n}i_{n}^{*}y_{\iD}k \to G\oph_{n}i_{n}^{*}y_{\iD}k \]
+is equivalant to 
+\[
+    \oph_{n-1}\iota_{n-1}^{*}y_{\iD}k \xrightarrow{u} \oph_{n-1}\iota_{n-1}^{*}\phi_{n-1}^{*}y_{\iE_{n-1}}\phi_{n-1}k \xrightarrow{v} \phi_{n-1}k
+\]
+where the first map is induced by natural tranformation \(u \colon y_{\iD} \to \phi_{n-1}^{*}y_{\iE_{n-1}}\phi_{n-1}\), and the second map is induced from the counit map \(v \colon \oph_{n-1}\ops_{n-1} \to \id\).
+
+We omit the subscript \((n-1)\) from now on and denote \(\iC = \Disc_{n-1}\), the full subcategory inclusions by
+\(\iC \xhookrightarrow{\iota_{0}} \iD_{0} \xhookrightarrow{k} \iD\) and \(\iC \xhookrightarrow{\iota} \iD\).
+Note that \(\iota \simeq k \iota_{0}\).
+
+We have the following commutative diagram:
+
+\[\begin{tikzcd}[ampersand replacement=\&,column sep=tiny]
+	{\Map_{\Fun(\iD_{0},\iE)}({\iota_{0}}_{!}\oph y_{\iC},X)} \& {\Map_{\Fun(\iC,\Psh(\iC))}(y_{\iC},\ops \ust{\iota_{0}} X)} \\
+	{\Map_{\Fun(\iD_{0},\iE)}(\oph\iota^* y_{\iD}k,X)} \& {\Map_{\Fun(\iD_{0},\Psh(\iC))}(\iota^* y_{\iD}k,\ops X)} \\
+	{\Map_{\Fun(\iD_{0},\iE)}(\oph\iota^* \phi^* y_{\iE} \phi k,X)} \& {\Map_{\Fun(\iD_{0},\Psh(\iC))}(\iota^*\phi^*y_{\iE}\phi\icpt,\ops X)} \\
+	{\Map_{\Fun(\iD_{0},\iE)}(\phi k,X)} \& {\Map_{\Fun(\iD_{0},\iE)}(\phi k,X)}
+	\arrow["\simeq"', from=1-2, to=1-1]
+	\arrow["\simeq", from=2-1, to=1-1]
+	\arrow["\alpha"', from=2-2, to=1-2]
+	\arrow["\simeq"', from=2-2, to=2-1]
+	\arrow["{u^*}", from=3-1, to=2-1]
+	\arrow["\beta"', from=3-2, to=2-2]
+	\arrow["\simeq"', from=3-2, to=3-1]
+	\arrow["{v^*}", from=4-1, to=3-1]
+	\arrow["\gamma"', from=4-2, to=3-2]
+	\arrow[equals, from=4-2, to=4-1]
+\end{tikzcd}\]
+
+All the horisontal arrows are given by adjunctions. 
+The upper left vertical arrow is an equivalence given by ~\cite[Lemma~5.2.6.7]{L09}.
+Here \(\gamma\) is induced by \(\Map_{\iE}(-,-) \to \Map_{\Psh(\iC)}(\ops(-),\ops(-))\)
+and \(\beta\) denotes the map induced by \(u\). \(\alpha\) is the restriction to the subcategory \(\iota_{0} \colon \iC \hookrightarrow \iD_{0}\).
+
+
+It therefore suffics to show that the composite of the right vertical arrows is an equivalence. 
+This follows from the commutativity of the following diagram:
+\[\begin{tikzcd}[ampersand replacement=\&]
+	{\Map_{\Fun(\iC,\Psh(\iC))}(y_{\iC},\ops{\iota_{0}}^*X)} \& {\Map_{\Fun(\iC,\iE)}(\phi\iota,X \iota_{0})} \\
+	{\Map_{\Fun(\iD_{0},\Psh(\iC))}(\iota^*y_{\iD} k,\ops X)} \\
+	{\Map_{\Fun(\iD_{0},\Psh(\iC))}(\iota^*\phi^*y_{\iE}\phi k,\ops X)} \\
+	{\Map_{\Fun(\iD_{0},\iE)}(\phi k,X)} \& {\Map_{\Fun(\iD_{0},\iE)}(\phi k,X)}
+	\arrow["\simeq"',from=1-1, to=1-2]
+	\arrow["\alpha", from=2-1, to=1-1]
+	\arrow["\beta", from=3-1, to=2-1]
+	\arrow["\gamma", from=4-1, to=3-1]
+	\arrow["\delta"', from=4-2, to=1-2]
+	\arrow["\simeq"{description}, shift left=3, draw=none, from=4-2, to=1-2]
+	\arrow[equals, from=4-2, to=4-1]
+\end{tikzcd}\]
+Here \(\delta\) is the map given by restricton to \(\iC\). The diagram commutes since \(\gamma\) is the map
+\[
+    \Map_{\Psh(\iC)}(\ops(-),\ops(-)) \simeq \Map_{\Psh(\iC)}(\Map_{\iE}(\phi\iota(\bullet),(-)),\Map_{\iE}(\phi\iota(\bullet),(-)))
+\]
+induced by postcomposition and the upper horisontal arrow is the evaluation at the identity morphism which is an equivalence by Yoneda lemma.
+Finally, \(\delta\) is an equivalence since \(\phi k \simeq \lsh{\iota_{0}}\ust{\iota_{0}}\phi k\).
+
+
+\end{proof}
+
+
+\section{\(T_{n}\)-Stallings' theorem for some \(T_{n}\)-complements in \(D^{d}\)}
+
+In \ref{sec: Stallings}, we prove an analogue of Stallings' theorem for \(T_{n}\)-complements of \(T_{n}\)-embeddings of \(P \times I\) into \(D^{d}\).
+More precisely, given a \(T_{n}\)-embedding, we show that the boundary inclusion induced map from \(\nSigma D^{d-1}\sminus P\) to the \(T_{n}\)-complement is an equivalence in \(\PnS\). 
+
+Two observations make the argument work for embeddings of \(P \times I\) into \(D^{d-1} \times I \cong D^{d}\).
+
+First, in this case, there exists a \(T_{n}\)-embedding such that boundary inclusion induced map is an equivalence in \(\PnS\):
+This is given by the image of \(i\times I\) in \(T_{n}\bdemb(P \times I,D^{d})\) since
+\(
+    \nSigma D^{d-1} \sminus i(P) \rightarrow \nSigma D^{d} \sminus (i\times I)(P \times I) 
+\)
+is an equivalence, and by Proposition~\ref{Prop: commutativity with emb}, the right-hand side identifies with the \(T_{n}\)-complement of the corresponding \(T_{n}\)-embedding.
+In the language of \cite{KK24}, this follows because \(E_{i \times I}\) is the identity 2-morphism from \(E_{P\times I}\) to \(E_{D^{d-1}\times I}\) in the Morita category of algebras and bimodules of \(\Psh(\Discn)\). 
+For our purposes, it is enough that this bimodule map becomes an equivalence upon passing to \(\PnS\). 
+
+
+Second, for any embedding \(e\colon M \hookrightarrow N\),
+when the ambient manifold \(N\) is contractible, the \(n\)-th approximation of the complement \(\nSigma N \sminus e(M)\) can be recovered from the data of the tubular neighborhood of \(e(M)\).
+Recall that \(\PnS\) is defined as the colimit
+\[
+    \colim(\pS \to \mathscr{T}_{n}\pS \to \mathscr{T}_{n}(\mathscr{T}_{n}\pS) \to \cdots )
+\]
+where each functor \(\mathscr{T}_{n}\) sends an object \(X\) to the punctured \((n+1)\)-cube determined by \(\Sigma X\) and inclusions of wedge summands.
+If \(N\) is contractible, \(\Sigma (N\sminus M) \) is equivalent to the Thom space of the normal bundle of \(e\). 
+Thus \(\nSigma N \sminus M\) is equivalent to an object determined by the Thom space together with the inclusion maps of wedges.
+Using this, the problem reduces to the case where one only needs to exhibit a \(T_{n}\)-embedding for which the boundary inclusion map is an equivalence.
+
+In the case of string links, we identify the homotopy class of the induced equivalence as the Artin representation for string links in \ref{sec: string links}. 
+In particualr, although the \(T_{n}\)-complment is equivalent to something that doesn't depend on the embedding, the induced equivalence can carry nontrivial and interesting information.
+
+
+\subsection{Stallings' theorem for \(T_{n}\)-complemnts}\label{sec: Stallings}
+
+To state the theorem cleanly, we introduce the following defintion. 
+    
+
+Let \(\iC\) be an \(\infty\)-category and let \(X,Y \in \iC\). We denote by \(\iC^{(X,Y)/}\) the pullback \(\iC^{X/} \times_{\iC} \iC^{Y/}\).
+If \(\iC\) admits coproducts, then the left fibration \(\iC^{(X,Y)/} \to \iC\) straightens to the functor
+\[
+    \Map_{\iC}(X,-) \times \Map_{\iC}(Y,-) \simeq \Map_{\iC}(X \amalg Y,-),
+\] hence there is an equivalence \(\iC^{(X,Y)/} \simeq \iC^{X \amalg Y /}\).
+We refer to the full subcategory
+\[
+    (\iC^{\simeq})^{(X,Y)/} \subset \iC^{(X,Y)/} \simeq \iC^{X \amalg Y/}
+\]
+as the \emph{category of equivalence cospans} from \(X\) to \(Y\).
+
+
+Note that there is a natural map from \((\iC^{\simeq})^{(X,X)}\) to the automorphism space of \(X\).
+Indeed, the composite natural transformation
+\[
+    \Map_{\iC^{\simeq}}(X,-) \times \Map_{\iC^{\simeq}}(X,-) \simeq \Map_{\iC^{\simeq}}(X,-) \times \Map_{\iC^{\simeq}}(-,X) \to \Map_{\iC^{\simeq}}(X,X)
+\]
+where the first equivalence is given by \(\iC^{\simeq} \simeq (\iC^{\simeq})^{\op}\) and the second map is given by composition of morphisms in \(\iC^{\simeq}\), unstraightens to
+\[
+    (\iC^{\simeq})^{(X,X)/} \to \Aut_{\iC}(X) \times \iC^{\simeq} \to \Aut_{\iC}(X).
+\]
+
+On objects, the composite sends \(X \xrightarrow{f} \bullet \xleftarrow{g} X\) to \(g^{-1}f\).
+
+
+Now we state our theorem.
+
+
+\begin{notation}
+For an embedding \(e \in \bdemb(-,D^{d})\), write \(D_{(-)} \coloneq D^{d} \sminus e(-)\).
+Fix a compact manifold \(P\), an embedding into the interior \(i \colon P \hookrightarrow \mathrm{int}(D^{d-1})\), and a point \(x\) in \(\partial D^{d-1}\).
+All embeddings restrict to \(i\) on \(P \times \{0\}\) and \(P \times \{1\}\).
+Let \(\partial_{c} \subset \partial D^{d} \sminus \partial (P \times I)\) be the pointed sub CW-complex \((D_{P} \times \{0\}) \cup (x \times I) \cup  (D_{P} \times \set{1}) \) pointed at \(x \times \set{0}\).
+Thus \(\partial_{c} \simeq D_{P} \vee D_{P}\).
+\end{notation}
+
+\begin{thm}\label{prop: Bordism equivalence}
+    For \((P,i,x)\) defined as above,
+    \[
+        T_{n}\bdemb(P \times I,D^{d}) \simeq T_{n}\bdemb(P \times I,D^{d})^{\op} \to \Psh({\uDiscn}_{/D^{d}})^{\op} \xrightarrow{\ovph_n} {\PnS}^{\nSigma D_{P} \vee \nSigma D_{P}/}
+    \]
+    lands in the full subcategory of equivalence cospans \(({\PnS^{\simeq}})^{(\nSigma D_{P}, \nSigma D_{P})}\) 
+\end{thm}
+
+\begin{corollary}\label{cor:Tn to Aut}
+    For \((P,i,x)\) defined as above, there is a map of spaces
+    \[
+        T_{n}\bdemb(P \times I,D^{d}) \xrightarrow{\ovph_{n}} ({\PnS^{\simeq}})^{(\nSigma D_{P}, \nSigma D_{P})} \to \Aut_{\PnS}(\nSigma D_{P}) 
+    \]
+\end{corollary}
+
+For the proof of Theorem \ref{prop: Bordism equivalence} we will use the following construction.
+\begin{definition}(\(n\)-pointed cone)
+    Let \(\iC\) be an \(\infty\)-category which admits finite colimits and has a final object, and let \(X \in \iC\). 
+    The \(n\)-\textit{pointed cone on \(X\)} is a strongly cocartesian \(n\)-cube \(C_{n}(X)\) in \(\iC\) defined as the left Kan extension of its restriction to \(\mathscr{P}_{\leq 1}(\ul{n})\), where for \(S \in {\mathscr{P}_{\leq 1}(\ul{n})}\)
+    \[
+        C_{n}(X)(S) = 
+        \begin{cases}
+            X & \text{if } S = \emptyset, \\[4pt]
+            \ast & \text{if } |S| = 1.
+        \end{cases}
+    \]
+\end{definition}
+
+\begin{example}
+    When \(\iC = \pS\) and \(X \in \pS\), for each \(S \subset \ul{n}\) we have
+    \[
+        C_{n}(X)(S) =
+        \begin{cases}
+            X &\text{if } S = \emptyset, \\[4pt]
+            \bigvee_{|S|-1} \Sigma X &\text{otherwise}.
+        \end{cases}
+    \]
+\end{example}
+
+\begin{example}\label{example: n+1 pointed cone undercat.}
+    Let \(t \in \pS\) and consider \(\iC = \pS^{t/}\). 
+    For \(i_{X} \colon t \to X \in \pS^{t/}\) and \(S \subset \ul{n}\),
+    \[
+        C_{n+1}(i_{X})(S) = \begin{cases} 
+            i_{X} &\mbox{if } S = \emptyset \\
+        t \to \wedg_{|S|-1} \Sigma t \to \wedg_{|S|-1} \Sigma X & \mbox{otherwise }  
+        \end{cases}
+    \] 
+    Here we use the fact that pushouts in \(\pS^{t/}\) are computed by taking the corresponding pushouts in \(\pS\).
+
+
+    Applying the composite
+    \(
+        \pS^{t/} \xrightarrow{\nSigma} \PnS^{\nSigma t /} \longrightarrow \PnS
+    \)
+    yields a strongly cocartesian \((n+1)\)-cube.
+    Since \(\id_{\PnS}\) is \(n\)-excisive and the forgetful functor \(\uPnS \to \PnS\) creates limits, the cube \(\nSigma C_{n+1}(i_{X})\) is cartesian in \(\uPnS\).
+    In particular,
+    \begin{align*}
+        (\nSigma t \to \nSigma X) &\simeq \lim_{ \emptyset \neq S \subset \ul{n+1}}(\nSigma t \to \nSigma \wedg_{|S|-1} \Sigma X) \\
+                & \simeq \nSigma t \xrightarrow{\simeq}  \lim_{ \emptyset \neq S \subset \ul{n+1}}\nSigma \wedg_{|S|-1} \Sigma t \to \lim_{ \emptyset \neq S \subset \ul{n+1}}\nSigma \wedg_{|S|-1} \Sigma X
+    \end{align*}
+
+\end{example}
+
+
+\begin{proof}[Proof of Theorem \ref{prop: Bordism equivalence}]
+It is enough to check the claim on objects.
+    
+We first express the value of the functor on a general element as a limit.
+Let \(\mathscr{U} \subset \cO_{n}(P \times I)\) be a contractible Weiss \(n\)-cover of \(P \times I\) (for instance, \(\mathscr{U} = \cO_{n}(P \times I)\)). 
+Let \( \eta \colon { \iota_n }^{\ast} E_{P \times I} \rightarrow {\iota_n}^{\ast} E_{D^{d}}\) be an element of \(T_{n}\bdemb(P \times I, D^{d})\). 
+We have \( {\iota_n}^{\ast}E_{P \times I} \simeq \colim_{U \in \mathscr{U}} E_{U}\) in \(\Psh(\uDiscn)\) (\cite[Lemma 5.9]{KK24}).
+Since colimits in over categories are computed by the forgetful map, \(\eta \simeq \colim_{U \in \mathscr{U}} \eta_{U}\) where \(\eta_{U}\) is the composite \(E_{U} \to {\iota_n}^{\ast}E_{P\times I} \xrightarrow{\eta} {\iota_n}^{\ast}E_{D^{d}}\). 
+By the Yoneda lemma, \(\eta_{U} \simeq y(U \xrightarrow{e_{U}} D^{d})\) and \(\eta \simeq \lim_{U \in \mathscr{U}} y(e_{U})\) in \(\Psh({\uDiscn}_{/D^{d}})^{\op}\). 
+Applying \(\ovph_{n}\),
+\begin{align*}
+    \ovph_{n}(\eta)    &\simeq \lim_{U \in \mathscr{U}} \ovph_{n}(y(U \xrightarrow{e_{U}} D^n)) \\
+                &\simeq \lim_{U \in \mathscr{U}} \varphi_{n}\iota_{n}(U \xrightarrow{e_{U}} D^n) \\
+                &\simeq \lim_{U \in \mathscr{U}} (\nSigma \partial_{c} \to \nSigma D_{e_{U}(U)}) \\
+                &\simeq (\nSigma \partial_{c} \to \lim_{U \in \mathscr{U}} \nSigma D_{e_{U}(U)}) \\
+                &\simeq (\nSigma D_{P} \to \lim_{U \in \mathscr{U}} \nSigma D_{e_{U}(U)} \leftarrow \nSigma D_{P}) \\
+\end{align*}
+
+The first equivalence holds since \(\ovph_{n}\) preserves limits. The second and third equivalences are definitions of \(\ovph_{n}\) and \(\varphi_{n}\). The fourth equivalence holds since limit of an under category is determined by the forgetful map. The last equivalence holds since \(\nSigma\partial_{c} \simeq \nSigma D_{P} \vee \nSigma D_{P}\).
+
+Thus it remains to show that the canonical map
+ \[
+    j(\eta) \colon (\nSigma D_{P} \to \lim_{U \in \mathscr{U}} \nSigma D_{e_{U}(U)}) \simeq \lim_{U \in \mathscr{U}} (\nSigma D_{P} \xrightarrow{\nSigma i_{e_{U}}} \nSigma D_{e_{U}(U)})
+\]
+is an equivalence.
+
+Discussion in Example \ref{example: n+1 pointed cone undercat.} shows that we further have equivalences
+
+\begin{equation*}
+    \begin{split}
+    j(\eta) & \simeq \lim_{U \in \mathscr{U}} \lim_{ \emptyset \neq S \subset \ul{n+1}} (\nSigma D_{P} \to  \nSigma \wedg_{|S|-1}  \Sigma D_{e_{U}(U)})\\
+            & \simeq \lim_{U \in \mathscr{U}}  (\nSigma D_{P} \xrightarrow{\simeq} \lim_{ \emptyset \neq S \subset \ul{n+1}}\nSigma \wedg_{|S|-1} \Sigma D_{P} \xrightarrow{f} \lim_{ \emptyset \neq S \subset \ul{n+1}} \nSigma \wedg_{|S|-1} \Sigma D_{e_{U}(U)})\\
+    \end{split}
+\end{equation*}
+Where \(f\) is \(\nSigma \wedg_{|S|-1} \Sigma i_{e_{U}}\).
+The map \(\Sigma D_{P} \xrightarrow{\Sigma i_{e_{U}}} \Sigma D_{e_{U}(U)}\) is equivalent to the map induced on the homotopy cofibers of the inclusions \(D_{P} \to D^{d-1}\) and \(D_{e_{U}(U)} \to D^{d-1} \times I\). Hence the map is equivalent to 
+\begin{align*}
+    & \mathrm{Th}(\nu_{i(P)}) \to \mathrm{Th}(\nu_{e_{U}(U)}) \\
+    \simeq & \mathrm{Th}(\nu_{i(P)}) \to  \mathrm{Th}(\nu_{i(P)}) \vee (\wedg_{|U|} S^{d})
+\end{align*}
+the inclusion of a wedge summand of the Thom space of normal bundle of \(i(P)\). 
+Hence, \(j(\eta)\) is equivalent to an object of \(\PnS^{\nSigma D_{P}/}\) which does not depend on the choice of \(\{e_{U}\}_{U \in \mathscr{U}}\).
+
+In particular, we have the following commutative diagram in \(\PnS\)
+\[\begin{tikzcd}[ampersand replacement=\&,cramped]
+	\& {\nSigma D_{P}} \\
+	{\lim_{U \in \mathscr{U}} \nSigma D_{e_{U}(U)}} \& {\lim_{ \emptyset \neq S \subset \ul{n+1}} \nSigma \wedg_{|S|-1} \Th(\nu _{i(P)}) \vee (\vee_{|U|}S^{d}) } \& {\lim_{U \in \mathscr{U}} \nSigma D_{(i\times I)(U)}} \& {\nSigma D_{P}\times I}
+	\arrow["{j(\eta)}"{description}, from=1-2, to=2-1]
+	\arrow[from=1-2, to=2-2]
+	\arrow["{j(\iota_{n}^{\ast}y(i \times I))}"{description}, from=1-2, to=2-3]
+	\arrow["{\nSigma(D_{P} \times \set{0} \to D_P \times I)}", curve={height=-6pt}, from=1-2, to=2-4]
+	\arrow["\simeq"', from=2-1, to=2-2]
+	\arrow["\simeq", from=2-3, to=2-2]
+	\arrow["\simeq", from=2-4, to=2-3]
+\end{tikzcd}\]
+where the right most horisontal arrow is an equivalence by \ref{Prop: commutativity with emb} and the rightmost vertical map is an equivalence.
+
+\end{proof}
+
+
+
+
+
+\subsection{The case of string links}\label{sec: string links}
+Now we prove Corollary~\ref{corollary: Artin}.
+
+\begin{notation}
+    Let \(P = \ul{k}\), and fix an embedding \(i \colon \ul{k} \to \mathrm{int}(D^{2})\). We write \(\ul{k} \times I\) as \(kI\).
+For a group \(G\), let \(G_{n}\coloneq [G,G_{n-1}]\) with \(G_{0}=G\) denote its lower central series.
+In this section, for \(X \in \pS\) we write \(P_{n}(X)\) for the value \(P_{n}(\id_{\pS})(X)\). 
+Recall that \(\pi_{1}P_{n}(\kcirc) \cong F(k)/F(k)_{n+1}\).
+\end{notation}
+
+
+\begin{lemma} The group homomorphism 
+    \[
+        \pi_{0}\Aut_{\PnS}(\nSigma\kcirc) \xrightarrow{\pi_{1}\nOmega} \Aut_{\Gp}(\pi_{1}P_{n}(\kcirc))
+    \] 
+    is an isomorphism.  
+\end{lemma}
+\begin{proof}
+    For injectivity, consider the inclusion
+    \[
+        \Aut_{\PnS}(\nSigma \kcirc) \subset \Map_{\PnS}(\nSigma \kcirc, \nSigma \kcirc) \simeq \Map_{\pS}(\kcirc,P_{n}(\kcirc)) \simeq (\Omega P_{n}(\kcirc))^{\times k}.
+    \]
+    This induces an injection \(\pi_{0}\Aut_{\PnS}(\nSigma \kcirc) \hookrightarrow (\pi_{1}P_{n}(\kcirc))^{\times k} \) that maps each \(f\) in \(\pi_{0}\Aut_{\PnS}(\nSigma \kcirc)\) to to \((\pi_{1}\nOmega f(x_{1}),\dots,\pi_{1}\nOmega f(x_{k}))\), where \(\{x_{1},\dots,x_{k}\}\) are the image of the wedge inclusion of the generators.
+
+    For surjectivity, let \(\phi \in \Aut_{\Gp}(\pi_{1}P_{n}(\kcirc)) \cong \Aut_{\Gp}(F(k)/F(k)_{n+1})\). 
+    Since \(F(k)\) is free,  there is a lift \(\psi\colon F(k)\to F(k)\) of \(\phi\).
+    Let \(B \psi \colon \kcirc \to \kcirc\) be the induced map on classifying spaces. 
+    Then \(\Sigma B \psi\) is a homology equivalence of simply connected spaces, hence a weak equivalence. 
+    By definition, \(\nSigma\) factors as \(\pS \to \mathscr{T}_{n}\pS \to \PnS\), where \(\mathscr{T}_{n}\pS\) is the category of special punctured \((n+1)\)-cubes and the map \(\pS \to \mathscr{T}_{n}\pS\) maps \(X\) to the punctured \((n+1)\)-pointed cone \(C_{n}(X)\).
+    Since \(\Sigma B \psi\) is an equivalence, \(B \psi\) is sent to an equivalence in \(\mathscr{T}_{n}\pS\), and hence \(\nSigma B \psi\) is an equivalence in \(\PnS\). 
+\end{proof}
+
+By Theorem \ref{thm:D^n eq} we have a map of spaces
+\[
+    \mathscr{A}_{n} \colon T_{n}\bdemb(kI,D^{3}) \to \Aut_{\PnS}(\nSigma \kcirc)
+\]
+We now identify the induced map on \(\pi_{0}\) as the Artin representaion.
+
+\begin{corollary}
+    The following diagram commutes:
+    \[\begin{tikzcd}[ampersand replacement=\&,cramped]
+	{\pi_0\bdemb(k  I,D^{3})} \& {\Aut_{\cat{Gp}}(F(k)/F(k)_{n+1})} \\
+	{\pi_0 T_{n}\bdemb(k  I,D^{3})} \& {\pi_{0}\Aut_{\PnS}(\nSigma \kcirc)            }
+	\arrow["{\textrm{Artin}}"', from=1-1, to=1-2]
+	\arrow[from=1-1, to=2-1]
+	\arrow["{\pi_{0}\mathscr{A}_{n}}", from=2-1, to=2-2]
+	\arrow["\cong", from=2-2, to=1-2]
+\end{tikzcd}\]
+    Here the right vertical arrow is the composite of \(\pi_{1}\nOmega\) and conjugation by a fixed isomorphism \(\sigma\) of \(F(k)/F(k)_{n+1} \xrightarrow{\cong} \pi_1P_n(\kcirc)\).
+\end{corollary}
+
+\begin{proof}
+    By Theorem \ref{Prop: commutativity with emb} we see that the composition of the left vertical map and the lower horizontal map sends each \(e \in \bdemb(kI, D^{3})\) to
+   \[
+        \pi_{1}P_{n}(D^{2}\sminus{\ul{k}}) \xrightarrow{\cong} \pi_{1}P_{n}(D^{3}\sminus e(kI)) \xleftarrow{\cong} \pi_{1}P_{n}(D^{2}\sminus \ul{k})
+    \]
+    both maps are induced by boundary inclusions.
+
+    Since \(\pi_{1}P_{n}(X)\) is \(n\)-nilpotent for any finite pointed space \(X\), the canonical map \(\pi_{1}X \to \pi_{1}P_{n}(X)\) factors through \(\pi_{1}X/(\pi_{1}X)_{n+1}\) and the factorisation is functorial.
+    In particular, we have the following commutative diagram. 
+    \[
+        \resizebox{\textwidth}{!}{%
+        \begin{tikzcd}[ampersand replacement=\&,cramped,column sep = tiny]
+            {F(k)/F(k)_{n+1}} \& {\pi_1 (D^2\sminus{\ul{k}}) /\pi_1 (D^2\sminus{\ul{k}})_{n+1}} \& {\pi_1(D^3\sminus{ e(kI) })/ \pi_1(D^3\sminus{ e(kI) })_{n+1}} \& {\pi_1 (D^2\sminus{\ul{k}}) /\pi_1 (D^2\sminus{\ul{k}})_{n+1}} \& {F(k)/F(k)_{n+1}} \\
+            \& {\pi_1 P_n(D^2\sminus{\ul{k}})} \& {\pi_1 P_n(D^3\sminus{ e(kI) })} \& {\pi_1 P_n(D^2\sminus{\ul{k}})}
+            \arrow[from=1-1, to=1-2]
+            \arrow["\sigma"',from=1-1, to=2-2]
+            \arrow[from=1-2, to=1-3]
+            \arrow[from=1-2, to=2-2]
+            \arrow[from=1-3, to=2-3]
+            \arrow[from=1-4, to=1-3]
+            \arrow[from=1-4, to=2-4]
+            \arrow[from=1-5, to=1-4]
+            \arrow["\sigma",from=1-5, to=2-4]
+            \arrow[from=2-2, to=2-3]
+            \arrow[from=2-4, to=2-3]
+        \end{tikzcd}%
+        }
+    \]
+    where all the maps are isomorphisms.
+\end{proof}
+
+
+
+
+%%%%% Bibliography %%%%%
+
+\bibliographystyle{amsalpha}
+\bibliography{bibliography.bib}
+
+
+
+
+
+\end{document}

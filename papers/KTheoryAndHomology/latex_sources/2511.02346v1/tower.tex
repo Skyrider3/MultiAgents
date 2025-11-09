@@ -1,0 +1,128 @@
+\section{Spectral sequences from towers of spectra}
+\label{chap:truncated}
+
+Our vocabulary concerning spectral sequences will follow Boardman's in \cite{boardman1999conditionally}. We will work in a stable homotopy category, that is to say the homotopy category of a category of spectra. The underlying category of spectra could be Boardman's spectra (see \cite{adams1974stable} or \cite{switzer2017algebraic}), or $S$-module from \cite{elmendorf1997rings}. What we really use is that we have a triangulated category, with a functor to the graded group that produces long exact sequences from the triangles, with some unicity on the maps between two triangles (arising from the unicity up to homotopy of the maps between cofiber sequences).
+
+We study spectral sequences arising from a tower of spectra indexed by $\Z$:
+\begin{equation}
+  \begin{tikzcd}
+    ... \arrow[r] & Y_{n+1} \arrow[r] & Y_{n} \arrow[r] & Y_{n-1} \arrow[r] & ...
+  \end{tikzcd}
+\end{equation}
+Let $Y_\infty$ be the limit of the tower and $Y_{-\infty}$ be the colimit. For any $a$ and $b$ integers or $\pm\infty$ with $a\leq b$, let $Y_a^b$ be the cofiber of the map $Y_b\rightarrow Y_a$. For each $n\in\Z$, the cofiber sequence:
+\begin{equation}
+  \begin{tikzcd}
+    Y_{n+1} \arrow[r] & Y_{n} \arrow[r] & Y_n^{n+1}
+  \end{tikzcd}
+\end{equation}
+gives a long exact sequence in homotopy. Pasting each of these sequences defines an unrolled exact couple, and a spectral sequence.
+
+To allow (weak) convergence of the spectral sequence, we quotient the tower of spectra by the limit. To this end, we need to discuss the maps between these cofibers.
+
+\subsection{The octahedral axiom and consequences}
+
+The octahedral axiom is assumed true in any triangulated category. Here we will use it in the homotopy category of spectra, which is triangulated by virtue of being the homotopy category of a stable model category.
+
+\begin{axiom}[Octahedral]
+  Let $A\rightarrow B\rightarrow C$, $A\rightarrow D\rightarrow E$ and $B\rightarrow D\rightarrow F$ be triangles such that the diagram
+  \begin{equation}
+    \begin{tikzcd}
+      A \rar \dar["id"] & B \dar \\
+      A \rar & D \\
+    \end{tikzcd}
+  \end{equation}
+  commutes. Then there are six triangles and a commutative diagram:
+  \begin{equation}
+    \begin{tikzcd}
+      A \rar \dar["id"] & B \dar \rar & C \dar \\
+      A \rar \dar & D \rar \dar & E \dar \\
+      * \rar & F \rar["id"] & F \\
+    \end{tikzcd}
+  \end{equation}
+  where $*$ is the zero-object of the category.
+\end{axiom}
+Remark that in the specific case of the stable homotopy category, the maps $C\rightarrow E$ and $E\rightarrow F$ are unique, and thus are unique up to homotopy in the category of spectra.
+
+Our first lemma is a reformulation of this axiom with our notations.
+\begin{lemma}\label{prop:cofiber1}
+  Let $a\leq b \leq c$ be integers or $\pm\infty$. There is a morphism of cofiber sequences, and commutative diagram:
+  \begin{equation}
+    \begin{tikzcd}
+      Y_c \rar \dar["id"] & Y_b \rar \dar & Y_b^c \dar \\
+      Y_c \rar & Y_a \rar & Y_a^c \\
+    \end{tikzcd}
+  \end{equation}
+   There is a cofiber sequence:
+  \begin{equation}
+    \begin{tikzcd}
+      Y_b^c \arrow[r] & Y_a^c \arrow[r] & Y_a^b
+    \end{tikzcd}
+  \end{equation}
+  and a weak equivalence $f: Y_a^b \rightarrow Y_a^b$ making the following diagram commute.
+  \begin{equation}
+    \begin{tikzcd}
+      Y_b \rar \dar & Y^c_b \dar \\
+      Y_a \rar \dar & Y^c_a \dar \\
+      Y^b_a \rar["f"]  & Y^b_a 
+    \end{tikzcd}
+  \end{equation}
+\end{lemma}
+
+We can conclude the following, which ensure that our spectral sequences can converge to their colimit
+\begin{proposition}\label{prop:quotientlimitss}
+  For any $a\leq b$ integers, the cofiber of $Y_b^{\infty} \rightarrow Y_a^\infty$ is $Y_a^b$.
+  Then the towers of spectra
+  \begin{equation}
+    \begin{tikzcd}
+      ... \arrow[r] & Y_{n+1}^\infty \arrow[r] & Y_{n}^\infty \arrow[r] & Y_{n-1}^\infty \arrow[r] & ...
+    \end{tikzcd}
+  \end{equation}
+  \begin{equation}
+    \begin{tikzcd}
+      ... \arrow[r] & Y_{n+1} \arrow[r] & Y_{n} \arrow[r] & Y_{n-1} \arrow[r] & ...
+    \end{tikzcd}
+  \end{equation}
+  induce isomorphic spectral sequences, beginning from the $E^1$ pages.
+\end{proposition}
+\begin{proof}
+  This is \cref{prop:cofiber1}: we have a morphism of exact couple induced by the diagrams
+  \begin{equation}
+    \begin{tikzcd}
+      Y_{n+1} \rar \dar & Y_n \rar \dar & Y_n^{n+1} \dar["\simeq"] \\
+      Y_{n+1}^\infty \rar & Y_n^\infty \rar & Y_n^{n+1} \\
+    \end{tikzcd}
+  \end{equation}
+  that is an isomorphism on the $E^1$ pages. The induced morphisms on the derived exact couples are then automatically isomorphisms on the following pages, and thus we have two isomorphic spectral sequences.
+\end{proof}
+
+This corollary will be used with towers of spectra such that for some $m\in\Z$ and for all $k\geq m$, all the $Y_{k+1}\rightarrow Y_{k}$ are isomorphism -- that is, $Y_m$ is the limit of the tower; and thus $\infty$ will be replaced by $m$. In fact, we will mostly deal with towers quotiented by their limits, and we will need another version of the octahedral axiom.
+
+In the following, whenever $i\leq j \leq k$ are integers or $\pm\infty$, the map $Y_j^k\rightarrow Y_i^k$ is the map coming from the morphism between the cofiber sequences $Y_k\rightarrow Y_j \rightarrow Y_j^k$ and $Y_k\rightarrow Y_i \rightarrow Y_i^k$, and the map $Y_i^k \rightarrow Y_i^j$ is from the cofiber sequence $Y_j^k\rightarrow Y_i^k \rightarrow Y_i^j$ of \cref{prop:cofiber1}. Both are unique up to homotopy.
+
+
+\begin{lemma}\label{prop:cofiber2}
+  Let $a\leq b \leq c \leq d$ be integers or $\pm\infty$. There are commutative diagrams, both of six cofiber sequences:
+  \begin{equation}
+    \begin{tikzcd}
+      Y_c^d \rar \dar["id"] & Y_b^d \rar \dar & Y_b^c \dar \\
+      Y_c^d \rar \dar & Y_a^d \rar \dar & Y_a^c \dar \\
+      * \rar & Y_a^b \rar["\simeq"] & Y_a^b \\
+    \end{tikzcd}
+    \hspace{2cm}
+    \begin{tikzcd}
+      Y_c^d \rar \dar & Y_a^d \rar \dar["id"] & Y_a^c \dar \\
+      Y_b^d \rar \dar & Y_a^d \rar \dar & Y_a^b \dar \\
+      Y_b^c\rar & * \rar & \Sigma Y_b^c \\
+    \end{tikzcd}
+  \end{equation}
+\end{lemma}
+\begin{proof}
+  The left one is direct from the octahedral axiom. The right one must be shifted one time in the horizontal direction using $\Sigma$ to have the same form as the octahedral axiom. The maps can be seen to be the canonical one since they are unique up to homotopy.
+\end{proof}
+
+
+
+%
+%
+%
+%

@@ -1,0 +1,625 @@
+\documentclass[12pt,reqno]{amsart}
+\renewcommand{\subjclassname}{\textup{2020} Mathematics Subject Classification}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage[a4paper,margin=1.1in]{geometry}
+\geometry{
+    a4paper,
+    left=2cm,
+    right=2cm,
+    top=2cm,
+    bottom=2cm
+}
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\numberwithin{equation}{section}
+
+\def\DD{D\kern-.7em\raise0.4ex\hbox{\char '55}\kern.33em}
+
+\title[Sine Laws with an Anti-Automorphism]{Sine Laws with an Anti-Automorphism:\\ A Left-Translation Approach}
+\author{\DD\d{\u a}ng V\~o Ph\'uc$^{*}$}
+\address{Department of Mathematics, FPT University, Quy Nhon AI Campus\\
+ Quy Nhon City, Binh Dinh, Vietnam}
+\email{dangphuc150488@gmail.com}
+\thanks{$^{*}$ORCID: \url{https://orcid.org/0000-0002-6885-3996}}
+
+\keywords{Functional equation, Sine addition law, Semigroup, Anti-automorphism, Levi-Civita equation, Central function.}
+
+\subjclass[2020]{39B52; 20M15.}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Stetk\ae r's matrix method is a useful tool for analyzing functional equations on semigroups involving a homomorphism $\sigma$. However, this method fails when $\sigma$ is an anti-automorphism because the underlying right-regular representation reverses composition order. To resolve this, we introduce a new approach based on a key conjugation identity. Let $J$ denote the operator of composition with $\sigma$; then the identity $J R(\sigma(y)) J = L(y)$ provides the foundation for our method. This identity restores a well-behaved representation via left translations, making the matrix method applicable again. This left-translation approach is illustrated with several concrete examples from matrix groups and symmetric groups. Using this approach, we extend Stetk\ae r's main structural theorem for the generalized sine law to the anti-automorphic setting. For linearly independent solutions, we show that the equation implies a simpler addition law and that the solutions obey the same transformation rules ($f\circ\sigma=\beta f$, etc.) as in the homomorphic case.
+\end{abstract}
+
+
+\section{Introduction}
+
+The study of functional equations on algebraic structures provides deep insights into the interplay between analysis and algebra. Among the most fundamental are the trigonometric addition laws. Recent research, particularly by Stetk\ae r \cite{StetkaerSineLaw, StetkaerCentrality}, has significantly advanced our understanding of these laws on general semigroups. A central theme in this body of work is the analysis of equations involving a map $\sigma: S \to S$, typically a surjective homomorphism.
+
+A useful and recurring technique, which we refer to as the "Levi-Civita matrix method", involves showing that the solution space of a functional equation is finite-dimensional and invariant under the right-regular representation $R$. For instance, for an equation of the form $f(x\sigma(y))=\sum_i g_i(x)h_i(y)$, the space $V=\mathrm{span}\{g_i\}$ is often shown to be $R(\sigma(S))$-invariant. This invariance allows one to represent the action of $R(\sigma(y))$ as a matrix whose entries depend on $y$. The homomorphism property of $\sigma$ ensures that this matrix representation respects composition, i.e., $\mathcal{M}(y_1y_2) = \mathcal{M}(y_1)\mathcal{M}(y_2)$, providing strict algebraic constraints that lead to profound structural theorems about the solutions \cite{StetkaerCentrality}.
+
+A central result of this research program is the unified treatment of the sine addition and subtraction laws via the two-parameter family:
+$$f(x\sigma(y))=f(x)g(y)+\beta\,g(x)f(y)+\gamma\,f(x)f(y),\qquad \beta\in F^\ast,\ \gamma\in F.
+$$
+When $\sigma$ is a homomorphism, Stetk\ae r showed in \cite[Thm.~4.4]{StetkaerSineLaw} that for linearly independent solutions $(f,g)$, this equation implies a simpler addition law for $f(xy)$, alongside precise transformation rules $f\circ\sigma=\beta f$ (an eigenvalue relation) and $g\circ\sigma\in g+Ff$ (a shift relation). However, this entire framework faces a fundamental obstacle when $\sigma$ is an anti-homomorphism, i.e., $\sigma(xy)=\sigma(y)\sigma(x)$. In this case, the right-regular representation breaks the crucial composition rule:
+\[
+R(\sigma(y_1))R(\sigma(y_2))=R(\sigma(y_1)\sigma(y_2))=R(\sigma(y_2y_1)).
+\]
+The reversal of order $y_2y_1$ prevents the matrix representation from being a homomorphism, and the method collapses. This leaves a significant gap in the theory: \textit{Do analogous structural results hold in the anti-homomorphic setting}?
+
+This paper answers the above question affirmatively. We introduce a new technique to resolve this issue. Our key idea is to use an involutive linear operator $Jh := h \circ \sigma$ to conjugate the right-regular representation. We establish the identity:
+\[
+J R(\sigma(y)) J = L(y) \quad (\text{when }\sigma^2=\mathrm{id}),
+\]
+where $L(y)$ is the left-regular representation, satisfying $L(y_2)L(y_1)=L(y_1y_2)$. This identity effectively converts the ill-behaved action of $R(\sigma(y))$ into the well-behaved action of $L(y)$, thereby salvaging the matrix method.
+
+This approach allows us to establish two main results:
+\begin{itemize}
+\item First, we prove a Levi-Civita type closure property for the anti-automorphism case. We show that the solution space is invariant under left translations $L(y)$ and, crucially, that the corresponding matrix representation $L(y)\big|_V$ has a precise affine-linear structure with constant matrix coefficients. This result provides the foundation for reapplying the matrix method.
+
+\item Second, we use this result to analyze the generalized sine addition/subtraction law. We prove a direct analogue of the main structural theorem from the homomorphic setting: the equation implies a simpler addition law for $f(xy)$, and the solutions satisfy the same precise parity and shift relations under $\sigma$.
+\end{itemize}
+
+The paper is organized as follows. Section~\ref{sec:prelim} collects essential definitions. Section~\ref{sec:AHLC} develops our main technical results (Lemma \ref{lem:conj} and Theorem \ref{thm:AH-LC}), introducing the conjugation identity and establishing the Levi-Civita closure property. Section~\ref{sec:AH44} then applies these results to prove the main structural theorem (Theorem \ref{thm:AH44}) for the generalized sine law. Section~\ref{sec:examples} provides several concrete examples from matrix groups and symmetric groups to illustrate the method. Finally, Section~\ref{sec:conclusions} gives concluding remarks.
+
+\section{Preliminaries}\label{sec:prelim}
+Throughout, $S$ is a semigroup with multiplicative notation; $F$ is a field with $\mathrm{char}(F)\neq2$; $F^\ast=F\setminus\{0\}$. We write $F(S,F)$ for the space of $F$-valued functions on~$S$.
+
+\begin{definition}[Central, abelian \cite{StetkaerCentrality}]\label{def:central-abelian}
+A function $F:S\to A$ is \emph{central} if $F(xy)=F(yx)$ for all $x,y\in S$. A function $F:S\to F$ is \emph{abelian} if
+\[
+F(x_1x_2\cdots x_n)=F(x_{\pi(1)}x_{\pi(2)}\cdots x_{\pi(n)})
+\]
+for all $n\ge2$ and all permutations $\pi$. A central function is abelian if and only if it satisfies Kannappan's condition $F(xyz)=F(xzy)$ for all $x,y,z\in S$.
+\end{definition}
+
+\begin{definition}[Parity \cite{StetkaerSineLaw, StetkaerCentrality}]\label{def:parity}
+Given a map $\varphi:S\to S$, a function $F:S\to F$ is called \emph{even with respect to} $\varphi$ if $F\circ\varphi=F$, and \emph{odd with respect to} $\varphi$ if $F\circ\varphi=-F$.
+\end{definition}
+
+
+We use the standard definitions of homomorphism and anti-homomorphism (cf. \cite{StetkaerCentrality}). For the specific context of this paper, we define the key map as follows.
+\begin{definition}[Homomorphisms, anti-homomorphisms]\label{def:hom-anti}
+A map $\varphi:S\to S$ is a \emph{homomorphism} if $\varphi(xy)=\varphi(x)\varphi(y)$, and an \emph{anti-homomorphism} if $\varphi(xy)=\varphi(y)\varphi(x)$. An \emph{involutive anti-automorphism} is a bijective anti-homomorphism $\sigma$ with $\sigma^2=\mathrm{id}$.
+\end{definition}
+
+Following \cite{StetkaerCentrality}, we use the right-regular representation $R$. For the purposes of our analysis, we also define the left-regular representation $L$ analogously.
+\begin{definition}[Right/left regular representations]\label{def:R-L}
+The operators $R,L: S\to \mathrm{End}\big(F(S,F)\big)$ are defined by
+\[
+(R(y)h)(x):=h(xy),\qquad (L(y)h)(x):=h(yx).
+\]
+Then $R$ is a (semi)group homomorphism and $L$ is an anti-homomorphism:
+\[
+R(y_1)R(y_2)=R(y_1y_2),\qquad L(y_2)L(y_1)=L(y_1y_2).
+\]
+A subspace $V\subseteq F(S,F)$ is \emph{$R$-invariant} if $R(y)V\subseteq V$ for all $y$, and similarly for \emph{$L$-invariance}.
+\end{definition}
+
+\section{A Left-Translation Method via Operator Conjugation}\label{sec:AHLC}
+Throughout this section, $\sigma:S\to S$ is a surjective anti-automorphism with $\sigma^2=\mathrm{id}$.
+
+\subsection{Conjugating Right Translates into Left Translates}
+Define an involutive linear operator $J:F(S,F)\to F(S,F)$ by
+$$(Jh)(x):=h\big(\sigma(x)\big).
+$$
+Since $\sigma$ is involutive, $J^2=\mathrm{id}$ and thus $J^{-1}=J$. This operator provides the crucial link between right and left translations.
+
+\begin{lemma}[Conjugation Identity]\label{lem:conj}
+For all $y\in S$, the following operator identity holds:
+$$J R\big(\sigma(y)\big)J\;=\;L(y).
+$$
+\end{lemma}
+\begin{proof}
+For any $h\in F(S,F)$ and $x\in S$, we compute:
+\begin{align*}
+(J R(\sigma(y)) J h)(x) &= (R(\sigma(y)) J h)(\sigma(x)) &&\text{(by definition of } J\text{)} \\
+&= (J h)(\sigma(x)\sigma(y)) &&\text{(by definition of } R\text{)} \\
+&= h\big(\sigma(\sigma(x)\sigma(y))\big) &&\text{(by definition of } J\text{)} \\
+&= h\big(\sigma(\sigma(yx))\big) &&\text{(since } \sigma(x)\sigma(y) = \sigma(yx)\text{)} \\
+&= h(yx) &&\text{(since } \sigma^2=\mathrm{id}\text{)} \\
+&= (L(y)h)(x). &&\text{(by definition of } L\text{)}
+\end{align*}
+Since this holds for all $h$ and $x$, the identity is proven.
+\end{proof}
+
+\subsection{Anti-Homomorphism Levi--Civita Closure}
+With the conjugation identity of Lemma~\ref{lem:conj}, the right-translation equation can be transferred to a left-translation framework. We obtain a two-dimensional invariant subspace and an explicit $2\times2$ matrix law.
+
+\begin{theorem}\label{thm:AH-LC}
+Let $\sigma:S\to S$ be a surjective anti-automorphism with $\sigma^2=\mathrm{id}$. Suppose $f,g,h_1,h_2:S\to F$ satisfy
+\begin{equation}\label{eq:LC-sigma}
+f(x\sigma(y))=f(x)h_1(y)+g(x)h_2(y),\quad x,y\in S,
+\end{equation}
+where both $\{f,g\}$ and $\{h_1, h_2\}$ are linearly independent. Set $V:=\mathrm{span}\{f,g\}$. Then:
+\begin{enumerate}
+    \item[(i)] $V$ is invariant under $L(y)$ for every $y\in S$.
+    \item[(ii)] \emph{(Matrix form)} In the basis $(Jf,Jg)$ of $J(V)$ one has
+    \begin{equation}\label{eq:LC-matrix-JV}
+        L(y)\big|_{J(V)} \;=\;
+        \begin{pmatrix}
+            h_1(y) & \alpha(y)\\[3pt]
+            h_2(y) & \beta(y)
+        \end{pmatrix}
+        \quad\text{for some scalar functions } \alpha,\beta:S\to F.
+    \end{equation}
+    Consequently, in the basis $(f,g)$ of $V$ there exist constant $2\times2$ matrices $M_1,M_2$ (independent of $y$) such that
+    \begin{equation}\label{eq:LC-matrix-affine}
+        L(y)\big|_V \;=\; M_1\,h_1(y) \;+\; M_2\,h_2(y)\qquad(\forall\,y\in S).
+    \end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}\label{rmk:min-hyp}
+The proof of Theorem \ref{thm:AH-LC} below only uses the linear independence of the two pairs
+$\{f,g\}$ and $\{h_1,h_2\}$. No cross-independence assumptions
+(e.g. on $(f,h_1)$, $(f,h_2)$, $(g,h_1)$, $(g,h_2)$) are required.
+If $\{f,g\}$ is dependent, then $V$ is one-dimensional and the
+$2\times2$ matrix form in (ii) is no longer meaningful. If
+$\{h_1,h_2\}$ is dependent (e.g. $h_2\equiv0$), part (i) can fail. For example, let $S=(\mathbb{R},+)$ and $\sigma=\mathrm{id}$. Define
+\[
+f\equiv 1,\qquad g(x)=x^{3},\qquad h_1\equiv 1,\qquad h_2\equiv 0.
+\]
+Then \eqref{eq:LC-sigma} holds:
+\[
+f(x+\sigma(y))=1=f(x)h_1(y)+g(x)h_2(y)=1\cdot1+x^{3}\cdot0.
+\]
+Here $\{f,g\}$ is linearly independent, but $\{h_1,h_2\}$ is linearly dependent (since $h_2\equiv0$).
+With $\sigma=\mathrm{id}$ we have $J=\mathrm{id}$ and $L(y)h(x)=h(y+x)$. While $L(y)f=f\in\mathrm{span}\{f,g\}$, we get
+\[
+L(y)g(x)=g(y+x)=(x+y)^3=x^3+3yx^2+3y^2x+y^3.
+\]
+As a function of $x$, this equals $g(x)+3y\,x^2+3y^2\,x+y^3$, which does not lie in 
+$\mathrm{span}\{f,g\}=\mathrm{span}\{1,x^3\}$ for $y\neq0$ (because of the $x^2$ and $x$ terms).
+Hence $V=\mathrm{span}\{f,g\}$ is not $L$-invariant.  
+\end{remark}
+
+
+\begin{proof}[Proof of Theorem \ref{thm:AH-LC}]
+For (i), write \eqref{eq:LC-sigma} in operator form:
+\begin{equation}\label{eq:R-form}
+R(\sigma(y))f = h_1(y)f + h_2(y)g.
+\end{equation}
+Consider the action of the conjugated operator $J R(\sigma(y)) J$ on the function $Jf \in J(V)$. Using Lemma~\ref{lem:conj}, we have:
+\[
+(J R(\sigma(y)) J)(Jf) = L(y)(Jf).
+\]
+On the other hand, using the definition of $J$ and equation \eqref{eq:R-form}:
+\begin{align*}
+(J R(\sigma(y)) J)(Jf) &= J \big( R(\sigma(y)) (J(Jf)) \big) \\
+&= J (R(\sigma(y)) f) \\
+&= J (h_1(y)f + h_2(y)g) \\
+&= h_1(y)(Jf) + h_2(y)(Jg).
+\end{align*}
+Equating the two expressions gives
+\[
+L(y)(Jf) = h_1(y)(Jf) + h_2(y)(Jg).
+\]
+This shows that $L(y)(Jf)\in J(V) = \mathrm{span}\{Jf, Jg\}.$ Since $\{h_1, h_2\}$ is linearly independent, choose $y_0$ with $h_2(y_0)\neq0$. From \eqref{eq:R-form} we get
+\[
+g=\frac{1}{h_2(y_0)}\Big(R(\sigma(y_0))f-h_1(y_0)f\Big).
+\]
+Applying $J$ and using Lemma~\ref{lem:conj} yields
+\[
+Jg=\frac{1}{h_2(y_0)}\Big(L(y_0)(Jf)-h_1(y_0)Jf\Big)\in J(V).
+\]
+Hence for every $y$ we have $L(y)(Jg)\in J(V)$, since it is a linear combination of
+$L(y)L(y_0)(Jf)$ and $L(y)(Jf)$ (using $L(y)L(y_0)=L(y_0 y)$, hence
+$L(y)L(y_0)(Jf)=L(y_0 y)(Jf)=h_1(y_0 y)Jf+h_2(y_0 y)Jg\in J(V)$).
+Therefore $J(V)$ is $L$-invariant; because $J$ is a linear isomorphism, $V$ is also
+$L$-invariant, proving (i).
+
+%A similar calculation for $L(y)(Jg)$ shows that the space $J(V)=\mathrm{span}\{Jf, Jg\}$ is invariant under $L(y)$ for all $y \in S$. Since $J$ is a linear isomorphism, it preserves invariance. Therefore, $V = J(J(V))$ is also invariant under $L(y)$ for all $y \in S$.
+
+\medskip
+
+For (ii), the identity $L(y)(Jf)=h_1(y)(Jf)+h_2(y)(Jg)$ shows that, in the basis $(Jf,Jg)$, the first column of the matrix representation of $L(y)$ on $J(V)$ is $(h_1(y),h_2(y))^\top$. The second column can be written as $(\alpha(y),\beta(y))^\top$ for some scalar functions $\alpha, \beta$, giving the matrix form \eqref{eq:LC-matrix-JV}.
+
+We now justify that the new coefficient functions $\alpha,\beta$ are \emph{linear in $h_1,h_2$ with constant coefficients}.
+
+\begin{lemma}\label{lem:alpha-beta-linear}
+With notation as above, write
+\[
+A(y):=L(y)\big|_{J(V)}=
+\begin{pmatrix}
+h_1(y) & \alpha(y)\\[2pt]
+h_2(y) & \beta(y)
+\end{pmatrix},\qquad y\in S.
+\]
+Then there exist constants $c_1,c_2,c_3,c_4\in F$ (independent of $y$) such that
+\[
+\alpha(y)=c_1 h_1(y)+c_2 h_2(y),\qquad
+\beta(y)=c_3 h_1(y)+c_4 h_2(y)\qquad(\forall\,y\in S).
+\]
+\end{lemma}
+
+\begin{proof}
+Since $L(y_1y_2)=L(y_2)L(y_1)$, the matrix representation must satisfy $A(y_1y_2)=A(y_2)A(y_1)$ for all $y_1,y_2\in S$. Let $u(y):=\binom{h_1(y)}{h_2(y)}$ and $v(y):=\binom{\alpha(y)}{\beta(y)}$, so that $A(y) = [u(y) | v(y)]$. The identity $A(y_1y_2)=A(y_2)A(y_1)$ implies that the columns of $A(y_1y_2)$ are given by the action of the matrix $A(y_2)$ on the columns of $A(y_1)$. For the first column, this yields:
+\begin{equation}\label{eq:col1}
+    u(y_1y_2) = u(y_2)h_1(y_1) + v(y_2)h_2(y_1).
+\end{equation}
+First, we justify the existence of $y', y'' \in S$ such that $\Delta:=h_1(y')h_2(y'')-h_2(y')h_1(y'')\neq0$. If $\Delta=0$ for all pairs $y', y''$, then all vectors $u(y)$ would be collinear. This means that the functions $h_1$ and $h_2$ would be linearly dependent, a contradiction. Thus, we can choose $y', y''$ with $\Delta \neq 0$.
+
+Fix $y_2\in S$. Since $\{h_1,h_2\}$ is independent, we can choose $a,b\in S$ with
+\[
+\Delta:=h_1(a)h_2(b)-h_2(a)h_1(b)\neq 0.
+\]
+From \eqref{eq:col1} we have the system
+\begin{align*}
+u(ay_2) &= u(y_2)h_1(a) + v(y_2)h_2(a),\\
+u(by_2) &= u(y_2)h_1(b) + v(y_2)h_2(b).
+\end{align*}
+Eliminating $u(y_2)$ by Cramer's rule gives
+\[
+v(y_2)=\frac{h_1(a)}{\Delta}\,u(by_2)\;-\;\frac{h_1(b)}{\Delta}\,u(ay_2).
+\]
+This shows that $v(y_2)$ is a linear combination of the right translates $u(ay_2)$ and $u(by_2)$.
+Let $W_h:=\mathrm{span}\{h_1,h_2\}$. The component functions of $u(\cdot)$ lie in $W_h$, and from
+$A(xy)=A(y)A(x)$ we have
+\[
+h_1(xy)=h_1(y)h_1(x)+\alpha(y)h_2(x),\qquad
+h_2(xy)=h_2(y)h_1(x)+\beta(y)h_2(x),
+\]
+so $W_h$ is invariant under right translations $R(y)$. Hence the components of $u(ay_2)$ and $u(by_2)$
+lie in $W_h$, and therefore the components of $v(y_2)$, namely $\alpha(y_2)$ and $\beta(y_2)$, also lie in $W_h$.
+This proves the lemma.
+\end{proof}
+
+Now, by Lemma~\ref{lem:alpha-beta-linear}, there exist constants $c_1,c_2,c_3,c_4\in F$ such that
+\[
+\alpha(y)=c_1 h_1(y)+c_2 h_2(y),\qquad
+\beta(y)=c_3 h_1(y)+c_4 h_2(y).
+\]
+Thus
+\[
+L(y)\big|_{J(V)} \;=\;
+\underbrace{\begin{pmatrix}1 & c_1\\[2pt] 0 & c_3\end{pmatrix}}_{=:N_1}\,h_1(y)
+\;+\;
+\underbrace{\begin{pmatrix}0 & c_2\\[2pt] 1 & c_4\end{pmatrix}}_{=:N_2}\,h_2(y).
+\]
+Finally, letting $C:J(V)\to V$ be the constant change-of-basis matrix sending $(Jf,Jg)$ to $(f,g)$, we obtain
+\[
+L(y)\big|_{V}
+= C\big(L(y)\big|_{J(V)}\big)C^{-1}
+= (C N_1 C^{-1})\,h_1(y) + (C N_2 C^{-1})\,h_2(y),
+\]
+which is precisely the affine-linear form \eqref{eq:LC-matrix-affine} with $M_1:=C N_1 C^{-1}$ and $M_2:=C N_2 C^{-1}$.
+
+\end{proof}
+
+
+\begin{remark}
+Theorem \ref{thm:AH-LC} is the cornerstone of our approach. It confirms that even in the anti-homomorphic case, the solution space possesses an invariant structure. The key difference is that the invariance is with respect to left translations $L(y)$, not right translations. This allows the matrix formalism to proceed.
+\end{remark}
+
+\section{The Generalized Sine Law with an Anti-Automorphism}\label{sec:AH44}
+We now apply Theorem \ref{thm:AH-LC} to the generalized sine addition/subtraction equation with a surjective anti-automorphism $\sigma$ where $\sigma^2=\mathrm{id}$:
+\begin{equation}\label{eq:gen-anti}
+f(x\sigma(y))=f(x)g(y)+\beta\,g(x)f(y)+\gamma\,f(x)f(y).
+\end{equation}
+We assume throughout that $\{f,g\}$ is linearly independent. The proof structure closely follows that of Stetk\ae r \cite{StetkaerSineLaw}, now justified by the left-invariant closure established in Theorem~\ref{thm:AH-LC}.
+
+A crucial consequence of the $L$-invariance of $V=\mathrm{span}\{f,g\}$ (Theorem~\ref{thm:AH-LC}) is that the solutions must also satisfy a simpler addition law for $f(xy)$ with a fixed bilinear structure. The following theorem states this law explicitly and details the corresponding transformation properties under~$\sigma$.
+
+\begin{theorem}\label{thm:AH44}
+Let $\sigma:S\to S$ be a surjective anti-automorphism with $\sigma^2=\mathrm{id}$.
+Suppose $f,g:S\to F$ are linearly independent and satisfy \eqref{eq:gen-anti}.
+
+\begin{enumerate}
+\item[(i)] If $\beta=-1$, then $\gamma=0$. Furthermore, there exists $a\in F$ such that
+\[
+f(xy)=f(x)g(y)+g(x)f(y)+a\,f(x)f(y),
+\]
+and the transformation laws hold:
+\[
+f\circ\sigma=-f,\qquad g\circ\sigma=g+af.
+\]
+\item[(ii)] If $\beta\neq -1,$ then necessarily $\beta=1$, and
+\[
+f(xy)=f(x)g(y)+g(x)f(y)+\gamma\,f(x)f(y),
+\]
+and the transformation laws hold:
+\[
+f\circ\sigma=f,\qquad g\circ\sigma=g.
+\]
+\end{enumerate}
+\end{theorem}
+
+
+
+\begin{proof}
+
+(i) \noindent\textbf{Case $\boldsymbol{\beta=-1}$.}
+By Theorem~\ref{thm:AH-LC} and \eqref{eq:LC-matrix-affine}, there exist $b,c\in F$ with
+\begin{equation}\label{eq:xy-beta-neg-1}
+    f(xy) = f(x)g(y) + b\,g(x)f(y) + c\,f(x)f(y).
+\end{equation}
+The original equation \eqref{eq:gen-anti} reads
+\begin{equation}\label{eq:original-beta-neg-1}
+    f(x\sigma(y)) = f(x)\big(g(y)+\gamma f(y)\big) - g(x)f(y).
+\end{equation}
+Replacing $y$ by $\sigma(y)$ in \eqref{eq:xy-beta-neg-1} gives
+\begin{equation}\label{eq:transformed-xy-law}
+    f(x\sigma(y)) = f(x)\big(g(\sigma(y))+c\,f(\sigma(y))\big) + b\,g(x)f(\sigma(y)).
+\end{equation}
+
+\begin{lemma}\label{lem:b-equals-one}
+From \eqref{eq:xy-beta-neg-1}--\eqref{eq:transformed-xy-law} one has $b^2=1$ and, moreover, $b=1$.
+\end{lemma}
+
+\begin{proof}
+Comparing the $g(x)$-coefficients in \eqref{eq:original-beta-neg-1} and \eqref{eq:transformed-xy-law} gives
+$-\,f(y)=b\,f(\sigma(y))$, hence $f\circ\sigma=-\tfrac{1}{b}f$. Applying $\sigma$ again and using $\sigma^2=\mathrm{id}$ yields $f=(1/b^2)f$. Since $f\not\equiv0$, we must have $b^2=1,$ which implies $b=1$ or $b=-1.$ 
+
+Assume $b=-1$. Then the transformation law for $f$ becomes $f\circ\sigma=f$ (i.e., $f$ is even). The addition law \eqref{eq:xy-beta-neg-1} becomes 
+\begin{equation}\label{eq:b-neg-1-law} 
+f(xy) = f(x)g(y) - g(x)f(y) + c\,f(x)f(y). 
+\end{equation} 
+This implies $f(xy)+f(yx)=2c\,f(x)f(y)$. The transformation law for $g$ is found by comparing the $f(x)$ coefficients: $g(y)+\gamma f(y) = g(\sigma(y)) + c f(\sigma(y))$. Since $f$ is even, this gives $g\circ\sigma = g + (\gamma-c)f$. Now, perform a consistency check on $f(\sigma(x)\sigma(y))$. On one hand, using the anti-homomorphism property and the fact that $f$ is even: 
+\[f(\sigma(x)\sigma(y)) = f(\sigma(yx)) = (f\circ\sigma)(yx) = f(yx).\] 
+Using \eqref{eq:b-neg-1-law}, this is $f(yx) = f(y)g(x)-g(y)f(x)+c\,f(y)f(x)$. On the other hand, using \eqref{eq:original-beta-neg-1} with $x \mapsto \sigma(x)$ and the derived transformation laws:
+ \begin{align*} 
+f(\sigma(x)\sigma(y)) &= f(\sigma(x))(g(y)+\gamma f(y)) - g(\sigma(x))f(y) \\ &= f(x)(g(y)+\gamma f(y)) - \big(g(x)+(\gamma-c)f(x)\big)f(y) \\ &= f(x)g(y) - g(x)f(y) + (c)f(x)f(y). 
+\end{align*} 
+Equating the two expressions for $f(\sigma(x)\sigma(y))$ yields: 
+\[f(y)g(x)-g(y)f(x)+c\,f(y)f(x) = f(x)g(y) - g(x)f(y) + c\,f(x)f(y).\] 
+This implies $2(f(y)g(x) - f(x)g(y)) = 0$. Since $\mathrm{char}(F)\neq 2$, this means $f(y)g(x) - f(x)g(y) = 0$ for all $x,y \in S$, which contradicts the assumption that $\{f,g\}$ are linearly independent. Therefore, the assumption $b=-1$ must be false. We conclude that $b=1$. 
+\end{proof}
+
+From Lemma~\ref{lem:b-equals-one} we have $f\circ\sigma=-f$. Comparing the $f(x)$-coefficients between \eqref{eq:original-beta-neg-1} and \eqref{eq:transformed-xy-law} yields
+\begin{equation}\label{eq:g-shift}
+    g(\sigma(y)) \;=\; g(y) \;+\; (\gamma+c)\,f(y)\qquad(\forall\,y).
+\end{equation}
+Computing $f(\sigma(x)\sigma(y))$ in two ways (using anti-homomorphism, \eqref{eq:xy-beta-neg-1}, $f\circ\sigma=-f$ vs.\ \eqref{eq:original-beta-neg-1} and \eqref{eq:g-shift}) gives $2\gamma=0$, hence $\gamma=0$ since $\mathrm{char}(F)\neq2$. Setting $a:=c$ completes (i).
+
+\medskip
+
+(ii) \noindent\textbf{Case $\boldsymbol{\beta\neq -1}$.}
+Define
+\[
+g_1:=g+\frac{\gamma}{1+\beta}\,f,
+\]
+so that \eqref{eq:gen-anti} becomes the two-term equation
+\begin{equation}\label{eq:two-term-beta-neq-1}
+    f(x\sigma(y)) = f(x)g_1(y) + \beta\,g_1(x)f(y).
+\end{equation}
+By Theorem~\ref{thm:AH-LC}, $V:=\mathrm{span}\{f,g_1\}$ is $L$-invariant; hence there exist constants $A,C\in F$ with
+\begin{equation}\label{eq:xy-symmetric-form-beta-neq-1}
+    f(xy) = A\big(f(x)g_1(y)+g_1(x)f(y)\big) + C\,f(x)f(y),
+\end{equation}
+and the term $g_1(x)g_1(y)$ does not occur. Indeed, writing $L(y)|_V=K_1 g_1(y)+K_2 f(y)$ with constant matrices and taking the first row gives initially a coefficient for $g_1(x)g_1(y)$; replacing $y\mapsto\sigma(y)$ in \eqref{eq:xy-symmetric-form-beta-neq-1} and comparing with \eqref{eq:two-term-beta-neq-1} forces that coefficient to vanish (Levi--Civita cross-symmetry).
+
+Replacing $y$ by $\sigma(y)$ in \eqref{eq:xy-symmetric-form-beta-neq-1} and comparing with \eqref{eq:two-term-beta-neq-1} yields
+\begin{align}
+    g_1(y) &= A\,g_1(\sigma(y)) + C\,f(\sigma(y)), \label{eq:coeff-fx-final}\\
+    \beta\,f(y) &= A\,f(\sigma(y)). \label{eq:coeff-g1x-final}
+\end{align}
+From \eqref{eq:coeff-g1x-final}, $f\circ\sigma = (\beta/A)f$. Applying $\sigma$ again gives $(\beta/A)^2=1$, hence
+\[
+A^2=\beta^2=1. 
+\]
+Using \eqref{eq:coeff-fx-final} with $y\mapsto\sigma(y)$ and eliminating $g_1(\sigma(y))$ shows $C(1+\beta)=0$, thus $C=0$ under the standing assumption $\beta\neq-1$.
+
+Therefore $A=\pm1$ and $C=0$. If $A=-1$, a consistency check via $f(\sigma(x)\sigma(y))$ (using \eqref{eq:two-term-beta-neq-1}) enforces $(1-\beta)g_1(x)f(y)=0$; by linear independence this implies $\beta=1$. Consequently, from $A^2=\beta^2=1$ and $\beta\neq-1,$ we deduce $\beta=1$. 
+
+\medskip
+
+With $\beta=1,$ we may normalize (simultaneously change sign of $(f,g_1)$) to take $A=1$, and \eqref{eq:coeff-g1x-final}--\eqref{eq:coeff-fx-final} yield
+\[
+f\circ\sigma=f,\qquad g_1\circ\sigma=g_1.
+\]
+The law \eqref{eq:xy-symmetric-form-beta-neq-1} becomes $f(xy)=f(x)g_1(y)+g_1(x)f(y)$. We now substitute $g_1=g+\frac{\gamma}{1+\beta}f=g+\frac{\gamma}{2}f$:
+\[
+\begin{aligned}
+f(xy)
+&= f(x)\Big(g(y)+\tfrac{\gamma}{2}f(y)\Big)
+   + \Big(g(x)+\tfrac{\gamma}{2}f(x)\Big)f(y)\\
+&= f(x)g(y)+g(x)f(y)
+   + \tfrac{\gamma}{2}f(x)f(y)+\tfrac{\gamma}{2}f(x)f(y)\\
+&= f(x)g(y)+g(x)f(y)+\gamma\,f(x)f(y).
+\end{aligned}
+\]
+Moreover, from $g_1\circ\sigma=g_1$ and $f\circ\sigma=f$ we get
+\[
+g+\tfrac{\gamma}{2}f = g_1 = g_1\circ\sigma = (g+\tfrac{\gamma}{2}f)\circ \sigma =  g\circ\sigma+\tfrac{\gamma}{2}(f\circ\sigma)
+= g\circ\sigma+\tfrac{\gamma}{2}f;
+\]
+hence $g\circ\sigma=g$. Altogether,
+\[
+f(xy)=f(x)g(y)+g(x)f(y)+\gamma\,f(x)f(y),\qquad
+f\circ\sigma=f,\qquad g\circ\sigma=g.
+\]
+This proves (ii) and, together with the deduction $A^2=\beta^2=1$, establishes the dichotomy $\beta\in\{\pm1\}$.
+\end{proof}
+
+
+\section{Examples: Concrete Illustrations of the Conjugation Identity}\label{sec:examples}
+
+In all examples below, $J$ denotes composition with $\sigma$, i.e.\ $(Jh)(x)=h(\sigma(x))$, and we verify directly the conjugation identity of Lemma~\ref{lem:conj}:
+\[
+J\,R(\sigma(y))\,J \;=\; L(y)\qquad(\forall\,y\in S).
+\]
+Beyond the pointwise verification, we also exhibit natural finite-dimensional subspaces that are invariant under $L(y)$ and write the corresponding matrix action explicitly; this realizes in concrete settings the affine-linear structure promised by~\eqref{eq:LC-matrix-affine}.
+
+\subsection{Example 1: The general linear group $GL_n(F)$ with $\sigma(A)=A^{\top}$ and matrix coefficients}
+Let $S=GL_n(F)$ and let $\sigma(A)=A^{\top}$. Then $\sigma$ is an involutive anti-automorphism since $(AB)^{\top}=B^{\top}A^{\top}$ and $(A^{\top})^{\top}=A$. Fix a vector $v\in F^n$ and, for each $i\in\{1,\dots,n\}$, define
+\[
+f_i(A):=e_i^{\top}A\,v=(Av)_i,\qquad A\in GL_n(F),
+\]
+where $(e_1,\dots,e_n)$ is the standard basis of $F^n$. Put $V:=\mathrm{span}\{f_1,\dots,f_n\}$.
+
+\medskip\noindent\emph{Verification of $J R(\sigma(y)) J=L(y)$.}
+Here $(Jf_i)(A)=f_i(A^{\top})=e_i^{\top}A^{\top}v=v^{\top}A e_i$. For $y\in GL_n(F)$,
+\begin{align*}
+\big(JR(\sigma(y))J f_i\big)(X)
+&= \big(R(\sigma(y))Jf_{i}\big)(\sigma(X)) && \text{(since } J(h)(x) = h(\sigma(x))\text{)} \\
+&= \big(R(y^{\top})Jf_{i}\big)(X^{\top}) && \text{(since } \sigma(A) = A^{\top}\text{)} \\
+&= (Jf_{i})(X^{\top} y^{\top}) && \text{(since } R(y)h(x) = h(xy)\text{)} \\
+&= e_{i}^{\top} (X^{\top} y^{\top})^{\top} v && \text{(since } (Jf_i)(A) = f_i(A^\top) = e_i^\top A^\top v\text{)} \\
+&= e_{i}^{\top} \big( (y^{\top})^{\top} (X^{\top})^{\top} \big) v && \\
+&= e_{i}^{\top} (y X) v &&  \\
+&= f_i(yX) && \text{(since } f_i(A) = e_i^\top A v\text{)} \\
+&= (L(y)f_i)(X) && \text{(since } L(y)h(x) = h(yx).\text{)}
+\end{align*}
+Hence $J R(\sigma(y))J=L(y)$ on $V$ (indeed on all $F(S,F)$).
+
+\medskip\noindent\emph{Matrix action on $V$.}
+Since $(L(y)f_i)(X)=(yXv)_i=\sum_{j=1}^n y_{ij}(Xv)_j=\sum_{j=1}^n y_{ij}f_j(X)$, we have
+\[
+L(y)\big|_V \;=\; \big(y_{ij}\big)_{1\le i,j\le n}.
+\]
+Thus $V$ is $L$-invariant and the left-translation by $y$ acts on $V$ via the concrete matrix $y$ (this is a direct, hands-on instance of the matrix representation anticipated by~\eqref{eq:LC-matrix-affine}).
+
+\subsection{Example 2: The symmetric group $S_n$ with $\sigma(\pi)=\pi^{-1}$}
+Let $S=S_n$ and $\sigma(\pi)=\pi^{-1}$, an involutive anti-automorphism. Fix $j_0\in\{1,\dots,n\}$. For each $i\in\{1,\dots,n\}$ define the indicator function
+\[
+f_i(\pi):=\mathbf{1}_{\{\pi(j_0)=i\}},\qquad \pi\in S_n,
+\]
+and set $V:=\mathrm{span}\{f_1,\dots,f_n\}$.
+
+\medskip\noindent\emph{Verification of $J R(\sigma(y)) J=L(y)$.}
+Here $(Jf_i)(\pi)=f_i(\pi^{-1})=\mathbf{1}_{\{\pi^{-1}(j_0)=i\}}=\mathbf{1}_{\{\pi(i)=j_0\}}$. For $y\in S_n$,
+\begin{align*}
+\big(JR(\sigma(y))J f_i\big)(x)
+&= \big(R(\sigma(y))Jf_{i}\big)(\sigma(x)) && \text{(since} J(h)(x) = h(\sigma(x))\text{)} \\
+&= \big(R(y^{-1})Jf_{i}\big)(x^{-1}) && \text{(since } \sigma(\pi) = \pi^{-1} \text{)} \\
+&= (Jf_{i})(x^{-1} y^{-1}) && \text{(since } R(y)h(x) = h(xy)\text{)} \\
+&= (Jf_{i})\big( (yx)^{-1} \big) && \text{(since } (yx)^{-1} = x^{-1}y^{-1} \text{)} \\
+&= f_i\big( ((yx)^{-1})^{-1} \big) && \text{(since } (Jf_i)(\pi) = f_i(\pi^{-1}) \text{)} \\
+&= f_i(yx) && \text{(since } (\pi^{-1})^{-1} = \pi \text{)} \\
+&= (L(y)f_i)(x) && \text{(since } L(y)f_i(x) = f_i(yx) \text{)}
+\end{align*}
+Thus Lemma~\ref{lem:conj} holds pointwise on $V$.
+
+\medskip\noindent\emph{Matrix action on $V$.}
+We compute
+\[
+(L(y)f_i)(x)=\mathbf{1}_{\{(yx)(j_0)=i\}}
+=\mathbf{1}_{\{x(j_0)=y^{-1}(i)\}}
+=f_{\,y^{-1}(i)}(x).
+\]
+Therefore $L(y)\big|_V$ is the permutation matrix corresponding to $y^{-1}$ acting on the index set $\{1,\dots,n\}$. In particular, $V$ is $L$-invariant and the left action is completely explicit (again consonant with~\eqref{eq:LC-matrix-affine}).
+
+\subsection{Example 3: The special orthogonal group $SO(3)$ with $\sigma(g)=g^{-1}=g^{\top}$ and column functions}
+Let $S=SO(3)$ and $\sigma(g)=g^{-1}=g^{\top}$, an involutive anti-automorphism. Write $g=(g_{ij})_{1\le i,j\le 3}$. Fix the first column and define
+\[
+f_1(g):=g_{11},\qquad f_2(g):=g_{21},\qquad f_3(g):=g_{31},\qquad V:=\mathrm{span}\{f_1,f_2,f_3\}.
+\]
+
+\medskip\noindent\emph{Verification of $J R(\sigma(y)) J=L(y)$.}
+We have $(Jf_i)(X)=f_i(X^{\top})=X_{1i}$. Then, for $y\in SO(3)$,
+\begin{align*}
+\big(JR(\sigma(y))J f_i\big)(x)
+&= \big(R(\sigma(y))Jf_{i}\big)(\sigma(x)) && \text{(since } J(h)(x) = h(\sigma(x))\text{)} \\
+&= \big(R(y^{\top})Jf_{i}\big)(x^{\top}) && \text{(since } \sigma(g) = g^\top \text{ )} \\
+&= (Jf_{i})(x^{\top} y^{\top}) && \text{(since } R(y)h(x) = h(xy)\text{)} \\
+&= f_i\big( \sigma(x^{\top} y^{\top}) \big) && \text{(since} (Jf_i)(A) = f_i(\sigma(A))\text{)} \\
+&= f_i\big( (x^{\top} y^{\top})^\top \big) && \text{(since } \sigma(g) = g^\top \text{)} \\
+&= f_i(y x) &&  \\
+&= (L(y)f_i)(x) && \text{(since } L(y)f_i(x) = f_i(yx)=(yx)_{i1}=\sum_j y_{ij} x_{j1}. \text{ )}
+\end{align*}
+\medskip\noindent\emph{Matrix action on $V$.}
+From the final expression above,
+\[
+L(y)\big|_V
+=
+\begin{pmatrix}
+y_{11} & y_{12} & y_{13}\\
+y_{21} & y_{22} & y_{23}\\
+y_{31} & y_{32} & y_{33}
+\end{pmatrix}
+= y.
+\]
+Thus the left translation by $y$ acts on the three-dimensional space spanned by the first column functions precisely by the matrix $y$ itself, providing a clean, finite-dimensional model of the left-regular action in accordance with~\eqref{eq:LC-matrix-affine}.
+
+\medskip
+
+\begin{remark}[Linear independence in Examples 1, 2 and 3]\label{rmk:LI-examples}
+In each example the spanning family used to define $V$ is linearly independent; here are short, self-contained justifications.
+
+\smallskip
+\noindent\textbf{Example 1 ($GL_n(F)$, $\sigma(A)=A^\top$).}
+Assume $v\neq 0$.
+Suppose $\sum_{i=1}^n c_i f_i\equiv 0$ with $f_i(A)=e_i^\top A v$.
+Then for every $A\in GL_n(F)$,
+\[
+0=\sum_{i=1}^n c_i f_i(A) = \Big(\sum_{i=1}^n c_i e_i^\top\Big) A v = c^\top (A v),
+\]
+where $c=(c_1,\dots,c_n)^\top$.
+Given any $w\in F^n$, there exists $A\in GL_n(F)$ with $A v = w$; hence $c^\top w=0$ for all $w$, so $c=0$.
+Thus $\{f_1,\dots,f_n\}$ is linearly independent and $V=\mathrm{span}\{f_1,\dots,f_n\}$ has dimension $n$.
+
+\smallskip
+\noindent\textbf{Example 2 ($S_n$, $\sigma(\pi)=\pi^{-1}$).}
+Let $f_i(\pi)=\mathbf{1}_{\{\pi(j_0)=i\}}$.
+If $\sum_{i=1}^n c_i f_i\equiv 0$, then for each $k$ choose $\pi\in S_n$ with $\pi(j_0)=k$.
+Evaluating gives $0=\sum_i c_i f_i(\pi)=c_k$, hence all $c_k=0$.
+Therefore $\{f_1,\dots,f_n\}$ is linearly independent.
+
+\smallskip
+\noindent\textbf{Example 3 ($SO(3)$, $\sigma(g)=g^{-1}=g^\top$).}
+Here $f_1(g)=g_{11}$, $f_2(g)=g_{21}$, $f_3(g)=g_{31}$.
+If $c_1 f_1+c_2 f_2+c_3 f_3\equiv 0$, evaluate at the identity $I$ (whose first column is $e_1$) to get $c_1=0$.
+Let $R_2,R_3\in SO(3)$ be rotations sending $e_1$ to $e_2$ and $e_3$, respectively; then the first columns of $R_2,R_3$ are $e_2,e_3$, so evaluating yields $c_2=c_3=0$.
+Hence $\{f_1,f_2,f_3\}$ is linearly independent.
+\end{remark}
+
+The examples above show concretely how the conjugation identity of Lemma~\ref{lem:conj} converts the ill-behaved right action $R(\sigma(y))$ (when $\sigma$ is anti-automorphic) into the well-behaved left action $L(y)$, and how natural finite-dimensional subspaces inherit explicit matrix representations of $L(y)$, as required by the Levi--Civita matrix method leading to~\eqref{eq:LC-matrix-affine}.
+
+
+\section{Concluding Remarks}\label{sec:conclusions}
+
+The conjugation identity $J R(\sigma(y)) J = L(y)$ furnishes the key link needed to recover a matrix-invariance framework in the presence of an involutive anti-automorphism. It shows that the essential input is the existence of a (anti-)representation of the semigroup on the solution space.
+
+With Theorems \ref{thm:AH-LC} and \ref{thm:AH44} established, the standard structural analysis for these functional equations extends to the anti-homomorphic setting. In particular, the symmetry of the resulting $xy$-law in Theorem~\ref{thm:AH44} implies that the component $f$ is central. Therefore, $f$ is abelian, a non-trivial structural property. All consequences related to finite-order properties of $\sigma$ (e.g., $f\circ\sigma^m = \beta^m f$) also carry over directly. This work thus completes a significant piece of the puzzle in the theory of trigonometric functional equations on semigroups.
+
+
+\medskip
+
+\subsection*{Funding.}
+
+This research did not receive any specific grant from funding agencies in the public, commercial, or not-for-profit sectors.
+
+%\subsection*{CRediT authorship contribution statement}
+
+%\DD\d{\u a}ng V\~o Ph\'uc: Writing -- original  draft
+
+\subsection*{Declaration of Competing Interest}
+
+None.
+
+\subsection*{Data Availability}
+
+None.
+
+\bibliographystyle{plain}
+\begin{thebibliography}{1}
+
+%\bibitem{StetkaerBook}
+%H. Stetk\ae r, \textit{Functional Equations on Groups}, World Scientific, 2013, DOI: \url{https://doi.org/10.1142/8830}.
+
+\bibitem{StetkaerSineLaw}
+H. Stetk\ae r,
+\newblock On a sine addition/subtraction law on semigroups,
+\newblock {\em Aequat. Math.} (2025), DOI: \url{https://doi.org/10.1007/s00010-025-01179-0}.
+
+\bibitem{StetkaerCentrality}
+H. Stetk\ae r,
+\newblock On centrality of solutions of generalized addition and subtraction laws,
+\newblock {\em Aequat. Math.} (2025), DOI: \url{https://doi.org/10.1007/s00010-025-01226-w}.
+
+\end{thebibliography}
+
+\end{document} 

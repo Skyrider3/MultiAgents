@@ -1,0 +1,55 @@
+\label{SEC:Preliminaries}
+
+\subsection{Notations}
+
+\paragraph{Linear algebra.} A symmetric matrix $M \in \R^{N \times N}$ is positive (semi)definite if all of its eigenvalues are greater than (or equal to) $0$.
+For a positive semidefinite matrix, we denote its smallest eigenvalue by~$\lambda_{\min}(M)$, and its smallest \emph{nonzero} eigenvalue by~$\lambda_{\min}^+(M)$.
+For a subspace $\mV \subseteq \R^N$, and a vector $x \in \R^N$, we write $x_\mV \in \mV$ for the projection of $x$ onto $\mV$.
+For a subset $S \subseteq \R^N$, we define the affine hull $\aff(S)$ of $S$ as the set of all affine combinations of elements of $S$, i.e., of points $\sum_{i=1}^k \alpha_i x^i$ where $k \geq 1$, $x^i \in S$ for all $1 \leq i \leq k$ and $\sum_{i=1}^k \alpha_i = 1$. We call points $x^1, \ldots, x^k \in \R^N$ affinely independent if no point is an affine combination of the other points.
+
+\paragraph{Smooth (convex) functions.}
+For a sufficiently smooth $\varphi : \R^n \to \R$, 
+we write $\nabla \varphi = (\partial \varphi / \partial x_i)_{1 \leq i \leq n}$ for its gradient, and $\nabla^2 \varphi = \big(\partial^2 \varphi / \partial x_i \partial x_j\big)_{1 \leq i, j \leq n}$ for its Hessian. For a vector $v \in \R^n$, we write ${\mynabla{v} \varphi(x) = \langle v, \nabla \varphi(x) \rangle}$ for the \emph{unnormalized} directional derivative. 
+For $c \in \R$, we write $\varphi \equiv c$ if~$\varphi(x) = c$ for all $x \in \R^n$. 
+We say $v \in \R^n$ is a \emph{direction of linearity} of $\varphi$ if $\mynabla{v} \varphi \equiv c$ for some $c \in \R$, i.e., the directional derivative is constant. 
+For $\mu > 0$, we say that $\varphi$ is $\mu$-\emph{strongly convex} if $x \mapsto \varphi(x) - (\mu / 2) \cdot \|x\|^2$ is convex, or equivalently if $\lambda_{\min} \big(\nabla^2 \varphi(x)\big) \geq \mu$ for all $x \in \R^n$. If there exists any such $\mu > 0$, we say~$\varphi$ is strongly convex.
+
+
+\paragraph{Polynomials.} We write $\R[x]$ (resp. $\Q[x]$) for the space of real (resp. rational) polynomials in~$n$ variables $x = (x_1, x_2, \ldots, x_n)$, with
+(monomial) basis $\{ x^\alpha : \alpha \in \N^n\}$. For $p(x) = \sum_{\alpha} p_\alpha x^\alpha$, we write $\supp{p} \subseteq \N^n$ for the set of~$\alpha$ with $p_\alpha \neq 0$. 
+We write $h_p(x) \coloneqq \det \big( \nabla^2 p(x) \big)$ for the Hessian determinant (or hessian) of $p$, which is itself a polynomial of degree at most $n \cdot \mathrm{deg}(p)$.
+
+
+\paragraph{Bit length.} The bit length $\bc(k)$ of an integer $k$ is $\max \{1, \lceil \log_2 |k| \rceil \}$, which is the smallest natural number such that $|k| \leq 2^{\bc(k)}$. 
+The bit length of a maximally simplified fraction $r = p/q \in \Q$ is $\bc(p) + \bc(q)$. The bit length of a rational vector or matrix is the sum of the bit lengths of its entries. 
+The bit length of a rational polynomial $f \in \Q[x]$ is the sum of the bit lengths of its (nonzero) coefficients in the monomial basis. We write $\enc{f} = \Theta(n + 
+\mathrm{deg}(f) + \bc(f))$ for the total encoding length of $f$. For a convex polyhedron $P = \{Ax \leq b\}$ given by a matrix $A \in \Q^{m \times n}$ and vector~${b \in \Q^m}$, we similarly write $\enc{P} = \bc(A) + \bc(b)$.
+When $P = \R^n$, we assume that $\enc{P} \geq n$.
+
+
+\subsection{The ellipsoid method}
+We need the following two statements about the ellipsoid method.
+\begin{proposition}[{\cite[Theorem 14.1]{Schrijver1994}}]\label{PROP:solvelinearprogram}
+    Let $A \in \Q^{M \times N}$ and $b \in \Q^M$. Consider the linear program $P = \{Ax \leq b\}$.
+    In polynomial time in $\enc{P}$ we can check whether the program is feasible and if so, compute a feasible solution.
+    In particular, this feasible solution has bit size polynomial in $\enc{P}$.
+\end{proposition}
+\begin{restatable}{proposition}{PROPapplicationellipsoid}\label{PROP:applicationellipsoid}
+    Let $R > 0$, $\varepsilon > 0$.
+    Let $f \in \Q[x]$ be a polynomial.
+    Let $P = \{Ax \leq b\}$ be a (nonempty) polyhedron.
+    Then, there exists an algorithm that outputs $\Tilde{x} \in P$ such that $f(\Tilde{x}) \leq \min_{x \in P \cap B_R(0)} f(x) + \varepsilon$ in time $\poly(\enc{f},\, \enc{P},\, \log(R),\, \log(1/\varepsilon))$.
+\end{restatable}
+
+All the ideas needed to prove \Cref{PROP:applicationellipsoid} are standard results about the ellipsoid method.
+Similar statements can for example be found in \cite{Schrijver1994, GrötschelLovaszSchrijver:ellipsoid, Vishnoi:convexoptimization}.
+However, as we were unable to find the exact statement needed for our application (i.e., \Cref{PROP:applicationellipsoid}) we include a proof of this statement in \Cref{APP:Ellipsoid} for completeness.
+Our proof mainly relies on the following standard results about the ellipsoid method:
+\begin{itemize}
+    \item It is known how to get \Cref{PROP:applicationellipsoid} if $P$ is full-dimensional and in a real model of computation where we are allowed to take square roots (see e.g. \cite[Chapter 13]{Vishnoi:convexoptimization}).
+    \item The ellipsoid method can be implemented in the bit model (see e.g. \cite[Chapter 3]{GrötschelLovaszSchrijver:ellipsoid}).
+    \item One can, again using the ellipsoid method, find the affine hull of $P$, which allows us to reduce to the full-dimensional case (see e.g. \cite[Chapters 5 and 6]{GrötschelLovaszSchrijver:ellipsoid}).
+\end{itemize}
+In \Cref{APP:Ellipsoid} we combine these ideas and give a complete proof of \Cref{PROP:applicationellipsoid} (in the bit model).
+The main idea is to first find the affine hull of $P$, 
+then project to this affine hull (which does increase the bit complexity by at most a polynomial factor) and finally apply the ellipsoid method on the projected polyhedron, which is now full-dimensional.

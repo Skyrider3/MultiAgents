@@ -1,0 +1,232 @@
+\ifdefined\isMainDocument
+\else
+    \documentclass[10pt,oneside,reqno]{amsart}
+    \usepackage{xr}
+    \externaldocument{../main} % Main の .aux を参照
+    \input{../preamble}
+    \begin{document}
+\fi
+
+\setcounter{section}{1}
+\section{Algebraic setup}\label{section:setup}
+
+This section treats algebraic notation and recalls the duality theory for noncommutative formal power series, together with Hoffman's shuffle and harmonic framework.
+Let $\cat{Set}$ be the category of sets, $\Qalg$ the category of unital, commutative, and associative $\mathbb{Q}$-algebras,  and $\cat{Grp}$ the category of groups.
+Let $\Lalg$ be the category of Lie algebras, which does not fix the coefficient ring.
+
+Throughout this paper, let $R \in \Qalg$.
+
+\nsubsection{Notation of affine group schemes}
+
+In this subsection, let us recall affine schemes. 
+We refer to  \cite{Demazure-Gabriel}, \cite{Milne}, and \cite{Waterhouse} for the notions of affine group schemes.
+An affine scheme over $\mathbb{Q}$ is a functor $X:\Qalg\to\Set$ that is naturally isomorphic to a representable functor.
+An affine group scheme is an affine scheme whose value of $R \in \Qalg$ possesses a group structure.
+For an affine scheme $F$, its coordinate ring $\mathcal{O}(F)$ is defined as the $\mathbb{Q}$-algebra representing a functor naturally isomorphic to $F$.
+
+
+Let $F_1$ and $F_2$ be affine schemes.
+A morphism between affine schemes $\tau : F_1 \rightarrow F_2$ is a natural transformation $(\tau^R: F_1(R) \rightarrow F_2(R))_{R\in \Qalg}$.
+We say that $F_1$ is a closed affine subscheme of $F_2$ if there exists a surjective $\Q$-algebra morphism $\mathcal{O}(F_2) \twoheadrightarrow \mathcal{O}(F_1)$.
+By Yoneda's lemma, this definition is equivalent to the existence of a natural transformation $(\tau^R: F_1(R) \rightarrow F_2(R))_{R\in \Qalg}$ such that $\tau^R$ is injective for each $R\in \Qalg$.
+%Let $X$ be an affine scheme that contains $F_1$ and $F_2$ as closed affine subschemes.
+%Then we define an intersection $F_1 \cap_{X} F_2$ of $F_1$ and $F_2$ relative to $X$ as the fibre product $F_1 \times_X F_2$.
+%When $X$ is clear, we simply write $F_1\cap F_2$ for $F_1\cap _X F_2$,
+
+For a $\Q$-linear space $V$, by $V_{\ide{a}}$, we denotes a functor $\Qalg \rightarrow \Set ; R \mapsto R \otimes V$.
+Abusing the notation, if $V$ is the inverse limit $\varprojlim_{n}  V_n$, we define a functor $V_{\ide{a}} := \Qalg \rightarrow \Set ;  R \mapsto  \varprojlim R \otimes V_n (= R\cotimes V)$, where the completed tensor product is taken with respect to the inverse system on $V$.
+
+In general, for an affine group scheme $G$, there uniquely exists the Lie algebra $\ide{g}$ defined by
+\[
+\ide{g} := \ker (G(\Q[\varepsilon])\rightarrow G(\Q)).
+\]
+
+Here, $\varepsilon$ is a parameter satisfying $\varepsilon^2 = 0$ and the above map $\Q[\varepsilon] \rightarrow \Q$ is given by $ a+ \varepsilon b \mapsto a$ for $a$, $b \in \mathbb{Q}$.
+%There is no established method for explicitly describing the Lie bracket of $g(R)$. 
+%However, in most cases, the Lie bracket is determined by the representation of the Lie algebra induced by the representation of the affine group scheme.
+We call $\ide{g}$ a corresponding Lie algebra of the affine group scheme $G$.
+%For example, for $\Q$-linear space $V$, a functor $\GL(V) : R \rightarrow R\otimes \GL(R\otimes V)$ forms an affine group schemes and its correspoinding Lie algebra is $\ide{gl}(V) : R \rightarrow R\otimes \mathrm{End}(R\otimes V)$.
+
+\nsubsection{(Pro)unipotent affine group schemes}
+
+Let $G$ be an affine group scheme. 
+We say that $G$ is unipotent if there exists a faithful linear representation $\rho : G\rightarrow \GL(V)$ on some $\mathbb{Q}$-linear space $V$ such that the following holds:
+\begin{itemize}
+\item V contains a finite flag $V = V_0 \supset V_1\supset \cdots \supset V_n = \{0\}$,
+\item For $\mathbb{Q}$-algebra $R$, $\rho^R(G(R))(R \otimes V_i) \subset R \otimes V_i$, and
+\item For $\mathbb{Q}$-algebra $R$, the action of $G(R)$ on $R \otimes (V_i/V_{i+1})$ is trivial.
+\end{itemize}
+An affine group scheme $G$ is prounipotent if $G$ is an inverse limit of some unipotent affine group schemes.
+
+
+\begin{comment}
+Let $\ide{g}$ be the corresponding Lie algebra of (pro)unipotent affine group scheme $G$ and $(V,\rho_V)$ be a (finite) dimensional representation of $G$.
+This representation defines a representation of the Lie algebra $d\rho_V : \ide{g} \rightarrow \ide{gl}(V)$.
+
+\begin{prop}[{\ref{enumi:unipotent-2} = \cite[IV, Section 2, no 4]{Demazure-Gabriel}}]\label{prop:unipotent}
+\begin{enumerate}
+\item\label{enumi:unipotent-0}
+Let $G$ be an affine group scheme and let $\ide{g}$ be a corresponding Lie algebra. 
+Then, for $x \in \ide{g}(R)$, there uniquely exists $\exp(tx) \in G(R[[t]])$ such that $\exp(tx)$ satisfies some properties.
+\item\label{enumi:unipotent-1}
+For a representation $(V, \rho_V)$ of (pro)unipotent group $G$ on some $\Q$-linear space $V$, there exists a natural isomorphism $\exp^G := (\ide{g}(R) \rightarrow G(R))_{R \in \Qalg}$ such that the following diagram
+\[
+\xymatrix{
+G \ar[r]^{\rho_V} & \GL(V) \\
+\ide{g} \ar[u]^{\exp^G} \ar[r]_{d\rho_V} &\ide{gl}(V) \ar[u]_{\exp}
+}
+\]
+commutes. Here $\exp : \ide{gl}(V) \rightarrow \GL(V)$ on the right vertical line above is the usual exponential map.
+\item\label{enumi:unipotent-2} If $G$ is a prounipotent group and $\ide{h}$ is a closed Lie subalgebra of the corresponding Lie algebra $\ide{g}$ of $G$, then, $\exp(\ide{h})$ is a closed prounipotent affine group subscheme of $G$.
+\end{enumerate}
+\end{prop}
+\end{comment}
+ 
+\nsubsection{Shuffle algebra and harmonic product algebra}
+
+In \cite{Hoffman}, Hoffman introduced certain commutative $\mathbb{Q}$-algebras for studying MZVs.
+In this subsection, we present two types of such $\Q$-algebras.
+
+First, we describe the shuffle product on $\ide{h}$ or on $\Q$-subspaces of $\ide{h}$.
+We define two $\mathbb{Q}$-subspaces $\ide{h}^0$ and $\ide{h}^1$ of $\ide{h}$ by
+\[
+\ide{h}^1:= \mathbb{Q} + \bigoplus_{\substack{w\in x_{1}X^*}} \mathbb{Q} w
+\supset
+\ide{h}^0 := \mathbb{Q} +  \bigoplus_{\substack{w\in x_{1}X^*\\  w\notin X^*x_1 }} \mathbb{Q} w.
+%\ide{h}^0 := \ide{h}^1x_{\mu}\ide{h}^0:= \Span_{\mathbb{Q}}\left\{ w\in X\cap \ide{h}^1 \middle| w\notin X x_1 \right \}.
+\]
+
+We define the shuffle product $\shuffle$ on $\ide{h}$ bilinearly and recursively by $1\shuffle w = w \shuffle 1 = w$ and 
+\begin{align*}
+l_1w_1\shuffle l_2w_2 =& l_1(w_1\shuffle l_2w_2) + l_2(l_1w_1 \shuffle w_2 )
+\end{align*}
+for $l_1$, $l_2\in X$ and $w$, $w_1$, $w_2\in X^*$.
+A pair $(\ide{h}, \shuffle)$ forms the unital, commutative and associative $\mathbb{Q}$-algebra and we denote it by $\ide{h}^{\shuffle}$.
+Then, $\ide{h}^1$ and $\ide{h}^0$ are also closed under $\shuffle$ and become $\mathbb{Q}$-subalgebras of $\ide{h}^{\shuffle}$.
+We respectively denote them by $\ide{h}^{1,\shuffle}$ and $\ide{h}^{0,\shuffle}$.
+\begin{rmk}{}{}
+By the weights on $\ide{h}$, $\ide{h}^{\shuffle}$ constitute the graded $\mathbb{Q}$-algebra with respect to the shuffle product.
+\end{rmk}
+
+
+Let $Y := \{y_{n}\}_{\substack{n\ge 1}}$ be a set of letters and $Y^*$ be the free monoid generated by $Y$.
+By abuse of notation, we also use $1$ to denote the empty word on $Y$. Let $\Q\langle Y \rangle$ be the free associative $\Q$-algebra generated by $Y$.
+We define the $\Q$-subspace $\Q\langle Y \rangle^0$ of $\Q\langle Y \rangle$ by $\Q\langle Y \rangle^0 := \displaystyle \mathbb{Q} + \bigoplus_{\substack{k\in\mathbb{Z}_{>1}\\  w\in Y^*}} \Q wy_{k}$.
+
+
+We define the $\mathbb{Q}$-bilinear binary operation $*$, called the harmonic product on $\Q\langle Y \rangle$ inductively by $1 * w = w * 1 = w$ and
+\begin{align*}
+y_{k_1}w_1 * y_{k_2}w_2 :=& y_{k_1}(w_1 * y_{k_2} w_2) + y_{k_2}(y_{k_1}w_1 * w_2) + y_{k_1 + k_2}(w_1*w_2)
+\end{align*}
+for letters $y_{k_1}$, $y_{k_2} \in Y$ and words $w$, $w_1$ and $w_2\in Y^*$.
+
+The pair $(\Q\langle Y \rangle, *)$ constitutes an unital, commutative, and associative $\mathbb{Q}$-algebra, which we denote by $\Q\langle Y \rangle^{*}$.
+We note that $\Q\langle Y \rangle^0$ is also closed under $*$. Therefore, $\Q\langle Y \rangle^0$ constitutes a $\mathbb{Q}$-algebra with respect to $*$ and we denote it by $\Q\langle Y \rangle^{0,*}$.
+\begin{rmk}{}{}
+We define the weight of $\Q\langle Y \rangle$ by $\wt y_k = k$ for $k\in\mathbb{Z}_{>0}$,
+which is preserved under the following natural $\Q$-linear map:
+\[
+\mathbf{p} : \Q\langle Y \rangle \rightarrow \ide{h} ; y_{k_1}\cdots y_{k_r} \mapsto x_1x_0^{k_1-1}\cdots x_1x_0^{k_r-1}.
+\]
+Thus, $\Q\langle Y \rangle$ constitutes a graded $\mathbb{Q}$-algebra with respect to the concatenation product and the harmonic product, respectively.
+\end{rmk}
+
+Before we finish this subsection, we define the $\mathbb{Q}$-linear map by
+\begin{align*}
+\mathbf{q} : \ide{h} \rightarrow \Q\langle Y \rangle ;& \mathbf{q}(x_0^{k_0-1}x_1x_0^{k_1-1}x_1\cdots x_1x_0^{k_{r}-1}) = 
+\begin{cases}
+y_{k_1}\cdots y_{k_r} & k_{0} = 1,\\
+0& \text{otherwise.}
+\end{cases}
+\end{align*}
+Then, $\mathbf{q}$ is the left inverse of $\mathbf{p}$.
+
+\nsubsection{Duals of $\ide{h}^{\shuffle}$ and $\Q\langle Y \rangle^*$}
+This subsection discusses the dual of $\ide{h}^{\shuffle}$ and $\Q\langle Y \rangle^*$. Recall $\ide{h}^{\vee} = \Q\langle \langle X \rangle\rangle$.
+We write $\Phi$ as
+\[
+\Phi = \sum_{w\in X^*} \langle \Phi \mid w \rangle w = \langle \Phi \mid 1 \rangle + \langle \Phi \mid x_0 \rangle x_0 + \langle \Phi \mid x_1 \rangle x_1 + \cdots \hspace{0.5cm}( \langle \Phi \mid w \rangle \in \mathbb{Q}),
+\]
+where $\langle \Phi \mid w \rangle$ is the coefficient of $w\in X^*$ in $\Phi$.
+This notation induces a $\mathbb{Q}$-bilinear map $\langle \mathchar`- | \mathchar`-\rangle : \ide{h}^{\vee} \cotimes \ide{h} \rightarrow \mathbb{Q} \hspace{0.2cm} ; \hspace{0.2cm}  \Phi \otimes w \mapsto \langle \Phi \mid w \rangle$.
+We define the shuffle coproduct $\Delta_{\shuffle} : \ide{h}^{\vee} \rightarrow  \ide{h}^{\vee} \cotimes \ide{h}^{\vee}$ by
+\[
+\Delta_{\shuffle}(\Phi) := \sum_{u,v\in X} \langle \Phi \mid u\shuffle v \rangle u\otimes v. 
+\]
+Then, $\Delta_{\shuffle}$ is a continuous algebra homomorphism and satisfies $\Delta_{\shuffle}(x_i) = x_i \otimes 1 + 1\otimes x_i$.
+Let $S_X^{\vee} : \ide{h}^{\vee}\rightarrow \ide{h}^{\vee}$ be the anti-automorphism of $\ide{h}^{\vee}$ defined by $x_i \mapsto -x_i$ ($i = 0$, $1$).
+Then, the tuple $(\ide{h}^{\vee}, \cdot, \Delta_{\shuffle},S^{\vee}_X)$ is a completed Hopf algebra that is topologically dual to $\ide{h}^{\shuffle}$.
+One notes that $\ide{h}^{\vee}$ can be regarded as an affine scheme, i.e., for a $\mathbb{Q}$-algebra $R$, we obtain the natural isomorphism:
+\[
+\begin{array}{ccc}
+R \widehat{\otimes} \ide{h}^{\vee} & \longrightarrow & \Hom_{\Qalg}(\mathbb{Q}[u_{w}]_{w\in X^*}, R)\\
+\rotatebox{90}{$\in$}&&\rotatebox{90}{$\in$}\\
+\Phi & \longmapsto& (u_w \mapsto \langle \Phi \mid w \rangle),
+\end{array} 
+\]
+where $R \widehat{\otimes} \ide{h}^{\vee}$ is the completion of the graded $R$-algebra $\varprojlim_{n}\, R\otimes \left(\ide{h}/\bigoplus_{m\ge n}\ide{h}^{(m)}\right)$.
+
+
+In the same way, we shall construct the dual of $\Q\langle Y \rangle^*$.
+By $\Q\langle\langle Y \rangle\rangle$, we denote the completed free associative $\Q$-algebra generated by $Y$.
+
+
+Abusing the notation, for $\Phi \in \Q\langle\langle Y \rangle\rangle$, we write $\Phi$ as
+\[
+\Phi = \sum_{w\in Y^*} \langle \Phi \mid w \rangle w = \langle \Phi \mid 1 \rangle + \langle \Phi \mid y_1 \rangle y_1 + \langle \Phi \mid y_2 \rangle y_2 + \cdots \hspace{0.5cm}( \langle \Phi \mid w \rangle \in \mathbb{Q}).
+\]
+This notation induces a $\mathbb{Q}$-bilinear map $\langle \mathchar`- | \mathchar`- \rangle : \Q\langle\langle Y \rangle\rangle \cotimes \Q\langle Y \rangle \rightarrow \mathbb{Q} \hspace{0.2cm} ; \hspace{0.2cm}  \Phi \otimes w \mapsto \langle \Phi \mid w \rangle$.
+We define the harmonic coproduct $\Delta_{*} : \Q\langle\langle Y \rangle\rangle \rightarrow  \Q\langle\langle Y \rangle\rangle^{\otimes 2}$ by
+\[
+\Delta_{*}(\Phi) := \sum_{u,v\in Y^*} \langle \Phi \mid u* v \rangle u\otimes v. 
+\]
+Then, $\Delta_{*}$ is a continuous algebra homomorphism which satisfies $\Delta_{*}(y_k) = y_k \otimes 1 + 1\otimes y_k + \sum_{\substack{i + j = k \\ i,j>0}} y_i \otimes y_j$ for $k\in\mathbb{Z}_{>0}$.
+
+A tuple $(\Q\langle\langle Y \rangle\rangle, \cdot, \Delta_{*})$ constitutes a completed Hopf algebra which is topologically dual to $\Q\langle  Y \rangle^*$.
+Similarly to $\ide{h}^{\vee}$, we can regard $\Q\langle\langle Y \rangle\rangle$ as an affine scheme, that is, for $\mathbb{Q}$-algebra $R$, there exists a natural isomorphism of $\mathbb{Q}$-algebra:
+\[
+\begin{array}{ccc}
+R \widehat{\otimes} \Q\langle\langle Y \rangle\rangle & \longrightarrow & \Hom_{\Qalg}(\mathbb{Q}[u_{w}]_{u\in Y^*}, R)\\
+\rotatebox{90}{$\in$}&&\rotatebox{90}{$\in$}\\
+\Phi & \longmapsto& (u_w \mapsto \langle \Phi \mid w \rangle).
+\end{array} 
+\]
+
+
+
+Before we finish this subsection, we define a continuous $\Q$-linear map $\mathbf{q}^{\vee} : \ide{h}^{\vee} \rightarrow\Q\langle\langle Y \rangle\rangle$ by
+\[
+\mathbf{q}^{\vee}(x_0^{k_1-1}x_1\cdots x_0^{k_r-1}x_1x_0^{k_{r+1}-1}) 
+=
+\begin{cases}
+y_{k_1}\cdots y_{k_r}& \text{if } k_{r+1}=1 \text{ and}\\
+0& \text{otherwise.}
+\end{cases}
+\]
+
+\nsubsection{Completed free Lie algebra $\ide{F}_2$}
+
+We define the completed free Lie algebra  generated by $X$ as
+\[
+\ide{F}_2:= \{\Psi \in \ide{h}^{\vee} \mid \Delta_{\shuffle}(\Psi) = \Psi \otimes 1 + 1 \otimes \Psi\}.
+\]
+Namely, the subspace of primitive elements with respect to the shuffle coproduct. Equivalently, a series $\Psi\in\ide{h}^{\vee}$ lies in $\ide{F}_2$ if and only if $\langle \Psi\mid u\shuffle v\rangle=0$ for all nonempty words $u,v\in X^*$.
+Then the universal enveloping ring of $\ide{F}_2$ is isomorphic to $\ide{h}^{\vee}$ as Hopf algebras.
+In particular, for $\Psi \in \ide{F}_2$,
+\begin{align}
+S_X^{\vee}(\Psi) = - \Psi \label{eq:antipode-X}
+\end{align}
+holds.
+%Let $\exp \ide{F}_2 := \{\Phi \mid \Delta_{\shuffle}(\Phi) = \Phi\otimes \Phi\text{ and }\langle \Phi \mid 1\rangle = 1\}$. Then $\exp \ide{F}_2$ forms a group with respect to the concatenation product, and there exists a natural isomorphism $\exp : \ide{F}_2 \rightarrow \exp \ide{F}_2$ as affine schemes.
+For each positive integer $k$, we define
+\[
+\ide{F}_2^{\ge k} := \{ \Psi \in \ide{F}_2 \mid \text{ $\langle\Psi \mid w \rangle = 0$ for $w \in X^*$ with $\wt w \le k-1$} \}.
+\]
+
+
+\ifdefined\isMainDocument
+\else
+    %\bibliographystyle{amsplain}
+    %\bibliography{reference-adjoint}
+    \end{document}
+\fi

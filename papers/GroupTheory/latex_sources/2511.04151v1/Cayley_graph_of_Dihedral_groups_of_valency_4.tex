@@ -1,0 +1,1227 @@
+\documentclass[12pt,reqno,a4paper]{amsart}
+%%%%%%%%%%%%%%%%%%packages
+\usepackage{hyperref}
+\usepackage{enumerate}
+\usepackage[left=0.7in, right=0.7in, top= 0.9in, bottom=1.65in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,amsfonts}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+
+ \linespread{1.15}
+
+\usepackage{graphicx}
+\usepackage{tikz}
+
+%\extrapackages
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{calc} % Needed for ($(v0)!0.5!(v4)$) syntax
+
+
+\usetikzlibrary{graphs, graphs.standard}
+
+\tikzset{
+	modal/.style={>=stealth’,shorten >=1pt,shorten <=1pt,auto,node distance=1.5cm,
+		semithick},
+	world/.style={circle, draw,minimum size=.1cm,fill=gray!15},
+	point/.style={circle,draw,inner sep=0.3mm,fill=black},
+	circ/.style={circle,draw,inner sep=0.1mm,fill=white},
+	reflexive above/.style={->,loop,looseness=7,in=120,out=60},
+	reflexive below/.style={->,loop,looseness=7,in=240,out=300},
+	reflexive left/.style={->,loop,looseness=7,in=150,out=210},
+	reflexive right/.style={->,loop,looseness=7,in=30,out=330}
+}
+
+
+\usetikzlibrary{shapes}
+\usetikzlibrary{plotmarks}
+\usetikzlibrary{arrows}
+\usetikzlibrary{positioning}
+%%%%%%%%%%%%%%%%%%%
+%%%%%%% Definitions
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{fact}[defn]{Fact}
+\newtheorem{prop}[defn]{Proposition}
+\newtheorem{thm}[defn]{Theorem}
+\newtheorem{example}[defn]{Example}
+
+\newtheorem{corr}[defn]{Corollary}
+\newtheorem{lem}[defn]{Lemma}
+\newtheorem{question}[defn]{Question}
+\newtheorem{remark}[defn]{Remark}
+\newtheorem{observation}[defn]{Observation}
+\newtheorem{claim}[defn]{Claim}
+\newtheorem{subclaim}[defn]{Subclaim}
+%%%%%%% Titles
+\setlength{\textheight}{1.1\textheight}
+%%%%%%%%%%%%%%%%%%%%%
+\title[Cayley Graphs of Dihedral Groups of Valency 4]{Automorphism Groups and Structure of 4-Valent Cayley Graphs on Dihedral Groups}
+
+\author{Amitayu Banerjee}
+\address{E\"otv\"os Lor\'and University, Budapest, Hungary}
+\email{banerjee.amitayu@gmail.com}
+
+\date{}
+
+\makeatletter
+\@namedef{subjclassname@2020}{\textup{2020} Mathematics Subject Classification}
+\makeatother
+\subjclass[2020]{05C25, 20B25, 05E18.}
+\keywords{Cayley graph, Dihedral group, Automorphism group, Affine group, Valency}
+\begin{document}
+\begin{abstract}
+Let $G$ be a finite group and $S \subseteq G \setminus \{e\}$ be an inverse-closed subset of $G$.  
+The undirected Cayley graph $\mathrm{Cay}(G,S)$ has vertex set $G$, where two vertices $x$ and $y$ are adjacent if and only if $xy^{-1}\in S$.  
+Kaseasbeh and Erfanian (Proyecciones
+(Antofagasta) 40(6): 1683--1691, 2021)  determined the structure of all $\mathrm{Cay}(D_{2n},S)$ with $|S|\le 3$, where $D_{2n}$ denotes the dihedral group of order $2n$.  
+We extend their work by analyzing the structure of all $\mathrm{Cay}(D_{2n},S)$ with $|S|=4$.
+%and studying their automorphism groups.  
+Our main results are as follows:
+
+\begin{enumerate}
+    \item By applying a result of Burnside and Schur from 1911 in the formulation of Evdokimov and Ponomarenko (Bull. Lond. Math. Soc. 37(4): 535–546, 2005), we prove that if $S=\{r^{\pm1}, r^{\pm t_1}, \dots, r^{\pm t_{k-1}}\}$ with $t_i \ge 2$ contains distinct rotations and $p > Q = \max_{a,b}(ab + M)$ for $M = \max\{1, t_1, \dots, t_{k-1}\}$, then 
+    $\mathrm{Aut}(\mathrm{Cay}(D_{2p}, S))
+    \cong (R(\mathbb{Z}_p) \rtimes \langle p-1 \rangle) \wr \mathbb{Z}_2,
+    $
+    where $R(\mathbb{Z}_p)$ denotes the right regular representation of $\mathbb{Z}_p$.
+
+    \item If $S$ is a set of $4 \le 2k < n$ distinct rotations, then $\mathrm{Cay}(D_{2n}, S)$ is the disjoint union of two isomorphic circulant graphs on $n$ vertices.
+
+    \item Let $S=\{r^{a_1}s,..., r^{a_k}s\}\subseteq D_{2n}$ be a set of distinct reflections where $4\leq k<n$.
+    If $S$ is a generating set, then $\Gamma=\mathrm{Cay}(D_{2n}, S)$ is bipartite and a disjoint union of $k$ perfect matchings.
+    This generalizes a result of Ahmad Fadzil, Sarmin, and Erfanian (Matematika: Mjiam 35(3): 371-376, 2019).
+    Moreover, if $\gcd(k,n)=1$, $\Gamma$ is normal, and \(\Delta=\{a_i-a_j:1\le i<j\le k\}\),
+    then $\mathrm{Aut}(\Gamma)=R(G)\rtimes H\) where $H\leq \{u\in(\Bbb Z_n)^\times : u\Delta=\Delta\}$.
+\end{enumerate}
+\end{abstract}
+    %\textbf{(Text version)}
+%Let G be a finite group and S be an inverse-closed subset of G not containing the identity. The Cayley graph Cay(G, S) has vertex set G, where two vertices x and y are adjacent if and only if the group element obtained by applying the group operation to x and the inverse of y belongs to S. Kaseasbeh and Erfanian (2021) determined the structure of all Cayley graphs on the dihedral group of order 2n for subsets S of size at most three. We extend their work by analyzing the structure of all such Cayley graphs for subsets S of size four and determining their automorphism groups. Our main results are as follows for subsets S of size at least four: (1) using a classical result of Burnside and Schur (1911), we determine the automorphism groups of a family of Cayley graphs where S contains only rotations; (2) if S consists only of rotations, then the Cayley graph is the disjoint union of two isomorphic circulant graphs on n vertices; and (3) if S is a set of k reflections generating the dihedral group, then the Cayley graph is bipartite, forming the disjoint union of k perfect matchings.
+
+    %\item If $S$ is a generating set of $4 \le k < n$ reflections, then $\mathrm{Cay}(D_{2n}, S)$ is bipartite, forming the disjoint union of $k$ perfect matchings.
+
+
+    %\item Let \(n\ge 5\) and $4\leq k<n$ be positive integers such that $\gcd(k,n)=1$. Let $S=\{r^{a_1}s,..., r^{a_k}s\}\subseteq %D_{2n}$ be a set of distinct reflections,
+    %and \(\Delta=\{a_i-a_j:1\le i<j\le k\}\).
+    %If \(\Gamma=\mathrm{Cay}(G,S)\) is normal and $d=\gcd(n,a_i-a_j, 1\leq i<j\leq k)=1$,
+    %then $\mathrm{Aut}(\Gamma)=R(G)\rtimes H\) where $H$ is a subgroup of $\{u\in(\Bbb Z_n)^\times : u\Delta=\Delta\}$.
+
+    
+    %\item For $k=1,2$ and $|S|=4$, if $S$ contains $k$ reflections, then $\mathrm{Cay}(D_{2n},S)$ consists of two isomorphic circulant graphs connected by $k$ distinct inter-layer perfect matchings.
+
+\maketitle
+\section{Introduction}
+The study of automorphism groups of Cayley graphs is one of the central topics in algebraic graph theory. Cayley graphs on dihedral groups, in particular, have received significant attention as a rich class of examples for this research  
+(cf. \cite{KE2021, Kon2020, KO2006, WZ2006, WX2006, ZF2007}, among others). 
+Previous research work has largely focused on
+Cayley graphs with valency at most $3$. In particular, Kong \cite{Kon2020} studied the automorphism group of connected cubic Cayley graphs of dihedral groups of order $2^{n}p^{m}$ where $n\geq 2$ and $p$ is an odd prime, while
+Kaseasbeh and Erfanian \cite{KE2021} determined the structure of all Cay($D_{2n}$, $S$), where $n \geq 3$ and $|S| \leq 3$.
+These studies provide a foundation for understanding higher-valency cases.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Classification of 4-valent one-regular normal Cayley graphs on dihedral groups were also investigated in \cite{KO2006, WZ2006, WX2006}. Notably, Wang and Xu \cite{WX2006} 
+provided a classification of the normal 4-valent one-regular Cayley graphs of dihedral
+groups, identifying specific exceptions
+and proved that all 4-valent one-regular Cayley graph $X$ of dihedral groups are normal except that $n=4s$, and $X\cong \mathrm{Cay}(G,\{a,a^{-1}, a^{i}b,a^{-i}b\})$ where $i^{2}\equiv \pm 1\pmod {2s}$, $2\leq i\leq 2s-2$. However, a complete understanding of all 4-valent Cayley graphs over dihedral groups, including their structural properties and automorphism groups for different types of generating sets, remains an open area.
+In this paper, we extend this line of research by investigating the structure of 
+$4$-valent Cayley graphs on dihedral groups and the automorphism 
+groups of $n$-valent Cayley graphs on dihedral groups for $n \ge 4$ when the generating set consists exclusively of rotations or reflections. 
+
+\subsection{Results} Apart from the main results stated in the Abstract, we prove the following:
+
+\begin{enumerate}
+    \item If $S$ contains two rotations and two reflections, then $\mathrm{Cay}(D_{2n},S)$ is formed by two isomorphic circulant graphs connected by two inter-layer perfect matchings.  
+
+    \item Let $n\ge 3$ and \(k \in \{1, \dots, n-1\}\) be such that if \(n\) is even, then \(k \neq \tfrac{n}{2}\). Then, the graph 
+    $\mathrm{Cay}(D_{2n},S)$ is normal and
+    $\mathrm{Aut}(\mathrm{Cay}(D_{2n},S)) \cong R(D_{2n}) \rtimes C_2$ if $S = \{ r, r^{-1}, s, sr^k \}$.
+
+    \item If $S$ contains three rotations and one reflection, then $\mathrm{Cay}(D_{2n},S)$ is formed by two isomorphic circulant graphs connected by a single inter-layer perfect matching.  
+
+    \item If $S$ contains three reflections and one rotation, then $\mathrm{Cay}(D_{2n},S)$ consists of two circulant subgraphs (with intra-layer edges linking vertices at distance $n/2$) connected by three inter-layer perfect matchings.
+\end{enumerate}
+
+\noindent\textbf{Remark.} 
+The normality of all 4-valent one-regular Cayley graphs of dihedral groups was determined by Wang and Xu \cite{WX2006}, who showed that such graphs are normal except for a few exceptional families. 
+The result stated in (2) provides an explicit construction for determining the structure of $\mathrm{Aut}(\mathrm{Cay}(D_{2n},S))$ for $S=\{r,r^{-1},s,sr^k\}$, which differs from the approach used in \cite{WX2006}.
+
+\section{Preliminaries}
+
+\begin{defn}\label{Definition 2.1}
+Let $\Gamma = (V,E)$ be a graph. A \emph{matching} in $\Gamma$ is a subset $M \subseteq E$ such that no two edges in $M$ share a common vertex.  
+The matching $M$ is called a \emph{perfect matching} if every vertex of $\Gamma$ is incident with exactly one edge in $M$.
+The \emph{$n$-Crown graph} for an integer $n \ge 3$ is the graph with vertex set
+$V = \{x_1, \ldots, x_{n},\, y_1, \ldots, y_{n}\}$ and edge set $E = \{\{x_i, y_j\} : 1 \le i, j \le n,\ i \ne j\}$.
+This graph is also known as the complete bipartite graph $K_{n,n}$ from which a perfect matching (specifically, the set of edges 
+$\{x_{i},y_{i}\}$ for each $1\leq i\leq n$) has been removed.
+\end{defn}
+
+\begin{defn}\label{Definition 2.2}
+Let $G$ be a group that acts on a set $X$ such that $\vert X\vert \geq 2$. The action of $G$ on $X$ is {\em $2$-transitive} if and only if for any $x_{1},x_{2},y_{1},y_{2}\in X$ such that $x_{1}\neq x_{2}$ and $y_{1}\neq y_{2}$ there is $g\in G$ such that $gx_{1}=y_{1}$ and $gx_{2}=y_{2}$ and the action of $G$ on $X$ is {\em transitive} if for any $x, y \in X, x\neq y$ there exists $g \in G$ so that $gx = y$. Let $Orb_{G}(x)=\{gx:g\in G\}$ be the orbit of $x \in X$ and $Stab_{G}(x)=\{g\in G: gx=x\}$ be the stabilizer of $x$ under the action of $G$. 
+\end{defn}
+
+The {\em Orbit-Stabilizer theorem} states that the size of the orbit is the index of the stabilizer, that is $\vert Orb_{G}(x)\vert = [G : Stab_{G}(x)]$. We also recall that different orbits of the action are disjoint and form a partition of $X$ i.e., $X=\bigcup \{Orb_{G}(x): x\in X\}$.
+
+\begin{defn}\label{Definition 2.3}
+A group $G$ is called a \emph{semidirect product} of $N$ by $Q$, 
+denoted by $G = N \rtimes Q$, if $G$ contains subgroups $N$ and $Q$ such that:
+(1).  $N \trianglelefteq G$ (that is, $N$ is a normal subgroup of $G$), (2). $NQ = G$, and
+(3). $N \cap Q = \{1\}$.
+\end{defn}
+
+\begin{defn}\label{Definition 2.4}
+The {\em affine group} $\mathrm{AGL}(1,n)$ is the semidirect product of the group of translations $\mathbb{Z}_n$ and the group of automorphisms $\mathrm{Aut}(\mathbb{Z}_n)$.
+Alternatively, it is the group of functions $x \mapsto ax+b$ where $a \in \mathbb{Z}_n^*$ and $b \in \mathbb{Z}_n$, where $\mathbb{Z}_n^*$ is the multiplicative group of integers modulo $n$
+which consists of the set of integers $k$ with $1\le k<n$ such that $\gcd (k,n)=1$ and the group operation is multiplicative modulo $n$.
+If $n$ is a prime then $\mathbb{Z}_n^*$ contains all non-zero integer modulo $n$.
+\end{defn}
+
+\begin{defn}\label{Definition 2.5}
+Let $G$ be a finite group and let $S \subseteq G \setminus \{e\}$ 
+be an inverse-closed subset of $G \setminus \{e\}$ i.e., $S = S^{-1}$ , where 
+$S^{-1}:= \{s^{-1}: s \in S\}$.
+The \emph{undirected Cayley graph} Cay$(G, S)$ is the graph with a set of vertices $G$, and the vertices $u$ and $v$ are adjacent in Cay$(G, S)$ if and only if $uv^{-1} \in S$. The size of the set $S$ is called the \emph{valency} of $\mathrm{Cay}(G, S)$. It is known that Cay$(G, S)$ is connected if and only if $S$ is a generating set of $G$.
+\end{defn}
+
+\begin{defn}\label{Definition 2.6}
+Let $G$ be a group. The \emph{right regular representation} of $G$, denoted by $R(G)$, 
+is the permutation group 
+$R(G) = \{\, \rho_g \mid g \in G \,\} \subseteq \mathrm{Sym}(G)$,
+where $\rho_g$ is the map $\rho_g : G \to G$ defined by $\rho_g(x) = xg$ for all $x \in G$.
+For an abelian group, left and right translations are the same. 
+The automorphism group of a Cayley graph $\mathrm{Cay}(G,S)$ is denoted by $\mathrm{Aut}(\mathrm{Cay}(G,S))$. 
+\end{defn}
+
+It is known that $R(G)$ is a subgroup of $\mathrm{Aut}(\mathrm{Cay}(G,S))$.
+
+\begin{defn}\label{Definition 2.7}
+The {\em stabilizer of vertex $v$ in $\mathrm{Aut}(\mathrm{Cay}(G,S))$} is denoted by $\mathrm{Aut}(\mathrm{Cay}(G,S))_v$. 
+Given a group $G$ and a subset $S \subseteq G$, let 
+$\mathrm{Aut}(G,S) = \{\alpha \in \mathrm{Aut}(G) \mid \alpha(S) = S\}$.
+%It is isomorphic to the group of automorphisms of $G$ that fix the generating set $S$ setwise; i.e., $\mathrm{Aut}(\mathrm{Cay}(G,S))_e \cong \mathrm{Aut}(G,S) = \{\alpha \in \mathrm{Aut}(G) \mid \alpha(S)=S\}$.
+\end{defn}
+
+If $\Gamma = \mathrm{Cay}(G, S)$, then $\mathrm{Aut}(G,S)$ is a subgroup of the stabilizer $\mathrm{Aut}(\Gamma)_{1}$, where $1$ is the identity element of the group $G$. It is also known that $R(G)\rtimes \mathrm{Aut}(G,S)\le \mathrm{Aut}(\Gamma)$.
+
+\begin{defn}\label{Definition 2.8}
+A Cayley graph $\Gamma=$ Cay$(G,S)$ is {\em normal} if $R(G)$ is a normal subgroup of $\mathrm{Aut}(\Gamma)$ i.e., $R(G)\trianglelefteq \mathrm{Aut}(\Gamma)$. The graph $\Gamma$ is normal if and only if $\mathrm{Aut}(\Gamma)=R(G) \rtimes \mathrm{Aut}(G,S)$.
+\end{defn}
+
+\begin{fact}\label{Fact 2.9} 
+The following holds:
+%\cite{Xu1998, HHL2017}
+    \begin{enumerate}
+        \item (\cite{HHL2017}) Cay$(G,S)$ is normal if and only if $\mathrm{Aut}(\mathrm{Cay}(G,S))_{e} = \mathrm{Aut}(G,S)$.
+        \item (Burnside-Schur; \cite{EP2005}) Every primitive finite permutation group containing a regular cyclic subgroup is either 2-transitive or permutationally isomorphic to a subgroup of the affine group AGL$(1,p)$ where $p$ is a prime. 
+        \item For any integer $n>1$, $\mathrm{Aut}(\mathbb{Z}_n) \cong \mathbb{Z}_n^*$.        
+        
+        \item If the action of $G$ on $X$ is $2$-transitive, then the action of Stab$_{G}(x)$ on $X\backslash \{x\}$ is transitive for all $x\in X$.
+    \end{enumerate}
+\end{fact}
+
+Since any transitive permutation group of prime degree is primitive, we obtain the following. 
+
+\begin{corr}\label{Corollary 2.10}
+{(of Fact \ref{Fact 2.9}(2))}
+{\em Let $p$ be a prime. Let $G\leq S_p$ be a transitive permutation group of degree $p$ that contains a regular cyclic subgroup. Then $G$ is primitive and $G$ is either
+\begin{enumerate}
+  \item isomorphic to a subgroup of the affine group AGL$(1,p)\cong \mathbb{Z}_p\rtimes\mathbb{Z}_p^{\ast}$, or
+  \item $G$ is $2$-transitive.
+\end{enumerate}
+}
+\end{corr} 
+
+Throughout the manuscript, we will use the following notations.
+\begin{itemize}
+    \item $D_{2n}=\langle r,s \mid r^n=e, \; s^2=e, \; srs=r^{-1} \rangle$ be the dihedral group of order $2n$,
+    \item $\mathbb{Z}_{n}$ denotes cyclic group of order $n$,
+    \item  
+    $R = \{ r^i : i \in \mathbb{Z}_n \}$ be the set of all rotations, and 
+    \item $F = \{ sr^i : i \in \mathbb{Z}_n \}$ be the set of all reflections. Thus, $D_{2n} = R \cup F$.
+    \item The indices of rotations and reflections are taken modulo $n$ whenever we work with $\mathrm{Cay}(D_{2n}, S)$.
+    \item We refer to edges connecting two rotations or two reflections as \emph{intra-layer edges}, and those connecting a rotation with a reflection as \emph{inter-layer edges}.
+
+    \item For graphs $G_1$ and $G_2$, we denote by 
+$G_1 + G_2$ the 
+\emph{disjoint union} of $G_1$ and $G_2$.
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Let $S \subset D_{2n}$ satisfy $e \notin S$, $S=S^{-1}$ and $|S|=4$. 
+Then $\Gamma := \mathrm{Cay}(D_{2n}, S)$
+falls into exactly one of the following mutually exclusive types:
+
+\begin{itemize}
+    \item[] \noindent\textbf{Case (I)— $S \subseteq R$.}  
+Then $S = \{r^{\pm a}, r^{\pm b}\}$
+for some $a,b \in \mathbb{Z}_n$ (possibly $a \equiv \pm b$ (mod $n$)).
+%\vspace{2mm}
+     \item[] \noindent\textbf{Case (II)— $S \subseteq F$.}  
+Then $S=\{sr^{a_1}, sr^{a_2}, sr^{a_3}, sr^{a_4}\}$ for some $a_{1},a_{2},a_{3},a_{4} \in \mathbb{Z}_n$. Clearly, $S=S^{-1}$ since each reflection is an involution. 
+%\vspace{2mm}
+      \item[] \noindent\textbf{Case (III)—}  
+$S$ contains exactly two rotations and two reflections. Then, for some $a,b_1,b_2\in\mathbb{Z}_n$,
+$S=\{r^{\pm a}, sr^{b_1}, sr^{b_2}\}$. 
+%\vspace{2mm}
+    \item[] \noindent\textbf{Case (IV)—}  
+$S$ contains exactly three rotations and one reflection. This case occurs only when $n$ is even. Then three rotations in $S$ must consist of one inverse pair and the unique element of order two, that is $r^{n/2}$. Thus,
+$S = \{r^{\pm a},\, r^{n/2},\, sr^b\}$, for some $a,b\in\mathbb{Z}_n$.
+%\vspace{2mm}
+    \item[] \textbf{Case (V)—} 
+$S$ contains exactly three reflections and one rotation. This case arises only when $n$ is even and the rotation in $S$ must be $r^{n/2}$. Hence,
+$S = \{ s r^{a_1}, \; s r^{a_2}, \; s r^{a_3}, \; r^{n/2} \}$, for some $a_1,a_2,a_3 \in \mathbb{Z}_n$.
+\end{itemize}
+
+In sections 3--6, we will analyze the above-mentioned cases.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Only rotations}
+
+\begin{prop}\label{Proposition 3.1}
+{\em
+Assume $S\subseteq R\setminus\{e\}$ is inverse-closed with $|S|=2k<n$ for some $k\ge2$.  
+Choose representatives $a_1,\dots,a_k\in\mathbb{Z}_n$ such that 
+$S=\{r^{\pm a_1},\dots,r^{\pm a_k}\}$.
+%Assume that $S \subseteq R \setminus \{e\}$ is an inverse closed subset such that $|S| = 2k$ for some $k \ge 2$.  Then there exist $a_1, \dots, a_k \in \mathbb{Z}_n$ (possibly with some $a_i \equiv \pm a_j \pmod{n}$) such that $S = \{\, r^{\pm a_1},\, \dots, r^{\pm a_k} \,\}$.
+Let $T = \{\pm a_1, \dots, \pm a_k\}$, 
+$G_{1} = \mathrm{Cay}(D_{2n}, S)$, 
+$G_{2} = \mathrm{Cay}(\mathbb{Z}_n, T)$, and $d = \gcd(n, a_1, \dots, a_k)$. Then:
+\begin{enumerate}
+  \item $\mathrm{Cay}(D_{2n}, S) \;\cong\; \mathrm{Cay}(\mathbb{Z}_n, T) + \mathrm{Cay}(\mathbb{Z}_n, T)$.
+  
+  \item If $d = 1$, then $G_{2}$ is connected. So $G_{1}$ has $2$ components isomorphic to $G_{2}$.
+  
+  \item If $d > 1$, write $n = d n'$ and $a_i = d a_i'$ for all $i$, and set 
+  $T' = \{\pm a_1', \dots, \pm a_k'\} \subset \mathbb{Z}_{n'}$. 
+  Then $G_{2}$ decomposes into $d$ components isomorphic to $\mathrm{Cay}(\mathbb{Z}_{n'}, T')$. 
+  Consequently, $G_{1} \cong G_{2} + G_{2}$ splits into $2d$ components isomorphic to $\mathrm{Cay}(\mathbb{Z}_{n'}, T')$.
+\end{enumerate}
+}
+\end{prop}
+
+\begin{proof}
+(1). The vertex set of $\mathrm{Cay}(D_{2n}, S)$ is $D_{2n} = R \cup F$.  
+For any rotation $r^t \in R$, 
+if $g \in R$, then $g r^t \in R$, while if $g \in F$, then $g r^t \in F$.  
+Thus, every edge $\{ g, g r^t \}$ produced by a rotation generator $r^{t}\in S$ is an intra-layer edge.  
+Consequently, no generator in $S$ produces an edge joining $R$ to $F$.  
+Therefore, $\mathrm{Cay}(D_{2n}, S)$ splits into two vertex-disjoint subgraphs induced on $R$ and on $F$.
+Consider the induced subgraph $\Gamma_R$ of $\mathrm{Cay}(D_{2n}, S)$ on $R$.  
+If $t \in T$, then $\Gamma_R$ contains the edge $\{ r^i, r^{i+t} \}$.  
+Hence $\Gamma_R\cong\mathrm{Cay}(\mathbb{Z}_n, T)$.  
+Similarly, the induced subgraph $\Gamma_F$ on $F$ is isomorphic to $\mathrm{Cay}(\mathbb{Z}_n, T)$.  
+In particular, the map $\varphi : R \to F$ defined by $\varphi(r^i) = s r^i$ is a bijection, and for any $t \in T$,
+$\{ \varphi(r^i), \varphi(r^{i+t}) \}
+= \{ s r^i, s r^{i+t} \}
+= \{ s r^i, (s r^i) r^t \}$.
+Thus, edges inside $R$ correspond exactly to edges inside $F$ under $\varphi$, so $\Gamma_F \cong \Gamma_R$.  
+Consequently,
+$\mathrm{Cay}(D_{2n}, S)
+= \Gamma_R + \Gamma_F 
+\;\cong\;
+\mathrm{Cay}(\mathbb{Z}_n, T) + \mathrm{Cay}(\mathbb{Z}_n, T)$.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.6, every node/.style={circle,draw,fill=white,inner sep=1pt,minimum size=7pt}, line width=0.5pt]
+
+% ---------- Left K_{2,2,2} (horizontal layout) ----------
+\def\yL{0}
+\node (A1) at (-3.2, \yL+1.2) {};
+\node (A2) at (-3.2, \yL-1.2) {};
+\node (B1) at (-1.6, \yL+1.2) {};
+\node (B2) at (-1.6, \yL-1.2) {};
+\node (C1) at (0, \yL+1.2) {};
+\node (C2) at (0, \yL-1.2) {};
+
+% Edges between parts (left)
+\foreach \u in {A1,A2}{
+  \foreach \v in {B1,B2,C1,C2}{
+    \draw (\u)--(\v);
+  }
+}
+\foreach \u in {B1,B2}{
+  \foreach \v in {C1,C2}{
+    \draw (\u)--(\v);
+  }
+}
+% Label left
+\node[draw=none,fill=none] at (-2.6, -1.8) {$\mathrm{Cay}(\mathbb{Z}_{6},\{\pm 1,\pm 2\})$};
+
+% ---------- Right K_{2,2,2} (horizontal layout) ----------
+\def\yR{0}
+\def\xShift{5}
+\node (A1p) at (\xShift-3.2, \yR+1.2) {};
+\node (A2p) at (\xShift-3.2, \yR-1.2) {};
+\node (B1p) at (\xShift-1.6, \yR+1.2) {};
+\node (B2p) at (\xShift-1.6, \yR-1.2) {};
+\node (C1p) at (\xShift, \yR+1.2) {};
+\node (C2p) at (\xShift, \yR-1.2) {};
+
+% Edges between parts (right)
+\foreach \u in {A1p,A2p}{
+  \foreach \v in {B1p,B2p,C1p,C2p}{
+    \draw (\u)--(\v);
+  }
+}
+\foreach \u in {B1p,B2p}{
+  \foreach \v in {C1p,C2p}{
+    \draw (\u)--(\v);
+  }
+}
+% Label right
+\node[draw=none,fill=none] at (\xShift-0.6, -1.8) {$\mathrm{Cay}(\mathbb{Z}_{6},\{\pm 1,\pm 2\})$};
+\end{tikzpicture}
+\vspace{-4.5em}
+\caption{The graph $\mathrm{Cay}(D_{12}, \{r^{\pm1}, r^{\pm2}\})$ can be expressed as $K_{2,2,2} + K_{2,2,2}$.}
+\end{figure}
+
+
+(2). We know that $\mathrm{Cay}(\mathbb{Z}_n, T)$ is connected if and only if $T$ is a generating set of $\mathbb{Z}_{n}$.  
+The subgroup generated by $T$ is 
+$\langle T \rangle$ = $\{ x_1 a_1 + \cdots + x_k a_k \pmod{n} : x_i \in \mathbb{Z} \}$
+= $d \mathbb{Z}_n$
+= $\{ 0, d, 2d, \dots, n - d \}$.  
+Hence $\mathrm{Cay}(\mathbb{Z}_n, T)$ is connected if and only if $\langle T \rangle = \mathbb{Z}_n$, which is equivalent to $d=\gcd(n, a_1, \dots, a_k) = 1$.
+
+(3). We recall that $d = \gcd(n, a_1, \dots, a_k)$, $n = d n'$, $a_i = d a_i'$ for $i = 1, \dots, k$.  
+Let $\{ C_j : 0 \le j \le d-1 \}$ be a partition of $\mathbb{Z}_{n}$ where 
+$C_j = \{j + k d : k = 0, \dots, n'-1\}$.
+The graph $G_2$ is the disjoint union of induced subgraphs on $C_j$'s.  
+In particular, if $x \in C_j$ and $t \in T$, then $t$ is a multiple of $d$ (since each $a_i$ is).  
+Thus, $x + t \in C_j$ since $x + t \equiv x \pmod{d}$.  
+Consequently, no edge $\{ x, x + t \}$ joins $C_i$ and $C_j$ for $i \ne j$.
+Fix $0 \le j \le d-1$.  
+The map 
+$\psi_j : C_j \to \mathbb{Z}_{n'}, \psi_j(j + k d) \equiv k \pmod{n'}$,
+is a graph isomorphism from the induced subgraph on $C_j$ to 
+$\mathrm{Cay}(\mathbb{Z}_{n'}, T')$,  
+where $T' = \{\pm a_1', \dots, \pm a_k'\}$.  
+Therefore, there are exactly $d$ identical components, each isomorphic to $\mathrm{Cay}(\mathbb{Z}_{n'}, T')$.  
+Since $\gcd(n', a_1', \dots, a_k') = 1$, $\langle T' \rangle = \mathbb{Z}_{n'}$, and thus $\mathrm{Cay}(\mathbb{Z}_{n'}, T')$ is connected.  
+\end{proof}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+$n$ & $T$ & Cay$(\mathbb{Z}_{n},T)$ & S & Cay$(D_{2n},S)$\\
+\hline
+\hline
+4 & $\{\pm 1, \pm 2\}$ & Complete graph $K_4$ & $\{r^{\pm 1}, r^{\pm 2}\}$ & $K_4 + K_{4}$\\
+
+6 & $\{\pm 1, \pm 2\}$ & Octahedral graph ($K_{2,2,2}$) & $\{r^{\pm 1}, r^{\pm 2}\}$ & $K_{2,2,2} + K_{2,2,2}$ \\
+
+6 & $\{\pm 1, \pm 3\}$ &  $\mathrm{Circ}(6;\{1,3\})$ & $\{r^{\pm 1}, r^{\pm 3}\}$ & $\mathrm{Circ}(6;\{1,3\}) + \mathrm{Circ}(6;\{1,3\})$ \\
+
+8 & $\{\pm 1, \pm 3\}$ & complete bipartite graph $K_{4,4}$ & $\{r^{\pm 1}, r^{\pm 3}\}$ & $K_{4,4}+ K_{4,4}$\\
+\hline
+\end{tabular}
+\vspace{2mm}
+\caption{Examples of Cay$(\mathbb{Z}_{n},T)$ and Cay$(D_{2n},S)$ for $n \le 8$.}
+\end{table}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Automorphism groups}
+\begin{lem}\label{Lemma 3.2}
+{\em Let $p\geq 3$ be a prime. Let $H$ be a proper subgroup of $\mathrm{Aut}(\mathbb{Z}_p) \cong \mathbb{Z}_p^*$. Let $T$ be a generating set of $\mathbb{Z}_p$ that is invariant under the action of $H$ but not under any larger subgroup of $\mathrm{Aut}(\mathbb{Z}_p)$. 
+If $\Gamma = \mathrm{Cay}(\mathbb{Z}_p,T)$ and the action of $\mathrm{Aut}(\Gamma)$ on the set of vertices is not 2-transitive, then $\mathrm{Aut}(\Gamma)\cong R(\mathbb{Z}_p) \rtimes H$.}    
+\end{lem}
+
+\begin{proof}
+Denote $A = \mathrm{Aut}(\Gamma)$ and 
+$R(\mathbb{Z}_p)=\{R_a:x\mapsto x+a \mid a\in\mathbb{Z}_p\}$. 
+
+\begin{claim}\label{Claim 3.3}
+    {\em $\Gamma$ is normal.}
+\end{claim}
+
+\begin{proof}
+All connected Cayley graphs of $\mathbb{Z}_{p}$ are normal except the complete graph $K_{p}$ by Galois and Burnside’s theorems (cf. \cite[pg. 82]{LX2003}). The condition that \(\text{Aut}(\Gamma )\) is not 2-transitive effectively excludes the case $\Gamma=K_{p}$.
+Thus, $\Gamma$ is normal.
+We provide an alternative argument to show that $\Gamma$ is normal using Burnside-Schur's theorem.
+By the definition of a Cayley graph, the group of right translations $R(\mathbb{Z}_{p})$ is a subgroup of $A$ and is isomorphic to $\mathbb{Z}_{p}$.
+Since automorphism groups of Cayley graphs are vertex-transitive, $A$ is a transitive permutation group.
+Moreover, $R(\mathbb{Z}_{p})$ is a regular cyclic subgroup of $S_{p}$ since $R(\mathbb{Z}_{p})\cong \mathbb{Z}_{p}$, each $R_{a}\in R(\mathbb{Z}_{p})$ is a permutation of $\mathbb{Z}_{p}$ and that the action of $\mathbb{Z}_{p}$ is regular (i.e., transitive and free). Since $A$ is not $2$-transitive, by Corollary \ref{Corollary 2.10}, $A$ is isomorphic to a subgroup of the affine group AGL$(1,p)
+=\{\,x\mapsto a x + b : a\in\mathbb{Z}_p^{*},\,b\in\mathbb{Z}_p\,\}$.
+
+\begin{enumerate}
+    \item Any automorphism $\alpha$ of $\Gamma$ can be written as a composition of a translation $R_{b}$ and an element of $A_{0}$ where for all $b\in\mathbb{Z}_{p}$, $R_{b}(x)=x+b$. We recall that $A_{0}=\{m_{c}:c\in \mathbb{Z}_{p}^{*}, cT=T\}=\mathrm{Aut}(\mathbb{Z}_{p}, T)$ where $m_{c}:x\mapsto cx$ is a map for $c\in \mathbb{Z}_{p}^{*}$. Thus, $\alpha=R_{b}(m_{c}(x))=R_{b}(cx)=cx+b$ for some $b\in \mathbb{Z}_{p}$ and $c\in \mathbb{Z}_{p}^{*}$. Thus, $A\subseteq$ AGL$(1,p)$. Since AGL$(1,p)\leq$ Sym$(\mathbb{Z}_{p})$ and $A\leq$ Sym$(\mathbb{Z}_{p})$, we have
+    $A\leq$ AGL$(1,p)$.
+
+    \item 
+Write elements of $\mathrm{AGL}(1,p)$ as pairs $(u,b)$ acting by $(u,b):x\mapsto ux+b$.
+The group operation is $(u_1,b_1)(u_2,b_2)=(u_1u_2,u_1b_2+b_1)$ and inverses are
+$(u,b)^{-1}=(u^{-1},-u^{-1}b)$. Thus the translation $t_a:x\mapsto x+a$ is the pair $(1,a)$.
+For any $(u,b)\in\mathrm{AGL}(1,p)$,
+\[
+(u,b)(1,a)(u,b)^{-1}=(u,b)(1,a)(u^{-1},-u^{-1}b)=(1,ua),
+\]
+which is again a translation. Hence conjugation by every element of $\mathrm{AGL}(1,p)$
+preserves the set of translations, so $R(\mathbb{Z}_{p})=\{(1,a):a\in\mathbb{Z}_p\}\unlhd $ AGL$(1,p)$.
+\end{enumerate}
+
+Since $R(\mathbb{Z}_{p})\unlhd \mathrm{AGL}(1,p)$, $A\leq \mathrm{AGL}(1,p)$, and $R(\mathbb{Z}_{p})\leq A$, we have $R(\mathbb{Z}_{p})\unlhd A$. Thus, $\Gamma$ is normal.
+\end{proof}
+
+\begin{claim}\label{Claim 3.4}
+    $\mathrm{Aut}(\mathbb{Z}_{p},T)=H$.
+\end{claim}
+
+\begin{proof}
+Let $A_0 = \{\alpha \in A : \alpha(0)=0\}$ denote the stabilizer of $0$ in $A$. 
+Since automorphisms preserve adjacency, $\alpha(T)=T$ for all $\alpha\in A_0$. 
+Thus, $A_0 = \{\alpha \in A : \alpha(T)=T\}$.
+
+\begin{subclaim}\label{subclaim 3.5}
+{\em Let $p$ be a prime and let $T \subseteq \mathbb{Z}_p$ be a generating, inverse-closed subset.  
+For each $c \in \mathbb{Z}_p^{\times}$ define $m_c : \mathbb{Z}_p \to \mathbb{Z}_p$ by $m_c(x) = cx$.  
+Then $A_0 = \{\, m_c : c \in \mathbb{Z}_p^{\times},\; cT = T \,\}
+   = \mathrm{Aut}(\mathbb{Z}_p, T)$.
+}
+\end{subclaim}
+
+\begin{proof}
+By Claim \ref{Claim 3.3} and Fact \ref{Fact 2.9}(1), the Cayley graph $\Gamma=\mathrm{Cay}(\mathbb{Z}_p,T)$ is normal and hence $\mathrm{Aut}(\mathrm{Cay}(G,S))_e=\mathrm{Aut}(G,S)$. Thus, for any Cayley graph on a cyclic group of prime order, every automorphism fixing the identity element is a \emph{group automorphism}.
+%Since $p$ is a prime, $\mathbb{Z}_{p}$ is a cyclic additive group of order $p$.  
+Since the group automorphisms of $(\mathbb{Z}_p,+)$ are exactly the multipliers $m_c : x \mapsto cx$ with $c \in \mathbb{Z}_p^{\times}$, we have
+$A_0 \subseteq \{m_c : c \in \mathbb{Z}_p^{\times}\}$.
+Moreover, for any such $m_c$,
+\[
+\{x, x+t\} \text{ is an edge } \iff t \in T
+   \iff c t \in cT
+   \iff \{cx, cx + c t\} \text{ is an edge}.
+\]
+Thus $m_c$ is an automorphism of $\Gamma$ if and only if $cT = T$.  
+Conversely, any $\alpha \in A_0$ must satisfy $\alpha(T) = T$, so $\alpha = m_c$ for some $c$ with $cT = T$.  
+Therefore $A_0 = \{\, m_c : c \in \mathbb{Z}_p^{\times},\; cT = T \,\}$.
+\end{proof}
+
+
+
+
+
+Since $T$ is a generating set of $\mathbb{Z}_{p}$ that is invariant under the action of $H$ but not under any larger subgroup of $\mathrm{Aut}(\mathbb{Z}_{p})$, we have $H=\{h\in\mathbb{Z}_p^{*} : hT=T\}$.
+We can see that
+$\mathrm{Aut}(\mathbb{Z}_p,T)
+     = \{\,m_h : x \mapsto h x \mid h \in H\,\}$.
+Pick any $m_{h}$ for $h\in H$.
+For all adjacent pairs $\{x,y\}$, $y-x\in T\implies m_{h}(y)-m_{h}(x)=h(y-x)\in hT=T$. Thus, $m_{h}\in \mathrm{Aut}(\mathbb{Z}_{p},T)$ as $m_{h}(0)=0$. On the other hand, if $\alpha\in \mathrm{Aut}(\mathbb{Z}_p,T)$, then $\alpha=m_{c}$ for some $c\in \mathbb{Z}_{p}^{*}$ and $cT=T$. So, $c\in H$ and $\alpha=m_{c}\in \{\,m_h : x \mapsto h x \mid h \in H\,\}$.
+\end{proof}
+
+By claims \ref{Claim 3.3} and \ref{Claim 3.4}, we have $A=\mathrm{Aut}(\Gamma) = R(\mathbb{Z}_{p})\rtimes \mathrm{Aut}(\mathbb{Z}_{p},T)\cong R(\mathbb{Z}_{p}) \rtimes H$. This completes the proof of Lemma \ref{Lemma 3.2}.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%
+\begin{thm}\label{Theorem 3.6}
+{\em
+Let $p\ge 3$ be prime. Let
+$S=\{\,r^{\pm a_1},\dots,r^{\pm a_k}\,\}\subseteq R\setminus\{e\}$
+and let 
+$T=\{\pm a_1,\dots,\pm a_k\}$
+denote the exponents of the rotations in $S$ such that the following hold:
+\begin{enumerate}
+  \item $H$ is a proper subgroup of $\mathrm{Aut}(\mathbb{Z}_p)\cong\mathbb {Z}_p^{*}$ and $T$ is invariant under the action of $H$, but $T$ is not invariant under any subgroup of $\mathrm{Aut}(\mathbb {Z}_p)$ strictly larger than $H$.
+  \item If $\Gamma = \mathrm{Cay}(\mathbb{Z}_p,T)$, then the action of $\mathrm{Aut}(\Gamma)$ on the set of vertices is not 2-transitive.
+  
+  \item $\gcd(p,a_1,\dots,a_k)=1$. 
+  %(equivalently, $T$ generates $\mathbb{Z}_p$).
+\end{enumerate}
+Then,
+$\mathrm{Aut}\bigl(\mathrm{Cay}(D_{2p},S)\bigr)\cong \bigl(R(\mathbb {Z}_p)\rtimes H\bigr)\wr C_2$.
+}
+\end{thm}
+
+\begin{proof}
+By Proposition 3.1 and the hypothesis $\gcd(p,a_1,\dots,a_k)=1$, the graph $\mathrm{Cay}(D_{2p},S)$ is the disjoint union of two components, each isomorphic to the connected circulant graph $\Gamma=\mathrm{Cay}(\mathbb{Z}_p,T)$.
+Moreover, Aut$(\mathrm{Cay}(D_{2p},S))$ is the wreath product of $\mathrm{Aut}(\Gamma)$ with the symmetric group on two elements, $S_2$, i.e., $\mathrm{Aut}(\mathrm{Cay}(D_{2p},S))\cong\mathrm{Aut}(\Gamma)\wr S_2$ and $T$ is a generating set of $\mathbb{Z}_{p}$.
+By Lemma \ref{Lemma 3.2}, we have $\mathrm{Aut}(\Gamma)\cong R(\mathbb{Z}_p)\rtimes H$.
+Since $S_2\cong C_2$, we obtain 
+$\mathrm{Aut}(\mathrm{Cay}(D_{2p},S))\cong (\mathrm{Aut}(\Gamma))\wr S_2\cong (R(\mathbb{Z}_p)\rtimes H)\wr C_2.
+$
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{thm}\label{Theorem 3.7}
+{\em
+Fix an integer $k\ge 2$.
+Let $T=\{\,1,-1,t_1,-t_1,\dots,t_{k-1},-t_{k-1}\,\}\subset\mathbb{Z}_p$ and 
+\begin{center}
+$S=\{\,r^{\pm 1}, r^{\pm t_1},\dots,r^{\pm t_{k-1}}\,\}\subset R\setminus\{e\}$ for some integers $t_1,\dots,t_{k-1}\ge 2$.    
+\end{center}
+Let $M:=\max\{1,t_1,\dots,t_{k-1}\}$,
+$Q:=\max_{a,b\in\{1,t_1,\dots,t_{k-1}\}} \bigl( a b + M \bigr)$ and $p$ be a prime with $p > Q$.
+Then $\mathrm{Aut}\bigl(\mathrm{Cay}(D_{2p},S)\bigr)
+\cong \bigl(R(\mathbb{Z}_p)\rtimes H\bigr)\wr C_2$,
+where $H=\langle p-1\rangle=\{1,p-1\}\subset\mathbb{Z}_p^\times$.
+}
+\end{thm}
+
+\begin{proof}
+Clearly, gcd$(p,1,t_1,\dots,t_{k-1})=1$. In view of Theorem \ref{Theorem 3.6}, it is enough to show that $T$ is invariant under the action of $H$ but not under any larger subgroup of $\mathrm{Aut}(\mathbb{Z}_p)$ and 
+if $\Gamma = \mathrm{Cay}(\mathbb{Z}_p,T)$, then the action of $\mathrm{Aut}(\Gamma)$ on the set of vertices is not 2-transitive. We proceed by verifying these properties in three steps.
+
+
+\begin{claim}\label{Claim 3.8}
+{\em $T$ is invariant under the action of $H$}.
+\end{claim}
+
+\begin{proof}
+For the units $1,-1\in \mathbb{Z}_{p}^{*}$, $1T=T$ and $(-1)T=T$.
+\end{proof}
+
+\begin{claim}\label{Claim 3.9}
+{\em $T$ is not invariant under any subgroup of $\mathrm{Aut}(\mathbb{Z}_p)$ larger than $H$}.
+\end{claim}
+
+\begin{proof}
+Suppose, for contradiction, there exists
+$m\in\mathbb{Z}_p^\times\setminus\{1,p-1\}\text{ with } mT=T$.
+As $1\in T$, we must have $m\in T$. Hence $m\in\{\pm t_a\}$ for some $a\in\{1,\dots,k-1\}$.
+Consider the case $m=t_a$ (the $m=-t_a$ case is identical up to signs). Then
+\[
+mT=\{\,t_a,-t_a,t_a^2,-t_a^2,t_a t_b,-t_a t_b\ (b=1,\dots,k-1)\,\}.
+\]
+Since we have $mT=T$, each element on the left must equal (mod $p$) one of the elements of $T=\{\pm1,\pm t_1,\dots,\pm t_{k-1}\}$.
+In particular, $t_a^2$ is congruent modulo $p$ to some $s\in T$.
+But for every such $s$ we have 
+\[
+0<|t_a^2-s|\le t_a^2 + M \le Q < p.
+\]
+Hence, we have $t_a^2\equiv s \pmod p$.  This is impossible since $t_a^2\neq\pm1$ and  $t_a^2\neq \pm t_b$ (as $t_a^2>t_a\ge t_b$ except in degenerate coincidence which our inequality rules out).  
+Similarly, each product $t_a t_b$ appearing in $mT$ cannot equal any element of $T$ by the same magnitude bound and hence cannot be congruent to an element of $T$ modulo $p$.
+Therefore no such $m$ exists, a contradiction. Thus $T$ is not invariant under any subgroup strictly larger than $H$.
+\end{proof}
+
+\begin{claim}\label{Claim 3.10}
+{\em $\mathrm{Aut}(\Gamma)_{0}=\{m \in \mathbb{Z}_p^{\times} : mT = T\}=\{1,-1\}$ where $0$ is the identity of the group $\mathbb{Z}_{p}$.}
+\end{claim}
+
+\begin{proof}
+By the arguments in the proof of Lemma \ref{Lemma 3.2}, the Cayley graph $\Gamma=\mathrm{Cay}(\mathbb{Z}_p,T)$ 
+is normal and $\mathrm{Aut}(\mathbb{Z}_p,T)=H=\{1,-1\}$.
+By Fact \ref{Fact 2.9} (1),
+we obtain
+$\mathrm{Aut}(\Gamma)_0=\mathrm{Aut}(\mathbb{Z}_p,T)
+   =\{1,-1\}.$
+\end{proof}
+
+\begin{claim}\label{Claim 3.11}
+{\em Let $\Gamma = \mathrm{Cay}(\mathbb{Z}_p,T)$. The action of $\mathrm{Aut}(\Gamma)$ on the set of vertices is not 2-transitive.
+}
+\end{claim}
+
+\begin{proof}
+If the action of $A=\mathrm{Aut}(\Gamma)$ on the vertex set $\mathbb{Z}_{p}$ is 2-transitive, then for any fixed point $x_0$ the stabilizer $A_{x_0}=$Stab$_{A}(x_{0})$ acts transitively on the remaining $p-1$ vertices i.e., on all vertices of $\mathbb{Z}_{p}\backslash\{x_{0}\}$.  
+Thus, for all $y_{1},y_{2}\in \mathbb{Z}_{p}\backslash\{x_{0}\}$, there exists $g\in A_{x_{0}}$ such that $g(y_{1})=y_{2}$.
+Thus, Orb$_{A_{x_{0}}}(y)=\{g(y):g\in A_{x_{0}}\}=\mathbb{Z}_{p}\backslash \{x_{0}\}$; so $\vert$Orb$_{A_{x_{0}}}(y)\vert=p-1$.
+By the Orbit--Stabilizer Theorem,
+\[
+|A_{x_0}| = |\mathrm{Orb}_{A_{x_0}}(y)| \cdot |(A_{x_0})_y| 
+          = (p-1)\cdot |(A_{x_0})_y|,
+\]
+so $|A_{x_0}|$ is a multiple of $p-1$. 
+In particular, $|A_{x_0}| \ge p-1$.
+By Claim \ref{Claim 3.10}, we have $|A_{x_0}|= 2$.
+Since $p>Q\geq 3$ because each $t_{i}\geq 2$, this is impossible.
+\end{proof}
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{corr}\label{Corollary 3.12}
+{\em $\mathrm{Aut}(\mathrm{Cay}(D_{2p}, S))\cong (R(\mathbb{Z}_{p})\rtimes H) \wr \mathbb{Z}_{2}$ if $p > 5$ is a prime, $H = \langle p-1 \rangle = \{1,\, p-1\} \subset \mathbb{Z}_{p}^{\times}$, and $S=\{r,r^{p-1},r^{2}, r^{p-2}\}$.}
+\end{corr}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+The following table list the Automorphism groups of Cay$(D_{2p},S)$ for specific primes $p$ and shows how the choice of proper subgroups of  $\mathbb{Z}_{p}^{*}$ influences the structure of the generating set.
+
+\begin{table}[ht!]
+\centering
+\footnotesize{
+\renewcommand{\arraystretch}{1.2}
+\setlength{\tabcolsep}{4pt}
+
+\begin{tabular}{|c|c|c|c|p{6.5cm}|}
+\hline
+\textbf{$p$} & \textbf{$H<\mathbb{Z}_{p}^{*}$} & 
+\textbf{$T = \{\pm a, \pm b\}$} & 
+\textbf{$\mathrm{Aut}(\mathrm{Cay}(D_{2p}, S))$} & \textbf{Graph structure of $\Gamma'=\mathrm{Cay}(D_{2p}, S)$} \\
+\hline
+\hline
+7 & $H = \{1,6\}$ & $\{1,2,5,6\}$ & $(L(\mathbb{Z}_{7})\rtimes H) \wr \mathbb{Z}_{2}$ & 
+$\Gamma'$ has two components isomorphic to $\mathrm{Circ}(7;\{1,2\})$. \\
+\hline
+11 & $H = \{1,10\}$ & $\{1,2,9,10\}$ & $(L(\mathbb{Z}_{11})\rtimes H) \wr \mathbb{Z}_{2}$ & 
+$\Gamma'$ has two components isomorphic to $\mathrm{Circ}(11;\{1,2\})$. \\
+\hline
+13 & $H = \{1,12\}$ & $\{1,2,11,12\}$ & $(L(\mathbb{Z}_{13})\rtimes H) \wr \mathbb{Z}_{2}$ & 
+$\Gamma'$ has two components isomorphic to $\mathrm{Circ}(13;\{1,2\})$ \\
+\hline
+17 & $H = \{1,4,13,16\}$ & $\{1,4,13,16\}$ & $(L(\mathbb{Z}_{17})\rtimes H) \wr \mathbb{Z}_{2}$ & 
+$\Gamma'$ has two components isomorphic to $\mathrm{Circ}(17;\{1,4\})$.\\
+\hline
+\end{tabular}
+\vspace{2mm}
+\caption{Automorphism groups and graph structures of Cay$(D_{2p},S)$ based on the choice of proper subgroups of $\mathbb{Z}_{p}^{*}$ for specific primes $p$}
+
+\label{tab:theorem_applications}
+}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Four reflections}
+
+Ahmad Fadzil--Sarmin--Erfanian \cite[Proposition 2]{ASE2019} proved that if $n\geq 3$ and $S$ contains all $n$ reflections of $D_{2n}$, then $\text{Cay}(D_{2n}, S)=K_{n,n}$. 
+
+\begin{prop}\label{Proposition 4.1}
+{\em  Fix $n,k\geq 4$. Let
+$S\subseteq D_{2n}$ be a set of $k$ reflections. Then $\text{\em Cay}(D_{2n}, S)$ is a complete bipartite graph if and only if $k=n$ and $S$ contains all $n$ reflections of $D_{2n}$. Moreover, if these conditions are met, then $\text{\em Cay}(D_{2n},S)\cong K_{n,n}$.}
+\end{prop}
+
+\begin{proof}
+Suppose $\Gamma=(V(\Gamma),E(\Gamma))=\text{Cay}(D_{2n}, S)$ is a complete bipartite graph, say $K_{m_{1},m_{2}}$. Since $\Gamma$ is $k$-regular, we have $m_{1}=m_{2}=k$. Thus, $V(\Gamma)=2n=2k$. 
+Since $\Gamma=K_{k,k}$, every vertex in $R$ must be connected to every vertex in $F$. The neighbors of the identity element $e$ are the generators in $S$. For $e$ to be connected to all $k$ reflections $s,sr,...,sr^{k-1}$, the set $S$ must contain all of these reflections.
+Conversely, if $S$ is the complete set of reflections then \cite[Proposition 2]{ASE2019}
+implies $\text{\em Cay}(D_{2n},S)\cong K_{n,n}$.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+We generalize \cite[Proposition 2]{ASE2019} due to Ahmad Fadzil, Sarmin, and Erfanian as follows.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prop}\label{Proposition 4.2}
+{\em Fix $k\leq n$. Let \(S=\{sr^{a_{1}},\dots ,sr^{a_{k}}\}\subseteq D_{2n}\) for some \(a_{1},\dots ,a_{k}\in \mathbb{Z}_{n}\) be a generating set of distinct reflections. Let \(M_{a_{j}}=\bigl\{\{r^{i},sr^{\,a_{j}-i}\}:i\in \mathbb{Z}_{n}\bigr\}\) be a collection of edges for each \(j\in \{1,\dots ,k\}\) and \(\Gamma =\mathrm{Cay}(D_{2n},S)\). The following holds:
+\begin{enumerate}
+\item Each \(M_{a_{j}}\) is a perfect matching between \(R\) and \(F\).
+\item The matchings $M_{a_j}$ and $M_{a_\ell}$ are edge-disjoint whenever $a_j\not\equiv a_\ell\pmod n$.
+
+\item $\Gamma$ is bipartite with bipartitions $R$ and $F$, and its edge set decomposes as 
+$
+E(\Gamma) = \bigcup_{j=1}^{k} M_{a_j},
+$
+the disjoint union of $k$ perfect matchings.
+\end{enumerate}    
+}
+\end{prop}
+
+\begin{proof}
+(1). Fix $1\leq j\leq k$. Consider the bijection
+$\varphi_j : R \to F$ given by $\varphi_j(r^i) = r^{i}sr^{a_{j}} = sr^{a_j-i}$.    
+The mapping $\varphi_{j}$ has inverse
+$\varphi_j^{-1}(sr^k) = r^{a_j-k}$.
+Thus $M_{a_j}$ pairs each $r^i \in R$ with $\varphi_j(r^i) \in F$, and every vertex of $R$ and $F$ appears in exactly one pair. Thus, $M_{a_j}$ is a perfect matching between $R$ and $F$.
+
+(2). For the sake of contradiction, suppose $\{r^i,sr^{a_j-i}\}=\{r^t,sr^{a_l-t}\}$ for some $i,t\in \mathbb{Z}_{n}$.
+The rotation endpoints must coincide, so $r^i=r^t$ and thus $i\equiv t\pmod n$. 
+Furthermore, 
+$sr^{a_j-i}=sr^{a_l-t}$ implies $a_{j}-i\equiv a_{l}-t \pmod n$.
+Thus, $a_j\equiv a_\ell\pmod n$. 
+%Similarly the other identification leads to the same conclusion. 
+
+(3). 
+In order to show that $E(\Gamma) = \bigcup_{j=1}^k M_{a_j}$, it suffices to show that $E(\Gamma) \subseteq \bigcup_{j=1}^k M_{a_j}$ and $M_{a_j}\subseteq E(\Gamma)$ for each $1\leq j\leq k$.
+
+\begin{claim}\label{Claim 4.3}
+{\em $E(\Gamma) \subseteq \bigcup_{j=1}^k M_{a_j}$.}
+\end{claim}
+
+\begin{proof}
+By the definition of $\Gamma$, for any $g \in D_{2n}$ and $x \in S$ there is an edge $\{ g, gx \}$.  
+If $x = sr^{a_j}$ and $g = r^i \in R$, then
+$gx = r^i (sr^{a_j}) = sr^{a_j-i} \in F$,
+so the edge $\{ r^i, sr^{a_j-i}\}$ lies in $M_{a_j}$.  
+If the edge starts from a reflection vertex $g=sr^{k}\in F$, and is generated by $x=sr^{a_{j}}\in S$, then $gx=(sr^{k})(sr^{a_{j}})=(sr^{k}s)r^{a_{j}}=(sr^{k}s^{-1})r^{a_{j}}=r^{-k}r^{a_{j}} =r^{a_{j}-k}\in R$.
+We claim that $\{sr^{k},r^{a_{j}-k}\}\in M_{a_{j}}$.
+Let \(i=a_{j}-k\) and consider $r^{i}\in R$. Since $sr^{a_{j}-i}=sr^{a_{j}-(a_{j}-k)}=sr^{k}$, the edge $\{r^{a_{j}-k},sr^{k}\}$ lies in $M_{a_{j}}$, and this is the same edge as $\{sr^{k},r^{a_{j}-k}\}$. 
+\end{proof}
+
+\begin{claim}\label{Claim 4.4}
+{\em $M_{a_j}\subseteq E(\Gamma)$ for each $1\leq j\leq k$}.    
+\end{claim}
+
+\begin{proof}
+By the definition of a Cayley graph, an edge exists between \(r^{i}\) and  $r^{i}(sr^{a_{j}})$ (which is $sr^{a_{j}-i}$) because \(sr^{a_{j}}\in S\). So, any element \(\{r^{i},sr^{a_{j}-i}\}\) in $M_{a_j}$ is generated by multiplying the element \(r^{i}\in D_{2n}\) by the generator \(sr^{a_{j}}\in S\). Therefore, it is an edge of $\Gamma$.
+\end{proof}
+
+Clearly, all edges are between $R$ and $F$, so $\Gamma$ is bipartite with bipartitions $R$ and $F$.
+\medskip
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{corr}\label{Corollary 4.5}
+{\em Let
+$S$ be a set of $n-1$ reflections from $D_{2n}$. Then $\mathrm{Cay}(D_{2n}, S)\cong$ n-Crown graph.
+}
+\end{corr}
+
+\begin{proof}
+We can write
+$S = F\setminus\{sr^{\,i_0}\}$ for some $i_{0}\in \mathbb{Z}_{n}$ where $F=\{sr^k: k\in\mathbb Z_n\}$.
+The rest follows from Proposition \ref{Proposition 4.2} and the fact that $S$ is a generating set since $\Gamma$ is the union of $n-1$ perfect matchings between $R$ and $F$, that is, the $n$-Crown graph.
+\end{proof}
+
+%Define $M_{a} = \bigl\{ \{ r^i, sr^{\,i+a}\} : i \in \mathbb{Z}_n \bigr\}$ for each $a\in \mathbb{Z}_{n}$. By Proposition 4.2, $\Gamma$ is bipartite with bipartitions $R$ and $F$, $M_{a}$ is a perfect matching between $R$ and $F$ for each $a\in \mathbb{Z}_{n}$, and 
+%\begin{center}$E(\Gamma)=\displaystyle\bigcup_{a\in\mathbb Z_n\backslash \{i_0\}} M_a$.    \end{center}
+
+%For any $r^i\in R$, $N_{\Gamma}(r^{i})=\{sr^{i+a}:a\in \mathbb{Z}_{n}\backslash \{i_{0}\}\}$ where $N_{\Gamma}(a)$ is the open neighborhood of $a\in D_{2n}$ in $\Gamma$. Thus, $M_{i_{0}}=\{\{r^{i},sr^{i+i_{0}}\}:i\in \mathbb{Z}_{n}\}$ is the set of non-edges between $R$ and $F$.
+%Hence, 
+%$\Gamma$ is obtained from the complete bipartite graph $K_{n,n}$ by deleting the edges of $M_{i_0}$, i.e.,
+%$\Gamma = K_{n,n} \setminus M_{i_0}\cong n$-Crown graph. \end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Automorphism groups}
+
+The following lemma reveals a relationship between the automorphism group of a normal, connected Cayley graph 
+$\mathrm{Cay}(D_{2n}, S)$, where $S$ consists entirely of reflections,  
+and the stabilizer of the exponents of the elements of $S$  
+under the action of $\mathrm{AGL}(1,n)$.
+
+\begin{lem}\label{Lemma 4.6}
+{\em Let $n \ge 5$ be any integer and $4\leq k<n$. 
+Let $S = \{r^{a_{1}}s,... r^{a_{k}}s\} \subseteq D_{2n}$
+be a set of distinct reflections, 
+$A = \{a_{1}, ..., a_{k}\} \subseteq \mathbb{Z}_{n}$, and 
+$\Delta = \{a_{i} - a_{j} \mid 1 \le i,j \le k\}$.
+Assume that the following hold:
+\begin{enumerate}[(i)]
+    \item \(\Gamma = \mathrm{Cay}(G, S)\) is normal,
+    \item $d=\gcd(n,a_i-a_j, 1\leq i<j\leq k)=1$.
+\end{enumerate}
+Then
+$
+\mathrm{Aut}(\Gamma)
+\cong R(D_{2n}) \rtimes 
+\bigl\{(u,v) \in (\mathbb{Z}_{n})^{\times} \ltimes \mathbb{Z}_{n}: uA + v = A\bigr\}
+$.
+}
+\end{lem}
+
+\begin{proof}
+Since $d=1$, we have $\Gamma$ is connected and $S$ is a generating set. Since $S$ contains only reflections, $S$ is symmetric.
+
+\begin{claim}\label{Claim 4.7}
+{\em $\mathrm{Aut}(G,S)\cong\{ (u,v)\in(\mathbb Z_n)^\times\ltimes\mathbb Z_n: uA+v=A\}$,
+i.e. the stabiliser of $A$ in the affine group $\mathrm{AGL}(1,n)$.}
+\end{claim}
+
+\begin{proof}
+Given
+$\psi_{u,v}: r\mapsto r^u, s\mapsto r^v s$, there is a natural correspondence
+\[
+\Phi:\mathrm{Aut}(G,S)\longrightarrow \mathrm{AGL}(1,n),
+\qquad 
+\psi_{u,v}\longmapsto (u,v).
+\]
+We can see that
+$\psi_{u,v}\in \mathrm{Aut}(G,S)
+\Longleftrightarrow uA+v=A$,
+that is, the affine map $x\mapsto ux+v$ stabilises $A$.
+For $a_{i}\in A$, we have $\psi_{u,v}(r^{a_i}s)
+ = (r^u)^{a_i} \, r^v s
+ = r^{u a_i + v}s$.
+Hence $\psi_{u,v}(S)
+ = \{\, r^{u a_i + v}s : a_i \in A \,\}
+ = \{\, r^{x}s : x \in uA + v \,\}$,
+where $uA + v := \{\, u a + v : a \in A \,\} \subseteq \mathbb{Z}_n$.
+Therefore,
+$
+\psi_{u,v}(S) = S
+\Longleftrightarrow 
+\{\, r^{x}s : x \in uA + v \,\}
+   = \{\, r^{x}s : x \in A \,\}
+\Longleftrightarrow
+uA + v = A$.
+Thus, $\psi_{u,v} \in \mathrm{Aut}(G,S)
+\Longleftrightarrow uA + v = A$.
+Hence $\Phi$ identifies $\mathrm{Aut}(G,S)$ isomorphically with the affine stabiliser of $A$ in $\mathrm{AGL}(1,n)$, i.e., 
+$\mathrm{Aut}(G,S)\cong
+\{\, (u,v)\in (\mathbb Z_n)^\times\ltimes \mathbb Z_n : uA+v=A \,\}$.
+\end{proof}
+
+Since $\Gamma$ is normal, $\mathrm{Aut}(\Gamma)\cong R(G)\rtimes \bigl\{(u,v) \in (\mathbb{Z}_{n})^{\times} \ltimes \mathbb{Z}_{n}: uA + v = A\bigr\}$ by Claim \ref{Claim 4.7}.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{thm}\label{Theorem 4.8}
+{\em
+Let $4\leq k<n$ be integers such that $\gcd(n,k)=1$. Let
+$
+S=\{r^{a_1}s,\dots,r^{a_k}s\}\subseteq G=D_{2n}
+$
+be a set of distinct reflections,
+and $\Delta=\{a_i-a_j:1\le i<j\le k\}$.
+Assume
+\begin{enumerate}[(i)]
+  \item $\Gamma=\mathrm{Cay}(G,S)$ is normal,
+  \item $d=\gcd(n,a_i-a_j:1\leq i<j\leq k)=1$.
+\end{enumerate}
+Then
+$\mathrm{Aut}(\Gamma)=R(G)\rtimes H$,
+such that $H\leq (U_{0},\times)$ where $U_0:=\{u\in(\mathbb Z_n)^\times : u\Delta=\Delta\}$ and $\times$ is multiplication modulo $n$.
+}
+\end{thm}
+
+\begin{proof}
+Since $\Gamma$ is normal, we have $\mathrm{Aut}(\Gamma)=R(G)\rtimes\mathrm{Aut}(G,S)$. Let $A=\{a_1,\dots,a_k\}$. By the arguments in the proof of Lemma \ref{Lemma 4.6}, if \(\psi_{u,v}\) maps $r\mapsto r^u$ and $s\mapsto r^v s$ then
+%\begin{center}
+$\mathrm{Aut}(G,S)=
+\{\psi_{u,v}:(u,v)\in(\mathbb Z_n)^\times\ltimes\mathbb Z_n,\; uA+v=A\}$.    
+%\end{center}
+Let \(\pi:(\mathrm{Aut}(G,S),\circ)\to(\mathbb Z_n)^\times\) be the function that maps \(\psi_{u,v}\mapsto u\) where $\circ$ is the operation defined by $\psi_{u_{1},v_{1}}\circ\psi_{u_{2},v_{2}}=\psi_{u_{1}u_{2},v_{1}+u_{1}v_{2}}$ for any  $\psi_{u_{1},v_{1}},\psi_{u_{2},v_{2}}\in\mathrm{Aut}(G,S)$. 
+Since $\pi(\psi_{u_{1},v_{1}}\circ\psi_{u_{2},v_{2}})=
+u_{1}u_{2}=\pi(\psi_{u_{1},v_{1}})\pi(\psi_{u_{2},v_{2}})$, $\pi$ is a homomorphism.
+
+\begin{claim}\label{Claim 4.9}
+{\em $\pi(\mathrm{Aut}(G,S))\subseteq U_{0}$.
+}
+\end{claim}
+
+\begin{proof}
+If \(\psi_{u,v}\in\mathrm{Aut}(G,S)\) then $uA + v = A$. 
+Thus, for every $x \in A$, there exists $y \in A$ such that $ux + v = y$, 
+and conversely, for every $y \in A$, there exists $x \in A$ satisfying $ux + v = y$.
+For any $x,y\in A$, there exists $x',y'\in A$ such that $x'=ux+v$ and $y'=uy+v$. Thus,
+$x'- y'= (ux+v)-(uy+v)=u(x-y)$. Furthermore, $x'-y'\in\Delta$.
+Thus, $u \delta \in \Delta$ for all $\delta \in \Delta$. 
+So, $u\Delta \subseteq \Delta
+\text{ where } 
+u\Delta := \{\,u \delta : \delta \in \Delta\,\}$.
+Since $u$ is a unit in $\mathbb{Z}_n$, it has a multiplicative inverse $u^{-1}\in (\mathbb{Z}_n)^\times$.  
+By the same reasoning as above, we can see that
+$u^{-1}\Delta \subseteq \Delta$. Multiplying both sides by $u$, we obtain $\Delta \subseteq u\Delta$.
+Consequently, $u\Delta = \Delta$.
+\end{proof}
+
+\begin{claim}\label{Claim 4.10}
+{\em $\mathrm{ker}(\pi)$ is trivial, and hence $\pi$ is an injective homomorphism.}
+\end{claim}
+
+\begin{proof}
+The kernel of $\pi$ is $\mathrm{ker}(\pi)=\{\psi_{1,v}: \psi_{1,v}\in \mathrm{Aut}(G,S)\}$. If $\psi_{1,v}\in \mathrm{ker}(\pi)$, then $A+v=A$.  
+Let $\mathcal{G}=(\mathbb{Z}_{n},+)$. Fix $v\in\mathbb Z_n$.  
+Let $\langle v\rangle\le\mathcal G$ denote the cyclic subgroup generated by $v$, and let $\langle v\rangle$ act on $\mathbb Z_n$ by translations
+$k\cdot x \equiv x + kv \pmod n, (k\in\mathbb Z)$.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{subclaim}\label{subclaim 4.11}
+{\em 
+Let $m$ be the order of $v$ in $\mathcal G$, i.e. the smallest positive integer with $m v\equiv 0\pmod n$.
+Then for every $x\in\mathbb Z_n$,
+$|\mathrm{Orb}_{\langle v\rangle}(x)| = m$.
+In particular, $m$ divides $n$.}
+\end{subclaim}
+
+\begin{proof}
+The subgroup $\langle v\rangle=\{0,v,\dots,(m-1)v\}$ has $m$ elements and
+$\mathrm{Orb}_{\langle v\rangle}(x)=\{x + g : g\in \langle v\rangle\}$.
+Since $m$ is the least positive integer with $m v\equiv 0\pmod n$, the elements $x, x+v,\dots,x+(m-1)v$ are all distinct and
+$x + m v \equiv x \pmod n$.
+Thus, $|\mathrm{Orb}_{\langle v\rangle}(x)|=m$.
+Finally, since $\langle v\rangle$ is a subgroup of the finite group $(\mathbb Z_n,+)$ of order $n$, Lagrange's theorem gives $m\mid n$.
+\end{proof}
+
+Since $A=\bigcup_{x\in A} \{\mathrm{Orb}_{\langle v\rangle}(x)\}$ is a disjoint union of orbits, we have $|A|=tm=k$ if $A$ is the union of $t$-orbits, hence $m|k$. By Subclaim \ref{subclaim 4.11}, $m|n$ and thus $m=1$ since we assumed $\gcd (n,k)=1$. Therefore, $v=0$. So, the identity automorphism $\psi_{1,0}$ is the only element in $\ker(\pi)$.
+\end{proof}
+
+\begin{claim}\label{Claim 4.12}
+    {\em $(\mathrm{Aut}(G,S),\circ) \cong (\pi(\mathrm{Aut}(G,S)),\times)\leq (U_{0},\times)$.}
+\end{claim}
+
+\begin{proof}
+By the arguments of Claim \ref{Claim 4.10}, there exists a unique $v(u)$ such that $uA + v(u) = A$ for any $u \in \pi(\mathrm{Aut}(G,S))$.\footnote{Indeed, if $uA+v=uA+v'$ then $uA = uA + (v-v')$. Applying $u^{-1}$ elementwise to both sides yields
+$A = A + u^{-1}(v-v')$. Thus $u^{-1}(v-v')$ fixes $A$, and the orbit-count argument (as in Claim \ref{Claim 4.10}) forces $u^{-1}(v-v')\equiv 0\pmod n$, hence $v=v'$.}
+Then $\psi_{u,v(u)} \in \mathrm{Aut}(G,S)$ and $\pi(\psi_{u,v(u)}) = u$, so $\pi: \mathrm{Aut}(G,S)\rightarrow \pi(\mathrm{Aut}(G,S))$ is surjective. Since $\pi$ is a monomorphism, $\pi$ induces an isomorphism.
+Thus, 
+$(\mathrm{Aut}(G,S),\circ) \cong (\pi(\mathrm{Aut}(G,S)),\times)$.
+By Claim \ref{Claim 4.9}, we have $(\pi(\mathrm{Aut}(G,S)),\times)\leq (U_{0},\times)$.
+\end{proof}
+This completes the proof of Theorem \ref{Theorem 4.8}.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Two rotations and two reflections}
+\begin{prop}\label{Proposition 5.1}
+{\em
+Assume that $S$ contains exactly two rotations and two reflections. Then, there exist integers $a,b_1,b_2 \in \mathbb{Z}_n$ such that
+$S = \{ r^{\pm a},\, sr^{b_1},\, sr^{b_2} \}$ where $a\not\equiv 0, n/2 \pmod n$. 
+Let $T=\{\pm a\} \subset \mathbb{Z}_n$, 
+$M_{b_j} = \bigl\{ \{r^i,\, sr^{b_j-i}\} : i \in \mathbb{Z}_n \bigr\}$ for $j\in\{1,2\}$, and $\Gamma = \mathrm{Cay}(D_{2n},S)$.
+Then 
+\begin{center} 
+    $V(\Gamma)=R\cup F,\quad and \quad E(\Gamma) = E(\mathrm{Cay}(\mathbb{Z}_n,T)) \cup E(\mathrm{Cay}(\mathbb{Z}_n,T)) \cup M_{b_1} \cup M_{b_2}$.
+\end{center}
+
+So $\Gamma$ is obtained by taking two identical circulant layers (on $R$ and $F$) and adding the two inter-layer perfect matchings $M_{b_1},M_{b_2}$.
+}
+\end{prop}
+
+\begin{proof}
+We can see that $R$ and $F$ partition $D_{2n}$ into the rotation and reflection cosets. Multiplying by a rotation preserves the coset and multiplying by a reflection swaps cosets. Hence, rotation generators yield intra-layer edges and reflection generators yield inter-layer edges.
+For $i \in \mathbb{Z}_n$,
+$\{ r^i, r^{i+a} \}$, and $\{ r^i, r^{i-a}\}$
+are edges of $\Gamma[R]$, so $\Gamma[R] \cong \mathrm{Cay}(\mathbb{Z}_n, \{\pm a\})$. Similarly, $\Gamma[F]\cong \mathrm{Cay}(\mathbb{Z}_n, \{\pm a\})$.
+For $j=1,2$, each reflection $sr^{b_j}$ pairs $r^i$ with 
+$r^{i}(sr^{b_j})=(r^{i}s)r^{b_{j}}=(sr^{-i})r^{b_{j}}=sr^{b_{j}-i}$,
+producing the perfect matching
+$M_{b_j} = \{ \{ r^i, sr^{\,b_j-i}\} : i \in \mathbb{Z}_n\}$.
+Thus,
+$E(\Gamma) = E(\Gamma[R]) \cup E(\Gamma[F]) \cup M_{b_1} \cup M_{b_2}$.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Automorphism groups}
+
+\begin{thm} \label{Theorem 5.2}
+{\em Let $n \ge 3$ be an integer and $k \in \{1, \dots, n-1\}$ be such that if $n$ is even, then $k \neq n/2$. Let $S = \{ r, r^{-1}, s, sr^k \}$. Then $\Gamma=\mathrm{Cay}(D_{2n},S)$ is normal and $\mathrm{Aut}(\Gamma) \cong R(D_{2n}) \rtimes C_2$.}
+\end{thm}
+
+\begin{proof}
+The proof follows from a direct case analysis on the possible images of \(r\) and \(s\) under automorphisms of \(D_{2n}\); see Appendix A for details.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{One rotation or one reflection}
+\begin{prop}\label{Proposition 6.1}
+{\em Suppose $S$ contains exactly three rotations and one reflection. Then $n$ is even, and there exist integers $a,b \in \mathbb{Z}_n$ such that
+$S=\{r^a,\, r^{-a},\, r^{n/2},\, sr^b\}$ where $a\not\equiv 0, n/2 \pmod n$.
+Let $\Gamma=Cay(D_{2n},S)$,
+$T=\{\pm a,\, n/2\} \subset \mathbb{Z}_n$.
+For the reflection $sr^b$ define the perfect matching
+$M_b=\{\{r^i,\, sr^{b-i}\} : i \in \mathbb{Z}_n\}$.
+Then $E(\Gamma)= E(\mathrm{Cay}(\mathbb{Z}_n, T)) \cup E(\mathrm{Cay}(\mathbb{Z}_n, T)) \cup M_b$. 
+In particular, $\Gamma$ is formed by two
+isomorphic circulant graphs connected by a single inter-layer perfect matching.
+}
+\end{prop}
+
+\begin{proof}
+For any $r^t\in R$ and any $g\in D_{2n}$, $gr^t$ and $g$ belong to the same coset, and for any $sr^u\in F$ and any $g\in D_{2n}$, $g(sr^u)$ and $g$ belongs to the opposite coset. Thus, the generators $r^a, r^{-a}$, and $r^{n/2}$ produce only intra-layer edges. In particular, for every $i\in \mathbb{Z}_n$,
+\begin{center}
+$\{r^i, r^{i\pm a}\}, \{r^i, r^{i+n/2}\}, \{sr^i, sr^{i\pm a}\}, \{sr^i, sr^{i+n/2}\} \in E(\Gamma)$.
+\end{center}
+Therefore, $\Gamma[R] \cong \Gamma[F] \cong \mathrm{Cay}(\mathbb{Z}_n,T)$.
+Furthermore, $sr^b \in S$ produces the inter-layer edges. For each $i\in \mathbb{Z}_n$,
+$r^i (sr^b) = sr^{b-i} \in F$,
+so the edges arising from $sr^b$ are 
+$\{r^i, sr^{b-i}\}$ for $i\in \mathbb{Z}_n$.
+The set $M_b=\{\{r^i, sr^{b-i}\}: i\in \mathbb{Z}_n\}$ is a perfect matching.
+Consequently,
+$E(\Gamma )=E(\Gamma [R])\cup E(\Gamma [F])\cup M_{b}$. As $\Gamma [R]\cong \mathrm{Cay}(\mathbb{Z}_{n},T)$ and $\Gamma [F]\cong \mathrm{Cay}(\mathbb{Z}_{n},T)$, the graph structure can be described as two identical circulant graphs connected by a perfect matching.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prop}\label{Proposition 6.2}
+{\em 
+Assume that $S$ is a symmetric generating set for $D_{2n}$ with three distinct reflections and one rotation. 
+Then \(n\) is even and there exist distinct integers \(a_1,a_2,a_3\in\mathbb{Z}_n\) such that 
+$S=\{sr^{a_1},\; sr^{a_2},\; sr^{a_3},\; r^{n/2}\}$.
+Let \(\Gamma=\mathrm{Cay}(D_{2n},S)\).
+For \(j=1,2,3\), define the perfect matchings: $M_{a_j}=\bigl\{\{r^i,\,sr^{a_j-i}\}:i\in\mathbb{Z}_n\bigr\}$,
+$N_R=\bigl\{\{r^i,r^{\,i+n/2}\}:i\in\mathbb{Z}_n\bigr\}$, and $N_F=\bigl\{\{sr^i,sr^{\,i+n/2}\}:i\in\mathbb{Z}_n\bigr\}$.
+Then $\Gamma \;=\; (R\cup F,\; N_R\cup N_F\cup M_{a_1}\cup M_{a_2}\cup M_{a_3})$.}
+\end{prop}
+
+\begin{proof} 
+For \(j\in \{1,2,3\}\), we consider the action of generators \(sr^{a_{j}}\) and $r^{n/2}$ on vertices of $\Gamma$.
+\begin{itemize}
+    \item For \(i\in \mathbb{Z}_{n}\), we have
+    \(r^{i} (sr^{a_{j}})=r^{i}(r^{-a_{j}}s)=r^{i-a_{j}}s=sr^{a_{j}-i}\).    
+     So the edges produced by the generator \(sr^{a_{j}}\) on rotation vertices are of the form \(\{r^{i},sr^{a_{j}-i}\}\). These edges form the perfect matching \(M_{a_{j}}\) between the set of rotations \(R\) and the set of reflections \(F\).
+
+     \item For $y\in \mathbb{Z}_{n}$, we have
+       \((sr^{y}) (sr^{a_{j}})=r^{a_{j}-y}\). Thus the edges produced by the generator \(sr^{a_{j}}\) on reflection vertices are of the form \(\{sr^{y},r^{a_{j}-y}\}\) for $y\in \mathbb{Z}_{n}$. If we set \(i=a_{j}-y\), then 
+       $\{sr^{y},r^{a_{j}-y}\}=\{sr^{a_{j}-i},r^{i}\}\in M_{a_{j}}$.
+       Thus, the edges generated by \(sr^{a_{j}}\) acting on reflection vertices are already defined in \(M_{a_{j}}\).
+       
+       %, which is \(\{r^{i},sr^{a_{j}-i}\}\) since $\Gamma$ is an undirected graph. This shows that the edges generated by \(sr^{a_{j}}\) acting on reflection vertices are the same set of edges as those generated by \(sr^{a_{j}}\) acting on rotation vertices, which we have already defined as \(M_{a_{j}}\).
+
+     \item For rotation \(r^{n/2}\), since \((r^{n/2})^2=e\) we have for each \(i\),
+     $r^i r^{n/2}=r^{\,i+n/2}\in R \text{ and } (sr^i) r^{n/2}=sr^{\,i+n/2}\in F$, so \(r^{n/2}\) induces the perfect matchings \(N_R\) on \(R\) and \(N_F\) on \(F\).
+\end{itemize}
+
+The total set of edges in \(\Gamma \) is the union of the matchings induced by each generator in \(S\). Each of the reflection generators \(sr^{a_{i}}\), $1\leq i\leq 3$ induces a perfect matching $M_{a_{i}}$. The rotation generator \(r^{n/2}\) induces the perfect matchings \(N_{R}\) and \(N_{F}\).
+Thus,
+$E(\Gamma)=N_R\cup N_F\cup M_{a_1}\cup M_{a_2}\cup M_{a_3}$.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\textbf{Funding} The author was supported by the EK\"{O}P-24-4-II-ELTE-996 University Excellence scholarship program of the Ministry for Culture and Innovation from the source of the National Research, Development and Innovation fund. 
+%%%%%%%%%%%
+\begin{thebibliography}{99}
+
+\bibitem{ASE2019}
+A. F. Ahmad Fadzil, N. H. Sarmin, and A. Erfanian. 
+\newblock {The Energy of Cayley Graphs for a Generating Subset of the Dihedral Groups},
+\newblock {\em MATEMATIKA: MJIAM}  
+\newblock \textbf{35}
+\newblock no.3
+\newblock (2019),
+\newblock 371–376.
+\newblock doi: \url{https://doi.org/10.11113/matematika.v35.n3.1115}
+
+\bibitem{EP2005}
+S. Evdokimov, and I. Ponomarenko,
+\newblock {A New Look at the Burnside–Schur Theorem},
+\newblock {\em  Bull. Lond. Math. Soc.}  
+\newblock \textbf{37}
+\newblock no.4
+\newblock (2005),
+\newblock 535-546.
+\newblock doi: \url{ https://doi.org/10.1112/S0024609305004340}
+
+\bibitem{KE2021}
+S. AL. Kaseasbeh and A. Erfanian,
+\newblock {The structure of Cayley graphs of dihedral groups of Valencies 1, 2 and 3},
+\newblock {\em Proyecciones (Antofagasta)}  
+\newblock \textbf{40}
+\newblock no.6
+\newblock (2021),
+\newblock 1683-1691.
+\newblock doi: 
+\url{https://doi.org/10.22199/issn.0717-6279-4357-4429}
+
+\bibitem{HHL2017}
+X. Huang, Q. Huang, and L. Lu,
+\newblock {Automorphism Groups of a Class of Cubic Cayley Graphs on Symmetric Groups},
+\newblock {\em Algebra Colloq.}  
+\newblock \textbf{24}
+\newblock no. 4  
+\newblock (2017),
+\newblock 541-550.
+\newblock doi: \url{https://doi.org/10.1142/S1005386717000359}
+
+\bibitem{Kon2020}
+X. Kong,
+\newblock {Automorphism Groups of Cubic Cayley Graphs of Dihedral Groups of Order $2^{n}p^{m}$ ($n \geq 2$ and $p$ Odd Prime)},
+\newblock {\em JAMP}  
+\newblock \textbf{8}
+\newblock no.12
+\newblock (2020),
+\newblock 3075–3084.
+\newblock doi: \url{https://doi.org/10.4236/jamp.2020.812226} 
+
+\bibitem{KO2006}
+J.H. Kwak and J.M. Oh,
+\newblock {One-regular normal Cayley graphs on dihedral groups of valency 4 or 6 with cyclic vertex stabilizer},
+\newblock {\em Acta Math. Sinica} 
+\newblock \textbf{22} 
+\newblock (2006),
+\newblock 1305–1320.
+\newblock doi: \url{https://doi.org/10.1007/s10114-005-0752-9}
+
+\bibitem{LX2003}
+Z.P. Lu and M.Y. Xu,
+\newblock {On the normality of Cayley graphs of order $pq$},
+\newblock {\em Australas. J. Combin.} 
+\newblock \textbf{27} 
+\newblock (2003),
+\newblock 81–93.
+
+\bibitem{WZ2006}
+C.Q. Wang and Z.Y. Zhou,
+\newblock {One-Regularity of 4-Valent and Normal Cayley Graphs of Dihedral Groups},
+\newblock {\em Acta Math. Sinica, Chin. Ser.} 
+\newblock \textbf{49} 
+\newblock no. 3  
+\newblock (2006),
+\newblock 669–678.
+\newblock doi: \url{https://doi.org/10.12386/A2006sxxb0084}
+
+\bibitem{WX2006}
+C. Wang and M. Xu,
+\newblock {Non-normal one-regular and 4-valent Cayley graphs of dihedral groups $D_{2n}$},
+\newblock {\em  Eur. j. comb.}  
+\newblock \textbf{27}
+\newblock no. 5  
+\newblock (2006),
+\newblock 750-766.
+\newblock doi:\url{https://doi.org/10.1016/j.ejc.2004.12.007}
+
+\bibitem{ZF2007}
+C. Zhou and Y.Q. Feng,
+\newblock {Automorphism Groups of Connected Cubic Cayley Graphs of Order $4p$},
+\newblock {\em Algebra Colloq.}  
+\newblock \textbf{14}
+\newblock no. 2  
+\newblock (2007),
+\newblock 351-359.
+\newblock doi:\url{https://doi.org/10.1142/S100538670700034X}
+
+\end{thebibliography}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Appendix A}
+In this section, we write the detailed proof of Theorem \ref{Theorem 5.2}.
+The set \(S=\{r,r^{-1},s,sr^{k}\}\), contains both \(r\) and \(s\). Therefore, the subgroup \(\langle S\rangle \) generated by \(S\), is equal to \(D_{2n}\) and $\Gamma$ is connected.
+
+\begin{claim} \label{Claim 5.3}
+{\em $\mathrm{Aut}(G,S) = \{ \mathrm{id}, \phi \}$, where $\phi: r \mapsto r^{-1}, s \mapsto sr^k$ and $\mathrm{id}$ is the identity automorphism.}
+\end{claim}
+
+\begin{proof}
+Every automorphism of $D_{2n}$ is of the form $\psi_{u,v}: r \mapsto r^u, s \mapsto r^v s$, where $u \in (\mathbb{Z}_n)^\times$ and $v \in \mathbb{Z}_n$. For $\psi_{u,v}$ to be in $\mathrm{Aut}(G,S)$, it must map the set $S$ to itself.
+
+\begin{enumerate}
+    \item Since $r \in S$, its image $r^u$ must be in $S$. The only elements of order $n \ge 3$ in $S$ are $r$ and $r^{-1}$. So, we must have $r^u=r$ or $r^u=r^{-1}$, which implies $u \equiv \pm 1 \pmod n$.
+    \item Similarly, since $s \in S$, its image $r^v s$ must be in $S$. The only involutions in $S$ are $s$ and $sr^k$. Thus, $r^v s = s$ or $r^v s = sr^k$.
+\end{enumerate}
+
+Now we analyze the cases for $u$ and $v$:
+\begin{itemize}
+    \item \textbf{Case $u\equiv 1 \pmod n$:} Then $\psi_{u,v}$ maps $r$ to $r$. Then 
+    $\psi_{u,v}\{s, sr^k\}=\{s, sr^k\}$.
+    Clearly, $\psi_{u,v}(s)=r^v s$ and $\psi_{u,v}(sr^k)=(r^v s)r^k=r^v (r^{-k}s) =r^{v-k} s$.
+    Thus $\{r^v s, r^{v-k}s\} = \{s, sr^k\}$.
+    \begin{itemize}
+        \item \textbf{Subcase $r^v s = s$:} If $r^v s = s$, then $v=0$. 
+        Consequently, $\psi_{1,0} = \mathrm{id}\in \mathrm{Aut}(G,S)$.
+        
+        \item \textbf{Subcase $r^v s = sr^k$:} 
+         If $r^{v}s=sr^{k}$ and $r^{v-k}s=s$, then $v\equiv -k \pmod n$. We have $r^{-2k}s=s$. This implies \(r^{-2k}=1\) and \(2k\equiv 0 \pmod n\).  
+         However, the hypothesis of Theorem \ref{Theorem 5.2} states that if $n$ is even, $k\ne n/2$, which means $2k\not\equiv 0\pmod n$. Thus, this subcase is impossible.
+    \end{itemize}
+
+    \item \textbf{Case $u \equiv -1 \pmod n$:}
+    Then $\psi_{u,v}$ maps $r$ to $r^{-1}$. Then 
+    $\psi_{u,v}\{s, sr^k\}=\{s, sr^k\}$.
+    Clearly, $\psi_{u,v}(s)=r^v s$ and $\psi_{u,v}(sr^k)=(r^v s)r^{-k}=r^{v}(r^{k}s)=r^{v+k} s$.
+    Thus $\{r^v s, r^{v+k}s\} = \{s, sr^k\}$.
+
+\begin{itemize}
+        \item \textbf{Subcase $r^v s = s$ and $r^{v+k}s = sr^k$:} The first equation implies $v \equiv 0 \pmod n$. The second equation becomes $r^k s = sr^k$, which is $r^k s = r^{-k}s$. 
+        Thus, 
+        \begin{center}
+        $(r^k s)s = (r^{-k}s)s \implies r^k s^2=r^{-k}s^2 \implies r^k = r^{-k}$.    
+        \end{center}
+        Multiplying both sides by $r^k$ gives $r^{k}r^{k} = r^{-k} r^k$, which simplifies to $r^{2k} = r^0 = 1$. This implies $2k \equiv 0 \pmod n$, since the order of $r$ is $n$. This is excluded by the hypothesis of Theorem \ref{Theorem 5.2}. Thus, this subcase is impossible.
+        \item \textbf{Subcase $r^v s = sr^k$ and $r^{v+k}s = s$:} The second equation implies $v+k \equiv 0 \pmod n$, so $v \equiv -k \pmod n$. Let's check if the mapping $\psi_{-1,-k}$ preserves the set $S$:
+    \begin{itemize}
+        \item $\psi_{-1,-k}(r) = r^{-1} \in S$.
+        \item $\psi_{-1,-k}(s) = r^{-k}s = sr^k \in S$.
+        \item $\psi_{-1,-k}(sr^k) = \psi_{-1,-k}(s) \psi_{-1,-k}(r)^k = (sr^k)(r^{-1})^k = sr^k r^{-k} = s \in S$.
+    \end{itemize}
+    This mapping, which we denote by $\phi$, maps $S$ to $S$ and is a valid automorphism of $D_{2n}$. Since $k \not\equiv 0 \pmod n$, $\phi$ is not the identity.
+    Moreover, $\phi^2 = \mathrm{id}$ since
+$\phi^2(r) = \phi(r^{-1}) = r$ and
+$\phi^2(s) = \phi(sr^k) = s$.
+\end{itemize} Therefore, the only possible automorphism for this case is $\phi = \psi_{-1,-k}$.
+\end{itemize}
+
+Since $\phi \neq \mathrm{id}$, $\mathrm{Aut}(G,S) \supseteq \{ \mathrm{id}, \phi \}$. Furthermore, from the analysis above, these are the only two possibilities. So $\mathrm{Aut}(G,S) = \{ \mathrm{id}, \phi \}$, and since $\phi^2=\mathrm{id}$, this group is isomorphic to $C_2$.
+\end{proof}
+
+\begin{claim}\label{Claim 5.4}
+{\em $\Gamma$ is normal, and consequently, $\mathrm{Aut}(\Gamma) = R(D_{2n}) \rtimes \mathrm{Aut}(G,S) \cong R(D_{2n}) \rtimes C_2$.}
+\end{claim}
+\begin{proof}
+In view of Fact \ref{Fact 2.9} (1), it suffices to show that $\mathrm{Aut}(\Gamma)_{e} = \{\mathrm{id},\phi\}$. Let $\alpha \in \mathrm{Aut}(\Gamma)$ with $\alpha(e) = e$. 
+Since automorphisms preserve adjacency, $\alpha(N_{\Gamma}(e))=N_{\Gamma}(e)= S = \{r, r^{-1}, s, sr^k\}$ where $N_{\Gamma}(e)$ denotes the open neighborhood of $e$ in $\Gamma$. Additionally, $\alpha$ must preserve the order of elements. For $n \ge 3$, the elements $r$ and $r^{-1}$ are rotations of order $n$, whereas $s$ and $sr^k$ are reflections of order 2. Since $n \ne 2$, these sets have distinct orders, so $\alpha\{r,r^{-1}\}=\{r,r^{-1}\}$ and $\alpha\{s,sr^k\}=\{s,sr^k\}$. This gives four possibilities:
+
+\begin{enumerate}
+    \item \textbf{Case (I): $\alpha(r) = r$ and $\alpha(s) = s$.}
+    Since $\alpha$ fixes the generators, we have $\alpha = \mathrm{id}$.
+
+    \item \textbf{Case (II): $\alpha(r) = r$ and $\alpha(s) = sr^k$.}
+    Since $\alpha(e)=e$, we have $\alpha(rr^{-1})=\alpha(r)\alpha(r^{-1})=r\alpha(r^{-1})=e$. Thus, $\alpha(r^{-1}) = r^{-1}$. Furthermore, $\alpha(sr^k) = \alpha(s)\alpha(r)^k = (sr^k)r^k=(r^{-k}s)r^k = r^{-k}(sr^k) = r^{-k}(r^{-k}s) = r^{-2k}s = sr^{2k}$. Since $\alpha(S)=S$, we have 
+    \begin{center}
+    $\{\alpha(r),\alpha(r^{-1}),\alpha(s),\alpha(sr^{k})\}=\{r,r^{-1},s,sr^{k}\}$.    
+    \end{center}
+    Thus  $sr^{2k}=s$, so $r^{2k}=1$ and $2k \equiv 0 \pmod n$, which are excluded by the theorem’s hypothesis. Thus, this case is impossible.
+
+    \item \textbf{Case (III): $\alpha(r) = r^{-1}$ and $\alpha(s) = s$.}
+    Then $\alpha(r^{-1})=r$ and $\alpha(sr^k) = \alpha(s)\alpha(r)^k = s(r^{-1})^k = sr^{-k}$. Similar to Case(II), we obtain $sr^{-k}=sr^k$, so $r^{-k}=r^k$, and $r^{2k}=1$. This means $2k \equiv 0 \pmod n$. Therefore, similar to Case(II), this case is also impossible.
+
+    \item \textbf{Case (IV): $\alpha(r) = r^{-1}$ and $\alpha(s) = sr^k$.}
+    Then $\alpha(r^{-1})=r$ and
+    $\alpha(sr^k) = \alpha(s)\alpha(r)^k = (sr^k)(r^{-1})^k = sr^k r^{-k} = s$.
+    Thus $\alpha(S)=S$ and $\alpha$ is the automorphism $\phi$ from Claim \ref{Claim 5.3}.
+\end{enumerate}
+
+Since these are the only four possibilities for $\alpha$ acting on the generators, the only automorphisms in $\mathrm{Aut}(\Gamma)_e$ are $\mathrm{id}$ and $\phi$. Hence, $\mathrm{Aut}(\Gamma)_e = \{\mathrm{id}, \phi\} = \mathrm{Aut}(G,S)$ and we are done.
+\end{proof}
+
+\end{document}

@@ -1,0 +1,1256 @@
+\documentclass[12pt,a4paper,reqno]{amsart}
+\setlength{\textheight}{22.5cm} \setlength{\textwidth}{6.25in}
+\setlength{\topmargin}{0pt} \setlength{\evensidemargin}{1pt}
+\setlength{\oddsidemargin}{1pt} \setlength{\headsep}{10pt}
+\setlength{\parskip}{1mm} \setlength{\parindent}{4mm}
+\renewcommand{\baselinestretch}{1.09}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{bbm}
+\usepackage{amsmath}
+\usepackage{latexsym}
+\usepackage{amscd}
+\usepackage{tikz}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{enumitem}
+\usepackage{url}
+\usepackage[english]{babel}
+\usepackage{mathtools}
+\usepackage[autostyle]{csquotes}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[linktocpage=true,colorlinks,citecolor=blue,linkcolor=blue,urlcolor=blue]{hyperref}
+
+
+% ----------------------------------------------------------------
+\vfuzz2pt % Don't report over-full v-boxes if over-edge is small
+\hfuzz2pt % Don't report over-full h-boxes if over-edge is small
+% THEOREMS -------------------------------------------------------
+
+
+\numberwithin{equation}{section}
+\setcounter{section}{0}
+
+% MATH -----------------------------------------------------------
+\def\R{\mathbb R}
+\def\Z{\mathbb Z}
+\def\C{\mathbb C}
+\def\P{\mathbb P}
+\def\N{\mathbb N}
+\def\E{\mathbb E}
+\def\d{\mathrm d}
+\def\n{\textbf{n} }
+\def\m{\textbf{m}}
+\def\p {\mathbbm{1}_{\wp}} 
+\def\CT{\mathcal{T} }
+\def\CA{\mathcal{A}}
+\def\CS{\mathcal{S}}
+\def\td{\tilde}
+\def\ra{\rightarrow}
+\def\pt{\partial}
+\def\ee{\varepsilon}
+\def\wt{\widetilde}
+\def\e {\mathbbm{1}} 
+\def\gcd{\operatorname{gcd}}
+\def\rad{\operatorname{rad}}
+\DeclareMathOperator\GG{G}
+\DeclareMathOperator\GL{GL}
+\DeclareMathOperator\SO{SO}
+\DeclareMathOperator\Diff{Diff}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\Mod}[1]{\;(\mathrm{mod}\;#1)}
+\def\leq {\leqslant}
+\def\ge {\geqslant}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem*{nonumlemma}{Lemma}
+\newtheorem*{nonumtheorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem*{problem}{Problem}
+\newtheorem*{claim}{Claim}
+
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem*{xremark}{Remark}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}[theorem]{Question}
+\numberwithin{equation}{section}
+
+\theoremstyle{remark}
+\newtheorem{example}[theorem]{Example}
+
+\usepackage{bm,colonequals,physics}
+\newcommand{\ts}{\tau}
+\newcommand{\defeq}{\colonequals}
+\newcommand{\eqdef}{\equalscolon}
+\newcommand{\maps}{\colon}
+\newcommand{\map}{\operatorname}
+\newcommand{\mscr}{\mathscr}
+\newcommand{\ol}{\overline}
+\newcommand{\mcal}{\mathcal}
+\def\F{\mathbb F}
+\def\E{\mathbb E}
+\def\Q{\mathbb Q}
+\def\OK{\mathcal{O}}
+\def\Omon{\OK^+}
+\def\T{\mathbb{T}}
+
+\title[Helson's conjecture for smooth numbers]{Helson's conjecture for smooth numbers}
+\author{Seth Hardy}
+\address{Mathematics Institute, Zeeman Building, University of Warwick, Coventry CV4
+7AL, England}
+\email{seth.hardy@warwick.ac.uk}
+\author{Max Wenqiang Xu} 
+\address{Courant Institute of Mathematical Sciences, 251 Mercer Street, New York 10012, USA}
+\email{maxxu1729@gmail.com}
+\date{\today}
+
+\begin{document}
+
+\begin{abstract}
+Let $\Psi(x,y)$ denote the count of $y$-smooth numbers below $x$ and $P(n)$ denote the largest prime factor of $n$. We prove that for $f$ a Steinhaus random multiplicative function, the partial sums over $y$-smooth numbers enjoy better than squareroot cancellation, in the sense that
+$$ \E \Big|\sum_{\substack{1\leq n \leq x\\ P(n) \leq y}} f(n) \Big| = o\left( \Psi(x,y)^{1/2} \right),$$
+uniformly for $(\log x)^{30} \leq y \leq x$. Our bounds are quantitative and give a large saving when $y$ isn't too close to $x$.
+\end{abstract} 
+
+\maketitle
+\section{Introduction}
+
+\subsection{Motivation and statement of results}
+Multiplicative functions are a fundamental object of study in number theory, and, in recent years, research on \emph{random} multiplicative functions has been pursued as an avenue to better understand the behaviour of certain families of multiplicative functions. The study of random multiplicative functions was initiated by Wintner~\cite{Win} in 1944, where he introduced the \emph{Rademacher} random multiplicative function as a model for studying the partial sums of the Möbius function. In this paper, we concern ourselves only with the \emph{Steinhaus} random multiplicative function, $f \colon \N \rightarrow \C$, which is defined by letting $\bigl( f(p) \bigr)_{p \text{ prime}}$ be independent and identically distributed random variables uniformly distributed on the complex unit circle $\{ z \in \C : |z| = 1 \}$, and extending to composite numbers $n = p_1^{\alpha_1} \dots p_r^{\alpha_r}$ by setting 
+\[
+f(n) = \prod_{i=1}^r f(p_i)^{\alpha_i}.
+\]
+The Steinhaus random multiplicative function serves as a model for families of Dirichlet characters, $n \rightarrow \chi(n)$ for $\chi \bmod r$ chosen uniformly at random, in addition to continuous characters, $n \rightarrow n^{it}$, for $t \in [T,2T]$ chosen uniformly at random, where $r$ and $T$ are to be thought of as parameters tending to infinity. For $f$ a Steinhaus random multiplicative function, we have ``perfect orthogonality'', in the sense that
+\[
+\E \Bigl[ f(n) \overline{f(m)} \Bigr] = \mathbf{1}_{n=m} .
+\]
+This relation is mirrored by corresponding orthogonality relations for characters. It is of great interest to analytic number theorists to understand the statistical behaviour of character sums, $\sum_{n \leq x} \chi (n)$, and zeta sums, $\sum_{n \leq x} n^{it}$. In light of the orthogonality relations, the second moments of these quantities are fairly straightforward to evaluate, most of all in the Steinhaus case where we immediately see that $ \E \bigl| \sum_{n \leq x} f (n) \bigr|^2 = \lfloor x \rfloor$. A natural problem that follows is to understand the first moment, $\E \bigl| \sum_{n \leq x} f(n) \bigr|$, in addition to the character and zeta sum analogues, though understanding these quantities is a much harder problem. A naive first guess is that, ignoring the multiplicative dependence structure, the sum $\sum_{n \leq x} f(n)$ may behave like the first absolute moment of a sum of mean-zero independent random variables with unit variance, and, if this were true, the Cauchy--Schwarz upper bound $\E \bigl| \sum_{n \leq x} f(n) \bigr| \leq \sqrt{x}$ would be sharp up to a constant. This upper bound is often referred to as squareroot cancellation, and more generally gives $\E \bigl| \sum_{n \in \CA} f(n) \bigr| \leq \sqrt{|\CA|}$ for an arbitrary set $\CA$. Helson \cite{Helson} conjectured that, for the full sum up to $x$, we should actually have more than squareroot cancellation, in the sense that $\E \bigl| \sum_{n \leq x} f(n) \bigr| = o(\sqrt{x})$. The answer to this conjecture remained unclear until the problem was fully resolved by Harper \cite{HarperLow}, who showed that Helson's conjecture was true, proving the precise estimate
+\[
+\E \Bigl|\sum_{1\leq n \leq x} f(n) \Bigr| \asymp \frac{\sqrt{x}}{(\log \log x)^{1/4}} .  
+\]
+The analogous character and zeta upper bounds are also proved by Harper in \cite{harpertypical} using a remarkable \textit{derandomisation method}. More precisely, Harper explicitly relates these moments of character sums and zeta sums to (a certain stage in the proof of) the random multiplicative case. As is to be expected, the length of the sum in that case depends on the parameters $r$ and $T$ that determine the size of the family of characters. For example, it is shown that for any large prime $r$ and for all $x\leq r$ with $x, \frac{r}{x} \to +\infty$, one has
+\[
+\frac{1}{r-1} \sum_{\chi \bmod r} \Big|\sum_{1\leq n \leq x}\chi(n) \Big| = o(\sqrt{x}). 
+\]
+In that work, Harper also conjectured (see~\cite[Equation~(1.2)]{harpertypical}) that this phenomenon can be pushed further, in that the \textit{``conductor restriction''} $x\leq r$ can be weakened if one has a M\"obius twist, an application of which would be to break the classical ``squareroot barrier'' in M\"obius cancellation (see \cite{WXRatios} for further discussion). We shall discuss later in the introduction (after Theorem~\ref{Thm: main}) about how an analogous conjecture in our setting may have consequences for counting smooth numbers in small intervals.
+
+The key idea behind Harper's theorem is to notice that the partial sums are connected to a phenomenon known as \textit{critical Gaussian multiplicative chaos} (GMC). To briefly elaborate, we define $F_x (s) \coloneqq \prod_{p\leq x} \bigl( 1 - \frac{f(p)}{p^{s}} \bigr)^{-1}$ to be the truncated Euler product. By a non-trivial conditioning argument and an application of Plancherel's identity, the proof works by first showing that
+\begin{equation}\label{equ:full sum relation to EP}
+\E \Bigl| \sum_{n \leq x} f(n) \Bigr| \approx \sqrt{\frac{x}{\log x}} \E \left( \int_{-1/2}^{1/2} |F_x (1/2 + it)|^{2} dt\right)^{1/2} ,
+\end{equation}
+and then by showing that this expectation of the Euler product integral is smaller than naively anticipated. The driving force behind this is the fact that $\bigl( \log|F(1/2 + it)| \bigr)_{t \in [-1/2,1/2]}$ is well approximated by a Gaussian field with logarithmic correlations, and the exponent 2 is exactly the critical value in this case, all together meaning that these integrals are precisely the setting where one observes critical Gaussian multiplicative chaos. The reader is encouraged to consult~\cite{Harperhigh, HarperIII} for more detailed discussions. We also remark that there have been recent progress in understanding the exact limiting distribution of the partial sums in~\cite{GW-Final, Hardy2025}.
+
+It is natural to ask whether one still obtains ``better than squareroot cancellation'' when the full sum is replaced by a sum over a set $\CA$ that has interesting arithmetic structure. In previous work of the second author~\cite{Xu}, the case where $\CA = \CA (x, R)$ is a set of $R$-rough numbers up to $x$, i.e., all elements in the set have prime factors with size at least $R$, was studied. In that case, there is an interesting transition range, since we observe ``better than squareroot'' cancellation,
+\[
+\E \Bigl| \sum_{n \in \CA (x, R)} f(n) \Bigr| = o \left(\sqrt{|\CA (x, R)|} \right) ,
+\]
+whenever $\log \log R$ is smaller than roughly $\sqrt{\log \log x}$, but the statement fails to hold when $R$ is any larger. The case where $\mathcal{A}$ is a short interval was studied in~\cite{Caichshort}, and, together with the related work~\cite{Chang}, these three papers observe some universality in the transition threshold which is ultimately related to the ballot problem.
+
+In this paper, our attention lies on what happens when $\CA$ is the set of $y$-smooth numbers, i.e., all elements in $\CA$ only have prime factors $p\leq y$. Here and throughout the paper, let $P(n)$ denote the largest prime factor of $n$, so that $\Psi(x,y) = \# \{ n \leq x : P(n) \leq y \}$ denotes the count of $y$-smooth numbers up to $x$. Note that the case where $y=x$ corresponds to the full sum, for which we know from Harper\cite{HarperLow} that we have better than squareroot cancellation. Analogously to the previous cases, one might wonder if there is a certain transition range where the ``better than squareroot'' cancellation disappears. Our main theorem suggests that this may not be the case. 
+
+\begin{theorem}\label{Thm: main}
+Suppose that $(\log x)^{30} \leq y \leq x$. Then we have
+\[
+\E \Big|\sum_{\substack{1\leq n \leq x\\ P(n) \leq y}} f(n) \Big| = o\left( \Psi(x,y)^{1/2} \right), 
+\]
+uniformly for $y$ in this range. Quantitative bounds can be found in Theorems~\ref{Thm: main quantitative} and~\ref{t:small u upper bound}.
+\end{theorem}
+
+One motivation and a potential application for our result is to make further progress on the classical problem of counting $y$-smooth numbers in short intervals $[x, x+h]$. See recent developments and discussions in \cite{soundshortinterval, KYounis}. The breakthrough work of Matomäki and Radziwi\l{}\l{} \cite{MR16} shows the existence of $x^{\ee}$-smooth numbers unconditionally in intervals of length $h\gg_{\ee} \sqrt{x}$, coming close to solving an old problem that, for any fixed $\ee > 0$, there exists an $x^{\ee}$-smooth number in $[x, x+ \sqrt{x}]$ when $x$ is sufficiently large. To see how our result may be useful, similarly to~\cite[Equation (1.2)]{harpertypical} (though removing the ``deterministic'' contribution from $t \approx 0$), we might conjecture that for any fixed $A > 0$ and small $\ee>0$, we have, very roughly speaking,
+\begin{equation}\label{equ:deterministic small conductor conjecture}
+\frac{1}{T} \int_{\substack{|t| \leq T \\ t \not \approx 0}} \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq x^{\ee}}} n^{-it} \Bigr| \, dt \ll \E \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq x^{\ee}}} f(n) \Bigr|, \quad \forall x \leq T^A .
+\end{equation}
+Importantly, we know from Theorem~\ref{Thm: main} that the right-hand side is $o \bigl(\sqrt{\Psi(x,x^{\ee})} \bigr)$. Similar to as described in~\cite{harpertypical}, though isolating the main term in this case, Perron's formula suggests that
+\[
+\frac{\Psi (x + h, x^{\ee}) - \Psi (x,x^{\ee})}{h} \approx \frac{1}{2\pi x} \int_{-x/h}^{x/h} \sum_{\substack{n \leq x + h \\ P(n) \leq x^{\ee}}} n^{-it} \biggl( \frac{x}{h} \biggr)^{it} \, dt \approx \frac{\Psi(x,x^{\ee})}{x} + E(x,x^{\ee},h),
+\]
+where
+\[
+E (x,x^{\ee},h) \ll \frac{1}{x} \int_{\substack{|t| \leq T \\ t \not \approx 0}} \Bigl| \sum_{\substack{n \leq x + h \\ P(n) \leq x^{\ee}}} n^{-it} \Bigr| \, dt .
+\]
+In particular, since $\Psi(x,x^\varepsilon) \asymp_\varepsilon x$, combining Theorem~\ref{Thm: main} and~\eqref{equ:deterministic small conductor conjecture} (with $A = 2$) gives the bound $E (x,x^{\varepsilon},\sqrt{x}) = o\big(  \sqrt{\Psi(x, x^{\ee})/x} \big) = o (1)$, which (very roughly) gives an asymptotic for the count in intervals of length $h = \sqrt{x}$. In fact, our quantitative result for $y$ in this range, Theorem~\ref{t:small u upper bound}, would suggest further that this strategy could show the existence of $x^{\ee}$-smooth numbers in intervals of length $h \gg \sqrt{x} / (\log \log x)^{1/4}$, similarly to how the analogous conjecture in~\cite{harpertypical} gives M\"{o}bius cancellation in sums of length $h \gg \sqrt{x} / (\log \log x)^{1/4}$.
+
+Based on Theorem~\ref{Thm: main}, it seems reasonable to conjecture that ``better than squareroot cancellation'' should hold uniformly for all $y \leq x$.
+\begin{conjecture}\label{conj:all y}
+Theorem~\ref{Thm: main} holds uniformly for any $2 \leq y \leq x$.
+\end{conjecture}
+It would be nice if one could solve Conjecture~\ref{conj:all y} completely, though our main theorem covers what we believe to be the most interesting range. Analogously to~\eqref{equ:full sum relation to EP}, we always work by connecting the partial sums to the Euler product. To illustrate how the analysis changes for smaller $y$, in the most extreme case, when $y=2$, we have
+\[
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq 2}} f(n) \Bigr| = \E \Bigl| \sum_{n \leq \lfloor \frac{\log x}{\log 2} \rfloor} f(2)^n \Bigr| = \int_0^1 \Bigl| \sum_{n \leq \lfloor \frac{\log x}{\log x} \rfloor} \mathrm{e} (n \theta) \Bigr| \, d \theta \ll \log \log x,
+\]
+which is very small relative to $\Psi(x,2)^{1/2} \asymp (\log x)^{1/2}$. This provides evidence towards our conjecture, and also points out that for small $y$, the problem is related to finding cancellation in exponential sums over lattices. The exponential sum estimate becomes challenging once $y\gg(\log x)^{1+o(1)}$, and new ideas are needed to cover this range. 
+
+In this paper, we observe two distinct sources for the ``better than squareroot cancellation'' phenomena in Theorem~\ref{Thm: main}; the size of $y$ being key to this analysis. First of all, for $y$ being close to $x$, one should expect that the critical GMC phenomenon uncovered by Harper~\cite{HarperLow} should give better than squareroot cancellation. We find this to be the case, and moreover, we are able to use critical GMC phenomenon to prove better than squareroot cancellation even when $y$ is as small as $e^{(\log \log x)^2}$, say. We outline how this is done in Section~\ref{s: large y explained}, and a precise statement is given in Theorem~\ref{t:small u upper bound}. The critical GMC saving in our case specifically comes from exploiting the randomness of $f(p)$ on the small primes (to be precise, primes smaller than roughly $e^{\frac{1}{1 - \alpha}}$ for $\alpha = \alpha(x,y)$ the saddle point, see Section~\ref{s:smooths intro} for details), and, as one may expect, the saving is always quite small (like a power of $\log \log x$, or smaller).
+
+Given the previous works~\cite{HarperLow, Xu, Caichshort}, one may not expect to observe cancellation that is larger than some power of $\log \log x$ for any reasonably large $y$. \emph{However, we find that when $y$ is smaller than roughly $x^{\frac{1}{\log \log x}}$, we can obtain an unexpectedly large saving (actually coming from the primes closer to $y$).} In short, this saving comes from the fact that the dominant contribution to certain Euler product expectations comes from highly unlikely events (we explain this in detail in Section~\ref{s:outline of moderate y}). The flavour of this might remind some readers of the \textit{supercritical} GMC case, although this is not exactly what we observe, since our Euler products are shifted off the half-line and are no longer approximated by the exponential of a log-correlated Gaussian field. This novel phenomenon allows us to prove the following:
+
+\begin{theorem}\label{Thm: main quantitative}
+Let $u = \frac{\log x}{\log y}$ and fix $\varepsilon > 0$. For $e^{(\log \log x)^{1 + \varepsilon}} \leq y \leq x^{\frac{1}{(\log \log x)^{1 + \varepsilon}}}$, we have
+\begin{equation}\label{equ: alt statement}
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \Bigr| \ll \sqrt{\Psi(x,y) \exp \bigl( -u (\log 2 + o(1) \bigr)},
+\end{equation}
+where the $o(1)$ term goes to zero uniformly for $y$ in this range. This result is derived from the following bound: In the larger range $(\log x)^{30} \leq y \leq x^{\frac{1}{7 \log \log x}} $, we have
+\[
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \Bigr| \ll \Psi(x^2, y)^{1/4} \exp \biggl( \frac{10 u \log u}{\log y} + O \bigl( u^{8/11} \bigr) \biggr) (\log x)^{5/8} (\log y)^{13/8},
+\]
+where all implied constants are uniform for $y$ in this range. This saves a factor of at least $e^{cu}$ (for some fixed $c>0$) over the trivial bound $\sqrt{\Psi(x,y)}$ uniformly on the entire range $(\log x)^{30} \leq y \leq x^{\frac{1}{7 \log \log x}} $.
+\end{theorem}
+This theorem is proved in Section~\ref{sec: moderate}, and we stress that the proof \emph{does not} make use of critical GMC phenomena, where the saving would typically be much smaller. We have not made a significant attempt to optimise the constants appearing in the range where the theorem holds.
+
+\subsection{Smooth numbers and the transition range}\label{s:smooths intro}
+Before outlining our proofs, for the uninitiated reader, we give a short review of smooth numbers, restricting ourselves to the case where $(\log x)^2 \leq y \leq x$, say. We refer readers to \cite{Gran08} for more background. 
+
+We can quite accurately upper bound the number of $y$-smooth numbers below $x$ simply by a simple application of Rankin's trick. Define the truncated Euler product $\zeta(s,y) \coloneqq \prod_{p \leq y} \bigl( 1 - \frac{1}{p^s} \bigr)^{-1}$ for any $\Re (s) > 0$. For any $\sigma > 0$, we have
+\begin{equation}\label{equ:rankins trick}
+\Psi(x,y) = \sum_{\substack{n \leq x \\ P(n) \leq y}} 1 \leq \sum_{P(n) \leq y} \biggl( \frac{x}{n} \biggr)^{\sigma} = x^\sigma \prod_{p \leq y} \biggl( 1 - \frac{1}{p^{\sigma}} \biggr)^{-1} = x^{\sigma} \zeta (\sigma, y) .
+\end{equation}
+We now choose $\sigma > 0$ so that it minimises the right-hand side. It turns out that this minimiser is unique, and is called the saddle point, $\alpha = \alpha (x,y)$. Since $\sigma = \alpha(x,y)$ satisfies $\frac{d}{d \sigma} \log (x^{\sigma} \zeta(\sigma, y)) \mid_{\sigma = \alpha (x,y)} = 0$, it follows that
+\[
+\sum_{p \leq y} \frac{\log p}{p^{\alpha (x,y)}-1} = \log x .
+\]
+and it can be shown~\cite[Lemmas~1 and~2]{HildTen86} that
+\begin{equation}\label{equ: Saddle point approx in intro}
+\alpha (x,y) = 1 - \frac{\log (u \log (u + 1))}{\log y} + O \biggl( \frac{1}{\log y} \biggr),
+\end{equation}
+where $u = \frac{\log x}{\log y}$. The error term can be improved to $o\bigl( \frac{1}{\log y} \bigr)$ as soon as $(\log x)^2 \leq y \leq x^{o(1)}$, and we state a precisely result in Lemma~\ref{l:saddle point approx}. The bound obtained by Rankin's trick, $\Psi(x,y) \leq x^{\alpha} \zeta(\alpha,y)$, is close to optimal, seeing as
+\begin{equation}\label{equ:rankin to true count comparison}
+x^{\alpha} \zeta(\alpha,y) \ll \Psi(x,y) \sqrt{\log x \log y},
+\end{equation}
+and a precise comparison can be drawn from Lemma~\ref{l:smooth count in terms of saddle point}. In our analysis, in contrast to~\eqref{equ:full sum relation to EP}, we are interested in integrals of the quantity $|F_y (\alpha / 2 + it)|$. In this case, the variance of $\log |F_y (\alpha/2 + it)|$ is roughly $\frac{1}{2} \sum_{p \leq y} \frac{1}{p^{\alpha}}$, and 
+letting $z = e^{\frac{1}{1 - \alpha}}$, this can be written as
+\begin{equation}\label{equ: variance evaluation}
+\begin{split}
+\frac{1}{2} \sum_{p \leq y} \frac{1}{p^{\alpha}}
+& = \frac{1}{2} \biggl( \sum_{p \leq z} \frac{1}{p^{1 - \frac{1}{\log z}}} + \sum_{z < p \leq y} \frac{1}{p^{\alpha}} \biggr) \\
+& \sim \frac{1}{2} \biggl( \log \Bigl( \frac{1}{1 - \alpha} \Bigr) + \frac{y^{1 - \alpha}}{(1 - \alpha) \log y} \biggr),
+\end{split}
+\end{equation}
+whenever $1/2 \leq \alpha \leq 1 - \frac{1}{\log y}$, say. Calculations of this type can be found in~\cite[Lemma~7.4]{MV2007}. Using the saddle point approximation~\eqref{equ: Saddle point approx in intro}, the first term in the parentheses is roughly $\log \log y$, and the second term is of size $u$. Therefore, the dominant contribution to this variance comes from the primes $p \leq z$ whenever $u$ is smaller than roughly $\log \log x$, whereas the dominant contribution comes from $p > z$ whenever $u$ is larger. This is why we see a phase transition at roughly $y \approx x^{\frac{1}{\log \log x}}$.
+
+\subsection{Outline of the main result, Theorem~\ref{Thm: main quantitative}}\label{s:outline of moderate y} 
+In this section, we will explain the behaviour for moderately sized $y$, specifically $(\log x)^{4} \leq y \leq x^{\frac{1}{\log \log x}}$, say. The typical way that one approaches these expectation problems is to use conditioning to relate the first absolute moment of our partial sums to the $1/2$'th moment of the mean square of a random Euler product, as in~\eqref{equ:full sum relation to EP}. For example, in our case, it would be possible to show (up to errors that we will ignore) that for any $\beta > 1 - \frac{\log \log x}{\log y}$, we have
+\begin{equation}\label{equ:general expectation ub}
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \Bigr| \ll x^{\beta/2} \E \biggl( \int_{-1/2}^{1/2} |F_y (\beta / 2 + it ) |^2 dt \biggr)^{1/2},
+\end{equation}
+where we recall that the random Euler product is defined as $F_y(s) \coloneqq \prod_{p\leq y} (1-\frac{f(p)}{p^{s}})^{-1}$. 
+This is analogous to the Rankin's trick upper bound for $\Psi(x,y)$ in equation~\eqref{equ:rankins trick}, and we may suspect that the correct choice of $\beta$ that minimises the right-hand side is $\beta (x,y) = \alpha(x,y)$, where $\alpha (x,y)$ is the saddle point. Surprisingly, taking $\beta = \alpha(x,y)$ will turn out to be sub-optimal, but we content ourselves with it for the time being, for both simplicity of exposition and since the optimal $\beta$ will be taken to be quite close to the saddle point. Indeed, applying Hölder's inequality to the expectation on the right-hand side of~\eqref{equ:general expectation ub}, we find that
+\[
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \Bigr| \ll x^{\beta/2} \biggl( \int_{-1/2}^{1/2} \E |F_y (\beta / 2 + it ) |^2 dt \biggr)^{1/2}  \ll x^{\beta/2} \zeta(\beta, y)^{1/2},
+\]
+which is optimised by taking $\beta = \alpha (x,y)$, identically to Rankin's trick, and gives (roughly) squareroot cancellation. As in the work of Harper~\cite{HarperLow}, the key idea is to notice that this use of Hölder's inequality is inefficient, and in fact, this application turns out to be far more wasteful than in the delicate work there. 
+
+To obtain a better bound, we return our attention to~\eqref{equ:general expectation ub} and fix $\beta = \alpha (x,y)$. For compactness, we write $\alpha$ in place of $\alpha (x,y)$. Writing $|F_y (\alpha / 2 + it)| = \exp(\Re \log F_y (\alpha / 2 + it) )$, we obtain
+\begin{equation}\label{equ:first moment to EP at saddle point}
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \Bigr| \ll x^{\alpha/2} \E \biggl( \int_{-1/2}^{1/2} \exp \bigl( 2 \log |F_y (\alpha / 2 + it )| \bigr) dt \biggr)^{1/2}.
+\end{equation}
+To reiterate, the motivation for writing our Euler product in this way is that, for each fixed $t \in [-1/2, 1/2]$, the quantity $\log |F_y (\alpha / 2 + it)|$ is approximately Gaussian with zero mean and variance $\approx \frac{1}{2} \sum_{p \leq y} \frac{1}{p^{\alpha}}$, and these Gaussian should begin to decorrelate when $t$ varies by $\approx \frac{1}{\log y}$. Letting $G_j$ be independent random variables with distribution $\mathcal{N}(0, \frac{1}{2} \sum_{p \leq y} \frac{1}{p^{\alpha}})$, one might suspect that
+\begin{equation}\label{equ: max}
+\max_{t \in [-1/2, 1/2]} \log |F_y (\alpha / 2 + it)| \approx \max_{|j| \leq \log y/2} G_j \approx \biggl( \log \log y \sum_{p \leq y} \frac{1}{p^{\alpha}} \biggr)^{1/2} ,
+\end{equation}
+with high probability. We contrast this with a moment calculation. Given that $\log |F_y (\alpha / 2 + it)|$ is approximately Gaussian with zero mean and variance $\approx \frac{1}{2} \sum_{p \leq y} \frac{1}{p^{\alpha}}$, the moment generating function is
+\begin{equation}\label{equ: gamma}
+ \E |F(\alpha / 2 + it )|^\gamma = \E \exp \Bigl( \gamma \log | F_y (\alpha / 2 + it ) | \Bigr) \asymp \exp \Bigl( \frac{\gamma^2}{4} \sum_{p \leq y} \frac{1}{p^{\alpha}} \Bigr) \asymp \zeta (\alpha, y)^{\frac{\gamma^2}{4}}.   
+\end{equation}
+Similar calculations for $\alpha \approx 1$ can be found in~\cite[Euler Product Result 1]{Harperhigh}. In particular, one can find that the dominant contribution to $ \E |F(\alpha / 2 + it )|^\gamma$ comes from increasingly large values of $\log |F_y (\alpha / 2 + it)|$, for example when $\gamma = 2$, the dominant contribution comes from events where $\log |F_y (\alpha / 2 + it)| = \sum_{p \leq y} \frac{1}{p^{\alpha}} + O \bigl(\bigl( \sum_{p \leq y} \frac{1}{p^{\alpha}} \bigr)^{1/2} \bigr)$. Similar ideas are present in the analysis of moments of the Riemann zeta function, for example, in the works of Soundararajan~\cite{SoundMoment} and Harper~\cite{harper2013sharp}.
+
+Therefore, when $\alpha = 1$ (or is sufficiently close to $1$), the dominant contribution to the second moment comes from events where $\log |F_y (\alpha / 2 + it)|$ is close to maximal \eqref{equ: max}. However, if $\alpha$ is sufficiently smaller than $1$, then the dominant contribution to the second moment comes from events where $\log |F_y (\alpha / 2 + it)|$ is significantly larger than the probable size of the maximum, that is, the \textit{second moment is controlled by very unlikely events}. The calculation in~\eqref{equ: variance evaluation} highlights that this transition happens roughly when $y \approx x^{\frac{1}{\log \log x}}$. Now, since we expect that the integrand is roughly fixed over intervals of length $\approx \frac{1}{\log y}$, the right-hand side of~\eqref{equ:first moment to EP at saddle point} is approximately
+\[
+x^{\alpha/2} \E \biggl( \frac{1}{\log y} \sum_{|j| \leq \frac{\log y}{2}} \Bigl| F_y \Bigl( \alpha / 2 + i\frac{j}{\log y} \Bigr) \Bigr|^2 dt \biggr)^{1/2} .  
+\]
+If the expectation is dominated by events where $\max_{|j| \leq \frac{\log y}{2}} \log |F_y (\alpha / 2 + ij/\log y ) |$ is unusually large, then when such events occur, we would only expect to find $\ll 1$ values of $j$, and all other values should be relatively small in comparison. Therefore, applying sub-additivity of $x \rightarrow x^{1/2}$, we have
+\[
+ \E \biggl( \frac{1}{\log y} \sum_{|j| \leq \frac{\log y}{2}} \Bigl| F_y \Bigl( \alpha / 2 + i\frac{j}{\log y} \Bigr) \Bigr|^2 dt \biggr)^{1/2} \leq \frac{1}{(\log y)^{1/2}} \sum_{|j| \leq \frac{\log y}{2}} \E \Bigl| F_y \Bigl( \alpha / 2 +i \frac{j}{\log y} \Bigr) \Bigr|,   
+\]
+which should be relatively efficient under such assumptions. Evaluating the right-hand side using~\eqref{equ: gamma}, we deduce the bound 
+\[
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \Bigr| \ll x^{\alpha/2} \zeta(\alpha,y)^{1/4} (\log y)^{1/2}.
+\]
+By equation~\eqref{equ:rankin to true count comparison}, this gives
+\[
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \Bigr| \ll \sqrt{\frac{\Psi(x,y)}{\zeta(\alpha, y)^{\frac{1}{2}(1 + o(1))}}},
+\]
+up to some logarithmic factors, which is far better than squareroot cancellation. In fact, this strategy could instead prove a more general bound of the shape
+\[
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \Bigr| \ll x^{\beta/2} \zeta(\beta,y)^{1/4} (\log y)^{1/2},
+\]
+for any $\beta > 1 - \frac{\log \log x}{\log y}$. Seeing as the above is $\bigl( (x^2)^{\beta} \zeta(\beta,y) \bigr)^{1/4} (\log y)^{1/2}$, we find that $\beta = \alpha (x^2, y)$ is the optimal choice. Up to some errors, this gives the result seen in our theorem, and more generally suggests that for all $0<q<1$, we should in fact have roughly
+\[
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \Bigr|^{2q} \ll_q \Psi (x^{1/q}, y)^{q^2} (\log y)^{1-q} ,
+\]
+though we do not pursue such a result here. 
+
+We end this section by remarking that, compared to the previous works~\cite{HarperLow, Caichshort, Xu}, there are new technical ideas needed to obtain our result in the range $y \leq e^{(\log x)^{1/2 + o(1)}}$. The reason for the additional difficulty arises from the fact that, in this range, $y$ is smaller than the saving that we hope to obtain (which is of size $\approx e^{cu}$ for some constant $c$). We explain more specifically why this is an issue at the end of Section~\ref{s:moderate sec intro}. Let $\mathcal{K} = \lceil \frac{\log y}{10 \log 5} \rceil$. Roughly speaking, the remedy is to consider writing $y$-smooth $n$ as
+\[
+n = m_1 \dots m_\mathcal{K} s , \quad m_i \coloneqq \prod_{\substack{ p \in (y/5^{i}, y/5^{i-1}] \\  p^{\alpha} \mid \mid n}} p^{\alpha} \text{ for } 1 \leq i \leq \mathcal{K} ,
+\]
+so that $s$ is the part of $n$ consisting only of prime factors below $y/5^{\mathcal{K}} \approx y^{9/10}$. For a typical $y$-smooth number, at least one of $m_1, \dots , m_\mathcal{K}$ will be ``large'', say $\gg e^{cu}$ (the size of the saving). Therefore, we begin by splitting our original sum depending on the first of these parameters $k$ such that $m_k \geq Z$. We then condition instead on $f(p)$ for $p \leq y/M^k$, and, since $m_k$ is large, we are able to approximate the outer sum over $m_k$ by an integral with sufficient accuracy, and we can then follow the standard blueprint of applying Plancherel's identity to obtain the Euler product. An accurate description of the splitting is given at the beginning of Section~\ref{s:proof of middle small y}, since we find it useful to make further technical adjustments to the one given above.
+
+\subsection{Completion of the proof of Theorem~\ref{Thm: main}: Multiplicative Chaos}\label{s: large y explained}
+To complete the introduction, we describe how one handles the somewhat delicate range when $y$ is very close to $x$. Our analysis on this range actually allows us to ``win'' on a larger range of $y$, and we are able to prove the following:
+\begin{theorem}\label{t:small u upper bound}
+For any $e^{(\log \log x)^2} \leq y \leq x$, say, we have
+\[
+\E \biggl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \biggr| \ll \frac{\Psi (x,y)^{1/2}}{\Bigl(\log \min \Bigl\{ \frac{1}{1-\alpha(x,y)}, \log x \Bigr\} \Bigr)^{1/4}},
+\]
+where the implied constant is uniform in $y$.
+\end{theorem}
+
+\begin{xremark}
+In the range $x^{\frac{1}{\log \log x}} \leq y \leq x$, this result gives a saving of size $(\log \log x)^{1/4}$, similarly to~\cite{HarperLow}.
+\end{xremark}
+
+To outline the main ideas behind this result, we begin by assuming that $y$ is close to $x$, where we might expect to be close to the critical GMC regime studied in~\cite{HarperLow}. In that work, having established an upper bound of the form~\eqref{equ:full sum relation to EP}, the key step involves showing that 
+\begin{equation}\label{equ: critical chaos ep from harper}
+\E \biggl( \int_{-1}^{1} |F_x (1/2 + it)|^2 \, dt \biggr)^{1/2} \ll \biggl( \frac{\log x}{\sqrt{\log \log x}} \biggr)^{1/2},
+\end{equation}
+giving better than squareroot cancellation. Analogously to the previous section, we need to prove a statement along the lines of
+\[
+\E \biggl( \int_{-1}^{1} |F_y (\alpha/2 + it)|^2 \, dt \biggr)^{1/2} = o \left( \sqrt{\zeta(\alpha,y)} \right) ,
+\]
+where $\alpha = \alpha(x,y)$. Of course, the main difference between our case and the work of Harper~\cite{HarperLow} is that our Euler products \emph{are not} evaluated on the half-line. This means that the random process $\bigl( \log |F_y (\alpha/2 + it)| \bigr)_{t \in [-1,1]}$ does not necessarily behave like a log-correlated Gaussian field, and so it is not clear that we can connect our Euler products to critical Gaussian multiplicative chaos. The key observation is that the portion of the Euler product coming from $p \leq e^{\frac{2}{1 - \alpha}}$ \emph{does} behave like it is evaluated on the half-line. To be precise, taking $z = e^{\frac{2}{1 - \alpha}}$, we have
+\[
+F_z (\alpha / 2 + it) = F_{z} \biggl( 1/2  - \frac{1}{\log z} + it \biggr).
+\]
+Note that the specific choice of $2$ in the numerator of $\frac{2}{1 - \alpha}$ is unimportant\footnote{In Section~\ref{Sec: GMC}, we choose a slightly different constant to allow for direct use of a result from~\cite{HarperLow}. This is specifically seen in Lemma~\ref{l:Euler product on half line}.} and is just chosen so that the second term is exactly $\frac{1}{\log z}$. The important point (which is shown rigorously in~\cite{HarperLow}) is that a shift of order $\frac{1}{\log z}$ has no impact on the behaviour of these Euler products, so similarly to~\eqref{equ: critical chaos ep from harper}, we have
+\[
+\E \biggl( \int_{-1}^{1} \Bigl| F_z \Bigl( \frac{1}{2} + \frac{1}{\log z} + it \Bigr) \Bigr|^2 \, dt \biggr)^{1/2} \ll \biggl( \frac{\log z}{\sqrt{\log \log z}} \biggr)^{1/2} \asymp \Biggl( \frac{1}{(1 - \alpha) \sqrt{\log \frac{1}{1 - \alpha}}} \Biggr)^{1/2} .
+\]
+Therefore, we can obtain better than squareroot cancellation on these partial Euler products over small primes. The key simple idea then is that we only win on products over small primes. By the triangle inequality, it suffices to handle sums roughly of the form 
+\[
+\E \Bigl| \sum_{\substack{n \leq x \\ z < p \leq y}} f(n) \Bigr| = \E \Bigl| \sum_{\substack{1 < m \leq x \\ p | m \Rightarrow p \in (z, y]}} f(m) \sum_{\substack{n \leq x/m \\ P(n) \leq z}} f(n) \Bigr|,
+\]
+We can apply Cauchy--Schwarz inequality to the conditional expectation at this stage in the proof, leaving only the randomness from these small primes $p \leq z$. In comparison to~\cite{HarperLow}, the new input needed for this is a precise short intervals bound, which is provided by Lemma~\ref{l: smooths in short intervals estimate}.
+
+
+
+\subsection{Organization} In Section~\ref{Sec: smooth}, we introduce some estimates on smooth numbers and prove several results that are needed in later sections. In particular, several short sum estimates with restrictions on prime factorizations will be established. In Section~\ref{Sec: Euler}, we prove results for random Euler products with the feature that the evaluation is on $\alpha/2$ line instead of $1/2$ line. Section~\ref{Sec: GMC} is devoted to the proof of Theorem~\ref{t:small u upper bound} on a large range, where the saving comes from connecting the problem to critical GMC. The motivation for proving this result first is that it is quite straightforward, while also illustrating techniques used later on. In Section~\ref{sec: moderate}, we prove Theorem~\ref{Thm: main quantitative}. This is the most involved part of the paper. Appendix~\ref{s:appendix} contains a proof of Lemma~\ref{l: smooths in short intervals estimate}, which follows similarly to previous work of Hildebrand~\cite{Hildebrand}.
+
+\subsection*{Acknowledgement}
+The authors would like to thank Adam Harper, Carl Schildkraut and K. Soundararajan for their interest in this paper and for helpful discussions. SH is supported by the Swinnerton-Dyer scholarship at the Warwick Mathematics Institute Centre for Doctoral Training.
+MWX is supported by a Simons Junior Fellowship from the Simons Foundation. Part of the work was done during several visits of MWX at Warwick Mathematics Institute, and the warm hospitality is greatly appreciated. 
+
+\section{Smooth Number Results}\label{Sec: smooth}
+
+In this section, we state some important results about smooth numbers that are used frequently throughout the paper. First of all, in Section~\ref{s: smooth classical}, we state some estimates for the saddle point and its relation to the count of smooth numbers. We also prove a result, Lemma~\ref{l:decreasing y}, that allows us to compare the count of $y$-smooth numbers to the count of $y/d$-smooth numbers. In Section~\ref{Sec: restricted}, we prove some estimates for sums over integers that have restrictions on their prime factorization.
+
+\subsection{Classical results}\label{s: smooth classical}
+We begin by stating three classical results on smooth numbers are frequently used throughout the paper. 
+
+\begin{lemma}[Saddle point estimate]\label{l:saddle point approx}  
+For $(\log x)^2 \leq y \leq x$, $u= \frac{\log x}{\log y}$ and $\alpha(x, y)$ be the saddle point, we have
+\[
+\alpha (x,y) = 1 - \frac{\log (u \log (u + 1))}{\log y} + O \biggl( \frac{1}{\log y} \biggr).
+\] 
+In the reduced range $(\log x)^2 \leq y \leq x^{\frac{1}{\log \log x}}$, say, we have 
+\[
+\alpha (x,y) = 1 - \frac{\log (u \log u)}{\log y} + O \biggl( \frac{\log \log u}{(\log y) (\log u)} \biggr).
+\] 
+\end{lemma}
+\begin{proof}
+These estimates follow from~\cite[Lemmas~1 and~2]{HildTen86}.
+\end{proof}
+
+\begin{lemma}[Explicit smooth count]\label{l:smooth count in terms of saddle point}
+Uniformly for $x \geq y \geq 2$, the number of $y$ smooth numbers up to $x$ satisfies
+\[
+\Psi(x, y)=\frac{x^\alpha \zeta(\alpha, y)}{\alpha \sqrt{2 \pi(1+(\log x) / y) \log x \log y}}\left(1+O\left(\frac{1}{\log (u+1)}+\frac{1}{\log y}\right)\right),
+\]
+where $\alpha = \alpha (x,y)$ is the saddle point.
+\end{lemma}
+\begin{proof}
+This is~\cite[Theorem~1]{HildTen86}.
+\end{proof}
+
+\begin{lemma}[Smooth number comparison in $x$]\label{l: smooths below x/d vs below x}
+For $2 \leq y \leq x$, and $1 \leq d \leq x$, we have the following relation 
+\[
+\Psi(x/d, y) \ll \frac{1}{d^{\alpha}} \Psi(x, y) ,
+\]
+where $\alpha = \alpha (x, y)$ denotes the saddle-point corresponding to the $y$-smooth numbers less than $x$.
+\end{lemma}
+\begin{proof}
+This is~\cite[Théorème~2.4(i)]{BretecheTenenbaum}.
+\end{proof}
+
+We now prove an analogue of the above result, where instead we dilate the smoothness parameter. Before stating this, we take $\xi (u)$ to be the unique solution to the equation $e^{\xi(u)} = 1 + u \xi (u)$ with $\xi(1) = 0$. This is a standard function that is frequently found in smooth number estimates, and it is straightforward to show that $\xi (u) = \log (u \log u) + O ( \frac{\log \log u}{\log u} )$ (see~\cite[Lemma~1]{HildTen86}).
+\begin{lemma}[Smooth number comparison in $y$]\label{l:decreasing y}
+Suppose that $(\log x)^4 \leq y \leq x$ and that $2 \leq d \leq y^{1/3}$, say. We have
+\[
+\Psi(x,y/d) = \Psi(x,y) \exp \biggl( (u - u_d) \xi(u) +  O \biggl( \frac{u (\log d)^2}{(\log y)^2} \biggr) + O \bigl( E (u) \bigr) \biggr),
+\]
+where $u_d \coloneqq \frac{\log x}{\log y/d}$ and $u = \frac{\log x}{\log y}$. For any fixed $\varepsilon > 0$, the error term $E(u)$ satisfies $E(u) \ll_\varepsilon 1$ uniformly in the range $e^{(\log \log x)^{5/3 + \varepsilon}} \leq y \leq x$ and $E(u) \ll_\varepsilon u \exp \bigl( - (\log u)^{3/5 - \varepsilon} \bigr)$ uniformly on the range $(\log x)^4 \leq y \leq e^{(\log \log x)^{5/3 + \varepsilon}}$.
+\end{lemma}
+\begin{xremark}
+Assuming the Riemann Hypothesis, one can use the work of Hildebrand~\cite{HildebrandRH} to obtain $E(u) \ll 1$ on the entire range.
+\end{xremark}
+\begin{proof}
+It follows from the work of Hildebrand~\cite[pg 291]{Hildebrand} (see the last equation there) that we have the unconditional bound
+\[
+\Psi(x,y/d) = x \rho (u_d) \exp \Bigl( O \bigl( E (u) \bigr) \Bigr) ,
+\]
+uniformly for $y$ in this range. Note that we can replace occurrences of $u_d$ in the exponential with $u$, since these quantities are of the same order of magnitude. Taking $d=1$ and comparing, we have
+\[
+\Psi(x,y/d) = \Psi(x,y) \frac{\rho (u_d)}{\rho (u)} \exp \Bigl( O \bigl( E (u) \bigr) \Bigr) .
+\]
+We now make use of estimates for the Dickman function, specifically using the fact that $\rho (u-v) = \rho (u) e^{v \xi(u) + O(v^2 / (u + v^2))}$ for $0 \leq v \leq u$. This estimate is~\cite[Equation~(5.114), III.5]{TenenbaumAPNT}, which, as mentioned there, follows by combining~\cite[Lemma~6.1]{FouvryTen1996} and~\cite[Equation~(5.63), III.5]{TenenbaumAPNT}). Applying this estimate, we find that
+\[
+\rho (u) = \rho (u_d) \exp \biggl( (u_d - u) \xi (u_d) + O \biggl( \frac{u (\log d)^2}{(\log y)^2} \biggr) \biggr).
+\]
+We now use the fact from~\cite[Lemma~1]{HildTen86} that $\xi (v) = \log (v \log v) + O ( \frac{\log \log v}{\log v} )$. By the defining equation and the asymptotic formula, one can readily find that $\xi'(u) \ll \frac{1}{u}$. Therefore, by the mean value theorem and the estimate for $\xi (u)$, we have $\xi (u_d) - \xi (u) \ll \frac{\log d}{\log y}$. We deduce that
+\[
+\Psi(x,y/d) = \Psi(x,y) \exp \biggl( (u - u_d) \xi(u) +  O \biggl( \frac{u (\log d)^2}{(\log y)^2} \biggr) + O \bigl( E(u) \bigr)  \biggr),
+\]
+as required.
+\end{proof}
+
+\subsection{Short sums over prime restricted integers}\label{Sec: restricted} In various parts of our paper, it will be necessary to estimate short sums over integers whose prime factors all lie in a given range. For this task, we employ the following lemmas:
+
+\begin{lemma}[Restricted sum over many primes]\label{l: smooths in short intervals estimate}
+Fix any small $\varepsilon > 0$ and let $x \geq 2$ be a parameter tending to infinity. Suppose $y, h, \delta$ are parameters such that $e^{(\log \log x)^{5/3 + \varepsilon}} \leq y \leq x^{1/\delta}$, $x/y^{1/3} \leq h \leq x/2$, and $\frac{1}{\log y} \leq \delta \leq \frac{1}{10}$. Uniformly in these parameters, we have
+\[
+\frac{1}{h} \sum_{\substack{x < n \leq x + h \\ p \mid n \Rightarrow p \in (y^\delta, y]}} 1 \ll \frac{1}{x} \cdot \frac{\Psi(x,y)}{\delta \log y} .
+\]
+\end{lemma}
+The proof of this will follow similarly to Hildebrand~\cite[Theorem~3]{Hildebrand}, and we prove it in Appendix~\ref{s:appendix}). Note that the lower bound on $y$ comes from the current best known error term in the prime number theorem. In the case of long intervals, this sum is asymptotically evaluated in~\cite[Théorème~2.1]{BretecheTenenbaum} and~\cite[Theorem~1]{Xuan}. Our result should incur no loss when $\delta \ll \frac{1}{\log u}$, seeing as then the smooth and rough conditions behave roughly as though they are independent of one another.  One can also find more general sums of this form in~\cite{Friedlander}.
+
+\begin{lemma}[Restricted sum over large primes]\label{l:no small or large pfs short}
+Suppose that $2 \leq h \leq t \leq x$, and that $(\log x)^3 \leq y \leq x^{\frac{1}{\log \log x}}$. Suppose that $0 \leq d \leq C$, for some large constant $C$ (for example, $C = e^{100}$ will suffice). Then we have
+\[
+\sum_{\substack{t \leq n \leq t+h \\ p \mid n \Rightarrow p \in (y/d,y]}} 1 \ll h^{\alpha(x^2, y)} e^{\frac{3 d u \log u}{\log y}} \log x ,
+\]
+where the implied constant is uniform in all parameters.
+\end{lemma}
+
+\begin{xremark}
+It may be surprising on first glance that we can obtain a power of $\alpha (x^2,y)$ in this result, which is smaller than $\alpha (x,y)$. This is possible since our sum is only over integers consisting of primes on the same scale as $y$. In fact, one could prove a far more flexible result with a more general parameter in place of $\alpha (x^2, y)$. However, motivated by Section~\ref{s:outline of moderate y}, we make this choice in advance and stick with it for simplicity.
+\end{xremark}
+
+\begin{proof}
+Suppose that $h < y$. Applying the trivial bound and using Lemma~\ref{l:saddle point approx}, we have 
+\[
+\sum_{\substack{t \leq n \leq t+h \\ p \mid n \Rightarrow p \in (y/d,y]}} 1 \leq h \leq h^{\alpha (x^2, y)} y^{1 - \alpha (x^2, y)} \ll h^{\alpha (x^2, y)} (u \log u) \leq h^{\alpha (x^2, y)} \log x,
+\]
+so the lemma holds for $h<y$. The case where $h \geq y$ follows similarly to~\cite[Smooth Numbers Result 3]{HarperMinorArcSmooths}. First, we decompose the sum. Letting $P(n)$ denote the largest prime factor of $n$, we have
+\[
+\sum_{\substack{t \leq n \leq t+h \\ p \mid n \Rightarrow p \in (y/d,y]}} 1 = \sum_{\substack{h/y < m \leq h \\ m / P(m) \leq h/y \\ p \mid m \Rightarrow p \in (y/d, y]}} \sum_{\substack{\frac{t}{m} < \ell \leq \frac{t+h}{m} \\ p \mid \ell \Rightarrow p \in [P(m), y]}} 1 \leq h \sum_{\substack{h/y < m \leq h \\ p \mid m \Rightarrow p \in (y/d, y]}} \frac{1}{m} .
+\]
+The first equality comes from the decomposition $n = m \ell$ in a suitable way. Breaking this up into dyadic intervals, we find that
+\[
+\sum_{\substack{t \leq n \leq t+h \\ p \mid n \Rightarrow p \in (y/d,y]}} 1  \leq  \sum_{j=0}^{\log y} e^j \sum_{\substack{\frac{h}{e^{j+1}} < m \leq \frac{h}{e^j} \\ p \mid m \Rightarrow p \in (y/d, y]}} 1  \leq \sum_{j=0}^{\log y} e^j \sum_{\substack{m \leq \frac{h}{e^j} \\ p \mid n \Rightarrow p \in (y/d, y]}} 1 .
+\]
+Note that our bound is independent of $t$. Applying Rankin's trick, for any $\beta > 0$, we have
+\[
+\sum_{\substack{m \leq \frac{h}{e^j} \\ p \mid m \Rightarrow p \in (y/d, y]}} 1 \leq \Bigl( \frac{h}{e^j} \Bigr)^{\beta} \sum_{\substack{m \leq \frac{h}{e^j} \\ p \mid m \Rightarrow p \in (y/d, y]}} \frac{1}{m^\beta} \leq \Bigl( \frac{h}{e^j} \Bigr)^{\beta} \prod_{y/d < p \leq y} \biggl( 1 - \frac{1}{p^\beta} \biggr)^{-1}.
+\]
+Inserting this estimate into the previous inequality and taking $\beta = \alpha(x^2,y)$, we find that
+\[
+\sum_{\substack{t \leq n \leq t+h \\ p \mid n \Rightarrow p \in (y/d,y]}} 1 \leq h^{\alpha(x^2, y)} \prod_{y/d < p \leq y} \biggl( 1 - \frac{1}{p^{\alpha(x^2,y)}} \biggr)^{-1} \sum_{j=0}^{\log y} e^{j (1 - \alpha(x^2,y))}.
+\]
+Applying Lemma~\ref{l:saddle point approx}, the geometric series is $\ll u \log y = \log x$, so it remains to evaluate the product over primes. Again, using Lemma~\ref{l:saddle point approx}, we find that $\alpha(x^2, y) \geq 3/5$ for $y \geq (\log x)^3$, and Taylor expanding, we have 
+\[
+\prod_{y/d < p \leq y} \biggl( 1 - \frac{1}{p^{\alpha(x^2,y)}} \biggr)^{-1} \ll \exp \biggl( \sum_{y/d < p \leq y} \frac{1}{p^{\alpha (x^2, y)}} \biggr) ,
+\]
+Finally, we have
+\[
+\sum_{y/d < p \leq y} \frac{1}{p^{\alpha (x^2, y)}} \leq \frac{d}{y^{\alpha (x^2, y)}} \sum_{p \leq y} 1 \leq \frac{6d y^{1 - \alpha (x^2, y)}}{5 \log y} \leq \frac{3 u \log u}{\log y} ,
+\]
+when $x$ is sufficiently large. Here we have used the fact that $y^{1 - \alpha (x^2, y)} \leq \frac{5}{2} u \log u $ for $x$ sufficiently large, which follows from Lemma~\ref{l:saddle point approx}. Putting all of this together, we have shown that
+\[
+\sum_{\substack{t \leq n \leq t+h \\ p \mid n \Rightarrow p \in (y/d,y]}} 1 \ll h^{\alpha(x^2, y)} e^{\frac{3 d u \log u}{\log y}} \log x,
+\]
+as required.
+\end{proof}
+
+\section{Euler product results}\label{Sec: Euler}
+
+In this section, we collect useful results on (random) Euler products. The main results of interest, Lemma~\ref{l:Euler product on half line} and Theorem~\ref{t:new ep bound}, give estimates for random Euler products which will later be key to the proofs of Theorems~\ref{t:small u upper bound},~\ref{t:middle large y} and~\ref{t:middle small y}. The main feature of these results (different from most other work in the area) is that we are working on the line $\Re(s) = \alpha/2$ instead of the line $\Re (s) = 1/2$, due to the smoothness condition and saddle point feature. 
+
+We begin by introducing the version of Plancherel's identity that will be used, now ubiquitous in the study of random multiplicative functions.
+\begin{lemma}[Multiplicative Plancherel's identity]\label{l:ha result}
+Let $(a_n)_{n=1}^\infty$ be a sequence of complex numbers, and let $A(s) = \sum_{n=1}^\infty \frac{a_n}{n^s}$ denote the corresponding Dirichlet series, and $\sigma_c$ the abscissa of convergence. Then for any $\sigma > \max\{ 0, \sigma_c \}$, we have \[ \int_0^\infty \frac{|\sum_{1\leq n \leq x} a_n|^2}{x^{1 + 2 \sigma}} \, dx \, = \frac{1}{2\pi} \int_{-\infty}^{\infty} \biggl| \frac{A(\sigma + i t)}{\sigma + it} \biggr|^2 \, dt \, . \]
+\end{lemma} 
+\begin{proof}
+This is \cite[Equation~(5.26)]{MV2007}.
+\end{proof}
+The next lemma allows us to obtain cancellation in random Euler product integrals on the line $\Re (s) = \alpha/2$, provided that the truncation length is small enough in terms of $\alpha$.
+\begin{lemma}[Euler product close to half line]\label{l:Euler product on half line}
+Let $c = 2e^{-2}$. For $4/5 \leq \alpha < 1$, we define $z = e^\frac{c}{1 - \alpha}$, so that $F_{z} (s) = \prod_{p \leq e^{\frac{c}{1 - \alpha}}} \bigl( 1 - \frac{f(p)}{p^{s}} \bigr)^{-1}$. Then we have
+\[
+\E \biggl( \int_{-1/2}^{1/2} \Bigl| F_{z} \Bigl( \frac{\alpha}{2} + it \Bigr) \Bigr|^2 \, dt \biggr)^{2/3} \ll \Biggl( \frac{1}{(1 - \alpha) \sqrt{\log \frac{1}{1 - \alpha}}} \Biggr)^{2/3} .
+\]
+\end{lemma}
+\begin{proof}
+Let $x \geq 10$, and define $F_{x, k} (s) \coloneqq \prod_{p \leq x^{e^{-(k+1)}}} \bigl( 1 - \frac{f(p)}{p^s} \bigr)^{-1}$. We then have
+\[
+\E \Biggl( \frac{e^{k} (1-q) \sqrt{\log \log x}}{\log x} \int_{-1/2}^{1/2} \biggl| F_{x, k} \biggl( 1/2  - \frac{k}{\log x} + it \biggr) \biggr|^2 \, dt \Biggr)^q \ll 1 ,
+\]
+uniformly for all $0 \leq k \leq \lfloor \log \log x \rfloor$ and $2/3 \leq q \leq 1 - \frac{1}{\sqrt{\log \log x}}$. This is proved in~\cite{HarperLow} in the section titled: ``Proof of the upper bound in Theorem 1, assuming Key Propositions 1 and 2''. To obtain the lemma, we apply this result with $k=1$, $x=e^{\frac{1}{1 - \alpha}}$, and $q = 2/3$. Since
+\[
+    \E \biggl( \int_{-1/2}^{1/2} \Bigl| F_{z} \Bigl( \frac{\alpha}{2} + it \Bigr) \Bigr|^2 \, dt \biggr)^{2/3} = \E \biggl( \int_{-1/2}^{1/2} \Bigl| F_{x, 1} \Bigl( 1/2 - \frac{1}{\log x} + it \Bigr) \Bigr|^2 \, dt \biggr)^{2/3},
+\]
+the result follows.
+\end{proof}
+
+We now state a general expectation result that will help us to prove Theorem~\ref{t:new ep bound}. Again, we care about the case that the Euler product is not necessarily evaluated on the critical line. 
+
+\begin{lemma}[Expectation evaluation]\label{l:standardEPresult}
+If $f$ is a Steinhaus random multiplicative function, then uniformly for any $k \in \N$, any $\beta \geq 3/4$, any real $\alpha_1, \dots, \alpha_k$, any real $100 (1 + (\sum_{j=1}^k | \alpha_j | )^{8/3} ) \leq x \leq y$ and $t_1 , \dots, t_k$, we have 
+\begin{multline*}
+\E \prod_{j=1}^k \prod_{x < p \leq y} \biggl| 1 - \frac{f(p)}{p^{\beta / 2 + i t_k}} \biggr|^{- 2 \alpha_j} \\
+= \exp \biggl( \sum_{x < p \leq y} \frac{\sum_{j=1}^k \alpha_j^2 + 2 \sum_{1 \leq j < l \leq k} \alpha_j \alpha_l \cos ((t_l - t_j) \log p)}{p^\beta} + O \biggl( \frac{M}{x^{1/8} \log x} \biggr) \biggr),
+\end{multline*}
+where $M \coloneqq \max \bigl\{ \sum_{j=1}^k | \alpha_j |, (\sum_{j=1}^k | \alpha_j |)^3 \bigr\}$. In particular, for any $|\alpha| \leq 100$, say, we have
+\[
+\E | F_y (\beta / 2 + it) |^{2\alpha} \asymp \zeta(\beta,y)^{\alpha^2},
+\]
+where the implied constant is uniform for $\alpha$ in this range. Furthermore, if $|t - t'| \leq \frac{1}{\delta \log y}$ for $\delta \geq 1$, then we have
+\begin{equation}\label{equ: close t}
+   \E \Biggl| \frac{F_y (\beta / 2 + it)}{F_y (\beta / 2 + i t')} \Biggr|^{2 \alpha} \leq e^{O(1 + |\alpha|^{11/3})} \zeta(\beta, y)^{\frac{\alpha^2}{\delta^2}}, 
+\end{equation}
+where the implied constant in the $e^{O(1 + |\alpha|^{11/3})}$ term is uniform in $\alpha$.
+\end{lemma}
+\begin{proof}
+The first part of the statement follows identically to~\cite[Euler Product Result 1]{Harperlargevalue}. We then note that
+\[
+\E |F_y (\beta / 2 + it) |^{2 \alpha} \asymp \E \prod_{M^{8} <  p \leq y} \biggl| 1 - \frac{f(p)}{p^{\beta / 2 + i t}} \biggr|^{-2\alpha}.
+\]
+Applying the first part of the lemma with $k=1$, and using the fact that
+\begin{align*}
+\zeta (\beta, y) &= \exp \biggl(- \sum_{p \leq y} \log \Bigl( 1 - \frac{1}{p^{\beta}} \Bigr) \biggr) \\
+& = \exp \biggl( \sum_{p \leq y} \frac{1}{p^{\beta}} + O \biggl( \sum_{p \leq y} \frac{1}{p^{2 \beta}} \biggr) \biggr)  \asymp \exp \biggl( \sum_{p \leq y} \frac{1}{p^{\beta}} \biggr) ,
+\end{align*}
+for $\beta \geq 3/4$, we deduce that $\E | F_y (\beta / 2 + it) |^{2\alpha} \asymp \zeta(\beta,y)^{\alpha^2}$. For the last part of the lemma, we begin by noting that
+\[
+\E \Biggl| \frac{F_y (\beta / 2 + it)}{F_y (\beta / 2 + i t')} \Biggr|^{2 \alpha} \leq e^{O(1 + |\alpha|^{11/3})} \E \prod_{x < p \leq y} \biggl| 1 + \frac{f(p)}{p^{\beta / 2 + it}} \biggr|^{-2 \alpha} \biggl| 1 + \frac{f(p)}{p^{\beta / 2 + it'}} \biggr|^{2 \alpha},
+\]
+for $x = 100(1 + 2 | \alpha |)^{8/3}$, say. Applying the first part of the lemma, we find that
+\[
+\E \Biggl| \frac{F_y (\beta / 2 + it)}{F_y (\beta / 2 + i t')} \Biggr|^{2 \alpha} \leq e^{O(1 + |\alpha|^{11/3})} \exp \biggl( \sum_{x < p \leq y} \frac{\alpha^2 (1 - \cos ((t - t') \log p))}{p^{\beta}} \biggr) .
+\]
+Note that the ``big Oh'' term in the last exponential factor can be engulfed into the $e^{O(1 + |\alpha|^{11/3})}$ term. Using the facts that $|\cos x - 1| \leq |x|^2$ and $|t - t'| \leq \frac{1}{\delta \log y}$, we have
+\[
+\E \Biggl| \frac{F_y (\beta / 2 + it)}{F_y (\beta / 2 + i t')} \Biggr|^{2 \alpha} \leq e^{O(1 + |\alpha|^{11/3})} \exp \biggl( \sum_{p \leq y} \frac{\alpha^2}{\delta^2 p^{\beta}} \biggr) .
+\]
+Finally, it follows similarly that $\exp ( k \sum_{p \leq y} \frac{1}{p^{\beta}}) = e^{O(k)} \zeta(\beta, y)^{k}$, where the implied constant is uniform in $k$, so applying this with $k = \frac{\alpha^{2}}{\delta^2}$ completes the proof. 
+\end{proof}
+
+We are now ready to state and prove our main Euler product estimate.
+
+\begin{theorem}[Main Euler product result]\label{t:new ep bound}
+Suppose that $3/4 \leq \beta \leq 1$. For any $1/2 \leq q \leq 1$, we have uniformly
+\[
+\zeta (\beta, y)^{q^2} \ll \E \biggl( \int_{\R} \biggl| \frac{F_{y} (\beta / 2 + it )}{\beta/2 + it} \biggr|^2 \, dt \biggr)^{q} \ll (\log y)^{1 - q} {\zeta(\beta,y)}^{q^2} \exp\Bigl( O \big( \log \zeta (\beta, y) \bigr)^{8/11} \Bigr)  .
+\]
+The lower bound holds uniformly on the larger range $0 \leq q \leq 1$.
+\end{theorem}
+\begin{xremark}
+This lower bound can likely be improved to include a factor of $(\log y)^{1-q}$, but we content ourselves with this weaker bound, since we only include it to illustrate that our theorem is close to being sharp. 
+\end{xremark}
+\begin{proof}
+The proof of the lower bound is relatively straightforward. For any $0 < q \leq 1$, it holds that
+\begin{align*}
+\E \biggl( \int_{\R} \biggl| \frac{F_{y} (\beta / 2 + it )}{\beta/2 + it} \biggr|^2 \, dt \biggr)^{q} & \gg \E \biggl( \int_{-1/2}^{1/2} | F_{y} (\beta / 2 + it ) |^2 \, dt \biggr)^{q} \\
+& \geq \int_{-1/2}^{1/2} \E | F_{y} (\beta / 2 + it ) |^{2q} \, dt ,
+\end{align*}
+where the second line follows from applying Hölder's inequality to the integral. An application of  Lemma~\ref{l:standardEPresult} gives that
+\[
+\E \biggl( \int_{\R} \biggl| \frac{F_{y} (\beta / 2 + it )}{\beta/2 + it} \biggr|^2 \, dt \biggr)^{q} \gg \zeta (\beta,y)^{q^2} ,
+\]
+as required. For the upper bound, we begin by splitting the integral and applying sub-additivity of $x \rightarrow x^q$ ($0<q<1$), so we obtain
+\begin{multline}\label{equ: Integral splitting}
+\E \biggl( \int_{\R}\biggl| \frac{F_y (\beta / 2 + it )}{\beta / 2 + i t} \biggr|^2 \, dt \biggr)^{q} \ll \E \biggl( \int_{|t| \leq \zeta(\beta, y)} \biggl| \frac{F_y (\beta / 2 + it )}{\beta / 2 + i t} \biggr|^2 \, dt \biggr)^{q} \\ 
++ \E \biggl( \int_{|t| > \zeta(\beta, y)} \biggl| \frac{F_y (\beta / 2 + it )}{\beta / 2 + i t} \biggr|^2 \, dt \biggr)^{q} .
+\end{multline}
+Applying Hölder's inequality followed by Lemma~\ref{l:standardEPresult}, the second term satisfies
+\[\ll
+\biggl( \int_{|t| > \zeta(\beta, y)} \E \biggl| \frac{F_y (\beta / 2 + it )}{\beta / 2 + i t} \biggr|^2 \, dt \biggr)^{q} \ll 1 .
+\]
+In light of our lower bound, this contributes negligibly to~\eqref{equ: Integral splitting}, so we have
+\begin{align*}
+\E \biggl( \int_{\R} \biggl| \frac{F_{y} (\beta / 2 + it )}{\beta/2 + it} \biggr|^2 \, dt \biggr)^{q} & \ll \E \biggl( \int_{|t| \leq \zeta(\beta, y)} \biggl| \frac{F_y (\beta / 2 + it )}{\beta / 2 + i t} \biggr|^2 \, dt \biggr)^{q} \\
+& \ll \E \biggl( \sum_{\substack{|n| \leq \zeta( \beta , y )}} \frac{1}{(|n| + 1)^{2}} \int_{n-1/2}^{n+1/2} | F_y (\beta / 2 + it ) |^2 \, dt \biggr)^{q} \\
+& \ll \sum_{\substack{|n| \leq \zeta( \beta , y )}} \frac{1}{(|n| + 1)^{2q}} \E \biggl( \int_{n-1/2}^{n+1/2} | F_y (\beta / 2 + it ) |^2 \, dt \biggr)^{q} ,
+\end{align*}
+where the last line follows from sub-additivity of $x \rightarrow x^q$. Seeing as the law of $\bigl( f(p) \bigr)_{p \text{ prime}}$ is the same as that $\bigl( f(p) p^{it} \bigr)_{p \text{ prime}}$ for any fixed $t$, we have
+\begin{align*}
+\E \biggl( \int_{\R} \biggl| \frac{F_{y} (\beta / 2 + it )}{\beta/2 + it} \biggr|^2 \, dt \biggr)^{q} &\ll \sum_{\substack{|n| \leq \zeta( \beta , y )}} \frac{1}{(|n| + 1)^{2q}} \E \biggl( \int_{-1/2}^{1/2} | F_y (\beta / 2 + it ) |^2 \, dt \biggr)^{q} \\
+& \ll \log \bigl( \zeta(\beta, y) \bigr) \E \biggl( \int_{-1/2}^{1/2} | F_y (\beta / 2 + it ) |^2 \, dt \biggr)^{q} ,
+\end{align*}
+uniformly for any $1/2 \leq q \leq 1$. Note that if $q > 1/2$ is fixed, the factor of $\log \zeta ( \beta, y)$ can be removed, since in that case the sum over $n$ is convergent. It remains to estimate
+\[
+\E \biggl( \int_{-1/2}^{1/2} | F_y (\beta / 2 + it ) |^2 \, dt \biggr)^{q} .  
+\]
+As is motivated in Section~\ref{s:outline of moderate y}, we want to discretize the interval $[-\frac{1}{2}, \frac{1}{2}]$ further into short sub-intervals (of length roughly $\frac{1}{\log y}$), and then apply sub-additivity. We first introduce a parameter, $\delta > 0$, which will be chosen to depend on $\beta$. Then \eqref{equ: close t} is certainly at most
+\[
+\frac{1}{(\delta \log y)^{q}} \E \Biggl( \sum_{|j| \leq \delta \log y} \biggl| F_y \Bigl(\beta / 2 + i \frac{j}{\delta \log y} \Bigr) \Biggr|^2 (\delta \log y) \int_{\frac{j}{\delta \log y}}^{\frac{j+1}{\delta \log y}} \Biggl| \frac{F_y (\beta / 2 + i t)}{F_y (\beta / 2 + i \frac{j}{\delta \log y})} \Biggr|^2 \, dt \Biggr)^q .
+\]
+The factor of $\frac{1}{(\delta \log y)^{q}}$ has been introduced to normalise the integral. For $q \in [1/2, 1]$, the function $x \rightarrow x^{q}$ is sub-additive, so we can move this sum over $j$ to the outside, giving the upper bound
+\[
+\frac{1}{(\delta \log y)^{q}} \sum_{|j| \leq \delta \log y} \E \Biggl[ \biggl| F_y \Bigl(\beta / 2 + i \frac{j}{\delta \log y} \Bigr) \Biggr|^{2q} \Biggl( (\delta \log y) \int_{\frac{j}{\delta \log y}}^{\frac{j+1}{\delta \log y}} \Biggl| \frac{F_y (\beta / 2 + i t)}{F_y (\beta / 2 + i \frac{j}{\delta \log y})} \Biggr|^2 \, dt \Biggr)^q \Biggr] .
+\]
+We now apply Hölder's inequality with an exponent $1 + \varepsilon$ to the expectation, where $0 < \varepsilon < 1$ that will be chosen later. Overall, this gives
+\begin{multline*}
+\E \biggl( \int_{\R} \biggl| \frac{F_{y} (\beta / 2 + it )}{\beta/2 + it} \biggr|^2 \, dt \biggr)^{q} \leq \frac{\log \zeta (\beta,y)}{(\delta \log y)^{q}} \sum_{|j| \leq \delta \log y} \Biggl( \E \biggl| F_y \Bigl(\beta / 2 + i \frac{j}{\delta \log y} \Bigr) \Biggr|^{2q(1+\varepsilon)} \Biggr)^{\frac{1}{1+\varepsilon}} \\ 
+\times \Biggl[ \E \Biggl( (\delta \log y) \int_{\frac{j}{\delta \log y}}^{\frac{j+1}{\delta \log y}} \Biggl| \frac{F_y (\beta / 2 + i t)}{F_y (\beta / 2 + i \frac{j}{\delta \log y})} \Biggr|^2 \, dt \Biggr)^{q (1 + \frac{1}{\varepsilon})} \Biggr]^{\frac{\varepsilon}{1 + \varepsilon}} .
+\end{multline*}
+By Lemma~\ref{l:standardEPresult}, the first expectation is $\ll \zeta(\beta,y)^{q^2 (1 + \varepsilon)^2} \ll  \zeta(\beta,y)^{q^2 (1 + 3\varepsilon)}$, so we have the upper bound
+\[
+\ll \frac{\log \zeta (\beta,y)}{(\delta \log y)^{q}} \sum_{|j| \leq \delta \log y} {\zeta(\beta,y)}^{q^2 (1 + 3\varepsilon)} \Biggl[ \E \Biggl( (\delta \log y) \int_{\frac{j}{\delta \log y}}^{\frac{j+1}{\delta \log y}} \Biggl| \frac{F_y (\beta / 2 + i t)}{F_y (\beta / 2 + i \frac{j}{\delta \log y})} \Biggr|^2 \, dt \Biggr)^{q (1 + \frac{1}{\varepsilon})} \Biggr]^{\frac{\varepsilon}{1 + \varepsilon}} .
+\]
+Applying Hölder's inequality with exponent $q(1 + \frac{1}{\varepsilon})$ to the integral, this is
+\[
+\ll \frac{\log \zeta (\beta,y)}{(\delta \log y)^{q}} \sum_{|j| \leq \delta \log y} {\zeta(\beta,y)}^{q^2 (1 + 3\varepsilon)} \Biggl( (\delta \log y) \int_{\frac{j}{\delta \log y}}^{\frac{j+1}{\delta \log y}} \E \Biggl| \frac{F_y (\beta / 2 + i t)}{F_y (\beta / 2 + i \frac{j}{\delta \log y})} \Biggr|^{2q (1 + \frac{1}{\varepsilon})} \, dt \Biggr)^{\frac{\varepsilon}{1 + \varepsilon}} .
+\]
+Applying Lemma~\ref{l:standardEPresult}, the expectation in our integral is $\leq e^{O(1 + 1 / \varepsilon^{11/3})} \zeta (\beta, y)^{\frac{q^2}{\delta} (1 + \frac{1}{\varepsilon})^2}$. We deduce that
+\[
+\E \biggl( \int_{\R} \biggl| \frac{F_{y} (\beta / 2 + it )}{\beta/2 + it} \biggr|^2 \, dt \biggr)^{q} \ll (\log \zeta (\beta,y)) \delta^{1- q} (\log y)^{1 - q} e^{O(1 / \varepsilon^{8/3})} {\zeta(\beta,y)}^{q^2 (1 + 3\varepsilon + \frac{1}{\delta^2} + \frac{1}{\delta^2 \varepsilon})} .
+\]
+Taking $\delta = (\log \zeta (\beta, y))^{1/2}$ and $\varepsilon = (\log \zeta(\beta, y))^{-3/11}$, we have
+\[
+\E \biggl( \int_{\R} \biggl| \frac{F_{y} (\beta / 2 + it )}{\beta/2 + it} \biggr|^2 \, dt \biggr)^{q} \ll (\log y)^{1 - q} e^{O \bigl( (\log \zeta (\beta, y) )^{8/11} \bigr) }{\zeta(\beta,y)}^{q^2} ,
+\]
+which completes the proof.
+\end{proof}
+
+\section{Large smoothness parameter: Multiplicative chaos regime}\label{Sec: GMC}
+
+In this section, we prove Theorem~\ref{t:small u upper bound}. As mentioned in section~\ref{s: large y explained}, the proof essentially follows that of Harper~\cite{HarperLow}, but in our case, we only condition on relatively few primes. Since the remaining random Euler product behaves as though it is on the half-line, we are in a similar setting to Harper~\cite{HarperLow}, and we can apply Lemma~\ref{l:Euler product on half line} to obtain a non-trivial saving. The additional input needed for this strategy is an estimate for the count of smooth numbers in short intervals without small prime factors, which is provided by Lemma~\ref{l: smooths in short intervals estimate}.
+
+The theorem will follow by iteratively applying the following proposition:
+\begin{proposition}\label{p:small u upper bound}
+Let $v>2$ be a large constant so that $\alpha (x,y) \leq 1 - \frac{10}{\log y}$ whenever $y \leq x^{1/v}$ (it can be verified using Lemma~\ref{l:saddle point approx} that such a constant exists), and let $c = 2 e^{-2}$.  For any $e^{(\log \log x)^{2}} \leq y \leq x^{1/v}$, we have
+\[
+\E \biggl| \sum_{\substack{n \leq x \\ e^{\frac{c}{1-\alpha}} < P(n) \leq y}} f(n) \biggr| \ll \frac{\Psi (x,y)^{1/2}}{\Bigl(\log \frac{1}{1-\alpha(x,y)} \Bigr)^{1/4}},
+\]
+where the implied constant is uniform in $y$. 
+\end{proposition}
+\begin{xremark}
+We reiterate that the constant $c = 2 e^{-2}$ is unimportant, and is just chosen to allow for straightforward application of Lemma~\ref{l:Euler product on half line} later on.
+\end{xremark}
+
+\begin{proof}[Proof of Theorem~\ref{t:small u upper bound}, assuming Proposition~\ref{p:small u upper bound}]
+We begin by noting that, in the case where $u = \frac{\log x}{\log y} \leq v$ (i.e. when $x^{1/v} \leq y \leq x$), the theorem follows identically to the work of Harper\footnote{For example, one can follow the proof of Proposition 1 in~\cite[Section~2.4]{HarperLow}, just removing a finite number of $k$ in the initial splitting of the sum. Since this will only decrease the overall size, the same upper bound follows.}~\cite{HarperLow} (which is not surprising as $y\geq x^{1/v}$ is now very close to $x$, and so the smoothness restriction is negligible). Now suppose that $y \leq x^{1/v}$. By the triangle inequality, we have
+\begin{equation}\label{equ:ub triangle ineq}
+\E \biggl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \biggr| \leq \E \biggl| \sum_{\substack{n \leq x \\ e^{\frac{c}{1-\alpha}} < P(n) \leq y}} f(n) \biggr| + \E \biggl| \sum_{\substack{n \leq x \\ P(n) \leq e^{\frac{c}{1-\alpha}}}} f(n) \biggr| .
+\end{equation}
+If $u \geq \log \log \log x$, then the first term can easily be shown to dominate. Specifically, in this range of $u$, we apply Proposition~\ref{p:small u upper bound} to handle the first term and Cauchy--Schwarz inequality to handle the second term (together with a mean square calculation), giving
+\[
+\E \biggl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \biggr| \leq \frac{\Psi(x,y)^{1/2}}{\Bigl(\log \frac{1}{1-\alpha(x,y)} \Bigr)^{1/4}} + \Psi(x,e^{\frac{c}{1 - \alpha}} )^{1/2} .
+\]
+It follows readily from Lemma~\ref{l:saddle point approx} that $e^{\frac{c}{1 - \alpha}} \leq y^{1/2}$, say, and a short calculation using Lemma~\ref{l:smooth count in terms of saddle point} allows one to deduce that
+\[
+\Psi(x,\sqrt{y}) \ll \Psi(x,y) e^{-u \log u/3} \ll \frac{\Psi(x,y)}{\Bigl(\log \frac{1}{1-\alpha(x,y)} \Bigr)^{1/2}} ,
+\]
+and the result follows immediately. 
+
+It remains to handle the case where $v \leq u \leq \log \log \log x$. The main idea is to iteratively apply the decomposition ~\eqref{equ:ub triangle ineq} and then use Proposition~\ref{p:small u upper bound} to evaluate the resulting absolute first moment. Define $y_0 = y$, and $y_{i+1} = e^{\frac{c}{1 - \alpha (x, y_i)}}$ for $i \geq 0$. Iterating~\eqref{equ:ub triangle ineq} $\ell$-times, we have
+\[
+\E \biggl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \biggr| \leq \sum_{k=0}^{\ell-1} \E \biggl| \sum_{\substack{n \leq x \\ y_{k+1} < P(n) \leq y_k}} f(n) \biggr| + \E \biggl| \sum_{\substack{n \leq x \\ P(n) \leq y_{\ell}}} f(n) \biggr| .
+\]
+We apply Proposition~\ref{p:small u upper bound} to the first $\ell$ terms and Cauchy--Schwarz inequality to the latter term, giving
+\[
+\E \biggl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \biggr| \leq \sum_{k=0}^{\ell-1} \frac{\Psi(x,y_k)^{1/2}}{\Bigl(\log \frac{1}{1-\alpha( x,y_k )} \Bigr)^{1/4}} + \Psi(x, y_{\ell}) .
+\]
+It follows from our conditions on $y$ and Lemma~\ref{l:saddle point approx} that
+$y_1 = e^{\frac{c}{1 - \alpha (x,y_0)}} \leq \sqrt{y_0} = \sqrt{y}$, and similarly we have
+$y_k \leq y^{1/2^k}$. Taking $\ell = \lfloor \log \log \log x \rfloor$, say, we have
+\[
+\E \biggl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \biggr| \leq \frac{1}{(\log \log x)^{1/4}} \sum_{k=0}^{\ell-1} \Psi \bigl( x,y^{1/2^k} \bigr)^{1/2} + \Psi(x, y^{1/2^{\ell}}) .
+\]
+We now make use of the relation between $\Psi(x,y)$ and the Dickman function, $\rho$. It follows from~\cite[Theorem~III.5.8]{TenenbaumAPNT} that $\Psi \bigl( x,y^{1/2^k} \bigr) \asymp x \rho ( 2^k u )$ uniformly for $k$ in our range of summation. Applying the estimate $\frac{\rho(2u)}{\rho(u)} \leq \frac{1}{2}$ that holds for all $u \geq 1$ (since $\rho$ is rapidly decreasing, this ratio is maximised at $u=1$), we deduce that $\Psi \bigl( x,y^{1/2^k} \bigr) \ll \frac{x}{2^k} \rho(u) \ll \frac{x}{2^k} \Psi(x,y)$. Finally, since $\Psi(x, y^{1/2^{\ell}}) \ll \Psi(x, x^{\frac{1}{\log \log x}}) \ll \Psi(x,y) / \log \log x$, say, we deduce that
+\[
+\E \biggl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \biggr| \leq \frac{\Psi(x,y)^{1/2}}{(\log \log x)^{1/4}} ,
+\]
+which agrees with Theorem~\ref{t:small u upper bound} on this range of $u$. This completes the proof.
+\end{proof}
+We now proceed with the proof of Proposition~\ref{p:small u upper bound}.
+\begin{proof}[Proof of Proposition~\ref{p:small u upper bound}]
+Recall that $c = 2e^{-2}$. We have
+\[
+\E \biggl| \sum_{\substack{n \leq x \\ e^{\frac{c}{1-\alpha}} < P(n) \leq y}} f(n) \biggr| = \E \biggl| \sum_{\substack{1 < m \leq x \\ p | m \Rightarrow p \in (e^{\frac{c}{1-\alpha}}, y]}} f(m) \sum_{\substack{n \leq x/m \\ P(n) \leq e^{\frac{c}{1 - \alpha}}}} f(n) \biggr|.
+\]
+Let ${\E}_{\alpha}$ denote the expectation conditioned on primes $p \leq e^{\frac{c}{1 - \alpha}}$. By the Cauchy--Schwarz inequality, we have
+\begin{align*}
+\E \biggl| \sum_{\substack{n \leq x \\ e^{\frac{c}{1-\alpha}} < P(n) \leq y}} f(n) \biggr| &= \E \E_{\alpha} \biggl| \sum_{\substack{1 < m \leq x \\ p | m \Rightarrow p \in (e^{\frac{c}{1-\alpha}}, y]}} f(m) \sum_{\substack{n \leq x/m \\ P(n) \leq e^{\frac{c}{1 - \alpha}}}} f(n) \biggr| \\
+& \leq \E \biggl( \E_{\alpha} \biggl| \sum_{\substack{1 < m \leq x \\ p | m \Rightarrow p \in (e^{\frac{c}{1-\alpha}}, y]}} f(m) \sum_{\substack{n \leq x/m \\ P(n) \leq e^{\frac{c}{1 - \alpha}}}} f(n) \biggr|^2 \biggr)^{1/2} \\ 
+& = \E \biggl( \sum_{\substack{1 < m \leq x \\ p | m \Rightarrow p \in (e^{\frac{c}{1-\alpha}}, y]}} \biggl| \sum_{\substack{n \leq x/m \\ P(n) \leq e^{\frac{c}{1 - \alpha}}}} f(n) \biggr|^2 \biggr)^{1/2} .
+\end{align*}
+We wish to replace the sum over $m$ by an integral, which will in turn allow us to apply Plancherel's identity. First, we introduce a ``dummy integral'' over $t$, writing
+\begin{align*}
+\E \biggl| \sum_{\substack{n \leq x \\ e^{\frac{c}{1-\alpha}} < P(n) \leq y}} f(n) \biggr| & \leq \E \biggl( \sum_{\substack{1 < m \leq x \\ p | m \Rightarrow p \in (e^{\frac{c}{1-\alpha}}, y]}} \biggl| \sum_{\substack{n \leq x/m \\ P(n) \leq e^{\frac{c}{1 - \alpha}}}} f(n) \biggr|^2 \biggr)^{1/2} \\
+& = \E \biggl( \sum_{\substack{1 < m \leq x \\ p | m \Rightarrow p \in (e^{\frac{c}{1-\alpha}}, y]}} \frac{X}{m} \int_{m}^{m(1+\frac{1}{X})} \biggl| \sum_{\substack{n \leq x/m \\ P(n) \leq e^{\frac{c}{1 - \alpha}}}} f(n) \biggr|^2 \, dt \biggr)^{1/2} .
+\end{align*}
+The first term on the right-hand is
+\begin{multline*}
+\ll \E \biggl( \sum_{\substack{1 < m \leq x \\ p | m \Rightarrow p \in (e^{\frac{c}{1-\alpha}}, y]}} \frac{X}{m} \int_{m}^{m(1+\frac{1}{X})} \biggl| \sum_{\substack{n \leq x/t \\ P(n) \leq e^{\frac{c}{1 - \alpha}}}} f(n) \biggr|^2 \, dt \biggr)^{1/2} + \\ 
+\E \biggl( \sum_{\substack{1 < m \leq x \\ p | m \Rightarrow p \in (e^{\frac{c}{1-\alpha}}, y]}} \frac{X}{m} \int_{m}^{m(1+\frac{1}{X})} \biggl| \sum_{\substack{x/t < n \leq x/m \\ P(n) \leq e^{\frac{c}{1 - \alpha}}}} f(n) \biggr|^2 \, dt \biggr)^{1/2} .
+\end{multline*}
+We show that the second term is small. By the Cauchy--Schwarz inequality, we can bound it from above by
+\[
+\biggl( \sum_{\substack{1 < m \leq x \\ p | m \Rightarrow p \in (e^{\frac{c}{1-\alpha}}, y]}} \frac{X}{m} \int_{m}^{m(1+\frac{1}{X})} \sum_{\substack{x/t < n \leq x/m \\ P(n) \leq e^{\frac{c}{1 - \alpha}}}} 1 \, dt \biggr)^{1/2} \ll \biggl( \sum_{\substack{1 < m \leq x \\ p | m \Rightarrow p \in (e^{\frac{c}{1-\alpha}}, y]}} \sum_{\substack{x/m(1 + \frac{1}{X}) < n \leq x/m \\ P(n) \leq e^{\frac{c}{1 - \alpha}}}} 1\biggr)^{1/2}  .
+\]
+We make the choice $X = \log \log x$. Change the order of summation, and apply Lemma~\ref{l: smooths below x/d vs below x} and Lemma~\ref{l: smooths in short intervals estimate} to get that (Noting carefully that the conditions for Lemma~\ref{l: smooths in short intervals estimate} are satisfied in our application below)
+\begin{align*}
+& \ll \biggl( \sum_{\substack{n \leq x \\ P(n) \leq e^{\frac{c}{1 - \alpha}}}} \sum_{\substack{x/n(1 + \frac{1}{X}) < m \leq x/n \\ p \mid m \Rightarrow p \in (e^{\frac{c}{1 - \alpha}}, y]}} 1  \biggr)^{1/2} \ll \biggl( (1 - \alpha) \sum_{\substack{n \leq x \\ P(n) \leq e^{\frac{c}{1 - \alpha}}}} \frac{1}{X} \Psi (x/n, y) \biggr)^{1/2} \\
+& \ll \biggl( \frac{\Psi (x, y) (1-\alpha)}{X} \sum_{\substack{n \leq x \\ P(n) \leq e^{\frac{c}{1 - \alpha}}}} \frac{1}{n^{\alpha}} \biggr)^{1/2} \ll \frac{\Psi(x,y)^{1/2}}{X^{1/2}} = \sqrt{\frac{\Psi(x,y)}{\log \log x}} .
+\end{align*}
+At this stage, we have
+\begin{align*}
+\E \biggl| \sum_{\substack{n \leq x \\ e^{\frac{c}{1-\alpha}} < P(n) \leq y}} f(n) \biggr| &\ll \E \biggl( \sum_{\substack{1 < m \leq x \\ p | m \Rightarrow p \in (e^{\frac{c}{1-\alpha}}, y]}} \frac{X}{m} \int_{m}^{m(1+\frac{1}{X})} \biggl| \sum_{\substack{n \leq x/t \\ P(n) \leq e^{\frac{c}{1 - \alpha}}}} f(n) \biggr|^2 \, dt \biggr)^{1/2} + \sqrt{\frac{\Psi(x,y)}{\log \log x}} \\
+& = \E \biggl( \int_{e^{\frac{c}{1-\alpha}}}^{x} \biggl| \sum_{\substack{n \leq x/t \\ P(n) \leq e^{\frac{c}{1 - \alpha}}}} f(n) \biggr|^2 \sum_{\substack{t/(1 + \frac{1}{X})\leq m \leq t \\ p | m \Rightarrow p \in (e^{\frac{c}{1-\alpha}}, y]}} \frac{X}{m}  \, dt \biggr)^{1/2} + \sqrt{\frac{\Psi(x,y)}{\log \log x}}  .
+\end{align*}
+Applying Lemma~\ref{l: smooths in short intervals estimate}, we have
+\[
+\sum_{\substack{t/(1 + \frac{1}{X})\leq m \leq t \\ p | m \Rightarrow p \in (e^{\frac{c}{1-\alpha}}, y]}} \frac{X}{m} \ll ( 1- \alpha ) \frac{\Psi (t,y)}{t} ,
+\]
+uniformly for $t \geq y$. In the remaining range $e^{\frac{c}{1 - \alpha}} \leq t < y$, the estimate follows using a simple sieve argument (see, for example,~\cite[Theorem~3.6]{MV2007}), sieving out all primes $p \leq (e^{\frac{c}{1 - \alpha}})^{1/10}$, say. Making the change of variables $t = x/z$, we have
+\begin{multline*}
+\E \biggl| \sum_{\substack{n \leq x \\ e^{\frac{c}{1-\alpha}} < P(n) \leq y}} f(n) \biggr| \ll
+(1 - \alpha)^{1/2} \E \biggl( \int_{1}^{x/e^{\frac{1}{1 - \alpha}}} \biggl| \sum_{\substack{n \leq z \\ P(n) \leq e^{\frac{c}{1 - \alpha}}}} f(n) \biggr|^2  \Psi (x/z, y) \, \frac{dz}{z} \biggr)^{1/2} \\ + \sqrt{\frac{\Psi(x,y)}{\log \log x}} .
+\end{multline*}
+Applying Lemma~\ref{l: smooths below x/d vs below x}, we have $\Psi(x/z, y) \ll \Psi(x, y)/z^{\alpha}$, and completing the integral, we obtain
+\begin{equation}\label{equ:large y pre planch}
+\begin{split}
+\E \biggl| \sum_{\substack{n \leq x \\ e^{\frac{c}{1-\alpha}} < P(n) \leq y}} f(n) \biggr| \ll \bigl( \Psi (x,y) (1 - \alpha ) \bigr)^{1/2} \E \biggl( \int_{1}^{\infty} \biggl| \sum_{\substack{n \leq z \\ P(n) \leq e^{\frac{c}{1 - \alpha}}}} f(n) \biggr|^2 \frac{dz}{z^{1 + \alpha}} \biggr)^{1/2} \\ + \sqrt{\frac{\Psi(x,y)}{\log \log x}} .
+\end{split}
+\end{equation}
+The second term is negligible for our upper bound. We next manipulate the first term so that it can be bounded by using Lemma~\ref{l:Euler product on half line}, and for this purpose, we let $z = e^{\frac{c}{1 - \alpha}}$, so that $F_{z} (s) = \prod_{p \leq e^{\frac{c}{1 - \alpha}}} \bigl( 1 - \frac{f(p)}{p^{s}} \bigr)^{-1}$. Applying Plancherel's identity, Lemma~\ref{l:ha result}, followed by Hölder's inequality, we obtain
+\begin{align*}
+\E \biggl( \int_{1}^{\infty} \biggl| \sum_{\substack{n \leq z \\ P(n) \leq e^{\frac{c}{1 - \alpha}}}} f(n) \biggr|^2 \frac{dz}{z^{1 + \alpha}} \biggr)^{1/2} &= \E \biggl( \int_{-\infty}^{\infty} \biggl| \frac{F_{z} (\frac{\alpha}{2} + it)}{\frac{\alpha}{2} + it} \biggr|^2 \, dt \biggr)^{1/2} \\ 
+&\leq \biggl( \E \biggl( \int_{-\infty}^{\infty} \biggl| \frac{F_{z} (\frac{\alpha}{2} + it)}{\frac{\alpha}{2} + it} \biggr|^2 \, dt \biggr)^{2/3} \biggr)^{3/4}.
+\end{align*}
+The above expectation satisfies 
+\begin{align*}
+\E \biggl( \int_{-\infty}^{\infty} \biggl| \frac{F_{z} (\frac{\alpha}{2} + it)}{\frac{\alpha}{2} + it} \biggr|^2 \, dt \biggr)^{2/3} & \ll \E \biggl( \sum_{n \in \Z} \frac{1}{|n|^{2} + 1} \int_{n - 1/2}^{n + 1/2} \Bigl| F_{z} \Bigl( \frac{\alpha}{2} + it \Bigr) \Bigr|^2 \, dt \biggr)^{2/3}  \\
+& \ll \sum_{n \in \Z} \frac{1}{n^{4/3} + 1} \E \biggl( \int_{n - 1/2}^{n + 1/2} \Bigl| F_{z} \Bigl( \frac{\alpha}{2} + it \Bigr) \Bigr|^2 \, dt \biggr)^{2/3} \\
+& \ll \E \biggl( \int_{-1/2}^{1/2} \Bigl| F_{z} \Bigl( \frac{\alpha}{2} + it \Bigr) \Bigr|^2 \, dt \biggr)^{2/3}.
+\end{align*}
+where to obtain the last line, we have used translation invariance in law. Finally, by Lemma~\ref{l:Euler product on half line} with $q = 2/3$, we have
+\[
+\E \biggl( \int_{-1/2}^{1/2} \Bigl| F_{z} \Bigl( \frac{\alpha}{2} + it \Bigr) \Bigr|^2 \, dt \biggr)^{2/3} \ll \Biggl( \frac{1}{(1 - \alpha) \sqrt{\log \frac{1}{1-\alpha}}} \Biggr)^{2/3},
+\]
+so overall this gives
+\[
+\E \biggl( \int_{1}^{\infty} \biggl| \sum_{\substack{n \leq z \\ P(n) \leq e^{\frac{c}{1 - \alpha}}}} f(n) \biggr|^2 \frac{dz}{z^{1 + \alpha}} \biggr)^{1/2} \ll \frac{1}{(1 - \alpha)^{1/2} \bigl( \log \frac{1}{1 - \alpha} \bigr)^{1/4}} .
+\]
+Inserting this into~\eqref{equ:large y pre planch}, we deduce that
+\[
+\E \biggl| \sum_{\substack{n \leq x \\ e^{\frac{c}{1-\alpha}} < P(n) \leq y}} f(n) \biggr| \ll \frac{\Psi (x,y)^{1/2}}{\Bigl(\log \frac{1}{1-\alpha(x,y)} \Bigr)^{1/4}},
+\]
+which completes the proof of Proposition~\ref{p:small u upper bound}.
+\end{proof}
+\section{Moderately smooth numbers: Proof of Theorem~\ref{Thm: main quantitative}}\label{sec: moderate}
+
+\subsection{Separating into two ranges of smoothness parameter}\label{s:moderate sec intro}
+
+In this section, we prove Theorem~\ref{Thm: main quantitative}, which we split into two cases depending on the size of $y$. When $y$ is somewhat ``large'' compared to $x$, say $y\gg e^{(\log x)^{1/2+o(1)}}$, the proof will follow roughly the same structure as the proof of Proposition~\ref{p:small u upper bound}, first conditioning on some portion of the primes to obtain a mean square of partial sums. In this case, we condition on all $(f(p))_{p \leq y/2}$. Note that if we condition on fewer primes (and apply Cauchy--Schwarz inequality to more $f(p)$), then we lose significantly. This is because we are working far from the $1/2$-line, so large primes contribute more to the Euler product, and it is the expectation of the \emph{random} Euler product integrals that ultimately gives us a larger saving, as described in Section~\ref{s:outline of moderate y}. On this range of larger $y$, we will prove the following result:
+
+\begin{theorem}\label{t:middle large y}
+For $e^{\sqrt{10 \log x}} \leq y \leq x^{\frac{1}{\log \log x}}$, we have
+\[
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \Bigr| \ll \Psi(x^2,y)^{1/4} \exp \Bigl( O \bigl( u^{8/11} \bigr) \Bigr) (\log x)^{5/8} (\log y)^{13/8},
+\]
+where all implied constants are uniform for $y$ in this range.
+\end{theorem}
+
+We will prove this in Section~\ref{s:proof of middle large y}. The result will be a direct consequence of Proposition~\ref{p:exp with large prime factor}, which proves a similar result over $n \leq x$ that have $P(n) \in (y/2, y]$.
+
+Unfortunately, when $y$ is smaller than roughly $e^{(\log x)^{1/2 + o(1)}}$, the proof strategy used in Proposition~\ref{p:exp with large prime factor} breaks down, which is a byproduct of our saving being too large relative to $y$. We are able to circumvent these issues and prove the following:
+
+\begin{theorem}\label{t:middle small y}
+For $(\log x)^{20} \leq y \leq e^{\sqrt{10 \log x}}$, we have
+\[
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \Bigr| \ll  \Psi(x^2, y)^{1/4} \exp \biggl( \frac{10 u \log u}{\log y} + O \bigl( u^{8/11} \bigr) \biggr),
+\]
+where all implied constants are uniform for $y$ in this range.
+\end{theorem}
+
+This result is proved in Section~\ref{s:proof of middle small y}. We will explain why we need to handle these ranges differently, but first, we show how one derives Theorem~\ref{Thm: main quantitative} from these results.
+
+\begin{proof}[Proof of Theorem~\ref{Thm: main quantitative}, assuming Theorems~\ref{t:middle large y} and~\ref{t:middle small y}.]
+It follows immediately from these results that
+\begin{equation}\label{equ: quant bound in terms of Psi (x^2, y)}
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \Bigr| \ll \Psi(x^2, y)^{1/4} \exp \biggl( \frac{10 u \log u}{\log y} + O \bigl( u^{8/11} \bigr) \biggr) (\log x)^{5/8} (\log y)^{13/8},
+\end{equation}
+for $(\log x)^{20} \leq y \leq x^{\frac{1}{\log \log x}}$. We will see that this result only gives a non-trivial saving in a smaller range that includes $(\log x)^{30} \leq y \leq x^{\frac{1}{7 \log \log x}}$, and we will also prove the statement~\eqref{equ: alt statement}. First note that Lemma~\ref{l:smooth count in terms of saddle point} implies that
+\[
+\Psi(x^2,y) \asymp \Psi(x,y)^2 x^{2 (\alpha (x^2,y) - \alpha (x,y))} \frac{\zeta (\alpha (x^2, y), y)}{\zeta ( \alpha (x,y), y)^2} \sqrt{\log x \log y},
+\]
+for $(\log x)^{20} \leq y \leq x^{\frac{1}{\log \log x}}$. In the same range, it follows from Lemma~\ref{l:saddle point approx} that
+\[
+x^{2 (\alpha (x^2,y) - \alpha (x,y))} = \exp \bigl( - 2 u \log 2 (1 + o(1)) \bigr),
+\]
+where the $o(1)$ term goes to zero uniformly. Note that for $(\log x)^3 \leq y \leq x$, we have
+\[
+\log \zeta \bigl( \alpha (x,y), y \bigr) = \sum_{p \leq y} \frac{1}{p^{\alpha (x,y)}} + O(1).
+\]
+We can evaluate this using~\cite[Lemma~7.4]{MV2007} to find that
+\[
+\log \zeta \bigl( \alpha, y \bigr) = \frac{y^{1 - \alpha}}{(1 - \alpha) \log y} +  \log \Bigl( \frac{1}{1 - \alpha} \Bigr) + O \biggl( \frac{y^{1 - \alpha}}{(1 - \alpha)^2 (\log y)^2} \biggr).
+\]
+Applying Lemma~\ref{l:saddle point approx} and evaluating, we obtain
+\begin{equation}\label{equ: eval of log zeta (alpha, y)}
+\log \zeta \bigl( \alpha, y \bigr) = u + \log \Bigl( \frac{1}{1 - \alpha} \Bigr) + O \biggl( \frac{u \log \log u}{\log u}\biggr),
+\end{equation}
+uniformly for $(\log x)^{20} \leq y \leq x^{\frac{1}{\log \log x}}$. Note that the first term dominates whenever $\log \log x = o(u)$. We then have
+\[
+\Psi (x^2, y) \asymp \Psi(x,y)^2 \exp \bigl( - 2 u \log 2 (1 + o(1)) \bigr) \Biggl( \frac{\bigl( 1 - \alpha (x,y) \bigr)^2}{1 - \alpha (x^2 ,y)} \Biggr) \sqrt{\log x \log y},
+\]
+and applying Lemma~\ref{l:saddle point approx}, we have $\bigl( \frac{( 1 - \alpha (x,y) )^2}{1 - \alpha (x^2 ,y)} \bigr) \sqrt{\log x \log y} \asymp u \log u$, so we find that
+\begin{equation}\label{equ: Psi (x^2,y) asmp Psi (x,y)}
+\Psi (x^2, y) \asymp \Psi(x,y)^2 \exp \bigl( - 2 u \log 2 (1 + o(1)) \bigr),
+\end{equation}
+uniformly for $(\log x)^{20} \leq y \leq x^{\frac{1}{\log \log x}}$. Inserting this estimate into equation~\eqref{equ: quant bound in terms of Psi (x^2, y)}, it follows that
+\[
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \Bigr| \ll \sqrt{\Psi(x,y)\exp \Bigl(-u \bigl( \log 2 - \frac{20 \log u}{\log y} + o(1) \bigr) \Bigr) (\log x)^{5/4} (\log y)^{13/4}}.
+\]
+uniformly for $(\log x)^{20} \leq y \leq x^{\frac{1}{\log \log x}}$. Now, in the range $e^{(\log \log x)^{1 + \varepsilon}} \leq y \leq x^{\frac{1}{(\log \log x)^{1 + \varepsilon}}}$, say, we have $\frac{\log u}{\log y} = o(1)$ and $\log \log x = o(u)$, where the $o(1)$ terms goes to zero uniformly for fixed $\varepsilon > 0$. Therefore, equation~\eqref{equ: alt statement} holds on this range of $y$, as required. Furthermore, a simple calculation shows that this result gives better than squareroot cancellation for $y \geq (\log x)^{C}$, so long as $C > \frac{20}{\log 2} \approx 28.854$, and we also require that $u > \frac{9}{2 \log 2} \log \log x \approx 6.492 \log \log x$ to overcome the $(\log x)^{5/4} (\log y)^{13/4}$ term. The range $(\log x)^{30} \leq y \leq x^{\frac{1}{7\log \log x}}$ suffices, and we always have a saving of at least $e^{cu}$ for some fixed $c > 0$ on this range.
+\end{proof}
+
+
+We now briefly elaborate on the reason that our proof strategy cannot cover the full range of $y$. Similarly to in Proposition~\ref{p:small u upper bound}, in the proof of Proposition~\ref{p:exp with large prime factor}, we have a ``smoothing step'' where we work to approximate an outer sum with an integral. This step, which is done at around equation~\eqref{equ:medium y smoothing} in the proof of Proposition~\ref{p:exp with large prime factor}, introduces a dichotomy that is mediated by some parameter $X$ of our choosing. Specifically, the smoothing step:
+\begin{enumerate}[label=(\roman*)]
+\item Introduces an error roughly of size $\sqrt{\Psi (x,y)/X}$. In order for this term not to dominate the main term, we need to take $X \gg e^{cu}$, for some $c>\log 2$, say.
+\item Leads us to estimate sums of the form
+\[
+\sum_{\substack{t/(1 + \frac{1}{X}) \leq m \leq t \\ p|m \Rightarrow p \in (y/2,y]}} \frac{X}{m} ,
+\]
+for $t \in (y/2, x]$, which we need to bound when evaluating the integrand in our main term (in Proposition~\ref{p:exp with large prime factor}, this step is performed in equation~\eqref{equ:large medium y short sum est}). To handle the case when $t$ is small, we need $y/X \gg 1$ if we want to obtain a meaningful estimate.
+\end{enumerate}
+In order to satisfy these conditions simultaneously, we need to have $y \gg e^{cu}$, say, which roughly corresponds to $y \geq e^{(\log x)^{1/2 + o(1)}}$. To circumvent this problem and handle the case when $y$ is small, we perform a technical splitting of our original sum (see equation~\eqref{equ:small medium y splitting}), which relies on the fact that, even though the part of $n$ coming from primes $p \in (y/2, y]$ (say) could be small, for the vast majority of $n \leq x$ with $P(n) \leq y$, there will be a large factor of $n$ divisible only by primes on some (potentially different) scale. This idea allows us to essentially boost the lower range of $t$ in the short sum above and circumvent this problem.
+
+
+\subsection{Proof of Theorem~\ref{t:middle large y}}\label{s:proof of middle large y}
+As mentioned above, the theorem will be a straightforward consequence of the following proposition:
+\begin{proposition}\label{p:exp with large prime factor}
+For $e^{\sqrt{2 \log x}} \leq y \leq x^{\frac{1}{\log \log x}}$, we have
+\[
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \in ( y/2, y]}} f(n) \Bigr| \ll \Psi(x^2,y)^{1/4} e^{O ( u^{8/11})} (\log x)^{5/8} (\log y)^{5/8} .
+\]
+\end{proposition}
+\begin{proof}[Proof of Theorem~\ref{t:middle large y}, assuming Proposition~\ref{p:exp with large prime factor}]
+We will take advantage of the fact that the density of smooth numbers decreases rapidly as the smoothness parameter decreases. By Hölder's inequality, we have
+\[
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \Bigr| \leq \E \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq \frac{y}{2^{\lceil \frac{1}{2} \log_2 y \rceil}}}} f(n) \Bigr| + \sum_{j=0}^{\lceil \frac{1}{2} \log_2 y \rceil} \E \Bigl| \sum_{\substack{ n \leq x \\  P(n) \in ( \frac{y}{2^{j+1}}, \frac{y}{2^j} ] }} f(n) \Bigr| ,
+\]
+where, for the course of this short proof, $\log_2$ denotes the logarithm of base $2$. Applying the Cauchy--Schwarz inequality, the first term on the right-hand side is
+\[
+\leq \biggl( \E \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq \frac{y}{2^{\lceil \frac{1}{2} \log_2 y \rceil}}}} f(n) \Bigr|^2 \biggr)^{1/2} \leq \bigl( \Psi(x,\sqrt{y}) \bigr)^{1/2} .
+\]
+One can readily check\footnote{One way to do this would be to trivially note that $\Psi(x,\sqrt{y}) \leq \Psi (x,y^{2/3})$, and then to apply Lemma~\ref{l:decreasing y} followed by equation~\eqref{equ: Psi (x^2,y) asmp Psi (x,y)}.} that this is far smaller than the main term in Theorem~\ref{t:middle large y}. For the remaining expectations, note carefully that we can apply Proposition~\ref{p:exp with large prime factor} on this range of smoothness parameter, and that $\frac{\log x}{\log y/2^j}$ varies only by a constant over this range, so the ``big Oh'' term in the exponent is uniformly bounded by $O( u^{8/11})$ with $u = \frac{\log x}{\log y}$. Applying this proposition and using the fact that the bound there is certainly increasing in the smoothness parameter, we deduce that
+\[
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \Bigr| \ll \Psi(x^2,y)^{1/4} e^{O(u^{8/11})} (\log x)^{5/8} (\log y)^{13/8} ,
+\]
+completing the proof.
+\end{proof}
+We proceed with the proof of Proposition~\ref{p:exp with large prime factor}.
+\begin{proof}[Proof of Proposition~\ref{p:exp with large prime factor}]
+Letting $\tilde{\E}$ denote the expectation conditioned on the values of $f(p)$ for primes $p \leq y/2$, we have
+\begin{align*}
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \in ( y/2, y]}} f(n) \Bigr| & = \E \tilde{\E} \Bigl| \sum_{\substack{1< m \leq x \\ p|m \Rightarrow p \in (y/2,y]}} f(m) \sum_{\substack{n \leq x/m \\ P(n) \leq y/2}} f(n) \Bigr| \\
+&\leq \E \biggl( \tilde{\E} \Bigl| \sum_{\substack{1< m \leq x \\ p|m \Rightarrow p \in (y/2,y]}} f(m) \sum_{\substack{n \leq x/m \\ P(n) \leq y/2}} f(n) \Bigr|^2 \biggr)^{1/2} \\
+& = \E \Biggl( \sum_{\substack{1< m \leq x \\ p|m \Rightarrow p \in (y/2,y]}} \biggl| \sum_{\substack{n \leq x/m \\ P(n) \leq y/2}} f(n) \biggr|^2 \Biggr)^{1/2},
+\end{align*}
+where the second line follows by applying Cauchy--Schwarz to the conditional expectation. We now introduce a dummy integral as was done in the proof of Proposition~\ref{p:small u upper bound}. This gives
+\[ 
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \in ( y/2, y]}} f(n) \Bigr| \leq \E \Biggl( \sum_{\substack{ 1<m \leq x \\ p|m \Rightarrow p \in (y/2,y]}} \frac{X}{m} \int_{m}^{m(1 + \frac{1}{X})} \biggl| \sum_{\substack{n \leq x/m \\ P(n) \leq y/2 }} f(n) \biggr|^2 dt \Biggr)^{1/2} ,
+\]
+where $X$ is some parameter chosen later. Splitting the innermost sum at $n = x/t$, we have
+\begin{equation}\label{equ:medium y smoothing}
+\begin{split}
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \in ( y/2, y]}} f(n) \Bigr| \ll \E \Biggl( & \sum_{\substack{1<m \leq x \\ p|m \Rightarrow p \in (y/2,y]}} \frac{X}{m} \int_{m}^{m(1 + \frac{1}{X})} \biggl| \sum_{\substack{n \leq x/t \\ P(n) \leq y/2}} f(n) \biggr|^2 dt \Biggr)^{1/2} \\ 
+& + \E \Biggl( \sum_{\substack{1<m \leq x \\ p|m \Rightarrow p \in (y/2, y]}} \frac{X}{m} \int_{m}^{m(1 + \frac{1}{X})} \biggl| \sum_{\substack{x/t < n \leq x/m \\ P(n) \leq y/2}} f(n) \biggr|^2 dt \Biggr)^{1/2} .
+\end{split}
+\end{equation}
+We will show that the second term is small when $X$ is chosen to be sufficiently large. Specifically, by applying the Cauchy--Schwarz inequality to the expectation, the second term is smaller than
+\begin{align*}
+\Biggl( \sum_{\substack{1<m \leq x \\ p|m \Rightarrow p \in (y/2, y]}} \frac{X}{m} \int_{m}^{m(1 + \frac{1}{X})} \sum_{\substack{x/t < n \leq x/m \\ P(n) \leq y/2}} 1 \, dt \Biggr)^{1/2} &\leq \Biggl( \sum_{\substack{1<m \leq x \\ p|m \Rightarrow p \in (y/2, y]}} \sum_{\substack{x/m (1 + \frac{1}{X}) < n \leq x/m \\ P(n) \leq y/2}} 1  \Biggr)^{1/2} \\
+& \leq \biggl( \sum_{\substack{n \leq x \\ P(n) \leq y/2}} \sum_{\substack{ x / n (1 + \frac{1}{X}) < m \leq x/n \\ p \mid m \Rightarrow p \in (y/2, y]}} 1 \biggr)^{1/2} .
+\end{align*}
+To handle this term, we first remove the contribution from the largest $n$. Note that we may impose the upper bound $n \leq 2x/y$ on the above sum due to the prime factor restriction on the $m$. We take $X = e^{0.9u}$ and recall that $y \geq e^{\sqrt{2 \log x}}$. Straightforward estimates show that we certainly have $y \geq 2X$, so that the innermost sum over $m$ will always be of length $\geq 1$. Therefore, the contribution from $n > x/yX$ to the above is
+\[
+\sum_{\substack{x/yX < n \leq 2x/y \\ P(n) \leq y/2}} \sum_{\substack{ x / n (1 + \frac{1}{X}) < m \leq x/n \\ p \mid m \Rightarrow p \in (y/2, y]}} 1 \ll \sum_{\substack{x/yX < n \leq 2x/y \\ P(n) \leq y/2}} \frac{x}{nX} \ll \sum_{i = 0}^{\log X} \sum_{\substack{2x/ye^{i+1} < n \leq 2x/ye^i \\ P(n) \leq y/2}} \frac{x}{nX} .
+\]
+Invoking Lemma~\ref{l: smooths below x/d vs below x} and the fact that $e^{i} \leq X \leq y$, we deduce that the above is
+\[
+\ll \sum_{i = 0}^{\log X} \frac{y e^i}{X} \sum_{\substack{2x/ye^{i+1} < n \leq 2x/ye^i \\ P(n) \leq y/2}} 1 \ll \Psi(x,y) \sum_{i = 0}^{\log X} \frac{y^{2(1 - \alpha(x,y))}}{X} \ll \Psi(x,y) \frac{u^4}{X},
+\]
+where, to obtain the last estimate, we have applied Lemma~\ref{l:saddle point approx}. It follows that the second term in~\eqref{equ:medium y smoothing} is
+\[
+\ll \biggl( \sum_{\substack{n \leq x/yX \\ P(n) \leq y/2}} \sum_{\substack{ x / n (1 + \frac{1}{X}) < m \leq x/n \\ p \mid m \Rightarrow p \in (y/2, y]}} 1 \biggr)^{1/2} + \sqrt{\frac{\Psi (x,y)}{e^{0.8u}}},
+\]
+say. To estimate the first term above, note that the innermost sum over $m$ is of length $\geq \frac{x}{nX} \geq y$, so Lemma~\ref{l:no small or large pfs short} is applicable. Note that we may replace the $\alpha (x^2,y)$ appearing there with $\alpha (x, y)$ since the latter is slightly bigger. This will help us to compare the error to $\Psi(x,y)$. We then find that the first term in the previous display is
+\[
+\ll \Bigl( \frac{x}{X} \Bigr)^{\alpha (x,y)/2} (\log x) e^{O (\log u)} \biggl( \sum_{\substack{n \leq x/yX \\ P(n) \leq y/2}} \frac{1}{n^{\alpha(x,y)}} \biggr)^{1/2} \ll \frac{x^{\alpha(x,y)/2} \zeta(\alpha, y)^{1/2} (\log x) e^{O (\log u)}}{X^{\alpha (x,y)/2}} .
+\]
+To obtain this estimate, in our application of Lemma~\ref{l:no small or large pfs short}, we have used the crude estimate $e^{\frac{6 u \log u}{\log y}} \leq e^{O(\log u)}$ uniformly for $y \geq e^{\sqrt{2 \log x}}$. Using Lemma~\ref{l:smooth count in terms of saddle point} followed by Lemma~\ref{l:saddle point approx} and the fact that $X = e^{0.9u}$, we find that the above is
+\[
+\ll \frac{\Psi(x,y)^{1/2}}{X^{\alpha(x,y)/2}} (\log x)^{3/2} (\log y)^{1/2} e^{O(\log u)} \ll \biggl( \frac{\Psi(x,y) (\log x)^{3} (\log y)}{e^{0.8u}} \biggr)^{1/2} .
+\]
+Putting this all together, equation~\eqref{equ:medium y smoothing} becomes
+\begin{equation}\label{equ:main term plus smoothing error}
+\begin{split}
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \in ( y/2, y]}} f(n) \Bigr| \ll \E \biggl( \int_{y/2}^{x} \biggl| \sum_{\substack{n \leq x/t \\ P(n) \leq y/2}} f(n) \biggr|^2 \sum_{\substack{t/(1 + \frac{1}{X}) \leq m \leq t \\ p|m \Rightarrow p \in (y/2, y]}} \frac{X}{m} dt \biggr)^{1/2} & \\ 
++ \biggl( \frac{\Psi(x,y) (\log x)^{3} (\log y)}{e^{0.8u}} \biggr)^{1/2} & .
+\end{split}
+\end{equation}
+We first show that the second term on the right-hand side will be negligible compared to our desired bound. By~\eqref{equ: Psi (x^2,y) asmp Psi (x,y)} and Lemma~\ref{l:saddle point approx}, we have
+\[
+\Psi (x,y)^{1/2} \ll \Psi (x^2, y)^{1/4} \exp \biggl( \frac{u \log 2}{2} \bigl( 1 + o(1) \bigr) \biggr) (\log x)^{-1/8} (\log y)^{-5/8},
+\]
+where the $o(1)$ term goes to zero uniformly for $e^{\sqrt{2 \log x}} \leq y \leq x^{\frac{1}{\log \log x}}$. Hence
+\begin{align*}
+\biggl( \frac{\Psi(x,y) (\log x)^{3} (\log y)}{e^{0.8u}} \biggr)^{1/2} &\ll \Psi(x^2, y)^{1/4} e^{-0.1u} (\log x)^{5/4} \\
+& = \Psi(x^2,y)^{1/4} e^{-0.1u} u^{5/8} (\log x)^{5/8} (\log y)^{5/8}.
+\end{align*}
+The right-hand side is $\ll \Psi(x^2,y)^{1/4} (\log x)^{5/8} (\log y)^{5/8}$, so is acceptable in view of Proposition~\ref{p:exp with large prime factor}. By~\eqref{equ:main term plus smoothing error}, to complete the proof, it remains to show that
+\[
+\E \biggl( \int_{y/2}^{x} \biggl| \sum_{\substack{n \leq x/t \\ P(n) \leq y/2}} f(n) \biggr|^2 \sum_{\substack{t/(1 + \frac{1}{X}) \leq m \leq t \\ p|m \Rightarrow p \in (y/2, y]}} \frac{X}{m} dt \biggr)^{1/2} \ll \Psi(x^2,y)^{1/4} e^{O ( u^{8/11})} (\log x)^{5/8} (\log y)^{5/8}.
+\]
+By Lemma~\ref{l:no small or large pfs short}, we have
+\begin{equation}\label{equ:large medium y short sum est}
+\sum_{\substack{t/(1 + \frac{1}{X}) \leq m \leq t \\ p|m \Rightarrow p \in (y/2,y]}} \frac{X}{m} \ll \biggl( \frac{t}{X} \biggr)^{\alpha (x^2, y)-1} e^{\frac{6 u \log u}{\log y}} (\log x)
+\end{equation}
+on our range of integration. Applying this bound, we have
+\begin{multline*}
+\E \biggl( \int_{y/2}^{x} \biggl| \sum_{\substack{n \leq x/t \\ P(n) \leq y/2}} f(n) \biggr|^2 \sum_{\substack{t/(1 + \frac{1}{X}) \leq m \leq t \\ p|m \Rightarrow p \in (y/2, y]}} \frac{X}{m} dt \biggr)^{1/2} \ll \\ e^{\frac{3 u \log u}{\log y}} X^{\frac{1 - \alpha (x^2, y)}{2}} (\log x)^{1/2} \E \biggl( \int_{y/2}^{x} \biggl| \sum_{\substack{n \leq x/t \\ P(n) \leq y/2}} f(n) \biggr|^2 t^{\alpha(x^2, y) - 1} \, dt \biggr)^{1/2}.
+\end{multline*}
+Using Lemma~\ref{l:saddle point approx} and the fact that $X = e^{0.9u}$, we have $X^{\frac{1 - \alpha (x^2, y)}{2}} \ll e^{\frac{u \log u}{2 \log y}}$. Then, performing the change of variables $t = x/z$, we obtain an upper bound of size
+\[
+x^{\alpha(x^2, y) / 2} e^{\frac{7 u \log u}{2 \log y}} (\log x)^{1/2} \E \biggl( \int_{1}^{2x/y} \biggl| \sum_{\substack{n \leq z \\ P(n) \leq y/2}} f(n) \biggr|^2  \frac{dz}{z^{1 + \alpha(x^2, y)}} \biggr)^{1/2}.
+\]
+Completing the integral and applying Plancherel's identity, Lemma~\ref{l:ha result}, we have
+\begin{multline*}
+\E \biggl( \int_{y/2}^{x} \biggl| \sum_{\substack{n \leq x/t \\ P(n) \leq y/2}} f(n) \biggr|^2 \sum_{\substack{t/(1 + \frac{1}{X}) \leq m \leq t \\ p|m \Rightarrow p \in (y/2, y]}} \frac{X}{m} dt \biggr)^{1/2} \ll \\ x^{\alpha(x^2, y) / 2} e^{\frac{7 u \log u}{2 \log y}} (\log x)^{1/2} \E \biggl(  \int_{\R} \biggl| \frac{F_{y/2} (\alpha(x^2, y)/2 + it)}{\alpha(x^2, y) / 2 + it} \biggr|^2 \, dt \biggr)^{1/2} .
+\end{multline*}
+We now apply Theorem~\ref{t:new ep bound} to deduce that the expectation is
+\[
+\ll x^{\alpha(x^2, y)/2} {\zeta(\alpha(x^2, y),y)}^{1/4}  e^{\frac{7 u \log u}{2 \log y}} (\log y)^{1/2} (\log x)^{1/2} e^{O \bigl( (\log \zeta (\alpha(x^2, y), y) )^{8/11} \bigr)} ,
+\]
+and seeing as we have $\log \zeta (\alpha(x^2, y), y) \ll u$ for $y \leq x^{\frac{1}{\log \log x}}$ (see equation~\eqref{equ: eval of log zeta (alpha, y)}) and $\frac{u \log u}{\log y} \ll u^{8/11}$ uniformly for $y \geq e^{\sqrt{2 \log x}}$, this is
+\[
+\ll x^{\alpha(x^2, y)/2} {\zeta(\alpha(x^2, y),y)}^{1/4} e^{O ( u^{8/11})} (\log y)^{1/2} (\log x)^{1/2} .
+\]
+Finally, comparing this to Lemma~\ref{l:smooth count in terms of saddle point}, we deduce that
+\[
+\E \biggl( \int_{y/2}^{x} \biggl| \sum_{\substack{n \leq x/t \\ P(n) \leq y/2}} f(n) \biggr|^2 \sum_{\substack{t/(1 + \frac{1}{X}) \leq m \leq t \\ p|m \Rightarrow p \in (y/2, y]}} \frac{X}{m} dt \biggr)^{1/2} \ll \Psi(x^2,y)^{1/4} e^{O ( u^{8/11})} (\log y)^{5/8} (\log x)^{5/8} ,
+\]
+as desired. This completes the proof of Proposition~\ref{p:exp with large prime factor}.
+\end{proof}
+
+\subsection{Proof of Theorem~\ref{t:middle small y}}\label{s:proof of middle small y}
+We now handle the case where $y \leq e^{\sqrt{10 \log x}}$. As mentioned, we begin by splitting up the original sum depending on the contribution from primes on different scales. 
+\begin{proof}[Proof of Theorem~\ref{t:middle small y}]
+Suppose that $(\log x)^{20} \leq y \leq e^{\sqrt{10 \log x}}$. Let $Z, M \geq 2$ be some parameters specified shortly, and let $\mathcal{K} = \lceil \frac{\log y}{10 \log M} \rceil$. For any $y$-smooth integer $n$, we decompose it as
+\[
+n = m_1 \dots m_{\mathcal{K}} s,  \quad m_i \coloneqq \prod_{\substack{ p \in (y/M^{i}, y/M^{i-1}] \\  p^{\alpha} \mid \mid n}} p^{\alpha} \, \text{ for } 1 \leq i \leq \mathcal{K} ,
+\]
+so that $m_i$ consists of the prime factors that lie in $(y/M^{i}, y/M^{i-1}]$ (if there are no such prime factors we have $m_i = 1$), and $s$ denotes the part consisting of primes below $y/M^{\mathcal{K}} \approx y^{9/10}$. To fix ideas, we take $Z = e^u$ and $M = 5 e^{10 (\log y) / u}$. Note that this choice of $M$ is always bounded, and is approximately equal to $5$ unless $y$ is very close to the upper range $e^{\sqrt{10 \log x}}$ (we find this technical adjustment useful, for example, in the estimate of $S_3$ below). Given a $y$-smooth number $n$ of this form, we will split up our sum depending on a parameter $k$, which will be the smallest integer $1 \leq k \leq \mathcal{K}$ such that $m_k>Z$. Integers where no such $k$ exists are handled separately, and, crucially, since there are relatively few $y$-smooth numbers with a large $y^{9/10}$-smooth part, the contribution from the case where $m_i \leq Z$ for all $1 \leq i \leq \mathcal{K}$ will be small. For the remaining terms, if $Z$ is sufficiently large, then we will be able to efficiently approximate the sum over $m_k$ by an integral, as discussed at the end of Section~\ref{s:moderate sec intro}. Using this splitting and applying the triangle inequality, we have
+\begin{equation}\label{equ:small medium y splitting}
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \Bigr| \leq S_1 + S_2 + S_3,
+\end{equation}
+where
+\begin{align*}
+S_1 & \coloneqq \E \Bigl| \sum_{\substack{Z < m \leq x \\ p \mid m \Rightarrow p \in (\frac{y}{M}, y]}} f(m) \sum_{\substack{n \leq \frac{x}{m} \\ P(n) \leq \frac{y}{M}}} f(n) \Bigr|, \\ 
+S_2 & \coloneqq \E \Bigl| \sum_{k=2}^{\mathcal{K}} \sideset{}{'}\sum_{\substack{m_1, \dots , m_{k-1} \leq  Z \\ p \mid m_i \Rightarrow p \in (\frac{y}{M^{i}}, \frac{y}{M^{i-1}}]}} \sum_{\substack{Z < m_k \leq \frac{x}{m_1 \dots m_{k-1}} \\ p \mid m_k \Rightarrow p \in (\frac{y}{M^{k}}, \frac{y}{M^{k-1}}]}} f(m_1 \dots m_k) \sum_{\substack{n \leq \frac{x}{m_1 \dots m_k} \\ P (n) \leq \frac{y}{M^{k}}}} f(n) \Bigr|, \\ 
+S_3 & \coloneqq \E \Bigl| \sideset{}{'}\sum_{\substack{m_1, \dots, m_\mathcal{K} \leq Z \\ p \mid m_i \Rightarrow p \in (\frac{y}{M^{i}}, \frac{y}{M^{i-1}}]}} f(m_1 \dots m_{\mathcal{K}}) \sum_{\substack{n \leq \frac{x}{m_1 \dots m_\mathcal{K}} \\ P(n) \leq \frac{y}{M^{\mathcal{K}}}}} f(n) \Bigr|.
+\end{align*}
+Here $\sum'$ denotes that the sum should include the cases where $m_i = 1$. We have separated the $k=1$ term, which corresponds to $S_1$, and we will see that this gives the dominant contribution to~\eqref{equ:small medium y splitting}.
+
+We begin by bounding the final term, $S_3$, by exploiting the fact that there are few terms in the sum. By the Cauchy--Schwarz inequality and Lemma~\ref{l: smooths below x/d vs below x}, we have
+\[
+S_3 \leq \biggl( \sideset{}{'}\sum_{\substack{m_1, \dots, m_\mathcal{K} \leq Z \\ p \mid m_i \Rightarrow p \in (\frac{y}{M^{i}}, \frac{y}{M^{i-1}} ]}} \sum_{\substack{n \leq \frac{x}{m_1 \dots m_\mathcal{K}} \\ P(n) \leq \frac{y}{M^{\mathcal{K}}}}} 1 \biggr)^{1/2}  \ll \biggl( \sideset{}{'}\sum_{\substack{m_1, \dots, m_\mathcal{K} \leq Z \\ p \mid m_i \Rightarrow p \in (\frac{y}{M^{i}}, \frac{y}{M^{i-1}} ]}} \frac{\Psi (x, y^{9/10})}{m_1^{\alpha (x, y^{9/10})} \dots m_\mathcal{K}^{\alpha(x, y^{9/10})}} \biggr)^{1/2} .
+\]
+Removing the condition on the prime factors, we find that
+\[
+S_3 \ll \Psi (x, y^{9/10})^{1/2} Z^{\mathcal{K}(1 - \alpha (x, y^{9/10}))/2} (\log Z)^{\mathcal{K}/2}
+\]
+Here we recall that $Z = e^u$ and $M = 5 e^{10 (\log y) / u}$. Using Lemma~\ref{l:saddle point approx}, we deduce that $1 - \alpha (x, y^{9/10}) \leq \frac{6\log u}{5 \log y}$ when $x$ is sufficiently large. Using also the fact that $\mathcal{K} = \lceil \frac{\log y}{10 \log M} \rceil$, we have the crude bound
+\[
+Z^{\mathcal{K}(1 - \alpha (x, y^{9/10}))/2} (\log Z)^{\mathcal{K}/2} \ll \exp \biggl( \frac{u \log u}{25} + \frac{u \log u}{100} \biggr) \ll \exp \biggl( \frac{u \log u}{20} \biggr),
+\]
+say. Note carefully that to bound the $(\log Z)^{\mathcal{K}/2}$ term, we have made vital use of the fact that $M$ becomes large when $y \approx e^u$. Seeing as $\Psi (x,y) = x e^{-u \log u (1 + o(1))}$ uniformly for $(\log x)^2 \leq y \leq x^{\frac{1}{\log \log x}}$ (this follows immediately from Lemmas~\ref{l:saddle point approx} and~\ref{l:smooth count in terms of saddle point}, in addition to a simple estimate for $\zeta (\alpha, y)$ as in~\eqref{equ: eval of log zeta (alpha, y)}), from which it follows immediately that $\Psi (x,y^{9/10}) = xe^{-\frac{10}{9} u \log u (1 + o(1))}$ uniformly for $(\log x)^{20} \leq y \leq e^{\sqrt{10 \log x}}$. We deduce that
+\[
+S_3 \ll x^{1/2} \exp \biggl( \biggl( \frac{1}{2} - \frac{1}{200} \biggr) u \log u (1+o(1)) \biggr) \ll \sqrt{\frac{\Psi(x,y)}{e^{100u}}} ,
+\]
+say. We will see later that this term contributes a negligible amount compared to the main term in Theorem~\ref{t:middle small y}. 
+
+We now proceed with bounding the first two terms in~\eqref{equ:small medium y splitting}. Let $\E^{(k)}$ denote the expectation conditioned on $\bigl(f(p)\bigr)_{p \leq y/M^{k}}$. Applying the triangle inequality, followed by the Cauchy--Schwarz inequality to the conditional expectation, it follows that
+\begin{align*}
+S_2 &\leq \sum_{k=2}^{\mathcal{K}} \E \Bigl| \sideset{}{'}\sum_{\substack{m_1, \dots , m_{k-1} \leq  Z \\ p \mid m_i \Rightarrow p \in (\frac{y}{M^{i}}, \frac{y}{M^{i-1}}]}} \sum_{\substack{Z < m_k \leq \frac{x}{m_1 \dots m_{k-1}} \\ p \mid m_k \Rightarrow p \in (\frac{y}{M^{k}}, \frac{y}{M^{k-1}}]}} f(m_1 \dots m_k) \sum_{\substack{n \leq \frac{x}{m_1 \dots m_k} \\ P (n) \leq \frac{y}{M^{k}}}} f(n) \Bigr| \\
+& \leq \sum_{k=2}^{\mathcal{K}} \E \biggl( \E^{(k)} \Bigl| \sideset{}{'}\sum_{\substack{m_1, \dots , m_{k-1} \leq  Z \\ p \mid m_i \Rightarrow p \in (\frac{y}{M^{i}}, \frac{y}{M^{i-1}}]}} \sum_{\substack{Z < m_k \leq \frac{x}{m_1 \dots m_{k-1}} \\ p \mid m_k \Rightarrow p \in (\frac{y}{M^{k}}, \frac{y}{M^{k-1}}]}} f(m_1 \dots m_k) \sum_{\substack{n \leq \frac{x}{m_1 \dots m_k} \\ P (n) \leq \frac{y}{M^{k}}}} f(n) \Bigr|^2 \biggr)^{1/2} \\
+& = \sum_{k=2}^{\mathcal{K}} \E \biggl( \sideset{}{'}\sum_{\substack{m_1, \dots , m_{k-1} \leq  Z \\ p \mid m_i \Rightarrow p \in (\frac{y}{M^{i}}, \frac{y}{M^{i-1}}]}} \sum_{\substack{Z < m_k \leq \frac{x}{m_1 \dots m_{k-1}} \\ p \mid m_k \Rightarrow p \in (\frac{y}{M^{k}}, \frac{y}{M^{k-1}}]}} \Bigl| \sum_{\substack{n \leq \frac{x}{m_1 \dots m_k} \\ P (n) \leq \frac{y}{M^{k}}}} f(n) \Bigr|^2 \biggr)^{1/2} .
+\end{align*}
+Similarly, conditioning only on $\bigl(f(p)\bigr)_{p \leq y/M}$ and applying Cauchy--Schwarz, we have
+\[
+S_1 \leq \E \biggl( \sum_{\substack{Z < m \leq x \\ p \mid m \Rightarrow p \in ( \frac{y}{M}, y ]}} \Bigl| \sum_{\substack{n \leq \frac{x}{m} \\ P(n) \leq \frac{y}{M}}} f(n) \Bigr|^2 \biggr)^{1/2} .
+\]
+Let $X = e^{0.9 u}$ (as in the proof of Proposition~\ref{p:exp with large prime factor}), and recall that $Z = e^{u}$. Note that $Z$ is larger than $X$, which is vital in allowing us to control sums of length $Z/X$. Combining the above bounds and introducing a dummy integral, we deduce from~\eqref{equ:small medium y splitting} that
+\begin{equation}\label{equ:small medium y with integral}
+\begin{split}
+& \E \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \Bigr| \ll \E \biggl( \sum_{\substack{Z < m \leq x \\ p \mid m \Rightarrow p \in ( \frac{y}{M}, y ]}} \frac{X}{m} \int_{m}^{m(1 + \frac{1}{X})} \Bigl| \sum_{\substack{n \leq \frac{x}{m} \\ P(n) \leq \frac{y}{M}}} f(n) \Bigr|^2 \, dt \biggr)^{1/2} + \sqrt{\frac{\Psi(x,y)}{e^{100u}}} \\ 
+& + \sum_{k=2}^{\mathcal{K}} \E \biggl( \sideset{}{'}\sum_{\substack{m_1, \dots , m_{k-1} \leq  Z \\ p \mid m_i \Rightarrow p \in (\frac{y}{M^{i}}, \frac{y}{M^{i-1}}]}} \sum_{\substack{Z < m_k \leq \frac{x}{m_1 \dots m_{k-1}} \\ p \mid m_k \Rightarrow p \in (\frac{y}{M^{k}}, \frac{y}{M^{k-1}}]}} \frac{X}{m_k} \int_{m_k}^{m_k (1 + \frac{1}{X})} \Bigl| \sum_{\substack{n \leq \frac{x}{m_1 \dots m_k} \\ P (n) \leq \frac{y}{M^{k}}}} f(n) \Bigr|^2 \, dt \biggr)^{1/2}
+\end{split}
+\end{equation}
+We now bound the last term; the first term being handled similarly. Splitting the sum at $n = \frac{x}{m_1 \dots m_{k-1} t}$, the last term on the right-hand side is
+\begin{multline*}
+\ll \sum_{k=2}^{\mathcal{K}} \E \biggl( \sideset{}{'}\sum_{\substack{m_1, \dots , m_{k-1} \leq  Z \\ p \mid m_i \Rightarrow p \in (\frac{y}{M^{i}}, \frac{y}{M^{i-1}}]}} \sum_{\substack{Z < m_k \leq \frac{x}{m_1 \dots m_{k-1}} \\ p \mid m_k \Rightarrow p \in (\frac{y}{M^{k}}, \frac{y}{M^{k-1}}]}} \frac{X}{m_k} \int_{m_k}^{m_k (1 + \frac{1}{X})} \Bigl| \sum_{\substack{n \leq \frac{x}{m_1 \dots m_{k-1} t} \\ P (n) \leq \frac{y}{M^{k}}}} f(n) \Bigr|^2 \, dt \biggr)^{1/2} \\ 
++ \sum_{k=2}^{\mathcal{K}} \E \biggl( \sideset{}{'}\sum_{\substack{m_1, \dots , m_{k-1} \leq  Z \\ p \mid m_i \Rightarrow p \in (\frac{y}{M^{i}}, \frac{y}{M^{i-1}}]}} \sum_{\substack{Z < m_k \leq \frac{x}{m_1 \dots m_{k-1}} \\ p \mid m_k \Rightarrow p \in (\frac{y}{M^{k}}, \frac{y}{M^{k-1}}]}} \frac{X}{m_k} \int_{m_k}^{m_k (1 + \frac{1}{X})} \Bigl| \sum_{\substack{\frac{x}{m_1 \dots m_{k-1} t} < n \leq \frac{x}{m_1 \dots m_{k}} \\ P (n) \leq \frac{y}{M^{k}}}} f(n) \Bigr|^2 \, dt \biggr)^{1/2}.
+\end{multline*}
+As in the previous proofs, the first term will give the dominant contribution, and we will first bound the second term. Applying the Cauchy--Schwarz inequality, the second term is
+\begin{align*}
+\ll \sum_{k=2}^{\mathcal{K}} \biggl( \sideset{}{'}\sum_{\substack{m_1, \dots , m_{k-1} \leq  Z \\ p \mid m_i \Rightarrow p \in (\frac{y}{M^{i}}, \frac{y}{M^{i-1}}]}} \sum_{\substack{Z < m_k \leq \frac{x}{m_1 \dots m_{k-1}} \\ p \mid m_k \Rightarrow p \in (\frac{y}{M^{k}}, \frac{y}{M^{k-1}}]}} \sum_{\substack{\frac{x}{m_1 \dots m_{k} (1 + 1/X)} < n \leq \frac{x}{m_1 \dots m_{k}} \\ P (n) \leq \frac{y}{M^{k}}}} 1 \biggr)^{1/2} .
+\end{align*}
+Exchanging the order of summation, this is
+\[
+\ll \sum_{k=2}^{\mathcal{K}} \biggl( \sideset{}{'}\sum_{\substack{m_1, \dots , m_{k-1} \leq  Z \\ p \mid m_i \Rightarrow p \in (\frac{y}{M^{i}}, \frac{y}{M^{i-1}}]}} \sum_{\substack{ n \leq \frac{x}{m_1 \dots m_{k-1} Z} \\ P (n) \leq \frac{y}{M^{k}}}} \sum_{\substack{\frac{x}{m_1 \dots m_{k-1} n (1 + 1/X)} < m_k \leq \frac{x}{m_1 \dots m_{k-1} n} \\ p \mid m_k \Rightarrow p \in (\frac{y}{M^{k}}, \frac{y}{M^{k-1}}]}} 1 \biggr)^{1/2},
+\]
+and applying Lemma~\ref{l:no small or large pfs short} (noting that we can replace $\alpha(x^2,y)$ there by $\alpha(x,y)$ for an upper bound), this is
+\[
+\ll \sum_{k=2}^{\mathcal{K}} \biggl( \frac{x^{\alpha(x,y)}e^{\frac{20 u \log u}{\log y} + O (\log u)}}{X^{\alpha (x,y)}} \sideset{}{'}\sum_{\substack{m_1, \dots , m_{k-1} \leq  Z \\ p \mid m_i \Rightarrow p \in (\frac{y}{M^{i}}, \frac{y}{M^{i-1}}]}} \frac{1}{m_1^{\alpha(x,y)} \dots m_{k-1}^{\alpha(x,y)} }\sum_{\substack{ n \leq \frac{x}{m_1 \dots m_{k-1} Z} \\ P (n) \leq \frac{y}{M^{k}}}} \frac{1}{n^{\alpha(x,y)}} \biggr)^{1/2} .
+\]
+Here we have used the fact that $\frac{3 M u \log u}{\log y/M^{k-1}} \leq \frac{20 u \log u}{\log y} + O(\log u)$ for $y \leq e^{\sqrt{10 \log x}}$, uniformly in $k$, to bound the exponential term in Lemma~\ref{l:no small or large pfs short}. We have also engulfed the $\log x$ term from that lemma into the $e^{O(\log u)}$ term. Removing the size restrictions on each of the sums, this is
+\[
+\ll \frac{x^{\alpha (x,y)/2} \zeta(\alpha(x,y), y)^{1/2}}{X^{\alpha(x,y)/2}} \exp \biggl( \frac{10 u \log u}{\log y} + O(\log u) \biggr) \ll \sqrt{\frac{\Psi(x,y)}{e^{0.7u}}} \exp \biggl( \frac{10 u \log u}{\log y} \biggr) ,
+\]
+in view of Lemma~\ref{l:smooth count in terms of saddle point}. Here we have used the fact that $X = e^{0.9 u}$ and $\alpha(x,y) \geq \frac{9}{10} (1 + o(1))$ for $(\log x)^{20} \leq y$. The first term in~\eqref{equ:small medium y with integral} can be handled similarly, instead splitting the sum at $x/t$, and the analogous error there can be seen to satisfy the same bound. This leads to
+\begin{multline*}
+\E \bigl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \bigr| \ll \E \biggl( \int_{Z}^{x} \Bigl| \sum_{\substack{n \leq \frac{x}{t} \\ P(n) \leq \frac{y}{M}}} f(n) \Bigr|^2 \sum_{\substack{t/(1 + \frac{1}{X}) < m \leq t \\ p \mid m \Rightarrow p \in ( \frac{y}{M}, y ]}} \frac{X}{m} \biggr)^{1/2} + \sqrt{\frac{\Psi(x,y)}{e^{0.7u}}} \exp \biggl( \frac{10 u \log u}{\log y} \biggr) \\
++ \sum_{k=2}^{\mathcal{K}} \E \biggl( \sideset{}{'}\sum_{\substack{m_1, \dots , m_{k-1} \leq  Z \\ p \mid m_i \Rightarrow p \in (\frac{y}{M^{i}}, \frac{y}{M^{i-1}}]}} \int_{Z}^{\frac{x (1 + 1/X)}{m_1 \dots m_{k-1}}} \Bigl| \sum_{\substack{n \leq \frac{x}{m_1 \dots m_{k-1} t} \\ P (n) \leq \frac{y}{M^{k}}}} f(n) \Bigr|^2 \sum_{\substack{t/(1 + \frac{1}{X}) < m_k \leq t \\ p \mid m_k \Rightarrow p \in (\frac{y}{M^{k}}, \frac{y}{M^{k-1}}]}} \frac{X}{m_k} \, dt \biggr)^{1/2},
+\end{multline*}
+where we have exchanged the order of summation and integration. Again, applying Lemma~\ref{l:no small or large pfs short} we have
+\[
+\sum_{\substack{t/(1 + \frac{1}{X}) < m_k \leq t \\ p \mid m_k \Rightarrow p \in (\frac{y}{M^{k}}, \frac{y}{M^{k-1}}]}} \frac{X}{m_k} \ll \biggl( \frac{t}{X} \biggr)^{\alpha ( x^2, \frac{y}{M^{k-1}} ) - 1} \exp \biggl(\frac{18 u \log u}{\log y} + O(\log u)\bigg) ,
+\]
+which also holds for $k=1$. Here we have used the fact that $\frac{3 M u \log u}{\log y/M^{k-1}} \leq \frac{18 u \log u}{\log y} + O(\log u)$ uniformly in $k$, and also that $\log x \leq e^{O(\log u)}$ uniformly for $(\log x)^{20} \leq y \leq e^{\sqrt{10 \log x}}$. In the exponent of $t/X$, it is important that we maintain the saddle point corresponding to the smoothness parameter $y/M^{k-1}$ so that our errors do not compound. We deduce that
+\begin{equation}\label{equ:small y before planch}
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \Bigr| \ll \tilde{S}_1 + \tilde{S}_2 +  \sqrt{\frac{\Psi(x,y)}{e^{0.7u}}} \exp \biggl( \frac{10 u \log u}{\log y} + O(\log u) \biggr),   
+\end{equation}
+where 
+\begin{equation}\label{equ: S1}
+\tilde{S}_1 : = X^{\frac{1}{2} (1 - \alpha (x^2,y))} \exp \biggl(\frac{9 u \log u}{\log y} + O(\log u)\bigg) \E \biggl( \int_{Z}^{x} \Bigl| \sum_{\substack{n \leq \frac{x}{t} \\ P(n) \leq \frac{y}{M}}} f(n) \Bigr|^2 t^{\alpha(x^2,y) - 1} \biggr)^{1/2}
+\end{equation}
+and 
+\begin{equation}\label{equ: S2}
+\begin{split}
+\tilde{S}_2: = & \exp \biggl(\frac{9 u \log u}{\log y} + O(\log u)\bigg) \sum_{k=2}^{\mathcal{K}} X^{\frac{1}{2}(1 - \alpha ( x^2, \frac{y}{M^{k-1}} ))}
+ \\ 
+& \times \E \biggl( \sideset{}{'}\sum_{\substack{m_1, \dots , m_{k-1} \leq  Z \\ p \mid m_i \Rightarrow p \in (\frac{y}{M^{i}}, \frac{y}{M^{i-1}}]}} \int_{Z}^{\frac{x (1 + \frac{1}{X})}{m_1 \dots m_{k-1}}} \Bigl| \sum_{\substack{n \leq \frac{x}{m_1 \dots m_{k-1} t} \\ P (n) \leq \frac{y}{M^{k}}}} f(n) \Bigr|^2 t^{\alpha ( x^2, \frac{y}{M^{k-1}} ) - 1} \, dt \biggr)^{1/2}  . 
+\end{split} 
+\end{equation}
+We first focus on bounding the expectation that appears in $\tilde{S}_2$. Performing the change of variables $z = \frac{x}{m_1 \dots m_{k-1} t}$, the expectation there is equal to
+\[
+\E \biggl( \sideset{}{'} \sum_{\substack{m_1, \dots , m_{k-1} \leq  Z \\ p \mid m_i \Rightarrow p \in (\frac{y}{M^{i}}, \frac{y}{M^{i-1}}]}} \frac{x^{\alpha (x^2, \frac{y}{M^{k-1}})} }{(m_1 \dots m_{k-1})^{\alpha (x^2, \frac{y}{M^{k-1}})}} \int_{1}^{\frac{x}{m_1 \dots m_{k-1} Z}} \Bigl| \sum_{\substack{n \leq z \\ P (n) \leq \frac{y}{M^{k}}}} f(n) \Bigr|^2 \frac{dz}{z^{1 + \alpha (x^2, \frac{y}{M^{k-1}})}} \biggr)^{1/2} .
+\]
+Completing the integral, and applying Plancherel's identity (Lemma~\ref{l:ha result}), this is
+\[
+\leq \E \biggl( \sideset{}{'} \sum_{\substack{m_1, \dots , m_{k-1} \leq  Z \\ p \mid m_i \Rightarrow p \in (\frac{y}{M^{i}}, \frac{y}{M^{i-1}}]}} \frac{x^{\alpha (x^2, \frac{y}{M^{k-1}})} }{(m_1 \dots m_{k-1})^{\alpha (x^2, \frac{y}{M^{k-1}})}} \int_{\R} \biggl| \frac{F_{y/M^{k}} (\alpha (x^2, \frac{y}{M^{k-1}} ) + it)}{\alpha (x^2, \frac{y}{M^{k-1}} ) + it} \biggr|^2 \, dt \biggr)^{1/2} .
+\]
+Note that the integral term depends on $k$ but does not depend on any of the $m_i$, so we can now evaluate the summation over $m_1, \dots, m_{k-1}$. Dropping the prime factor conditions and breaking into dyadic intervals, we have
+\[
+\sideset{}{'} \sum_{\substack{m_1, \dots , m_{k-1} \leq  Z \\ p \mid m_i \Rightarrow p \in (\frac{y}{M^{i}}, \frac{y}{M^{i-1}}]}} \frac{1}{(m_1 \dots m_{k-1})^{\alpha (x^2, \frac{y}{M^{k-1}})}} \ll (\log Z)^{k-1} Z^{(k-1) (1 - \alpha (x^2, \frac{y}{2^{k-1}}))} .
+\]
+Therefore the expectation in~\eqref{equ: S2} is at most
+\[
+x^{\alpha (x^2, \frac{y}{M^{k-1}})/2} (\log Z)^{\frac{k-1}{2}} Z^{\frac{k-1}{2} (1 - \alpha (x^2, \frac{y}{M^{k-1}}))} \E \biggl( \int_{\R} \biggl| \frac{F_{y/M^{k}} (\alpha (x^2, \frac{y}{M^{k-1}} ) + it)}{\alpha (x^2, \frac{y}{M^{k-1}} ) + it} \biggr|^2 \, dt \biggr)^{1/2} .
+\]
+Applying Theorem~\ref{t:new ep bound} and increasing the number of primes in the product, this is
+\[
+\ll x^{\alpha (x^2, \frac{y}{M^{k-1}})/2} \zeta(\alpha (x^2, \frac{y}{M^{k-1}}), y/M^{k-1} )^{1/4} \exp \Bigl( O \bigl( u^{8/11} \bigr) \Bigr) (\log Z)^{\frac{k-1}{2}} Z^{\frac{k-1}{2} (1 - \alpha (x^2, \frac{y}{M^{k-1}}))}.
+\]
+By Lemma~\ref{l:smooth count in terms of saddle point} (or equation~\eqref{equ:rankin to true count comparison}), we have 
+\[ 
+x^{\alpha (x^2, \frac{y}{M^{k-1}})/2} \zeta(\alpha (x^2, \frac{y}{M^{k-1}}), y/M^{k-1} )^{1/4} \ll \Psi(x^2,y/M^{k-1})^{1/4} (\log x \log y)^{1/8} ,
+\] 
+so we find that the expectation in~\eqref{equ: S2} is
+\begin{equation}\label{equ:S_2 term in Psi (x^2, y/M^k)}
+\ll \Psi(x^2, y/M^{k-1})^{1/4} \exp \Bigl( O \bigl( u^{8/11} \bigr) \Bigr)  (\log Z)^{\frac{k-1}{2}} Z^{\frac{k-1}{2} (1 - \alpha (x^2, \frac{y}{M^{k-1}}))} ,
+\end{equation}
+where the powers of $\log x$ and $\log y$ have been engulfed into the $\exp \bigl( O \bigl( u^{8/11} \bigr) \bigr)$ term. Finally, seeing as $Z = e^{u}$, and using Lemma~\ref{l:saddle point approx} to deduce that $1 - \alpha (x^2, \frac{y}{M^{k-1}}) \leq \frac{6 \log u}{5 \log y}$ when $x$ is large, we have 
+\[
+(\log Z)^{\frac{k-1}{2}} Z^{\frac{k-1}{2} (1 - \alpha (x^2, \frac{y}{M^{k-1}}))} \ll \exp \biggl( \frac{(k-1) \log u}{2} \biggl( 1 + \frac{6 u}{5 \log y} \biggr) \biggr)
+\]
+Applying Lemma~\ref{l:decreasing y} and using the facts that $\frac{1}{1-x} - 1 \geq x$ (when considering $u - u_d$) and $\xi (u) = \log u (1 + o(1))$ uniformly for $u$ in this range, we have
+\[
+\Psi(x^2,y/M^{k-1})^{1/4} \ll \Psi(x^2, y)^{1/4} \exp \biggl( - \frac{(k-1) u \log u \log M}{2 \log y} \bigl( 1 + o(1) \bigr) + O \bigl( E(u) \bigr) \biggr), 
+\]
+where $E(u)$ is as stated in the lemma and the $o(1)$ term goes to zero uniformly for $y$ in the considered range. Using the fact that $M = 5 e^{10 (\log y)/u}$ and applying these estimates to~\eqref{equ:S_2 term in Psi (x^2, y/M^k)}, we have that the expectation in~\eqref{equ: S2} is
+\[
+\ll \Psi(x^2, y)^{1/4} \exp \Bigl( O \bigl( u^{8/11} \bigr) \Bigr).
+\]
+Inserting this back into~\eqref{equ: S2}, we have
+\[ 
+\tilde{S}_2 
+\ll \Psi(x^2, y)^{1/4} \exp \biggl( \frac{9 u \log u}{\log y} + O \bigl( u^{8/11} \bigr) \biggr) \sum_{k=2}^{\mathcal{K}} X^{\frac{1}{2} (1 - \alpha (x^2,\frac{y}{M^{k-1}}))},
+\]
+Seeing as $X = e^{0.9u}$ and by Lemma~\ref{l:saddle point approx}, we have $X^{\frac{1}{2} (1 - \alpha (x^2,y/M^{k-1}))} \leq \exp \bigl( \frac{3 u \log u}{4 \log y} \bigr)$ when $x$ is sufficiently large. We certainly then have
+\[
+\tilde{S}_2 
+\ll \Psi(x^2, y)^{1/4} \exp \biggl( \frac{10 u \log u}{\log y} + O \bigl( u^{8/11} \bigr) \biggr),
+\]
+which is the bound in our theorem. We are left with estimating $\tilde{S}_1$. 
+The proof is done in the same way. First, completing the integral, performing the change of variables $z = x/t$, and applying Plancherel's identity (Lemma~\ref{l:ha result}), we obtain
+\[
+\E \biggl( \int_{Z}^{x} \Bigl| \sum_{\substack{n \leq \frac{x}{t} \\ P(n) \leq \frac{y}{M}}} f(n) \Bigr|^2 t^{\alpha(x^2,y) - 1} \, dt \biggr)^{1/2} \leq \E \biggl( \int_{\R} \biggl| \frac{F_{y/M} (\alpha(x^2, y) + it)}{\alpha(x^2, y) + it} \biggr|^2 \biggr)^{1/2} .
+\]
+By Theorem~\ref{t:new ep bound}, and extending the product over primes, we have
+\[
+\E \biggl( \int_{Z}^{x} \Bigl| \sum_{\substack{n \leq \frac{x}{t} \\ P(n) \leq \frac{y}{M}}} f(n) \Bigr|^2 t^{\alpha(x^2,y) - 1} \, dt \biggr)^{1/2} \ll x^{\alpha(x^2,y)/2} \zeta (\alpha (x^2,y), y)^{1/4} \exp \Bigl( O \bigl( u^{8/11} \bigr) \Bigr),
+\]
+where we have again made use of~\eqref{equ: eval of log zeta (alpha, y)} to obtain the bound $\log \zeta (\alpha, y) \ll u$. By Lemma~\ref{l:smooth count in terms of saddle point}, we then have, similarly to before
+\[
+\E \biggl( \int_{Z}^{x} \Bigl| \sum_{\substack{n \leq \frac{x}{t} \\ P(n) \leq \frac{y}{M}}} f(n) \Bigr|^2 t^{\alpha(x^2,y) - 1} \, dt \biggr)^{1/2} \ll \Psi(x^2,y)^{1/4} \exp \Bigl( O \bigl( u^{8/11} \bigr) \Bigr).
+\]
+Inserting this estimate into~\eqref{equ: S1}, we have
+\[
+\tilde{S}_1 \ll  \Psi(x^2,y)^{1/4} \exp \biggl( \frac{9 u \log u}{\log y} + O \bigl( u^{8/11} \bigr) \biggr) X^{\frac{1}{2} (1 - \alpha (x^2,y))} ,
+\]
+and similarly to before, we deduce that
+\[
+\tilde{S}_1 \ll \Psi(x^2, y)^{1/4} \exp \biggl( \frac{10 u \log u}{\log y} + O \bigl( u^{8/11} \bigr) \biggr) .
+\]
+Inserting these estimates into~\eqref{equ:small y before planch}, we see that
+\begin{multline*}
+\E \Bigl| \sum_{\substack{n \leq x \\ P(n) \leq y}} f(n) \Bigr| \ll \Psi(x^2, y)^{1/4} \exp \biggl( \frac{10 u \log u}{\log y} + O \bigl( u^{8/11} \bigr) \biggr) \\ 
++ \sqrt{\frac{\Psi (x,y)}{e^{0.7u}}}\exp \biggl( \frac{10 u \log u}{\log y} + O(\log u) \biggr) .
+\end{multline*}
+Finally, it follows from equation \eqref{equ: Psi (x^2,y) asmp Psi (x,y)} that $\sqrt{\Psi(x,y) e^{-0.7u}} \ll \Psi(x^2, y)^{1/4}$ uniformly for $(\log x)^{20} \leq y \leq e^{\sqrt{10 \log x}}$ (vitally, this uses the fact that $\log 2 \leq 0.7$). Therefore, the first term dominates, completing the proof of Theorem~\ref{t:middle small y}.
+\end{proof}
+
+\appendix
+\section{Proof of Lemma~\ref{l: smooths in short intervals estimate}}\label{s:appendix}
+
+\begin{proof}[Proof of Lemma~\ref{l: smooths in short intervals estimate}]
+As mentioned, this lemma is a natural extension of~\cite[Theorem~3]{Hildebrand}. To begin, we take $y \geq 2$, $1 \leq u \leq \exp \bigl( (\log y)^{3/5 - \varepsilon} \bigr)$, $y^{-1/3} \leq h \leq 1/2$ and let $\frac{1}{\log y} \leq \delta \leq \frac{100}{\log u}$. Note carefully that in our proof,  mimicking Hildebrand~\cite{Hildebrand}, we redefine $h$ to be the relative length of the sum (i.e. here $h$ plays the role of $h/x$ in the statement of Lemma~\ref{l: smooths in short intervals estimate}). These conditions therefore correspond to the case where $e^{(\log \log x)^{5/3 + \varepsilon}} \leq y \leq x$, $\frac{1}{\log y} \leq \delta \leq \frac{100}{\log u}$ and $x/y^{1/3} \leq h \leq x/2$ in the lemma.
+
+We make use of the standard notation \[\Psi_q (x,y) = \# \{ n \leq x : \, p \mid n \Rightarrow (p,q) = 1 \text{ and } p \leq y \},\] 
+and in our proof we fix $q = \prod_{p \leq y^\delta} p$. For any $z \geq y$, we have
+\[
+\int_1^z \frac{\Psi_q (z,y) - \Psi_q (t,y)}{t} \, dt = \sum_{\substack{n \leq z \\ p|n \Rightarrow y^{\delta} < p \leq y}} \log n ,
+\]
+and upon writing $\log n = \sum_{d \mid n} \Lambda(d)$, it follows that
+\[
+\Psi_q (z,y) \log z = \sum_{\substack{p^m \leq z \\ y^\delta < p \leq y}} \Psi_q \bigl( z/p^m , y ) \log p + \int_1^z \frac{\Psi_q (t,y)}{t} \, dt .
+\]
+Applying the formula above twice and taking the difference gives
+\begin{multline*}
+\Psi_q (y^u, y) - \Psi_q (y^u (1-h), y) = \frac{1}{u \log y} \biggl( \int_{y^u (1-h)}^{y^u} \frac{\Psi_q (t,y)}{t} \, dt - \Psi_q (y^u (1-h),y) \log \biggl( \frac{1}{1-h} \biggr) \\
++ \sum_{\substack{p^m \leq y^u \\ y^{\delta} < p \leq y}} \Bigl( \Psi_q \bigl( y^u/p^m , y \bigr) - \Psi_q \bigl( y^u (1-h)/p^m, y \bigr) \Bigr) \log p \biggr) .
+\end{multline*}
+Rewriting the term $\Psi_q (y^u (1-h),y) \log ( \frac{1}{1-h} )$ into the integral leads to
+\begin{multline}\label{equ:smooths short int}
+\Psi_q (y^u, y) - \Psi_q (y^u (1-h), y) = \frac{1}{u \log y} \biggl( \int_{y^u (1-h)}^{y^u} \frac{\Psi_q (t,y) - \Psi_q (y^u (1-h),y)}{t} \, dt \\
++ \sum_{\substack{p^m \leq y^u \\ y^{\delta} < p \leq y}} \Bigl( \Psi_q \bigl( y^u/p^m , y \bigr) - \Psi_q \bigl( y^u (1-h)/p^m, y \bigr) \Bigr) \log p \biggr) .
+\end{multline}
+We define $\Delta_h (\delta, y, u) \geq 0$ to satisfy
+\[
+\Psi_q (y^u, y) - \Psi_q (y^u (1-h), y) = \Delta_h (\delta, y, u)  \frac{h y^u \rho(u)}{\delta \log y} ,    
+\]
+and we set
+\[
+\Delta_h^* (\delta, y, u) \coloneqq \sup_{1/2 \leq u' \leq u} \Delta_h (\delta, y, u') .
+\]
+We will show that uniformly for $ e^{(\log \log x)^{5/3 + \varepsilon}} \leq y \leq x, y^{-1/3} \leq h \leq 1/2, \frac{1}{\log y} \leq \delta \leq \frac{100}{\log u}$: 
+\begin{equation}\label{equ: final}
+    \Delta_h^* (\delta, y, u) \ll 1.
+\end{equation}
+If this is proved, then one can see that by using $\Psi(x, y)\gg x\rho(u)$ in our range of parameters (\cite{Hensley1985}), then the Lemma is proved. 
+
+Starting from now, we focus on proving \eqref{equ: final}.
+We first consider the integral term in~\eqref{equ:smooths short int}. We have
+\begin{align*}
+\int_{y^u (1-h)}^{y^u} \frac{\Psi_q (t,y) - \Psi_q (y^u (1-h),y)}{t} \, dt & \leq \frac{h y^u \rho(u )\Delta_h (\delta, y, u)}{\delta \log y} \log \biggl( \frac{1}{1-h} \biggr) \\
+& \ll \frac{h y^u \rho(u) \Delta_h^* (\delta, y, u)}{\delta \log y} ,
+\end{align*}
+and the implied constant is absolute. We turn our attention to
+\begin{multline*}
+\sum_{\substack{y < p^m \leq y^u \\ y^{\delta} < p \leq y}} \Bigl( \Psi_q \bigl( y^u/p^m , y \bigr) - \Psi_q \bigl( y^u (1-h)/p^m, y \bigr) \Bigr) \log p \\
+= \frac{1}{\delta \log y} \sum_{\substack{y < p^m \leq y^u \\ y^{\delta} < p \leq y}} \Delta_h \biggl( \delta, y, u - \frac{\log p^m}{\log y} \biggr) \frac{h y^u \log p}{p^m} \rho \biggl( u - \frac{\log p^m}{\log y} \biggr) .
+\end{multline*}
+We apply~\cite[Lemma~3]{Hildebrand}, which states that
+\[
+\sum_{\substack{y < p^m \leq y^u \\ p \leq y}} \frac{\log p}{p^m} \rho \biggl( u - \frac{\log p^m}{\log u} \biggr) \ll \rho (u) ,
+\]
+uniformly for $y \geq 2$ and $u \leq y^{1/4}$, so we deduce that
+\[
+\sum_{\substack{y < p^m \leq y^u \\ y^{\delta} < p \leq y}} \Bigl( \Psi_q \bigl( y^u/p^m , y \bigr) - \Psi_q \bigl( y^u (1-h)/p^m, y \bigr) \Bigr) \log p  \ll \frac{h y^u \rho (u)  \Delta_h^* (\delta, y, u) }{\delta \log y} .
+\]
+Inserting our estimates into~\eqref{equ:smooths short int} and rewriting the left hand side, we deduce that $\Delta_h (\delta,y,u) =$
+\[
+\frac{1}{\rho(u) u \log y} \sum_{\substack{p^m \leq y \\ y^{\delta} < p \leq y}} \Delta_h \biggl( \delta, y, u - \frac{\log p^m}{\log y} \biggr) \rho \biggl( u - \frac{\log p^m}{\log y} \biggr) \frac{\log p}{p^m} + O \biggl( \frac{\Delta_h^* (\delta, y, u)}{u \log y} \biggr) ,
+\]
+uniformly for $y \geq 2$ and $u \leq y^{1/4}$. We deduce that $\Delta_h (\delta,y,u)$ is smaller than or equal to
+\[
+\frac{1}{u \rho(u) \log y} \sum_{\substack{p^m \leq y}} \Delta_h \biggl( \delta, y, u - \frac{\log p^m}{\log y} \biggr) \rho \biggl( u - \frac{\log p^m}{\log y} \biggr) \frac{\log p}{p^m} +  O \biggl( \frac{\Delta_h^* (\delta, y, u)}{u \log y} \biggr).
+\]
+Applying~\cite[Lemma~4]{Hildebrand}, which states that for every fixed $\varepsilon>0$ and uniformly for $y \geq 2, u \geq 1$ and $0 \leq \theta \leq 1$ the following holds
+\begin{multline*}
+\sum_{p^m \leq y^{\theta}} \rho\left(u-\frac{\log p^m}{\log y}\right) \frac{\log p}{p^m} =(\log y) \int_{u-\theta}^u \rho(t) \, d t \\
++ O_{\varepsilon}\Bigl( \rho(u) \bigl( 1+u \log ^2(u+1) \exp (-(\log y)^{3 / 5-\varepsilon} ) \bigr) \Bigr)  ,
+\end{multline*}
+to find that, for $u \leq \exp \bigl( (\log y)^{3/5 - \varepsilon} \bigr)$, we have
+\begin{multline*}
+\Delta_h (\delta,y,u) \leq \frac{1}{u \rho(u)} \biggl[ \Delta_h^* \bigl( \delta, y, u \bigr)  \int_{u - 1/2}^{u} \rho (t) \, dt 
++ \Delta_h^* \bigl( \delta, y, u - 1/2 \bigr) \int_{u-1}^{u-1/2} \rho (t) \, dt \biggr] \\ +  O \biggl( \frac{\Delta_h^* (\delta, y, u)}{u \log y} \biggr) . 
+\end{multline*}
+Seeing as $\int_{u-1}^u \rho (t) \, dt = u \rho(u)$ (see~\cite[Lemma~1]{Hildebrand}), we have
+\begin{align*}
+1 & = \frac{1}{u \rho (u)} \int_{u-1/2}^{u} \rho(t) \, dt + \frac{1}{u \rho (u)} \int_{u-1}^{u-1/2} \rho(t) \, dt \\
+& \eqqcolon \alpha (u) + \bigl( 1 - \alpha (u) \bigr).
+\end{align*}
+Hence
+\[
+\Delta_h (\delta,y,u) \leq \biggl( \Delta_h^* \bigl( \delta, y, u \bigr) \alpha (u) +  \Delta_h^* \bigl( \delta, y, u - 1/2 \bigr) \bigl( 1 - \alpha (u) \bigr) \biggr) + O \biggl( \frac{\Delta_h^* (\delta, y, u)}{u \log y} \biggr) . 
+\]
+As is noted in the proof of Theorem 1 in~\cite{Hildebrand}, we have $\alpha (u) \leq 1/2$ (this follows from~\cite[Lemma~1]{Hildebrand}). We deduce that the quantity
+\begin{multline*}
+\frac{1}{2}\left(\Delta^*(\delta, y, u)+\Delta^*\left(\delta, y, u-\frac{1}{2}\right)\right)-\left(\alpha(u) \Delta^*(\delta, y, u)+(1-\alpha(u)) \Delta^*\left(\delta, y, u-\frac{1}{2}\right)\right) \\
+=\left(\frac{1}{2}-\alpha(u)\right)\left(\Delta^*(\delta, y, u)-\Delta^*\left(\delta, y, u-\frac{1}{2}\right)\right)
+\end{multline*}
+is nonnegative. Therefore,
+\[
+\Delta_h (\delta,y,u) \leq \frac{1}{2} \Bigl( \Delta_h^* \bigl( \delta, y, u \bigr) + \Delta_h^* \bigl( \delta, y, u - 1/2 \bigr) \Bigr) +  O \biggl( \frac{\Delta_h^* (\delta, y, u)}{u \log y} \biggr).
+\]
+By taking the sup of $\Delta_h (\delta,y,u')$ over $1/2 u' u$ and using the above bound, we find that there exists some constant $C > 0$,
+\[
+\Delta_h^* \bigl( \delta, y, u \bigr) \leq \biggl( 1 + C\frac{1}{u \log y} \biggr) \Delta_h^* \bigl( \delta, y, u - 1/2 \bigr) .
+\]
+Iterating this inequality, we deduce that
+\begin{equation}\label{equ: iterated Delta bound}
+\Delta_h^* \bigl( \delta, y, u \bigr) \leq e^{O(\frac{\log u}{\log y})} \Delta_h^* \bigl( \delta, y, 1 \bigr) .
+\end{equation}
+Recall that for $c \in [1/2, 1]$, 
+\[
+\Delta_h (\delta, y, c) = \frac{\delta \log y}{h y^c \rho(c)} \Bigl( \Psi_q (y^c , y) - \Psi_q (y^c (1-h), y) \Bigr) .
+\]
+Finally, seeing as
+\[
+\Psi_q (y^c, y) - \Psi_q (y^c (1-h), y) = \sum_{\substack{y^c (1-h) < n \leq y^c \\ p \mid n \Rightarrow p \in (y^\delta, y]}} 1 \leq \sum_{\substack{y^c (1-h) < n \leq y^c \\ p \mid n \Rightarrow p > y^{\delta}}} 1 , 
+\]
+and it follows from a simple sieve argument (for example, by~\cite[Theorem~3.6]{MV2007}) that
+\[
+\sum_{\substack{y^c (1-h) < n \leq y^c \\ p \mid n \Rightarrow p > y^{\delta}}} 1 \ll \frac{h y^c}{\delta \log y},
+\]
+uniformly for $c \in [1/2,1]$, $h \geq y^{-1/3}$, and $\frac{1}{\log y} \leq \delta \leq \frac{1}{10}$. We therefore have
+\[
+\Delta_h (\delta, y, c) \ll 1,
+\]
+uniformly for $c \in [1/2,1]$. Combining this with
+~\eqref{equ: iterated Delta bound}, we deduce that 
+\[\Delta_h^* \bigl( \delta, y, u \bigr) \leq e^{O(\frac{\log u}{\log y})} \ll  1,\]
+which follows from the fact that $y \geq e^{(\log \log x)^{5/3 + \varepsilon}}$. This completes the proof of \eqref{equ: final} and the lemma is proved. 
+
+\end{proof}
+\bibliographystyle{plain}
+	\bibliography{main}{}
+\end{document}

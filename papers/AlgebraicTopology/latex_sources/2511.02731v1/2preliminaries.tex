@@ -1,0 +1,291 @@
+\numberwithin{equation}{theo}
+
+\section{Preliminaries on (stable) \texorpdfstring{$\infty$-}{infinity }categories} \label{sec:preliminaries} 
+
+\subsection{Basics on $\infty$-categories} \label{subsec:infty-cats}
+This article freely uses the theory of \emph{$\infty$-categories} (a.k.a. \emph{quasi-categories}), as developed by Joyal \cite{Joy08,Joy08a} and Lurie \cite{Lur09,Lur17,Lur25} among others. Here we only enumerate the abstract basics of the general theory while fixing some notation. We refer the reader to the just cited references for the foundations; other valuable sources are \cite{Cis19} and \cite{Lan21}. 
+
+$\infty$-categories are a framework for homotopy coherent mathematics, where sets are replaced by \emph{$\infty$-groupoids} or \emph{spaces}:
+\begin{enumerate}
+    \item An $\infty$-category $\mathcal{C}$ consists of objects $x, y, z, ...$ and for each two of them a mapping space $\map{\mathcal{C}}(x,y) \in \Spc$ of morphisms composable up to homotopy. An $\infty$-groupoid is an $\infty$-category in which every morphism is invertible.
+    \item To every $\infty$-category one can associate a category $h\mathcal{C}$ called its \emph{homotopy category} that forgets the higher homotopical information. It has objects those of $\mathcal{C}$ and morphisms $\Hom{h\mathcal{C}}(x,y) = \pi_0(\map{\mathcal{C}}(x,y))$.
+    \item Conversely, through the \emph{nerve} construction, every category $\mathsf{C}$ can be seen as an $\infty$-category $N(\mathsf{C})$ such that $h(N(\mathsf{C})) \cong \mathsf{C}$.
+    \item Given any two $\infty$-categories $\mathcal{C}$ and $\mathcal{D}$, functors between them form again an $\infty$-category $\Fun(\mathcal{C},\mathcal{D})$. 
+    \item Most familiar notions from category theory (adjunctions, (co)limits, Kan extensions, ...) extend to a homotopy coherent version in $\infty$-category theory. E.g. a final object $w \in \mathcal{C}$ is one such that $\map{\mathcal{C}}(x,w)$ is contractible for all $x$.
+    \item There is an $\infty$-category of spaces ($\infty$-groupoids) $\Spc$ which takes in $\infty$-category theory the role of the category of sets in classical category theory. Similarly, there is an $\infty$-category of (small) $\infty$-categories $\infCat$ (c.f. \ref{subsec:joyal}).
+\end{enumerate}
+Getting to the concrete model that we use, $\infty$-categories live inside the category of simplicial sets $\sSet$: they are the simplicial sets $\mathcal{C}$ in which every horn $\Lambda_k^n \to \mathcal{C}$ can be extended to a simplex $\Delta^n \to \mathcal{C}$ for $0 < k < n$. It is worth noting that (by a non-trivial result of Joyal) $\infty$-groupoids in this model are precisely Kan complexes, i.e. those simplicial sets satisfying the same extension property for $0 \leq k \leq n$.
+
+\subsection{Homotopical algebra} A major source of $\infty$-categories of use comes from inverting a class of morphisms in a category (or even $\infty$-category).
+
+We recall that the \emph{localization} of an $\infty$-category $\mathcal{C}$ by a class of morphisms $\mathcal{W}$ is an $\infty$-category $\mathcal{W}^{-1}\mathcal{C}$ and a functor $\gamma: \mathcal{C} \to \mathcal{W}^{-1}\mathcal{C}$ such that:
+\begin{enumerate}
+    \item $\gamma(w)$ is invertible in $\mathcal{W}^{-1}\mathcal{C}$ for any $w \in \mathcal{W}$;
+    \item for any $\infty$-category $\mathcal{D}$, the functor $\gamma^*: \Fun(\mathcal{W}^{-1}\mathcal{C},\mathcal{D}) \to \Fun_\mathcal{W}(\mathcal{C},\mathcal{D})$ is an equivalence, where $\Fun_\mathcal{W}(\mathcal{C},\mathcal{D})$ denotes functors sending morphisms in $\mathcal{W}$ to invertible ones.
+\end{enumerate}
+We remark that:
+\begin{enumerate}[(a)]
+    \item The $\infty$-categorical localization of (the nerve of) a 1-category is in general not a 1-category, and this is crucial.
+    \item The homotopy category of the localization $h(\mathcal{W}^{-1}\mathcal{C})$ is canonically equivalent to the 1-categorical localization $(h\mathcal{W})^{-1}h\mathcal{C}$.
+\end{enumerate}
+
+The localization is particularly interesting when the original category possesses some homotopical structure. Let $\mathcal{M}$ be a model category (that we assume complete and cocomplete) with class of weak equivalences $\mathcal{W}$. There is \emph{associated} an \emph{$\infty$-category} $L(\mathcal{M}) = \mathcal{W}^{-1}N(\mathcal{M})$ carrying the homotopy theory of $\mathcal{M}$. In fact, note that $h(L(\mathcal{M}))$ is canonically equivalent to the ordinary homotopy category $\mathsf{Ho}(\mathcal{M})$.
+
+\begin{theo} \label{theo:models} 
+The following holds for any model category $\mathcal{M}:$
+\begin{enumerate}
+    \item $L(\mathcal{M})$ has all limits and colimits.
+    \item For any small category $I$, the canonical functor 
+    \begin{equation} \label{eq:fun}
+       L(\Fun(I,\mathcal{M})) \to \Fun(N(I),L(\mathcal{M})) 
+    \end{equation}
+    is an equivalence of $\infty$-categories, where $\Fun(I,\mathcal{M})$ is endowed with the pointwise weak equivalences. 
+    \item Under the equivalence \eqref{eq:fun}, homotopy limits and homotopy colimits in $\mathcal{M}$ correspond, respectively, to limits and colimits in $L(\mathcal{M})$.
+\end{enumerate}
+\end{theo}
+\begin{proof}
+See \cite[Proposition 7.7.4, Theorem 7.9.8 and Remark 7.9.10]{Cis19}.
+\end{proof}
+
+\begin{example}
+$\Spc$ is the $\infty$-category associated to the Kan-Quillen model structure on $\sSet$, that is, the localization of $N(\sSet)$ by the weak homotopy equivalences.
+\end{example}
+
+\subsection{The homotopy theory of $\infty$-categories} \label{subsec:joyal}
+A crucial feature of $\infty$-category theory is that the collection of all (small) $\infty$-categories can be organized in an $\infty$-category $\infCat$ with all limits and colimits. This is realized by the Joyal model structure \cite{Joy08a}.
+
+In the homotopy theory of $\infty$-categories it is useful to consider the \emph{interval} $J$ that is the nerve of the contractible groupoid with objects $\{0,1\}$. Given maps $f,g:X \to Y$ in $\sSet$, a \emph{$J$-homotopy} between them is a map $h: J \times X \to Y$ with $h\vert_{\{0\}\times X} = f$ and $h\vert_{\{1\}\times X} = g$. We denote by $[X,Y]$ the set of $J$-homotopy classes of maps. A \emph{weak categorical equivalence} is a map $f:X \to Y$ in $\sSet$ such that $f_*:[X,\mathcal{C}] \to [Y,\mathcal{C}]$ is bijective for any $\infty$-category $\mathcal{C}$. A functor $f: \mathcal{C}\to\mathcal{D}$ between $\infty$-categories is an \emph{isofibration} if it is an inner fibration and if it has the right lifting property with respect to the inclusion $\{0\} \hookrightarrow J$. 
+
+With these definitions, the following can be found in \cite[ch. 3]{Cis19}:
+
+\begin{theo}[Joyal]
+There is a combinatorial model structure on $\sSet$ such that:
+\begin{enumerate}
+    \item Cofibrations are the monomorphisms, weak equivalences are the weak categorical equivalences and fibrations are the so called \emph{Joyal fibrations}.
+    \item Every object is cofibrant and fibrant objects are precisely the $\infty$-categories.
+    \item Weak equivalences between $\infty$-categories are the equivalences of $\infty$-categories and fibrations between $\infty$-categories are the isofibrations.
+\end{enumerate}
+\end{theo}
+
+\begin{defi}
+$\infCat$ is the $\infty$-category associated to the Joyal model structure, that is, the localization of $N(\sSet)$ by the weak categorical equivalences.
+\end{defi}
+
+\begin{rema}
+Different but equivalent definitions of $\infCat$ can be found in \cite{Lur09} (as the coherent nerve of a simplicial category) and \cite{CisNgu22} (explicitly in terms of cocartesian fibrations).
+\end{rema}
+
+\begin{rema}
+Most of the time we can forget about size issues and think of every $\infty$-category as a (small) simplical set. However, one should note that most interesting examples do not live in $\infCat$, but in the (large) $\infty$-category $\infCAT$ of (not necessarily small) $\infty$-categories. This can be defined as the localization of (not necessarily small) simplicial sets $N(\SSET)$ by the weak categorical equivalences.
+\end{rema}
+
+We collect here a couple of basic results about the homotopy theory of $\infty$-categories that will be of constant use.
+
+\begin{prop} \label{prop:fib-mono}
+Let $\mathcal{C}$ be an $\infty$-category. For any monomorphism $i: A \to B$ in $\sSet$, the induced map 
+$i^*:\Fun(B,\mathcal{C}) \to \Fun(A,\mathcal{C})$
+is a Joyal fibration.
+\end{prop}
+\begin{proof}
+See \cite[Corollary 3.6.4]{Cis19}.
+\end{proof}
+
+\begin{prop} \label{prop:hoPB}
+Consider a pullback square in $\sSet$ of the form
+$$\begin{tikzcd}
+X' \ar[r,"u"] \ar[d,"p'"'] \ar[rd,phantom, "\PB"] & X \ar[d,"p"] \\
+Y' \ar[r,"v"'] & Y.
+\end{tikzcd}$$
+If all objects are $\infty$-categories and $p$ is a Joyal fibration, then it is a pullback in $\infCat$.
+\end{prop}
+\begin{proof}
+By general model category theory (see e.g. \cite[Corollary 2.3.28]{Cis19}), it is a homotopy pullback in the Joyal model structure. Then it is a pullback in the associated $\infty$-category by \Cref{theo:models}.
+\end{proof}
+
+\begin{nota}
+We use the notation $\mathsf{ho\, PB}$ inside a square to indicate a homotopy pullback in the Joyal model structure or a pullback in $\infCat$, and $\mathsf{(ho)PB}$ to indicate that a pullback of simplicial sets is also a homotopy pullback.   
+\end{nota}
+
+\subsection{Basics on stable $\infty$-categories} \label{subsec:stable}
+Here we want to introduce stable $\infty$-categories in the sense of Lurie \cite{Lur17}, and in particular, the fiber and cofiber constructions that will be central to this article.
+
+\begin{nota}
+We abbreviate the simplicial commutative square $\Delta^1\times\Delta^1$ to $\square$.
+\end{nota}
+
+Let $\mathcal{C}$ be a \emph{pointed} $\infty$-category, i.e. one having an object which is both initial and final, called a \emph{zero object} and usually denoted $0 \in \mathcal{C}$. A square $\square \to \mathcal{C}$ of the form 
+$$\begin{tikzcd} x \ar[r,"f"] \dar &[-0.8em] y \ar[d,"g"] \\[-0.5em] 0 \rar & z \end{tikzcd}$$
+is called a \emph{fiber sequence} if it is a pullback in $\mathcal{C}$ and a \emph{cofiber sequence} if it is a pushout in $\mathcal{C}$. When such fiber (resp. cofiber) sequence exists we say that $g$ (resp. $f$) admits a \emph{fiber} (resp. \emph{cofiber}) which is given by $f$ (resp. $g$). 
+
+\begin{cons} \label{cons:cof-fib}
+Consider the inclusions $i: \Delta^{\{1,2\}} \xhookrightarrow{\ \ } \Lambda^2_0$ and $ j: \Lambda^2_0 \xhookrightarrow{\ \ } \square$ which are depicted as
+$$00 \xrightarrow{\ \ } 01 \quad\quad \xhookrightarrow{\ \ } \quad\quad \begin{tikzcd} 00 \rar \dar &[-1.1em] 01 \\[-0.5em] 10 & \end{tikzcd} \quad\quad \xhookrightarrow{\ \ } \quad\quad \begin{tikzcd} 00 \rar \dar &[-1.1em] 01 \dar \\[-0.5em] 10 \rar & 11 \end{tikzcd}$$
+Right Kan extension along $i$ exists for every pointed $\infty$-category; it is right extension by zero. This provides a fully faithful functor 
+$$i_*: \Fun(\Delta^1,\mathcal{C}) \xrightarrow{\ \ } \Fun(\Lambda^2_0,\mathcal{C})$$
+with essential image the full subcategory $\Fun^0(\Lambda^2_0,\mathcal{C}) \subset \Fun(\Lambda^2_0,\mathcal{C})$ of those diagrams having a zero object in the left-down corner (see e.g. \cite[Proposition 4.3.2.15]{Lur09}).
+Now if we assume that every morphism in $\mathcal{C}$ admits a cofiber, left Kan extension along $j$ exists in the full subcategory $\Fun^0(\Lambda^2_0,\mathcal{C})$. Therefore, we get a fully faithful functor
+\begin{equation} \label{eq:cofseq-fun}
+j_!i_*: \Fun(\Delta^1,\mathcal{C}) \xrightarrow{\ \ } \Fun(\square,\mathcal{C})
+\end{equation}
+with essential image the full subcategory consisting of the cofiber sequences (using again \cite[Proposition 4.3.2.15]{Lur09}). Finally, one defines the cofiber functor as the composition
+$$\cof: \Fun(\Delta^1,\mathcal{C}) \xrightarrow{j_!i_*} \Fun(\square,\mathcal{C}) \xrightarrow{\mathrm{res}} \Fun(\Delta^1,\mathcal{C})$$
+where the second map is the restriction to the right vertical morphism in the cofiber sequence square. This sends a morphism $f:x\to y$ in $\mathcal{C}$ to its cofiber $\cof(f):y \to z$, and when there is no confusion, we also write $z = \cof(f)$. Dually, assuming that $\mathcal{C}$ admits fibers, one gets the fiber functor
+$$\fib: \Fun(\Delta^1,\mathcal{C}) \xrightarrow{\ \ } \Fun(\Delta^1,\mathcal{C})$$
+which sends a morphism $g:y \to z$ in $\mathcal{C}$ to its fiber $\fib(g): x \to y$ (again we may also write $x = \fib(g)$ when there is no confusion). It follows by construction that $\cof$ is left adjoint to $\fib$ whenever both functors exist.
+
+Following an analogous procedure, we can construct the suspension and loop adjunction $\Sigma: \mathcal{C} \rightleftarrows \mathcal{C} :\Omega$. These are given by the mappings
+$$\Sigma: x \mapsto \cof(x \to 0) \quad\text{ and }\quad \Omega: z \mapsto \fib(0 \to z).$$
+\end{cons}
+
+\begin{defi}
+A pointed $\infty$-category $\mathcal{C}$ is \emph{stable} if:
+\begin{enumerate}
+    \item Every morphism in $\mathcal{C}$ admits a fiber and a cofiber.
+    \item \label{item:fib-cofib} A square in $\mathcal{C}$ is a fiber sequence if and only if it is a cofiber sequence.
+\end{enumerate}
+\end{defi}
+
+\begin{rema} \label{rema:fib-cof-equiv}
+We observe that \eqref{item:fib-cofib} in the definition of a stable $\infty$-category is equivalent to the fact that the adjunction $\cof: \Fun(\Delta^1,\mathcal{C}) \rightleftarrows \Fun(\Delta^1,\mathcal{C}) :\fib$ is an equivalence. Then it clearly follows that $\Sigma: \mathcal{C} \rightleftarrows \mathcal{C} :\Omega$ is an equivalence too, and \Cref{prop:def-stable} shows this is a sufficient condition.
+\end{rema}
+
+Let us denote $\Fun^\mathrm{cof}(\square,\mathcal{C}) \subset \Fun(\square,\mathcal{C})$ the full subcategory formed by the cofiber sequences, i.e. the essential image of the functor \eqref{eq:cofseq-fun}.
+
+\begin{fact} \label{lemm:cof-eq}
+For any stable $\infty$-category $\mathcal{C}$, restriction along the inclusion $\Delta^1 \subset \square$ of the top horizontal arrow in the square induces an equivalence $\Fun^\mathrm{cof}(\square,\mathcal{C}) \isoarrow \Fun(\Delta^1,\mathcal{C})$.
+\end{fact}
+\begin{proof}
+Keeping the notation from \Cref{cons:cof-fib}, the inclusion is $ji:\Delta^1 \subset \square$, and the composition of fully faithful Kan extensions $j_!i_*:\Fun(\square,\mathcal{C}) \to \Fun(\Delta^1,\mathcal{C})$ induces by definition an equivalence onto $\Fun^\mathrm{cof}(\square,\mathcal{C})$. Because both Kan extensions $i_*$ and $j_!$ are fully faithful, we have natural equivalences $(ji)^*j_!i_* = i^*j^*j_!i_* \simeq i^*i_* \simeq \mathrm{id}$. Hence restriction along the inclusion $\Delta^1 \subset \square$ is a homotopy left-inverse to the equivalence $\Fun(\Delta^1,\mathcal{C})\to\Fun^\mathrm{cof}(\square,\mathcal{C})$, and so an equivalence too.
+\end{proof}
+
+\begin{prop} \label{prop:def-stable}
+For a pointed $\infty$-category $\mathcal{C}$, the following are equivalent:
+\begin{enumerate}
+    \item $\mathcal{C}$ is a stable $\infty$-category.
+    \item $\mathcal{C}$ admits finite limits and finite colimits, and pullbacks and pushouts coincide.
+    \item $\mathcal{C}$ admits fibers and the loop functor $\Omega: \mathcal{C} \to \mathcal{C}$ is an equivalence.
+    \item $\mathcal{C}$ admits cofibers and the suspension functor $\Sigma: \mathcal{C} \to \mathcal{C}$ is an equivalence.
+\end{enumerate}
+\end{prop}
+\begin{proof}
+A complete proof can be found in \cite[Theorem 4.4.12]{RieVer22}, although all equivalences appear in some form in \cite{Lur17}. See also \cite[Proposition 2.4]{Har17} for a direct and clever proof of $(4) \Rightarrow (1)$.
+\end{proof}
+
+\begin{theo}[{\cite[Theorem 1.1.2.14]{Lur17}}]
+Let $\mathcal{C}$ be a stable $\infty$-category. Then its homotopy category $h\mathcal{C}$ has a canonical structure of triangulated category induced by the suspension functor together with the cofiber sequences.
+\end{theo}
+
+\begin{examples}[of stable $\infty$-categories] Let us show the vast generality in which our results will be stated. Morally, almost all triangulated categories arise as the homotopy category of a stable $\infty$-category.
+\begin{enumerate}[(i)]
+    \item The derived $\infty$-category $\D{\mathcal{A}}$ of an abelian category $\mathcal{A}$ is the ($\infty$-categorical) localization of the category of complexes $\mathsf{Ch}(\mathcal{A})$ by the quasi-isomorphisms. If $\mathcal{A}$ is at least a Grothendieck abelian category (e.g. $\mathsf{Mod}\, R$ for a ring $R$, or $\mathsf{Qcoh}(\mathbb{X})$ for a scheme $\mathbb{X}$), then $\D{\mathcal{A}}$ is the $\infty$-category associated to a (stable) model structure on $\mathsf{Ch}(\mathcal{A})$ (see e.g. \cite{Hov01}). For a ring $R$, we denote $\mathcal{D}^\mathsf{per}(R)$ the subcategory of compact objects (the perfect complexes).
+    Similarly, the bounded derived $\infty$-category $\Dd{b}{\mathcal{A}}$ is the localization of the category of bounded complexes $\mathsf{Ch}^b(\mathcal{A})$ by the quasi-isomorphisms.
+    \item The stable $\infty$-category $\mathsf{St}(\mathcal{E})$ of a Frobenius exact category $\mathcal{E}$ (e.g. $\mathsf{Mod}\, R$ for a quasi-Frobenius ring $R$) is the ($\infty$-categorical) localization of $\mathcal{E}$ by the stable equivalences (i.e. those  isomorphisms in the additive quotient $\mathcal{E}/\mathsf{Proj}\, \mathcal{E}$).
+    \item Let $\mathcal{D}$ be a dg category. One can define its \emph{dg nerve} $N_\mathsf{dg}(\mathcal{D})$ which is an $\infty$-category (see \cite[sec. 1.3.1]{Lur17} or \cite[sec. 2.5.3]{Lur25}) carrying the homological information in $\mathcal{D}$, so that $hN_\mathsf{dg}(\mathcal{D})$ recovers the homotopy category $H^0(\mathcal{D})$. If $\mathcal{D}$ is pretriangulated, then $N_\mathsf{dg}(\mathcal{D})$ is a stable $\infty$-category and $hN_\mathsf{dg}(\mathcal{D}) \simeq H^0(\mathcal{D})$ as triangulated categories (see \cite[Theorem 4.3.1]{Fao17}). This of course includes all derived dg categories $\mathsf{D}_\mathsf{dg}(A)$ of dg algebras $A$, giving rise to their corresponding derived $\infty$-categories $\mathcal{D}(A)$.
+    \item The $\infty$-category of spectra $\Sp$ is the stabilization of the $\infty$-category of pointed spaces $\Spc_* (= \Spc_{\Delta^0/})$, that is, the limit in $\infCAT$
+    $$\Sp = \Sp(\Spc_*) = \varprojlim\left(\Spc_* \xleftarrow{\, \Omega\, } \Spc_* \xleftarrow{\, \Omega\, } \Spc_* \xleftarrow{\ \ } \cdots\right).$$
+    Its subcategory of compact objects is the $\infty$-category of finite spectra $\fSp$, which can be described as the Spanier-Whitehead $\infty$-category of finite pointed spaces $\fSpc_*$, that is, the colimit in $\infCAT$
+    $$\fSp = \mathsf{SW}(\fSpc_*) = \varinjlim\left(\fSpc_* \xrightarrow{\, \Sigma\, } \fSpc_* \xrightarrow{\, \Sigma\, } \fSpc_* \xrightarrow{\ \ } \cdots\right).$$
+    $\fSp$ and $\Sp$ are, respectively, the universal examples of a stable and presentable stable $\infty$-category (c.f. \cite[sec. C.1.1]{Lur18} and \cite[sec. 1.4]{Lur17}).
+    \item Let $R$ be an $\mathbb{E}_1$-ring in the sense of \cite[ch. 7]{Lur17}, i.e. an associative algebra object in $\Sp$. The $\infty$-category of (right) $R$-module spectra $\mathsf{Mod}_R$ is the corresponding $\infty$-category of right modules for this algebra object. One should note that this already includes all derived $\infty$-categories of rings $\mathcal{D}(S) \simeq \mathsf{Mod}_{HS}$ by considering the Eilenberg-Maclane spectrum $HS$, the $\infty$-category of spectra $\Sp \simeq \Mod_\mathbb{S}$ as modules over the sphere spectrum $\mathbb{S}$, and all derived $\infty$-categories of dg algebras \cite[sec. 7.1.4]{Lur17}.
+\end{enumerate}
+\end{examples}
+
+A functor between stable $\infty$-categories is called \emph{exact} if it preserves zero objects and cofiber sequences (equivalently, it preserves all finite limits and finite colimits, c.f. \cite[Proposition 1.1.4.1]{Lur17}). We denote $\infCat^\mathsf{ex}$ the subcategory of $\infCat$ with objects stable $\infty$-categories and morphisms exact functors.
+
+\begin{prop} \label{prop:closure-stable}
+Stable $\infty$-categories enjoy the following closure properties:
+\begin{enumerate}
+    \item Let $\mathcal{C}$ be a stable $\infty$-category and $K \in \infCat$. Then $\Fun(K,\mathcal{C})$ is stable.
+    \item The $\infty$-category $\infCat^\mathsf{ex}$ has all limits and filtered colimits, and the inclusion $\infCat^\mathsf{ex} \subset \infCat$ preserves both of them.
+\end{enumerate}
+\end{prop}
+\begin{proof}
+See \cite[Proposition 1.1.3.1, Theorem 1.1.4.4 and Proposition 1.1.4.6]{Lur17}.
+\end{proof}
+
+\subsection{Stabilization of compactly generated $\infty$-categories}
+
+Given a pointed $\infty$-category with finite limits $\mathcal{C}$, there is a universal recipe to make it into a stable $\infty$-category. Its \emph{stabilization} is defined as the inverse limit in $\infCat$
+$$\Sp(\mathcal{C}) = \varprojlim\left(\mathcal{C} \xleftarrow{\, \Omega\, } \mathcal{C} \xleftarrow{\, \Omega\, } \mathcal{C} \xleftarrow{\ \ } \cdots\right)$$
+and it gives a right adjoint to the inclusion $\infCat^\mathsf{ex}\subset\infCat^{\mathsf{lex},\ast}$ of stable $\infty$-categories inside pointed $\infty$-categories with finite limits. The unit map is commonly denoted $\Sigma^\infty:\mathcal{C} \to \Sp(\mathcal{C})$. If $\mathcal{C}$ is not pointed but has a final object $e$, we replace $\mathcal{C}$ by its $\infty$-category of pointed objects $\mathcal{C}_* = \mathcal{C}_{e/}$ and write $\Sp(\mathcal{C}) = \Sp(\mathcal{C}_*)$.
+Dually, for a pointed $\infty$-category with finite colimits $\mathcal{C}$, its \emph{Spanier-Whitehead $\infty$-category} is the direct colimit in $\infCat$
+$$\mathsf{SW}(\mathcal{C}) = \varinjlim\left(\mathcal{C} \xrightarrow{\, \Sigma\, } \mathcal{C} \xrightarrow{\, \Sigma\, } \mathcal{C} \xrightarrow{\ \ } \cdots\right),$$
+which is a left adjoint to the inclusion $\infCat^\mathsf{ex}\subset\infCat^{\mathsf{rex},\ast}$.
+
+When $\mathcal{C}$ is compactly generated (i.e. a finitely presentable $\infty$-category) these two constructions interact specially well; namely, there is a canonical equivalence $\Sp(\mathsf{Ind}(\mathcal{C_0})) \simeq \mathsf{Ind}(\mathsf{SW}(\mathcal{C_0}))$ \cite[Remark C.1.1.6]{Lur18}, where $\mathsf{Ind}$ denotes ind-completion. This produces a \enquote{left} universal property for $\Sp(\mathcal{C})$. We prove here a slight generalization\footnote{It is a universal property of $\Sp(\mathcal{C})$ among all cocomplete stable $\infty$-categories instead of only presentable ones.} of \cite[Corollary 1.4.4.5]{Lur17} for compactly generated $\infty$-categories that we could not find in the literature.
+
+We denote $\Fun^\mathsf{L}, \Fun^\mathsf{R}, \Fun^\mathsf{rex}$, $\Fun^\mathsf{lex}$ and $\Fun^\mathsf{ex}$ the full subcategories of $\Fun(-,-)$ spanned by colimit preserving, limit preserving, right exact, left exact and exact functors, respectively.
+
+\begin{prop} \label{prop:stabilization}
+Let $\mathcal{C}$ be a compactly generated $\infty$-category and $\mathcal{D}$ a cocomplete stable $\infty$-category. Then composition with $\Sigma^\infty: \mathcal{C} \to \Sp(\mathcal{C})$ induces an equivalence
+$$\Fun^\mathsf{L}(\Sp(\mathcal{C}),\mathcal{D}) \xrightarrow{\ \simeq \ } \Fun^\mathsf{L}(\mathcal{C},\mathcal{D}).$$
+\end{prop}
+\begin{proof}
+First assume that $\mathcal{C}$ is pointed. By \cite[Theorem 5.5.1.1]{Lur09}, we can write $\mathcal{C} = \mathsf{Ind}(\mathcal{C}_0)$ for a pointed small $\infty$-category $\mathcal{C}_0$ with finite colimits. Then we have the following canonical equivalences:
+\begin{align*}
+\Fun^\mathsf{L}(\Sp(\mathsf{Ind}(\mathcal{C}_0)),\mathcal{D}) &\simeq \Fun^\mathsf{L}(\mathsf{Ind}(\mathsf{SW}(\mathcal{C}_0)),\mathcal{D}) \\&\simeq \Fun^\mathsf{rex}(\mathsf{SW}(\mathcal{C}_0),\mathcal{D}) \\&\simeq \Fun^\mathsf{rex}(\mathcal{C}_0,\mathcal{D}) \simeq \Fun^\mathsf{L}(\mathsf{Ind}(\mathcal{C}_0),\mathcal{D}).
+\end{align*}
+The second and fourth follow from \cite[Proposition 5.3.6.2 and Example 5.3.6.8]{Lur09} and the third is \cite[Proposition C.1.1.7]{Lur18}. 
+
+If $\mathcal{C}$ is not pointed, replace $\mathcal{C}$ by $\mathcal{C}_*$. The forgetful functor $\mathcal{C}_* \to \mathcal{C}$ has a left adjoint $L:\mathcal{C} \to \mathcal{C}_*$, $x \mapsto x \sqcup e$, and composition with $L$ induces an equivalence $\Fun^\mathsf{L}(\mathcal{C}_*,\mathcal{D}) \isoarrow \Fun^\mathsf{L}(\mathcal{C},\mathcal{D})$, see \cite[Lemma 1.4.2.19]{Lur17}.
+\end{proof}
+
+\begin{coro} \label{coro:univ-sp}
+Let $\mathcal{D}$ be a stable cocomplete $\infty$-category. Then evaluation on the sphere spectrum induces an equivalence
+$$\Fun^\mathsf{L}(\Sp,\mathcal{D}) \xrightarrow{\ \simeq \ } \mathcal{D}.$$
+\end{coro}
+\begin{proof}
+Let $\mathcal{C} = \Spc$ in the above proposition and use the universal property of spaces \cite[Theorem 5.1.5.6]{Lur09}. 
+\end{proof}
+
+\subsection{Monoidality and linearity} We collect some facts about monoidal $\infty$-categories and their linear actions that will be used in \cref{sec:abstract-rep,sec:picard}. The reader is referred to \cite[ch. 2-4]{Lur17} for the basic definitions of the homotopy coherent versions of monoidal, symmetric monoidal and closed monoidal categories. 
+
+One of the key tools is Lurie's tensor product of presentable $\infty$-categories:
+
+\begin{cons}[{\cite[sec. 4.8]{Lur17}}] \label{cons:tensor-presentable}
+The (large) $\infty$-category $\Prcat$ of presentable $\infty$-categories and colimit preserving functors admits a closed symmetric monoidal structure with the following properties:
+\begin{itemize}
+    \item the monoidal unit is $\Spc$;
+    \item the internal hom is $\Fun^\mathsf{L}(-,-)$;
+    \item for $\mathcal{C},\mathcal{D} \in \Prcat$, there is a canonical equivalence $\mathcal{C}\otimes\mathcal{D} \simeq \Fun^\mathsf{R}(\mathcal{C}^\mathrm{op},\mathcal{D})$;
+    \item a (commutative) algebra object in $\Prcat$ is a (symmetric) monoidal presentable $\infty$-category $\mathcal{C}$ such that its tensor product $\otimes: \mathcal{C} \times \mathcal{C} \to \mathcal{C}$ preserves colimits in both variables; this is called a \emph{presentably (symmetric) monoidal} $\infty$-category.
+\end{itemize}
+Moreover, the full subcategory $\Prcat_\mathsf{st} \subset \Prcat$ spanned by stable presentable $\infty$-categories inherits a closed symmetric monoidal structure too from that of $\Prcat$, with the only difference that $\Sp$ becomes the monoidal unit. By \cite[Proposition 3.2.1.8]{Lur17}, this implies directly the existence of a presentably symmetric monoidal structure on $\Sp$, the so-called \emph{smash product}, making it the \emph{initial} commutative algebra in $\Prcat_\mathsf{st}$.
+\end{cons} 
+
+\begin{examples}[of monoidal $\infty$-categories in algebra] \,
+\begin{enumerate}
+    \item Let $R$ be an $\mathbb{E}_\infty$-ring in the sense of \cite[ch. 7]{Lur17}, i.e. a commutative algebra object in $\Sp$ (e.g. the sphere spectrum $\mathbb{S}$, or the Eilenberg-Maclane spectrum of a commutative ring). Then $(\Mod_R, \otimes_R, R)$ is a presentably symmetric monoidal stable $\infty$-category. More generally, if $\mathcal{C}$ is presentably symmetric monoidal and $R \in \mathsf{CAlg}(\mathcal{C})$ (a commutative algebra object in $\mathcal{C}$), then the $\infty$-category $\Mod_R(\mathcal{C})$ of $R$-modules over $\mathcal{C}$ is presentably symmetric monoidal.
+    \item Let $A$ be an $R$-algebra spectrum, i.e. an algebra object in $\Mod_R$. Then the $\infty$-category ${}_A\mathsf{BMod}_A(\Mod_R) = \Mod_{A^\mathrm{op}\otimes_R A}$ of $A$-bimodule spectra over $R$ is (non-symmetric) monoidal. More generally, if $\mathcal{C}$ is presentably monoidal and $A \in \mathsf{Alg}(\mathcal{C})$ (an algebra object in $\mathcal{C}$), then the $\infty$-category ${}_A\mathsf{BMod}_A(\mathcal{C})$ of $A$-bimodule over $\mathcal{C}$ is (non-symmetric) monoidal. The relative tensor product of $M,N \in {}_A\mathsf{BMod}_A(\mathcal{C})$ is given by the geometric realization of the \emph{two-sided Bar construction} $\mathrm{Bar}_A(M,N)_\bullet: \Delta^{\mathrm{op}} \to \mathcal{C}$ \cite[sec. 4.4]{Lur17}, which informally consists of $\mathrm{Bar}_A(M,N)_n = M \otimes A^{\otimes n} \otimes N$. 
+\end{enumerate}  
+\end{examples}
+
+\begin{defi}
+Let $\mathcal{E}$ be a presentably monoidal $\infty$-category, i.e. an algebra object in $\Prcat$. We denote $\mathsf{Cat}_\mathcal{E} = \Mod_{\mathcal{E}}(\Prcat)$, and call its objects \emph{$\mathcal{E}$-linear $\infty$-categories} and its morphisms \emph{$\mathcal{E}$-linear functors}. We also denote $\mathsf{Fun}^\mathsf{L}_\mathcal{E}(-,-)$ the full subcategory of $\Fun(-,-)$ spanned by the $\mathcal{E}$-linear functors.
+
+We remark that all $\mathcal{E}$-linear $\infty$-categories are presentable and all $\mathcal{E}$-linear functors are colimit preserving.
+\end{defi}
+
+\begin{example}
+Since $\Sp$ is initial, $\mathsf{Cat}_\Sp = \Prcat_\mathsf{st}$, so $\Sp$-linear $\infty$-categories are just presentable stable $\infty$-categories and every colimit preserving functor is $\Sp$-linear. 
+
+More generally, for $R$ an $\mathbb{E}_\infty$-ring, $\Mod_R$-linear $\infty$-categories are stable $R$-linear $\infty$-categories in the sense of \cite[App. D]{Lur18}.
+\end{example}
+
+\begin{example}[Higher Eilenberg-Watts] \label{example:Eilenberg-Watts}
+Let $A$ and $B$ be $R$-algebra spectra. By a higher algebra version of Eilenberg-Watts theorem \cite[Proposition 7.1.2.4 and p. 738]{Lur17}, every $R$-linear colimit preserving functor between $\infty$-categories of module spectra is given by tensoring with a bimodule. In particular, there is an equivalence 
+$${}_A\mathsf{BMod}_B(\Mod_R) \xrightarrow{\ \simeq \ } \mathsf{Fun}^\mathsf{L}_R(\Mod_A,\Mod_B),\quad M \longmapsto - \otimes_A M.$$
+\end{example}
+
+We end this section with closure properties enjoyed by $\mathcal{E}$-linear $\infty$-categories.
+
+\begin{prop} \label{prop:closure-linear}
+Let $\mathcal{E}$ be a presentably monoidal $\infty$-category. Then:
+\begin{enumerate}
+    \item Let $\mathcal{C}$ be $\mathcal{E}$-linear and $K$ a small $\infty$-category. Then there is a canonical equivalence $\Fun(K,\mathcal{C}) \simeq \Fun(K,\Spc) \otimes \mathcal{C}$. In particular, $\Fun(K,\mathcal{C})$ is $\mathcal{E}$-linear too.
+    \item The functor $- \otimes \mathcal{E}: \Prcat \to \mathsf{Cat}_\mathcal{E}$ is left adjoint to the inclusion $\mathsf{Cat}_\mathcal{E} \hookrightarrow \Prcat$. In particular, $\mathsf{Cat}_\mathcal{E}$ has all limits and $\mathsf{Cat}_\mathcal{E} \hookrightarrow \Prcat$ preserves them.
+\end{enumerate}
+\end{prop}
+\begin{proof}
+See \cite[Corollary 2.2]{Aok23} and \cite[Proposition 4.6.2.17]{Lur17}, respectively.    
+\end{proof}

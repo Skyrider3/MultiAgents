@@ -1,0 +1,573 @@
+\ifdefined\isMainDocument
+\else
+    \documentclass[10pt,oneside,reqno]{amsart}
+    \usepackage{xr}
+    \externaldocument{../main} % Main の .aux を参照
+    \input{../preamble}
+    \begin{document}
+\fi
+
+\section[$\AdDMR_0$, $\addmr$, and $\adls$]{Adjoint double shuffle scheme $\AdDMR_0$} \label{sect:AdDMR}
+% and its bigraded version  $\adls$}
+
+
+
+The purpose of this paper is to study AdMZVs. To begin with, we define AdMZVs more precisely. Let $\bullet\in \{\shuffle,*\}$. For $k_1,\ldots,k_r\in\mathbb{Z}_{>0}$ and $l\in\mathbb{Z}_{\ge 0}$, $\bullet$-AdMZVs are defined by
+\begin{align*}
+\bAdmzv{l}{k_1,\ldots,k_r} :=& \sum_{i = 0}^r (-1)^{k_{i+1}+\cdots+k_r + l} \zeta^{\bullet}(k_1,\ldots,k_i)\zeta^{\bullet}_l(k_r,\ldots,k_{i+1}) \in \mathcal{Z}.
+\end{align*}
+Here, 
+\[
+\zeta_{l}^{\bullet}(k_r,\ldots,k_{i+1}) = (-1)^l \sum_{\substack{l_{i+1}+\cdots+l_r = l \\ l_{i+1},\ldots,l_r\ge 0}}
+\left(\prod_{j = i+1}^r \binom{k_j + l_j+1}{l_j}\right)
+\zeta^{\bullet}(k_r+l_r,\ldots,k_{i+1}+l_{i+1}).
+\]
+It should be noted that the images of these two types of AdMZVs in $\mathcal{Z}/\zeta(2)\mathcal{Z}$ are identical, i.e.,
+\begin{align}
+\sAdmzv{l}{k_1,\ldots,k_r}. \equiv \hAdmzv{l}{k_1,\ldots,k_r} \mod \zeta(2)\mathcal{Z} \label{eq:gen-AdMZV}
+\end{align}
+holds. 
+We define AdMZVs as the image of $\bullet$-AdMZVs in $\mathcal{Z}/\zeta(2)\mathcal{Z}$ and denote $\sAdmzv{l}{k_1,\ldots,k_r} \mod \zeta(2)\mathcal{Z}$ by simply $\Admzv{l}{k_1,\ldots,k_r}$.
+In this section, we review Jarossay's work \cite{Jarossay}.
+We consider a generating function for AdMZVs as follows:
+\begin{align*}
+\Phi_{\mathrm{Ad}_{\shuffle}} :=& \sum_{x_0^lx_1x_0^{k_r-1}x_1\cdots x_0^{k_1-1}x_1 \in X^{*}} \sAdmzv{l}{k_1,\ldots,k_r} x_0^lx_1x_0^{k_r-1}x_1\cdots x_0^{k_1-1}x_1 + \text{(addtional terms).}%\\
+%\Phi_{\mathrm{Ad}_*} :=& \sum_{l \ge 0} \sum_{Y_{k_1}\cdots Y_{k_r} \in Y^*} \hAdmzv{l}{k_1,\ldots,k_r} Y_{k_r}\cdots Y_{k_1}.
+\end{align*}
+The fundamental idea of Jarossay's work is the following equality $\Phi_{\mathrm{Ad}_{\shuffle}} = \Phi_{\shuffle}^{-1}x_1\Phi_{\shuffle}$.
+From this perspective, he developed the property of $\Phi_{\shuffle}^{-1}x_1\Phi_{\shuffle}$ and proposed the $\Q$-linear relation among AdMZVs. He named these relations \textbf{adjoint double shuffle relations}.
+Additionally, he introduced an affine scheme called the \textit{adjoint double shuffle scheme} and raised the question of whether two affine schemes, $\DMR_0$ and the adjoint double shuffle scheme, are actually isomorphic.
+From this observation, we then consider an affine scheme \textit{the adjoint double shuffle scheme} $\AdDMR_0$.
+ 
+\nsubsection{The generating function of AdMZVs and adjoint double shuffle relations}
+
+A key idea in Jarossay's work is the occurrences of the AdMZVs in the coefficient of $\Phi_{\shuffle}^{-1}x_1\Phi_{\shuffle}$.
+The following proposition formalizes this observation.
+\begin{prop}[{\cite[Proposition 3.2.2]{Jarossay}}]
+For $l\in \mathbb{Z}_{\ge 0}$ and $k_1,\ldots,k_r\in\mathbb{Z}_{>0}$, the following holds:
+\[
+\langle \Phi_{\shuffle}^{-1}x_1\Phi_{\shuffle} \mid x_0^lx_1x_0^{k_r-1}x_1\cdots x_0^{k_1-1}x_1\rangle = \sAdmzv{l}{k_1,\ldots,k_r} .
+\]
+\end{prop}
+\begin{proof}
+The claim follows from the identities below.
+\begin{align*}
+\langle \Phi_{\shuffle}^{-1}x_1\Phi_{\shuffle} \mid x_0^{k_r-1}x_1\cdots x_0^{k_1-1}x_1x_0^l \rangle
+=& \sum_{j = 0}^r \langle\Phi_{\shuffle}^{-1} \mid x_0^lx_1\cdots x_0^{k_1-1}x_1\cdots x_0^{k_i-1}\rangle \langle \Phi_{\shuffle}\mid x_0^{k_{i+1}-1}x_1 \cdots x_0^{k_r-1}x_1\rangle \\
+=& \sum_{j = 0}^r(-1)^{k_1 + \cdots + k_i + l}\langle \Phi_{\shuffle} \mid x_0^{k_i-1}x_1 \cdots x_0^{k_1}x_1x_0^l \rangle\\
+&\times \langle \Phi_{\shuffle}\mid x_0^{k_{i+1}-1}x_1 \cdots x_0^{k_r-1}x_1\rangle \displaybreak[3] \\
+=&\sum_{j = 0}^r(-1)^{k_1 + \cdots + k_i + l} \zeta_l^{\shuffle}(k_1,\ldots,k_j)\zeta^{\shuffle}(k_r,\ldots,k_{j+1})\\
+=&\sAdmzv{l}{k_r,\ldots,k_1}.
+\end{align*}
+Here, we use the antipode property of the group-like element, namely, $S_{X}^{\vee}(\Phi_{\shuffle}) = \Phi_{\shuffle}^{-1}$ in  the second equality and
+\begin{align*}
+\langle \Phi_{\shuffle} \mid x_0^{k_r-1}x_1\cdots x_0^{k_1-1}x_1x_0^l \rangle =  \zeta_{l}^{\shuffle} (k_1,\ldots,k_r) 
+\end{align*}
+in the third equality.
+\end{proof}
+Since $\Delta_{\shuffle}(\Phi_{\shuffle}) = \Phi_{\shuffle} \otimes \Phi_{\shuffle}$,
+it follows that
+\begin{align}
+\Delta_{\shuffle}(\Phi_{\shuffle}^{-1}x_1\Phi_{\shuffle} ) = \Phi_{\shuffle}^{-1}x_1\Phi_{\shuffle}  \otimes 1 + 1\otimes \Phi_{\shuffle}^{-1}x_1\Phi_{\shuffle}. \label{eq:ad-shuffle}
+\end{align}
+Since the condition $\Delta_{\shuffle}(\Phi_{\shuffle}) = \Phi_{\shuffle} \otimes \Phi_{\shuffle}$ corresponds to the shuffle product relations of $\shuffle$-regularized MZVs, the condition \eqref{eq:ad-shuffle} corresponds to some $\Q$-linear relations among $\shuffle$-AdMZVs which are related to the binary operation $\shuffle$.
+We call these $\Q$-linear relations in \eqref{eq:ad-shuffle}  \textbf{adjoint shuffle relations}.
+
+We next investigate other $\Q$-linear relations among AdMZVs which correspond to the harmonic product relations.
+Let $l\in \mathbb{Z}_{\ge 0}$, $k_1,\ldots,k_r\in\mathbb{Z}_{>0}$, and $T$ be an indeterminate. We define $\mathbf{q}_{\#}^{\vee} :  \ide{h}^{\vee} \rightarrow \mathbb{Q}[[T]]\cotimes \Q\langle\langle Y \rangle\rangle$ as a $\mathbb{Q}$-linear map by
+\[
+\mathbf{q}_{\#}^{\vee} (x_0^{k_1-1}x_1\cdots x_1x_0^{k_{r+1}-1})
+=
+\begin{cases}
+T^{k_1-1}y_{k_2}\cdots y_{k_{r}} &\text{if }k_{r+1}=1\text{ and}\\
+0&\text{otherwise, this case includes $\text{(argument)} =1$}.
+\end{cases}
+\]
+From \eqref{eq:gen-AdMZV}, it follows that
+\begin{align*}
+\mathbf{q}_{\#}^{\vee}(\Phi_{\shuffle}^{-1}x_1\Phi_{\shuffle}) \equiv \sum_{w = y_{k_1}\cdots y_{k_r} \in Y^*}\left( \sum_{l\ge 0} T^l \zeta_{\mathrm{Ad}}(k_r,\ldots,k_1,l)\right) w \mod \zeta(2)\mathcal{Z} \cotimes \ide{h}^{\vee}.
+\end{align*}
+On the other hand, we define a $\Q[[T]]$-module morphism $\sft_*^{\vee}$ of $\mathbb{Q}[[T]] \cotimes \Q\langle \langle Y \rangle \rangle$ by
+\[
+y_k \mapsto \sum_{j=0}^{k-1} \binom{k-1}{j} T^{j} y_{k-j}.
+\]
+Then, it follows that $\sft_*^{\vee}$ is the coalgebra homomorphism with respect to $\Delta_*$.
+Since, for $\Phi \in \ide{h}^{\vee}$, $\sft_*^{\vee}(\Phi)$ is explicitly given by
+\begin{align}
+\sft_*^{\vee}(\Phi) = \sum_{w = y_{k_1}\cdots y_{k_r} \in Y^*} \sum_{l\ge 0} T^l \sum_{\substack{l_1 + \cdots +l_r = l \\ l_1,\ldots, l_r\ge 0}} \prod_{j=1}^r \binom{k_j + l_j -1}{l_j} \langle\Phi \mid y_{k_1+l_1}\cdots y_{k_r+l_r} \rangle w,\label{eq:sft-exc}
+\end{align}
+this leads to the following relation between $\mathbf{q}_{\#}^{\vee}(\Phi_{\shuffle}^{-1}x_1\Phi_{\shuffle})$ and $\Phi_*$:
+\begin{align*}
+\mathbf{q}_{\#}^{\vee}(\Phi_{\shuffle}^{-1}x_1\Phi_{\shuffle}) =& 
+\sum_{w = y_{k_1}\cdots y_{k_r} \in Y^*}\left( \sum_{l\ge 0} T^l \zeta_{\mathrm{Ad}}^{\shuffle}(k_r,\ldots,k_1;l)\right) w  \displaybreak[3] \\
+\stackrel{\eqref{eq:gen-AdMZV}}{\equiv} &  \sum_{w = y_{k_1}\cdots y_{k_r} \in Y^*}\left( \sum_{l\ge 0} T^l \zeta_{\mathrm{Ad}}^{*}(k_r,\ldots,k_1;l)\right) w \displaybreak[3] \\
+\equiv &  \sum_{w = y_{k_1}\cdots y_{k_r} \in Y^*}\left( \sum_{l\ge 0} T^l  \sum_{j = 0}^r (-1)^{k_1+\cdots+k_j + l} \zeta^*(k_r,\ldots,k_{j+1})\zeta^*(k_1,\ldots,k_j ; l)  \right) w \displaybreak[3] \\
+\equiv& \sum_{w = y_{k_1}\cdots y_{k_r} \in Y^*} \sum_{ j = 0}^r   \\
+& \left(\sum_{l\ge 0} T^l \sum_{\substack{l_1 +\cdots + l_r = l \\l_1,\ldots,l_r\ge 0 }} \left(\prod_{i = 1}^j \binom{k_i + l_i -1}{l_i}\right) \zeta^{*}(k_1 + l_1,\ldots,k_j + l_j) \right) \inv(y_{k_j}\cdots y_{k_1}) \\
+&\times  \zeta^*(k_r,\ldots,k_j) y_{k_{j+1}}\cdots y_{k_r} \displaybreak[3] \\
+\equiv & \sum_{w = y_{k_1}\cdots y_{k_r} \in Y^*}  \sum_{ j = 0}^r \\
+&  \left(\sum_{l\ge 0} T^l \sum_{\substack{l_1 +\cdots + l_r = l \\ l_1,\ldots,l_r\ge 0} } \left(\prod_{i = 1}^j \binom{k_i + l_i -1}{l_i}\right) \langle \Phi_* \mid y_{k_j + l_j}\cdots y_{k_1+l_1}\rangle \right) \inv(y_{k_j}\cdots y_{k_1}) \\
+&\times  \langle \Phi_* \mid y_{k_{j+1}}\cdots y_{k_r} \rangle y_{k_{j+1}}\cdots y_{k_r} \displaybreak[3] \\
+\stackrel{\eqref{eq:sft-exc}}{\equiv} & \sum_{w = y_{k_1}\cdots y_{k_r} \in Y^*}  \sum_{ j = 0}^r \\
+&\left(\langle \sft_*^{\vee}(\Phi_*) \mid y_{k_j}\cdots y_{k_1} \rangle \inv(y_{k_j}\cdots y_{k_1})\right)\times 
+\left( \langle \Phi_* \mid y_{k_{j+1}}\cdots y_{k_r} \rangle  y_{k_{j+1}}\cdots y_{k_r}\right) \displaybreak[3] \\ 
+\equiv &\inv \circ \sft_*^{\vee}(\Phi_*)\Phi_*
+\end{align*}
+modulo $\zeta(2)\mathcal{Z} \cotimes \ide{h}^{\vee}$.
+Here, $\inv$ is an anti-automorphism on $\Q\langle \langle Y \rangle\rangle$ defined by $y_k \mapsto (-1)^k y_k$ ($k\in\mathbb{Z}_{>0}$).
+Since $\sft_*^{\vee}$ is the coalgebra homomorphism with respect to $\Delta_*$, it follows that the following equality holds:
+\begin{align}
+\Delta_*(\mathbf{q}_{\#}^{\vee}(\Phi_{\shuffle}^{-1}x_1\Phi_{\shuffle})) = \mathbf{q}_{\#}^{\vee}(\Phi_{\shuffle}^{-1}x_1\Phi_{\shuffle})\otimes \mathbf{q}_{\#}^{\vee}(\Phi_{\shuffle}^{-1}x_1\Phi_{\shuffle}). \label{eq:ad-harmonic}
+\end{align}
+Here, we regard $\Delta_*$ as $\Q[[T]]$-module via the coefficient expansion.
+Since the condition $\Delta_{*}(\Phi_{*}) = \Phi_{*} \cotimes \Phi_{*}$ corresponds to the harmonic product relations of $*$-regularized MZVs, the Condition \eqref{eq:ad-harmonic} gives rise to $\Q$-linear relations among $*$-AdMZVs, which correspond to the binary operation $*$.
+Jarossay showed this result in a more general setting:
+\begin{thm}[{\cite[Proposition 3.2.5]{Jarossay}}]\label{thm:t-adic}
+For $\Phi \in \DMR_0(R)$, we have
+\begin{enumerate}
+\item\label{thm:t-adic-1} $\Delta_{\shuffle}(\Phi^{-1}x_1\Phi) = \Phi^{-1}x_1\Phi \otimes 1 + 1\otimes \Phi^{-1}x_1\Phi$, and
+\item\label{thm:t-adic-2} $\Delta_{*}(\mathbf{q}_{\#}^{\vee}(\Phi^{-1}x_1\Phi)) = \mathbf{q}_{\#}^{\vee}(\Phi^{-1}x_1\Phi) \otimes \mathbf{q}_{\#}^{\vee}(\Phi^{-1}x_1\Phi)$. Here, we regard \(\Delta_*\) as a $R[[T]]$-module morphism via the coefficient expansion.
+\end{enumerate}
+\end{thm}
+
+
+
+\begin{rmk}
+Let $t$ be an indeterminate. Ono, Seki and Yamamoto (\cite{Ono-Seki-Yamamoto}) proposed the $t$-adic SMZVs, which is the $t$-adic completion of $\sum_{0\le l<l'} \Admzv{l}{k_1,\ldots,k_r} t^l$, i.e. a $t$-adic SMZV is defined by 
+\[
+\zeta_{\widehat{\S}}(k_1,\ldots,k_r) := \sum_{0\le l} \Admzv{l}{k_1,\ldots,k_r} t^l \in \mathcal{Z}/\zeta(2)\mathcal{Z} \cotimes \mathbb{Q}[[t]].
+\]
+Independently, Jarossay introduced the $\Lambda$-adjoint multiple zeta values \cite[Definition~2.3.1(ii)]{Jarossay}. 
+They are the same completion, obtained by replacing the indeterminate $t$ with $\Lambda$.
+Ono, Seki, and Yamamoto also discussed certain analogs of the double shuffle relations among $t$-adic SMZVs, called the double shuffle relations of $t$-adic SMZVs.
+It should be noted that when a linear relation among $t$-adic SMZVs is given, comparing the coefficients of the indeterminate $t$ gives a linear relation among AdMZVs.
+
+Based on the discussion up to this point, we derive two families of linear relations among AdMZVs, Jarossay's one and Ono-Seki-Yamamoto's one.
+However, the difference between them is only the shuffle relations.
+To be more precise, Theorem \ref{thm:t-adic}. (\ref{thm:t-adic-1}) gives Jarossay's shuffle linear relations, while Ono, Seki, and Yamamoto's shuffle linear relation is
+\begin{align*}
+\langle \Phi \mid x_0^lx_1(u\shuffle vx_i)\rangle = -\sum_{l_1+l_2 = l} \langle \Phi \mid x_0^{l_1}x_i(x_0^{l_2}\shuffle S_X(v))x_1u\rangle
+%\label{eq:AppB-1}
+\end{align*}
+for all $u$, $v\in X$ and $i = 0$, $1$. 
+Jarossay proved that these two types of linear shuffle relations are equivalent (see \cite[Proposition 3.4.1]{Jarossay}).
+\end{rmk}
+
+
+
+Motivated by Theorem \ref{thm:t-adic}, Jarossay introduced the adjoint double shuffle scheme, defined by the adjoint double shuffle relations.
+\begin{df}\label{def:AdDMR}
+We define $\AdDMR_0(R)$ as the set of $\Phi \in R\cotimes \ide{h}^{\vee}$ satisfying the following properties:
+\begin{enumerate}
+%\item\label{def:AdDMR-1} There exists $\phi \in R\cotimes \ide{h}^{\vee}$ with $\Delta_{\shuffle}(\phi) = \phi\otimes \phi$, $\langle \phi \mid\mathbf{1}\rangle = 1$ and $\langle \phi \mid x_0\rangle = \langle \phi \mid x_1\rangle = 0$ such that $\Phi = \phi^{-1}x_1\phi$ holds,
+\item\label{def:AdDMR-2} $\Phi - x_1 \in \ide{F}_2^{\ge 4}$,
+\item\label{def:AdDMR-4} $\Delta_{\shuffle}(\Phi) = \Phi \otimes 1 + 1\otimes \Phi$, and
+\item\label{def:AdDMR-3} $\Delta_{*}(\Phi_{\#}) = \Phi_{\#} \otimes  \Phi_{\#} $, where $\Phi_{\#} := \mathbf{q}_{\#}^{\vee}(\Phi)$.
+\end{enumerate}
+We define the adjoint double shuffle scheme as a functor $\AdDMR_0 : \Qalg\rightarrow \cat{Set}$ ; $R \mapsto \AdDMR_0(R)$.
+%We can check that $\AdDMR_0$ is the affine scheme and $\mathcal{O}(\AdDMR_0) = \mathcal{Z}_{\mathrm{Ad}}^f$. 
+\end{df}
+
+By Theorem \ref{thm:t-adic}, there is a morphism of an affine scheme 
+\[
+\Ad(x_1)  : \DMR_0 \rightarrow \AdDMR_0,
+\]
+that is, for each $\Q$-algebra $R$, we define $\Ad^R(x_1) : \DMR_0(R) \rightarrow \AdDMR_0(R) ; \phi \mapsto \phi^{-1}x_1\phi$.
+Jarossay's question asks whether this natural morphism is an isomorphism.
+\begin{qu}[{\cite[Quetion 3.2.8]{Jarossay}}]\label{qu:Jarossay}
+Is the morphism of affine schemes
+\[
+\Ad(x_1) : \DMR_0 \longrightarrow \AdDMR_0
+\]
+a naturally isomorphism?
+\end{qu}
+
+
+To verify Question~\ref{qu:Jarossay}, we focus on the tangent spaces of $\DMR_0$ and $\AdDMR_0$.
+Proving that $\DMR_0$ is an affine group scheme, Racinet showed that the tangent space $\dmr$ at $1$ is a Lie algebra and that the image of $\dmr$ under a certain exponential map acts transitively on $\DMR_0$. 
+Consequently, studying $\dmr$ is essentially as informative as studying $\DMR_0$, so we focus on $\dmr$.
+Since the natural map $\Ad^{\Q}(x_1): \DMR_0(\Q)\rightarrow \AdDMR_0(\Q)$ sends $1$ to $x_1$, we compare $\dmr$ with the tangent space of $\AdDMR_0(\Q)$ at $x_1$, denoted $\addmr$.
+By Racinet, \cite[Definitions in Section 3.3.1]{Racinet}, $\dmr$ is written as
+\[
+\dmr = \{\psi \in \ide{F}_2^{\ge 3} \mid \Delta_*(\psi_{\star}) = \psi_{\star} \otimes 1 + 1\otimes \psi_{\star} \},
+\]
+where $\psi_{\star} = \mathbf{q}(\psi) + \sum_{n\ge 2} \frac{(-1)^n}{n} \langle \psi \mid x_0^{n-1}x_1\rangle y_1^n$. 
+On the adjoint side, we set as follows:
+\begin{df}\label{def:addmr}
+We define 
+\begin{align*}
+\addmr := \{\Psi \in  \ide{h}^{\vee} \mid x_1 + \varepsilon \Psi \in \AdDMR_0(\Q[\varepsilon]/(\varepsilon^2))\}.
+\end{align*}
+Equivalently, $\addmr$ is the $\Q$-linear space of all $\Psi\in \ide{h}^{\vee}$ such that
+\begin{enumerate}
+%\item\label{def:addmr--1}  $\wt \Psi \ge 4$,
+\item\label{def:addmr--2}  $\Psi \in \ide{F}_2^{\ge 4}$, and 
+\item\label{def:addmr--3}  $\Delta_{*}(\Psi_{\#}) = \Psi_{\#} \otimes 1 + 1 \otimes \Psi_{\#}$.
+\end{enumerate}
+\end{df}
+Each $\Q$-linear spaces are decomposed by weight as
+\[
+\dmr = \prod_{k\ge0}\dmr^{(k)},\qquad
+\addmr = \prod_{k\ge0}\addmr^{(k)}.
+\]
+Here, $\dmr^{(k)}$ (resp. $\addmr^{(k)}$) denotes the homogeneous subspace of weight $k$ in $\dmr$ (resp. $\addmr$).
+Then, the table below shows $\dim_\Q \dmr^{(k)}$ up to $k=10$, and $\dim_\Q \addmr^{(k)}$ up to $k=11$ respectively.
+\begin{center}
+\begin{tabular}{c|ccccccccccccc}
+$k$ & $0$ & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ & $7$ & $8$ & $9$ & $10$ & $11$ & $\cdots$ \\
+\hline
+$\dim \dmr^{(k)}$ & $0$ & $0$ & $0$ & $1$ & $0$ & $1$ & $0$ & $1$ & $1$ & $1$ & $1$ &  & $\cdots$ \\
+$\dim \addmr^{(k)}$ & $0$ & $0$ & $0$ & $0$ & $2$ & $2$ & $3$ & $3$ & $4$ & $5$ & $6$ & $7$ & $\cdots$ 
+\end{tabular}
+\end{center}
+
+Since the derivation $\ad(x_1)$ of $\Ad(x_1)$ raises the weight by one (see next subsection), we expect $\dim \dmr^{(k)} = \dim \addmr^{(k+1)}$ for all $k\in\mathbb{Z}_{\ge 0}$.
+However, these data above indicate $\dim \dmr^{(k)} \neq \dim \addmr^{(k+1)}$ for $3 \le k \le 10$, thus Question \ref{qu:Jarossay} is negative.
+
+\begin{comment}
+\textcolor{red}{このJarossayの問題について確認するために$\DMR_0(\Q)$の$1$における接平面$\dmr$と、$\AdDMR_0(\Q)$の$x_1$における接平面$\addmr$に着目する。ここで$\AdDMR_0(\Q)$の``$x_1$"における接平面について考察する理由は$1$は$\Ad(x_1)^{\Q} : \DMR_0(\Q)\rightarrow \AdDMR_0(\Q)$により$x_1$に移ることにある。
+具体的には$\dmr$と$\addmr$はexplicitにこの様に書き下せる。
+($\dmr$と$\addmr$のexplicit formula)
+また、$\Ad(x_1) : \DMR_0 \rightarrow \AdDMR_0$の微分写像は$\ad(x_1) : \dmr\rightarrow \addmr ; \psi \mapsto [x_1,\psi]$となる(詳しくは次のsubsectionで)
+このとき、$\dmr$と$\addmr$はweight direct product decompositionを持つ。
+(式を書く)
+ここで、$\dmr^{(k)}$のup to $k = 10$までの次元と$\addmr^{(k)}$のup to $k = 11$までの次元は以下のように書き下せる。
+(次元の表)
+$\ad(x_1)$がweightを一つ上げる写像であることを考慮すると$\dim \dmr^{(k)} = \dim \addmr^{(k+1)} $が期待されるが、この表からは期待する次元にはならないことがうかがえる。
+}
+To verify Question \ref{qu:Jarossay}, we computed the dimensions of the Lie algebras associated with $\DMR_0$ and $\AdDMR_0$, and this calculation shows that Question \ref{qu:Jarossay} is probably negative (Appendix \ref{section:computational data}). However, by imposing some additional conditions, we obtain a refined formulation of Jarossay's problem.\footnote{Professor Minoru Hirose at Kagoshima University kindly provided the proto type of the source codes related to the adjoint double shuffle relations; we are grateful for his support.}
+\end{comment}
+
+
+
+\nsubsection{Affine group scheme $\TM_1$ and corresponding Lie algebra}
+
+From now on, we refine Jarossay's question.
+To discuss $\AdDMR_0$, we introduce an affine group scheme $\TM_1$. This setup is based on \cite[Section 1.1.1]{Jarossay2015} and \cite[Proposition A.1.1]{Jarossay2020}.
+We define $\TM_1(R) := \{ \Phi \in R\widehat{\otimes}\ide{h}^{\vee} \mid \langle \Phi \mid x_0^k \rangle = 0 \text{ for all $k\in\mathbb{Z}_{\ge 0}$},  \langle \Phi \mid x_1 \rangle = 1 \}.$
+We consider the binary operation $\circledast_1$ \cite[Definition 1.1.3]{Jarossay2015} on $\TM_1$ defined by
+\[
+\Phi_1 \circledast_{1} \Phi_2 = \kappa_{\Phi_1}(\Phi_2)
+\]
+for $\Phi_1$, $\Phi_2 \in \TM_1(R)$.
+
+\begin{prop}\label{prop;TM1}
+A pair $(\TM_1(R), \circledast_1)$ forms a group.
+Additionally, let $\TM_1$ be a functor $\Qalg\rightarrow \cat{Grp}$ ; $R\mapsto \TM_1(R)$. 
+Then, $\TM_1$ is the prounipotent affine group scheme.
+\end{prop}
+
+\begin{proof}
+
+Let $\Phi\in \TM_1(R)$ and define $\tau^R : \TM_1(R) \rightarrow \mathrm{End}_{R\text{-alg}}(R\cotimes\ide{h}^{\vee}) : \Phi \mapsto \kappa_{\Phi}$.
+For $m\in\mathbb{Z}_{\ge 0}$, we define the $R$-submodules $R\cotimes \ide{h}^{\vee}_{m}$ of $R\cotimes \ide{h}^{\vee}$ as the ideals $(x_0,x_1)^m$. Since $\kappa_{\Phi}$ is the endomorphism of $R\cotimes \ide{h}^{\vee}$ as an $R$-algebra and $\kappa_{\Phi}(x_i) - x_i$ do not have terms with weight $1$, we have
+\begin{enumerate}
+\item\label{enumi:prouni-1} $\tau^R(\Phi_1 \circledast_1 \Phi_2) = \tau^R(\Phi_1) \circ \tau^R(\Phi_2)$,
+\item\label{enumi:prouni-2} $\tau^R(\Phi_1) = \tau^R(\Phi_2)$ if and only if  $\Phi_1 =  \Phi_2$,
+\item\label{enumi:prouni-3} $\kappa_{\Phi} (R\otimes \ide{h}^{\vee}_m) \subset R\otimes \ide{h}^{\vee}_m$, and
+\item\label{enumi:prouni-4} the following composition of the $R$-module map
+\[
+\xymatrix{
+R\cotimes \ide{h}^{\vee} \ar[r]^{\kappa_{\Phi}|_{R\cotimes \ide{h}^{\vee}_m}} & R\cotimes \ide{h}^{\vee}_m  \ar@{->>}[r]&  R\cotimes \ide{h}^{\vee}_m/  \ide{h}^{\vee}_{m+1}
+}
+\]
+is the identity.
+\end{enumerate}
+Therefore, if we show that $\TM_1(R)$ equips the structure of a group with respect to $\circledast_1$, then $\tau^R$ is the $R$-module representation of $\TM_1(R)$ and satisfies the conditions of the prounipotency.
+
+Given these preliminary considerations, we show the group structure of $\TM_1(R)$.
+By the definition of $\circledast_1$, we can immediately check that $x_1$ is the identity element of $\TM_1(R)$.
+The associativity law of $\circledast_1$ is given as follows:
+Let $\Phi_1$, $\Phi_2$, and $\Phi_3 \in \TM_1(R)$. Since $\kappa_{\Phi_1 \circledast_1 \Phi_2} = \tau^R (\Phi_1 \circledast_1 \Phi_2) = \tau^R (\Phi_1) \circ \tau^R (\Phi_2) = \kappa_{\Phi_1} \circ \kappa_{\Phi_2}$ holds, we have
+\[
+(\Phi_1\circledast_1 \Phi_2) \circledast_1 \Phi_3 
+= \kappa_{\Phi_1\circledast_1 \Phi_2}(\Phi_3)
+=\kappa_{\Phi_1} \circ \kappa_{\Phi_2} (\Phi_3)
+=\kappa_{\Phi_1} (\Phi_2 \circledast_1 \Phi_3)
+=\Phi_1 \circledast_1(\Phi_2 \circledast \Phi_3).
+\]
+Lastly, we show the existence of the inverse $\Phi'$ of $\Phi\in \TM_1(R)$.
+We shall illustrate it constructively.
+By the definition of $\TM_1(R)$, the coefficients of $\Phi'$ in weight $1$  must be $\langle \Phi' \mid x_1 \rangle = 1$ and $\langle \Phi' \mid x_0 \rangle = 0$.
+%We put $w\in X^*$ with the weight degree at least $2$ and assume $\Phi'$ is determined up to degree $\deg w$.
+Let $w\in X^*$ with $2\le \wt w$. Since $\kappa_{\Phi}$ satisfies the \eqref{enumi:prouni-3} and \eqref{enumi:prouni-4} as mentinoned in this proof, we have
+\[
+ \langle \kappa_{\Phi}(\Phi') \mid w \rangle = \langle \Phi' \mid w \rangle - \sum_{\wt w' < \wt w} c_{w',w} \langle \Phi' \mid w' \rangle
+\]
+for $c_{w',w} \in R$. Therefore, by recursively putting $\langle \Phi' \mid w \rangle =  \sum_{\wt w' < \wt w} c_{w',w} \langle \Phi' \mid w' \rangle$, we find out $\Phi'$ to be the inverse of $\Phi$ with respect to $\circledast_1$.
+
+
+\end{proof}
+
+
+\begin{rmk}
+One may notice that the product $\circledast_1$ on $\TM_1(R)$ is defined so that $\Ad^R(x_1) : (\TM(R) , \circledast) \rightarrow (\TM_1(R),\circledast_1)$ is a group homomorphism \cite[Proposition 1.1.4 (ii)]{Jarossay2015}, where $\TM(R):=\{\Phi\in R\widehat{\otimes}\ide{h}^{\vee}\mid \langle \Phi,1\rangle=1\}$, equipped with the product $\circledast$.
+One also notes that $\DMR_0(R)$ is a subgroup of $\TM(R)$.
+\end{rmk}
+
+
+
+
+
+We now define the corresponding Lie algebra of $\TM_1$. We define
+\[
+\tm_1 := \ker(\TM_1(\Q[\varepsilon]) \xrightarrow{\varepsilon = 0} \TM_1(\Q)).
+\]
+A direct calculation shows
+\[
+\tm_1= \{\Psi \in  \ide{h}^{\vee} \mid \langle \Psi \mid x_1 \rangle = 0,  \langle \Psi \mid x_0^l \rangle = 0 \text{ ($l\in\mathbb{Z}_{\ge 0}$)}\}.
+\]
+For $\Psi_1$, $\Psi_2 \in \tm_1$, we define $\Q$-bilinear binary operation $\{\mathchar`-,\mathchar`-\}_1$ \cite[Appendix A.1.2]{Jarossay2020} on $\tm_1$ by
+\[
+\{\Psi_1,\Psi_2\}_{1} := d_{\Psi_1}(\Psi_2) - d_{\Psi_2}(\Psi_1).
+\]
+Here, for $\Psi \in \ide{h}^{\vee}$, we define the derivation $d_{\Psi} : \ide{h}^{\vee} \rightarrow \ide{h}^{\vee}$ by
+\[
+d_{\Psi}(x_0) = 0 \;\;,\;\;d_{\Psi}(x_1)= \Psi.
+\] 
+Then, we have the following.
+
+\begin{prop}
+A pair $(\tm_1,\{\mathchar`-,\mathchar`-\}_1)$ froms a Lie algebra.
+\end{prop}
+
+\begin{proof}
+Let $\der( \ide{h}^{\vee})$ be a derivation on $\ide{h}^{\vee}$. Then, $\der (\ide{h}^{\vee})$ is the corresponding Lie algebra of an affine group scheme $\Aut(\ide{h^{\vee}}) : \Qalg \rightarrow \Grp ; R\mapsto \Aut_{R\text{-\textbf{alg}}}(R\cotimes \ide{h^{\vee}})$.
+
+We focus on the corresponding Lie algebra homomorphism $d\tau : \tm_1\rightarrow \der(\ide{h}^{\vee})$ of $\tau^\Q : \TM_1(\Q) \rightarrow \Aut_{\Qalg}(\ide{h}^{\vee})$ defined by $\tau_{1 + \varepsilon \Psi} = \id + \varepsilon d\tau(\Psi) $ ($1 + \varepsilon \Psi \in \ker (\TM_1(\Q[\varepsilon]) \xrightarrow{\varepsilon = 0} \TM_1(\Q))$).
+Then by construction, $d\tau$ is a Lie algebra homomorphism and the image of $d\tau$ is a derivation on $ \ide{h}^{\vee}$.
+Since 
+\begin{align*}
+\tau(1 + \varepsilon)(x_0) = &\kappa_{1 + \varepsilon \Psi}(x_0) = x_0 = x_0 + \varepsilon \cdot 0,\\
+\tau(1 + \varepsilon)(x_1) = &\kappa_{1 + \varepsilon \Psi}(x_1) = 1 + \varepsilon \Psi,
+\end{align*}
+we have $d\tau(\Psi)(x_0) = 0$ and $d\tau(\Psi)(x_1) = \Psi$. This implies that $d\tau(\Psi) = d_{\Psi}$ holds.
+Let $\langle\mathchar`-, \mathchar`-\rangle$ be the Lie bracket equipped in $\tm_1$.
+Then, we have
+\begin{align*}
+\langle\Psi_1 ,\Psi_2\rangle =  d\tau (\langle \Psi_1, \Psi_2\rangle)(x_1)
+ = [d\tau(\Psi_1), d\tau(\Psi_2)](x_1) = d_{\Psi_1}(\Psi_2) - d_{\Psi_2}(\Psi_1) = \{\Psi_1,\Psi_2\}_1.
+\end{align*}
+The second equality above follows from the fact that $d\tau$ is a Lie algebra homomorphism.
+Therefore, $\langle\mathchar`-,\mathchar`-\rangle = \{\mathchar`-,\mathchar`-\}_1$ holds.
+
+\end{proof}
+
+\begin{cor}\label{cor:tm-freeLie}
+The intersection of $\Q$-linear spaces $\tm_1 \cap  \ide{F}_2$ is a Lie subalgebra of $\tm_1$.
+\end{cor}
+
+\begin{proof}
+Let $\Psi_1,\Psi_2\in \tm_1\cap \ide{F}_2$.
+Because $d_{\Psi_1}$ is a derivation of the Lie algebra, it follows that $d_{\Psi_1}(\Psi_2)\in \tm_1\cap \ide{F}_2$. Consequently, ${\Psi_1,\Psi_2}\in \tm_1\cap \ide{F}_2$.
+\end{proof}
+
+\begin{comment}
+By Proposition \ref{prop:unipotent}. (\ref{enumi:unipotent-1}) provides the exponential map $\exp^{\circledast} : \tm_1\rightarrow \TM_1$ which satisfies
+\[
+\tau\circ \exp^{\circledast_1}) = \exp \circ d\tau.
+\]
+Substituting $x_1$ into the above, $\tau(f)(\phi) = \phi$ for $\phi \in \TM_1(R)$ implies
+\[
+\exp^{\circledast} = \tau(\exp^{\circledast_1})(x_1) = \exp (d\tau)(x_1).
+\]
+\end{comment}
+
+\nsubsection{A Lie algebra $\Fad$ and an affine group scheme $\FAd$}
+For $f \in \ide{h}^{\vee}$, we define a $\Q$-linear map $\ad(f) : \ide{h}^{\vee}\rightarrow \ide{h}^{\vee} ; g \mapsto [f,g]$ and a $\Q$-linear space
+\[
+\ide{F}_2^{\ad_{x_1}} :=  \left\{ \Psi \in \ide{F}^{\ge 3}\middle|
+\Psi^{00} = 0
+\right\},
+\]
+
+which is inspired by the following Schneps's proposition.
+
+\begin{prop}[{\cite[Proposition 2.2]{Schneps}}]\label{prop:Schneps}
+Let $\Psi \in  \ide{h}^{\vee}$.
+Then, the conditions
+\begin{itemize}
+\item $\Psi \in  \ide{F}_2^{\ge 3}$ and $\Psi^{00} = 0$ holds, and
+\item there exists $\psi \in\ide{F}_2^{\ge 2}$ such that
+\[
+\Psi = [x_1,\psi],
+\]
+\end{itemize}
+are equivalent.
+\end{prop}
+
+
+This proposition implies
+\[
+ \Fad  = \left\{ \Psi \in \ide{F}_2^{\ge 3} \middle|
+\begin{matrix}
+\text{${}^{\exists}\psi \in \ide{F}_2^{\ge 2}$ such that }\Psi = [x_1,\psi]
+\end{matrix}
+\right\}.
+\]
+
+\begin{prop}[{\cite[Proposition A.1.1]{Jarossay2020}}]\label{prop:Fad}
+The $\Q$-linear space $\Fad$ is a Lie subalgebra of $\tm_1$.
+\end{prop}
+
+\begin{proof}
+We focus on $\ide{F}_2^{\ge 2}$.
+Then, $\ide{F}_2^{\ge 2}$ forms a Lie algebra with respect to $\{\mathchar`-,\mathchar`-\}$. Here, for $\phi$, $\psi \in \ide{F}_2^{\ge 2}$, we define $\{\phi,\psi\} := d_{[x_1,\phi]}(\psi) - d_{[x_1,\psi]}(\phi) + [\phi,\psi]$ as in \cite[Proposition 3.5, Corollary 3.6, and Proposition 3.7]{Racinet}.
+We can easily see that the image of the mapping $\ad(x_1) : \ide{F}_2^{\ge 2} \rightarrow \tm_1 ; \phi \mapsto [x_1,\phi]$ is equal to $\Fad$ by Proposition \ref{prop:Schneps}. Therefore, it suffices to show that $\ad(x_1)$ is a Lie algebra homomorphism.
+
+Let $\psi_1$, $\psi_2 \in \ide{F}_2^{\ge 2}$. Then we have
+\begin{align*}
+\ad(x_1)(\{\psi_1,\psi_2\}) =& [x_1,\{\psi_1,\psi_2\}]\\
+=&[x_1, d_{[x_1,\psi_1]}(\psi_2) - d_{[x_1,\psi_2]}(\psi_1) + [\psi_1,\psi_2]]\\
+=&[x_1,d_{[x_1,\psi_1]}(\psi_2)] - [x_1,d_{[x_1,\psi_2]}(\psi_1)] + x_1\psi_1\psi_2 + \psi_2\psi_1 x_1 - x_1\psi_2\psi_1 - \psi_1\psi_2x_1\\
+=&[x_1,d_{[x_1,\psi_1]}(\psi_2)]  + [x_1,\psi_1]\psi_2 + \psi_1x_1\psi_2 - \psi_2[x_1 , \psi_1] + \psi_2x_1\psi_1\\
+&-[x_1,d_{[x_1,\psi_2]}(\psi_1)] -[x_1,\psi_2]\psi_1 - \psi_2x_1\psi_1 + \psi_1[x_1,\psi_2] - \psi_1x_1\psi_2\\
+=&[x_1,d_{[x_1,\psi_1]}(\psi_2)] +  [d_{[x_1,\psi_1]}(x_1),\psi_2] - [x_1,d_{[x_1,\psi_2]}(\psi_1)] - [d_{[x_1,\psi_2]}(x_1),\psi_1]\\
+=&d_{[x_1,\psi_1]}(\ad(x_1)(\psi_2)) - d_{[x_1,\psi_2]}(\ad(x_1)(\psi_1)) \\
+=&\{\ad(x_1)(\psi_1), \ad(x_1)(\psi_2) \}_1
+\end{align*}
+as claimed.
+\end{proof}
+
+\begin{rmk}
+We can check $\ker \ide{ad}(x_1) = \Q\langle\langle x_1 \rangle \rangle $.
+Thus, putting $\widetilde{\ide{F}}_2 := \{\Phi \in \ide{h}^{\vee} \mid \langle \Phi \mid x_1^n \rangle = 0\text{ for $n \in \mathbb{Z}_{>0}$}  \}$, we have an isomorphism of Lie algebras $\ide{ad}(x_1) : \widetilde{\ide{F}}_2^{\ge 2} \rightarrow \Fad$.
+\end{rmk}
+Let us define
+\[
+\FAd(R) := 
+\left\{
+\Phi \in R\cotimes \ide{h}^{\vee} 
+\middle|
+\begin{matrix}
+\Phi - x_1 \in \ide{F}_2^{\ge 3}\text{ and}\\
+\text{ ${}^{\exists} \phi \in \exp(\ide{F}_2)$ such that }\Phi=\phi^{-1}x_1\phi.
+\end{matrix}
+\right\}
+\]
+and a functor $\FAd : \Qalg \rightarrow \Set ; R \mapsto \FAd(R)$.
+In a similar way to Proposition \ref{prop:Fad}, we can check that $\FAd(R)$ is a subgroup of $\TM_1(R)$, and this implies that $\FAd$ is a closed affine subscheme of $\TM_1$ as an affine group scheme.
+Additionally, a corresponding Lie algebra of $\FAd$ is $\Fad$.
+
+Let $f$ be the inverse map of $\ad(x_1)\mid_{\widetilde{\ide{F}}_2^{\ge 2}}$. 
+The defining equations that define $\FAd$ are as follows:
+\begin{prop}\label{prop:Adjoint}
+Let $\Phi-x_1\in \ide{F}_2^{\ge 3}$ and write
+\[
+\Phi-x_1=\sum_{k\ge 3}\Phi^{(k)} \qquad (\Phi^{(k)} \text{: homogeneous of weight }k).
+\]
+Define sequences $\{U_n\}_{n\ge 3}\subset \ide{F}_2$ and 
+$\{\psi_n\}_{n\ge 2}\subset \ide{F}_2$ recursively by
+\[
+U_3:=0,\qquad U_4:=0,
+\]
+and for $n\ge 5$ set
+\[
+U_n
+:=\sum_{r\ge 2}\frac{(-1)^r}{r!}
+\!\!\!\sum_{\substack{m_1,\dots,m_r\ge 2\\ m_1+\cdots+m_r=n-1}}
+\!\!\!
+\ad(\psi_{m_1}) \circ\cdots \circ\ad(\psi_{m_r})(x_1),
+\]
+then put, for every $n\ge 3$,
+\[
+\psi_{n-1}:=f(\Phi^{(n)} - U_n).
+\]
+Let $\psi:=\sum_{m\ge 2}\psi_m$ and $\phi:=\exp(-\psi)$. If $(U_n - \Phi^{(n)})^{00} = 0$ for $n\ge 3$, then $\Phi = \phi^{-1}x_1\phi$. Thus, $\Phi \in \FAd(\Q)$.
+Conversely, if $\Phi \in \FAd(\Q)$, then $(U_n - \Phi^{(n)})^{00} = 0$ for all $n \in \mathbb{Z}_{\ge 3}$.
+\end{prop}
+
+\begin{proof}
+Recall the adjoint identity:
+\[
+\exp(-\psi)\,x_1\,\exp(\psi)
+= \exp(\ad(-\psi))(x_1)
+= x_1+\sum_{r\ge 1}\frac{1}{r!}\,\ad(\psi)^{\,r}(x_1).
+\]
+Write $\psi=\sum_{m\ge 2}\psi_m$ with $\psi_m$ homogeneous of weight $m$.
+The weight $n$ part of $\ad(\psi)^{\,r}(x_1)$ is the sum over
+$r$-tuples $(m_1,\ldots,m_r)$ with $m_i\ge 2$ and $m_1+\cdots+m_r=n-1$:
+\[
+\bigl(\ad(\psi)^{\,r}(x_1)\bigr)^{(n)}
+=
+\sum_{r\ge 0} \frac{1}{r!}\sum_{\substack{m_1,\dots,m_r\ge 2\\ m_1+\cdots+m_r=n-1}}
+\ad(-\psi_{m_1})\circ \cdots \circ\ad(-\psi_{m_r})(x_1).
+\]
+Separating the $r=1$ gives
+\begin{equation}\label{eq:weight-n-expansion}
+\bigl(\exp(-\psi)\,x_1\,\exp(\psi)\bigr)^{(n)}
+=
+\ad(x_1)(\psi_{n-1})+
+\sum_{r\ge 2}\frac{(-1)^r}{r!}\sum_{\substack{m_1,\dots,m_r\ge 2\\ m_1+\cdots+m_r=n-1}}\ad(\psi_{m_1})\circ \cdots \circ\ad(\psi_{m_r})(x_1).
+\end{equation}
+By definition, the second term is exactly $U_n$.
+
+We first show that if $(\Phi^{(n)} - U_n)^{00}=0$ for all $n$, then $\Phi \in \FAd(\Q)$.
+To begin with, we inductively construct $\psi_n\in \ide{F}_2$ so that, putting $\psi=\sum_{m\ge2}\psi_m$ and $\phi:=\exp(-\psi)\in \exp(\ide{F}_2)$, we obtain $\Phi=\phi^{-1}x_1\phi$.
+For $n=3,4$, since $U_3=U_4=0$, set $\psi_2:=f(\Phi^{(3)})$ and $\psi_3:=f(\Phi^{(4)})$.
+Assume $\psi_2,\dots,\psi_{n-2}$ have been constructed. Then $U_{n+1}$ is determined by $\psi_2,\dots,\psi_{n-2}$.
+By the assumption $(\Phi^{(n+1)}-U_{n+1})^{00}=0$ and Proposition \ref{prop:Schneps}, there exists
+\[
+\psi_n:=f\!\bigl(\Phi^{(n+1)}-U_{n+1}\bigr)\in \ide{F}_2
+\quad\text{with}\quad
+\ad(x_1)(\psi_n)=\Phi^{(n+1)}-U_{n+1}.
+\]
+This completes the inductive construction of $\psi$ and $\phi=\exp(-\psi)$.
+
+Next, we prove that for $n\ge3$,
+\[
+(\phi^{-1}x_1\phi\bigr)^{(n)}=\Phi^{(n)}.
+\]
+By \eqref{eq:weight-n-expansion} and the definition of $U_n$, it follows that
+\[
+\bigl(\exp(-\psi)\,x_1\,\exp(\psi)\bigr)^{(n)}
+=\ad(x_1)(\psi_{\,n-1})+U_n
+=\bigl(\Phi^{(n)}-U_n\bigr)+U_n
+=\Phi^{(n)}.
+\]
+So we have $\Phi=\phi^{-1}x_1\phi$.
+
+Conversely, let $\Phi=\exp(-\psi)\,x_1\,\exp(\psi) \in \Fad(\Q)$ with
+$\psi=\sum_{m\ge 2}\psi_m$.
+Then \eqref{eq:weight-n-expansion} yields
+\[
+\Phi^{(n)} - U_n=\ad(x_1)(\psi_{n-1}),
+\]
+so $(\Phi^{(n)} - U_n)^{00}=0$ for all $n\ge 3$.
+\end{proof}
+
+\begin{rmk}
+Considering coefficient expansion, Proposition \ref{prop:Adjoint} holds over any $\Q$-algebra $R$.
+\end{rmk}
+
+We now refine Question~\ref{qu:Jarossay}.
+
+\begin{qu}\label{qu:Jarossay}
+Is there a natural isomorphism of affine group schemes $\Ad^R(x_1) : \DMR_0 \rightarrow \AdDMR_0 \times_{\TM_1} \FAd$?
+\end{qu}
+
+Here, the fiber product over $\TM_1$ is an intersection in the sense of affine schemes. Note that $\AdDMR_0$ and $\FAd$ is emmbeded in $\TM_1$.
+As in the previous subsection, we consider tangent spaces of $\DMR_0$ and $\AdDMR_0 \times_{\TM_1} \FAd$.
+We now state the question in terms of tangent spaces.
+
+\begin{qu}\label{qu:Jarossay-Lie}
+Is the $\Q$-linear map $\ad(x_1) : \dmr \rightarrow \addmr \cap \Fad ; \psi \mapsto [x_1,\psi]$ isomorphic?
+\end{qu}
+Comparing dimensions of the homogeneous components of $\dmr$ and $\addmr\cap\FAd$ we obtain
+\begin{center}
+\begin{tabular}{c|ccccccccccccc}
+$k$ & $0$ & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ & $7$ & $8$ & $9$ & $10$ & $11$ & $\cdots$ \\
+\hline
+$\dim \dmr^{(k)}$ & $0$ & $0$ & $0$ & $1$ & $0$ & $1$ & $0$ & $1$ & $1$ & $1$ & $1$ &  & $\cdots$ \\
+$\dim \addmr^{(k)} \cap \Fad$
+& $0$ & $0$ & $0$ & $0$ & $1$ & $0$ & $1$ & $0$ & $1$ & $1$ & $1$ & $1$ & $\cdots$ \\
+\end{tabular}
+\end{center}
+
+
+\ifdefined\isMainDocument
+\else
+    %\bibliographystyle{amsplain}
+    %\bibliography{reference-adjoint}
+    \end{document}
+\fi

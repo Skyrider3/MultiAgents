@@ -1,0 +1,354 @@
+\section{Polynomial maps on matrix rings}\label{sec:ring-poly}
+\begin{lemma}\label{lem:red-jord}
+    Let $p\in \C[z]$. For a matrix $X\in \M_n(\C)$, it is an element of the Julia set $\J_p(\M_n(\C))$ if and only if for any $Y\in\GL_n(\C)$, the matrix $YXY^{-1}$ is in the Julia set $\J_p(\M_n(\C))$.
+\end{lemma}
+\begin{proof}
+    For any matrix $Y\in\GL_n(\C)$ and $p(z)=z^n+\sum\limits_{i=1}^{n}a_{n-i}z^{n-i}\in\C[z]$,
+    \begin{align*}
+        p(Y^{-1}XY)&=(Y^{-1}XY)^n+\sum\limits_{i=1}^na_{n-i}(Y^{-1}XY)^{n-i}\\
+        &=Y^{-1}X^nY+\sum\limits_{i=1}^na_{n-i}Y^{-1}X^{n-i}Y=Y^{-1}XY.
+    \end{align*}
+    Since conjugation by $Y$ is a homeomorphism of the algebra $\M_n(\C)$, the result follows.
+\end{proof}
+\Cref{lem:red-jord} reduces the problem to determining, up to conjugacy by an element of $\GL_n(\C)$, whether an element $g \in \M_n(\C)$ lies in the Fatou set or the Julia set. 
+
+Consider the map $w(x)=x^M$ for the polynomial algebra $\M_n(\C)$.
+Let $g\in \M_n(\C)$ be regular semisimple; hence there exists a $Q\in\M_n(\C)$ such that $QgQ^{-1}=\diag(\alpha_1,\cdots,\alpha_n)$ with $\alpha_i\neq \alpha_j$ for all $i\neq j$.
+Then $w^m(g)=g^{M^m}$; which is equal to $Q^{-1}\diag(\alpha_1^{M^m},\cdots,\alpha_n^{M^m})Q$.
+Recall that the spectral radius of $g$ is by definition $\rho(g)=\max\limits_{1\leq i\leq n}\alpha_i$.
+If $\rho(g)<1$, we get that $w^n(g)\longrightarrow 0$ as $n\longrightarrow\infty$.
+Since $g$ is regular semisimple, and the set of regular semisimple elements forms an open set of $\M_n(\C)$, $w$ is a holomorphic map of full rank.
+Hence, by \cite[Proposition 2.4]{FornaessSibony1998}, the Julia set $\J_w$ satisfies $w(\J_w) \subseteq \J_w$, which would imply that $0 \in \J_w$.
+
+Let us calculate the Jacobian of $w$ at $g$. 
+Note that up to conjugation $g = \operatorname{diag}(\alpha_1, \dots, \alpha_n)$.
+Then for the standard matrix units $E_{ij}$, we have
+$$
+d(w^m)_g(E_{ij})
+ = \left( \sum_{k=0}^{M^m-1} \alpha_i^{\,k} \alpha_j^{M^m-1-k} \right) E_{ij}.
+$$
+Hence each $E_{ij}$ is an eigenvector of $d(w^m)_g$, with corresponding eigenvalue
+$$
+\mu_{ij} =
+\begin{cases}
+\dfrac{\alpha_i^{M^m} - \alpha_j^{M^m}}{\alpha_i - \alpha_j}, & i \ne j, \\
+M^m \alpha_i^{M^m-1}, & i = j.
+\end{cases}
+$$
+Moreover, since $|\alpha_i|<1$, as $n\longrightarrow\infty$, the Jacobian tends to $0$, which implies that the zero matrix is an attracting point corresponding to the pair $(\M_n(\C),x^M)$.
+This contradicts the assertion that $0 \in \J_w$.
+Therefore, for any regular semisimple element $g$ with $\rho(g) < 1$, we have $g \not\in \J_w$.
+
+Next, if $\rho(g) > 1$, the sequence ${w^m}$ diverges uniformly to infinity in a small neighborhood of $g$, since this neighborhood consists entirely of regular semisimple elements whose eigenvalues remain close to those of $g$. 
+We note the whole discussion in the following remark.
+\begin{remark}\label{rem:reg-sem}
+For the pair $(\M_n(\C), x^M)$, the inclusion of a regular semisimple element $g \in \M_n(\C)$ in the Julia set implies that $\rho(g) = 1$.
+\end{remark}
+
+Let us point out that it is not true that for a matrix $A\in \M_n(\C)$ the sequence $\{p^m(A)\}$ is bounded if and only if the eigenvalues of $A$ are in $K_p$. 
+Consider the power map $p(z)=z^2$ and the matrix $\begin{pmatrix}
+    1& 1 & 0\\
+    & 1 &1\\
+    &&1
+\end{pmatrix}\in \M_3(\C)$.
+Of course $1\in K_p$, but 
+\begin{align*}
+    p^m(A)=\begin{pmatrix}
+        1 & 2^m & 2^{m-1}\\
+        & 1 & 2^m\\
+        &&1
+    \end{pmatrix}
+\end{align*}
+implies that the sequence $\{p^m(A)\}_{m\geq 0}$ is unbounded.
+
+Now we determine some elements $g\in\M_n(\C)$ such that $g\in K_{p}(\M_n(\C))$, where $p\in\C[x]$ is a monic polynomial. 
+Recall the Jordan–Chevalley decomposition of a linear operator $g = g_s + g_u \in \M_n(\C)$, where $g_s$ is semisimple and $g_u$ is nilpotent. (In the literature, the nilpotent part is usually denoted by $g_n$; however, to avoid confusion with the dimension parameter $n$, we adopt the notation $g_u$.)
+We have the following result;
+\begin{proposition}\label{prop:filled-Julia}
+    Let $\deg p\geq 2$ and $g\in\M_n(\C)$. The following statements hold.
+    \begin{enumerate}
+        \item if $g$ is semisimple and the eigenvalues of $g$ are in $K_p(\C)$, then $g\in K_p(\M_n(\C))$,
+        \item if $g_u\neq 0$, and the eigenvalues of $g_s$ are in $\mathrm{Int}K_p(\C)$ (the interior of $K_p(\C)$), then $g\in K_p(\M_n(\C))$.
+    \end{enumerate}
+\end{proposition}
+\begin{proof}
+    (1) Let $g$ be semisimple. 
+    Then there exists $Q\in \GL_n(\C)$ such that 
+    $Q^{-1}gQ=\diag(\alpha_1,\cdots,\alpha_n)$ for some $\alpha_i\in\C$ for all $1\leq i\leq n$.
+    Then 
+    \begin{align*}
+        p^m(g)=Q\begin{pmatrix}
+            p^m(\alpha_1) & & &\\
+            & p^m(\alpha_2) & &\\
+            & & \ddots &\\
+            &&&p^m(\alpha_n)
+        \end{pmatrix}Q^{-1}.
+    \end{align*}
+    Since conjugation by an element of $\GL_n(\C)$ is a homeomorphism of $\M_n(\C)$, the sequence $\left\{p^m(g)\right\}_{m\geq0}$ is bounded if each of the sequence $\left\{p^m(\alpha_i)\right\}_{m\geq 0}$ for all $1\leq i\leq n$. 
+
+(2) Since $\C$ is algebraically closed, there exists $Q\in\GL_n(\C)$ such that 
+$Q^{-1}gQ=\bigoplus\limits_{i=1}^{\ell}J_{\alpha_i,m_i}$,
+where $\J_{\alpha_i,m_i}\in\M_{m_i}(\C)$ is the matrix
+\begin{align*}
+    \begin{pmatrix}
+        \alpha_i & 1 &  & && \\
+        &\alpha_i & 1 &   && \\
+        &&\alpha_i  & && \\
+         &  &  &\ddots && \\
+         &&&&\alpha_i&1\\
+        &  &  & && \alpha_i\\
+    \end{pmatrix};
+\end{align*}
+here, $\alpha_i$s can be the same for two distinct $i$.
+Whether this element belongs to $K_p(\M_n(\C))$ is equivalent to check whether the elements $\J_{\alpha_i,m_i}$ are member of $K_p(\M_{m_i}(\C))$.
+Without loss of generality, thus we may assume that $g$ is of the form $\J_{\alpha,n}$.
+\begin{align*}
+    (p^m)(J_{\alpha,n})=\begin{pmatrix}
+        (p^m)^{}(\alpha) & (p^m)^{(1)}(\alpha) & \cdots & (p^m)^{(n-1)}(\alpha)\\
+        &(p^m)^{}(\alpha)  & \cdots & (p^m)^{(n-2)}(\alpha)\\
+        &&\ddots&(p^m)^{(1)}(\alpha)\\
+        &&&(p^m)^{}(\alpha)
+    \end{pmatrix}.
+\end{align*}
+Given $\alpha\in \mathrm{Int} K_p(\C)$, it must belong to one bounded component of the Julia set which can be of three types, see \Cref{lem:suli-fatou-comp}. 
+We study each case separately, starting with the case when $\alpha$ lies in an attracting basin.
+
+\textbf{Case 1:}
+Suppose $U$ is the basin of an attracting periodic cycle of period $N$, and let
+$z\in U$. Then the sequence $\{p^m(z)\}$ is bounded by definition and we want to show that for every $k\geq 1$
+the sequence $\{(p^m)^{(k)}(z)\}$ is bounded.
+
+% First reduce to the attracting fixed point case. Let $\alpha$ be a point of the attracting
+% cycle and $N$ its period, so $p^N(\alpha)=\alpha$ and $|(p^N)'(\alpha)|<1$.
+% The point $z\in U$ satisfies $p^j(z)\to$ the cycle as $j\to\infty$, hence there exists
+% some $\J_0$ with $w:=p^{j_0}(z)$ arbitrarily close to $\alpha$.
+It is enough to prove the statement for the $p^N$ and the derivatives $(p^N)^{(m)}$, where $p^N(\alpha)=\alpha$; here $\alpha$ is an attracting fixed point of the map $q:=p^N$, $|q'(\alpha)|<1$.
+By continuity of $q'$ at $\alpha$ we can choose $r>0$ and $0<\rho<1$ such that
+\begin{align*}
+\overline{D(\alpha,r)} \subset U \text{ and } \sup_{w\in D(\alpha,r)} |q'(w)| \le \rho <1.    
+\end{align*}
+which implies
+\begin{align*}
+|q(w)-q(\alpha)| = |q(w)-\alpha| \leq \rho\,|w-\alpha| \leq \rho r,    
+\end{align*}
+since $\overline{D(\alpha,r)}$ is compact.
+Hence $q(D(\alpha,r))\subset D(\alpha,\rho r)\subset D(\alpha,r)$; on iteration one gets,
+$q^m(D(\alpha,r))\subset D(\alpha,r)$ for all $m\geq0.$
+Fix any $0<r_0<r$ and any point $y\in D(\alpha,r_0)$. Because $q^m$ maps
+$\overline{D(\alpha,r)}$ into itself for every $m$, one gets the uniform bound
+$
+\sup\limits_{w\in D(\alpha,r)} |q^m(w)| \le M := |\alpha| + r,
+$
+independent of $m$.
+Applying the Cauchy integral formula on the disk $D(\alpha,r)$: for any $k\geq 1$ and any
+$y\in D(\alpha,r_0)$ with $r_0<r$,
+\begin{align*}
+(q^m)^{(k)}(y) = \frac{k!}{2\pi i}\int\limits_{|\zeta-\alpha|=r}\frac{q^m(\zeta)}{(\zeta-y)^{k+1}}\,d\zeta. 
+\end{align*}
+Using $|\zeta-y|\ge r-r_0$ on the circle, we get that
+\begin{align*}
+\big| (q^m)^{(k)}(y)\big|
+\leq \frac{k!}{(r-r_0)^k}\,\sup_{|\zeta-\alpha|=r}|q^m(\zeta)|
+\leq \frac{k!\,M}{(r-r_0)^k},    
+\end{align*}
+which is independent of $m$. Thus for every fixed $k$ and every $y\in D(\alpha,r_0)$
+the sequence $\{(q^m)^{(k)}(y)\}_{m\ge0}$ is uniformly bounded.
+
+\textbf{Case 2:} Let $\alpha\in U$ where $U$ is an immediate attracting petal for a parabolic
+periodic point of $p$. 
+As in the previous case, we may assume that $\alpha$ is a fixed point, keeping the notation $q=p^N$.
+The iterates $q^m$ converge uniformly on compact subsets of the
+immediate petal $U$ to the parabolic fixed point $\alpha$.
+Fix the given $z\in U$ and choose
+$r>0$ with $\overline{D(z,r)}\subseteq U$. Uniform convergence on the compact set
+$\overline{D(z,r)}$ implies the family $\{q^m\}_{m\ge0}$ is uniformly bounded there, and hence there
+exists $M>0$ such that
+\begin{align*}
+\sup_{\substack{m\geq0\\ \zeta\in\overline{D(z,r)}}} |q^m(\zeta)| \le M.
+\end{align*}
+Now, for every $k\geq 1$ and every
+$m\geq 0$,
+\begin{align*}
+(q^m)^{(k)}(z)
+&= \frac{k!}{2\pi i}\int\limits_{|\zeta-z|=r}\frac{q^m(\zeta)}{(\zeta-z)^{k+1}}\,d\zeta,
+\end{align*}
+and therefore,
+\begin{align*}
+\big|(q^m)^{(k)}(z)\big|
+&\le \frac{k!}{r^k}\,\sup_{|\zeta-z|=r}|q^m(\zeta)|
+\le \frac{k!\,M}{r^k},
+\end{align*}
+which is independent of $m$. Thus for each fixed $k$ the sequence $\{(q^m)^{(k)}(z)\}$ is
+uniformly bounded. So the orbit is bounded.
+
+Finally, for arbitrary $m$ write $m=m'N+r$ as above; then $p^m=p^r\circ q^{m'}$. Differentiating
+this composition shows each $(p^m)^{(k)}(z)$ is a finite combination 
+%(with coefficients
+%depending only on the fixed maps $p^0,\dots,p^{N-1}$ and their derivatives at finitely many
+% points)
+of derivatives of $q^{m'}$ evaluated at points in $\overline{D(z,r)}$. Since all
+those derivatives are uniformly bounded in $m'$, it follows that $\{(p^m)^{(k)}(z)\}_{m\ge0}$
+is bounded as well.
+
+\textbf{Case 3:}
+Lastly let $\alpha\in U$ such that $U$ is a Siegel disk for $p$, i.e.\ there
+exists a conformal map $\phi:\D_r\to U$ from some disk $\D_r=\{w\in\C:|w|<r\}$ and an irrational $\theta$ such that
+\begin{align*}
+\phi(e^{2\pi i\theta}w)=p(\phi(w))\qquad\text{for }w\in\D_R.
+\end{align*}
+By the conjugacy relation $\phi\circ R=\;p\circ\phi$ with $R(w)=e^{2\pi i\theta}w$ we have
+for every $m\ge0$
+\begin{align*}
+p^m=\phi\circ R^m\circ\phi^{-1}.
+\end{align*}
+Set $w_m:=R^m(w_0)=e^{2\pi i m\theta}w_0$. Since $|w_m|=|w_0|<R$ for all $m$, the points
+$\{w_m\}$ lie in a compact subset of $\D_r$, and hence the maps $\phi$ and its
+inverse $\phi^{-1}$ have all its derivatives to be uniformly bounded on the relevant compact sets.
+
+For the first derivative,
+\begin{align*}
+(p^m)'(z)
+&= \phi'(w_m)\cdot (R^m)'(w_0)\cdot (\phi^{-1})'(z)
+= \phi'(w_m)\,e^{2\pi i m\theta}\,(\phi^{-1})'(z).
+\end{align*}
+Hence
+\begin{align*}
+\big|(p^m)'(z)\big| = |\phi'(w_m)|\;|(\phi^{-1})'(z)|,
+\end{align*}
+and the right-hand side is uniformly bounded in $m$ because $\{\phi'(w_m)\}_m$ is bounded
+(on the compact set containing the $w_m$) while $(\phi^{-1})'(z)$ is a fixed finite number.
+
+For higher derivatives, we use the generalized chain rule. 
+Note that $R^m(z)=e^{2\pi m i}z$, and hence all the higher ($\geq 2$) derivatives vanish. 
+Further for each fixed $k$ there exist
+constants $C_{j,\ell}$ (depending only on $k$) such that
+\begin{align*}
+(p^m)^{(k)}(z)=\sum_{1\leq j\leq k,\;0\leq\ell\leq k} C_{j,\ell}\; \phi^{(j)}(w_m)\;(\phi^{-1})^{(\ell)}(z),
+\end{align*}
+by the chain-rule.
+Because $w_m$ remains in a compact subset of $\D_R$, the values $\phi^{(j)}(w_m)$ are
+uniformly bounded in $m$ for every fixed $j$, and the finitely many derivatives
+$(\phi^{-1})^{(\ell)}(z)$ are fixed numbers. Therefore each $(p^m)^{(k)}(z)$ is uniformly
+bounded in $m$.
+% Finally, boundedness of the orbit $\{p^m(z)\}$ is immediate since $p^m(z)=\phi(w_m)$ and
+% $\{w_m\}$ lies in the compact disk $\{w\in\C:|w|\le|w_0|\}\subset\D_r$.
+\end{proof}
+Clearly $\overline{K_p}=\left\{g\in \M_n(\C):\text{all eigenvalues of $g$ are in $K_p(\C)$}\right\}$.
+Note that if at least one eigenvalue of a matrix $g\in \M_n(\C)$ lies in $\C\setminus K_p(\C)$, then the sequence $\left\{p^n(g)\right\}$ diverges uniformly in a neighbourhood $U$ of $g$. 
+Thus $\J_p(\M_n(\C))\subseteq \overline{K_p(\M_n(\C))}$.
+Before proving the final theorem, we state the following lemma, which constructs an open set around a given matrix, inside $\M_n(\C)$, which will be needed in the proof.
+\begin{lemma}\label{lem:nbd-mat}
+Let $g\in\M_n(\C)$, and $\alpha_1,\cdots,\alpha_n$ be eigenvalues of $g$ (counted with multiplicity). Let $U$ be an open set of $\C$, containing $\alpha_i$ for all $i$. Then the set
+\begin{align*}
+U(g)=\left\{h\in \M_n(\C):\sigma(x)\subseteq U\right\}
+\end{align*}
+is an open set.
+\end{lemma}
+\begin{proof}
+    See \cite{stackexchange}.
+\end{proof}
+Now we are ready to prove the first main result of the article.
+\begin{theorem}\label{thm:FJ-polynomial-map}
+Let $p\in\C[x]$ be a polynomial of degree $\geq 2$ and let
+$X\in\M_n(\C)$ such that $\sigma(X)\subseteq \J_p(\C)$, where $\sigma(X)$ denotes the spectrum of $X$.
+Then $X\in \J_p(\M_n(\C))$
+\end{theorem}
+\begin{proof}
+Since the connected Fatou components (of $\J_p(\C)$) are open, letting $F_i$ to be the Fatou component containing $\alpha_i$ in $\J_p(\C)$, one gets that $\bigcup\limits_{i=1}^n F_i$ is an open set.
+Hence by using \Cref{lem:nbd-mat} the set
+\begin{align*}
+\mathscr U=\left\{Y\in\M_n(\C):\sigma(Y)\subseteq \bigcup\limits_{i=1}^n F_i\right\}
+\end{align*}
+is open in $\M_n(\C)$.
+We will first show that for all $X_0\in \mathscr U$, there exists an open set $U_0$ containing $X_0$ such that the family $\left\{p^m\right\}$ is a locally uniformly bounded family on $U_{X_0}$; then we will apply \Cref{lem:normal-GK}.
+
+Since $\sigma(X_0)$ is finite, choose a contour $\Gamma$ that encloses it and the Fatou components containing each eigenvalue.
+Since $p^k$ is normal on the Fatou components, the family $\{p^m\}$ is uniformly bounded on compact sets, and more precisely on $\Gamma$.
+Hence there exists a constant $C$, such that
+\begin{align*}
+\sup\limits_{\substack{m\geq 0\\\gamma\in\Gamma}}|p^m(\gamma)|\leq C<\infty.
+\end{align*} 
+Since $\Gamma\cap\sigma(X_0)=\emptyset$, one has $(\gamma I-X_0)^{-1}$ is well defined, where $I$ is the $n\times n$ identity matrix.
+Since $\Gamma$ is compact, there exists $M<\infty$ such that
+\begin{align*}
+M=\sup\limits_{\gamma\in\Gamma}||(\gamma I - X_0)^{-1}||.
+\end{align*} 
+Let $$U_0=\left\{Y\in \M_n(\C):||Y-X_0||<\dfrac{1}{2M}\right\}\cap\mathscr U,$$
+which further implies that
+for every $Z\in U_0$, and $\gamma\in \Gamma$,
+\begin{align*}
+||(\gamma I - X_0)^{-1}(Z-X_0)||\leq M||Z-X_0||<1.
+\end{align*}
+ This shows that $1$ is not an eigenvalue of $(\gamma I - X_0)^{-1}(Z-X_0)$; hence $I-(\gamma I - X_0)^{-1}(Z-X_0)$ is invertible.
+Thus $\gamma I-Z=(\gamma I-X_0)(I-(\gamma I - X_0)^{-1}(Z-X_0))$ is invertible for all $\gamma\in\Gamma$.
+Observe that for all $Z\in U$, and $\gamma\in \Gamma$ one has $||(\gamma I-Z)^{-1}||\leq\dfrac{M}{1-M\cdot (1/2M)}$, since $||(\gamma I - X_0)^{-1}(Z-X_0)||\leq M||Z-X_0||<1$; hence we have that
+\begin{align*}
+\sup\limits_{\substack{Z\in U_0\\\gamma\in\Gamma}}||(\gamma I- Z)||<2M.
+\end{align*}
+Using the Cauchy integral formula for the matrix valued functions \cite{Higmanbook} (also \cite[Theorem 2.5]{HuangLiuWu}) for any $m$ and $Z\in U_0$,
+\begin{align*}
+p^m(Z)
+=\dfrac{1}{2\pi i}\int\limits_{\Gamma} p^m(\zeta)(\zeta I - Z)^{-1}d\zeta.
+\end{align*}
+Then for all $Z\in U_0$ and $m\geq 0$ (let $\ell(\Gamma)$ denote the length of $\Gamma$),
+\begin{align*}
+||p^m(Z)||&=\left|\left|\dfrac{1}{2\pi i}\int\limits_{\Gamma} p^m(\zeta)(\zeta I - Z)^{-1}d\zeta\right|\right|\\
+&\leq \dfrac{1}{2\pi}\ell(\Gamma)\cdot C\cdot 2M.
+\end{align*}
+This proves that on the open set $\mathscr{U}$ the family is locally uniformly bounded.
+
+Now, if possible, let the family not be normal on $U_0$. 
+Then by \Cref{lem:normal-GK}, there exists a compact  $K\subseteq\subseteq \mathscr U$, a sequence $\{p_j\}\subseteq K$, $\{f_j=p^{m_j}\}\subseteq\mathscr{P}=\{p^m\}_{m\geq 0}$, positive reals $\rho_j\longrightarrow 0$, and vectors $\epsilon_j\in\M_n(\C)$ such that the sequence of maps $\{g_j\}$ defined as
+\begin{align*}
+g_j(\zeta)=f_j(p_j+\rho_j\epsilon_j\zeta),
+\end{align*}
+converges uniformly on compact subset of $\C$ to a non-constant entire function $g$ as $j\longrightarrow\infty$.
+
+Since $K$ is compact and $\{p^k\}$ is locally uniformly bounded on $\mathscr U$ there exists an open set $V\subseteq \mathscr U$ such that $K\subseteq V$ with the property that
+\begin{align*}
+\sup\limits_{\substack{m\geq 0\\X\in V}}||p^m(X)||<C<\infty.
+\end{align*}
+Let $B_R=\{z\in\C:||z||\leq R\}$. Since $K\subseteq V$, we have that $d=\mathrm{dist}(K,\partial V)>0$. For each $\zeta\in B_R$ one has $||p_j+\rho_j\epsilon_j\zeta-p_j||\leq \rho_j|\epsilon_j|R$. Let $J$ be such that for all $j\geq J$ we hvae $\rho_j|\epsilon_j|R<d$ (this is possible as $\rho_j\longrightarrow 0$ and $|\epsilon_j|=1$.).
+
+Then for $j\geq J$ and $\zeta\in B_R$, we have that $p_j+\rho_j\epsilon_j\zeta\in V$, whence
+\begin{align*}
+||g_j(\zeta)||=||p^{k_j}(p_j+\rho_j\epsilon_j\zeta)||\leq C,
+\end{align*}
+which shows that $g$ must be a constant function. 
+\end{proof}
+\begin{corollary}\label{cor:Fatou-polynomial}
+    Let $p\in\C[z]$ be a monic polynomial of degree $\geq 2$. Then
+    \begin{align*}
+        \J_p(\M_n(\C))&=\partial \overline{K_p(\M_n(\C))}\\
+        &=\{X\in \M_n(\C):\sigma(X)\cap\J_p(\C)\neq\emptyset\}.
+    \end{align*}
+\end{corollary}
+\begin{corollary}\label{cor:no-wander}
+    There exists no wandering Fatou component of the pair $(p,\M_n(\C))$ where $p\in\C[z]$ is a monic polynomial of degree $\geq 2$.
+\end{corollary}
+\begin{proof}
+    Let $C$ be a Fatou component of the pair $(p,\M_n(\C))$.
+    To prove our claim, we must show that there exists $m$, a positive integer, such that $p^m(C)\subseteq C$.
+
+    Let $X\in C$, since the centralizer $\mathscr Z_{\GL_n(\C)}(X)\neq\emptyset$, and $\{gYg^{-1}:Y\in C,g\in\GL_n(\C)\}$ is connected we must have that $gXg^{-1}\in C$ for all $g\in \GL_n(\C)$.
+The map
+\begin{align*}
+\chi : \M_n(\C) &\longrightarrow \C^{n}, \\
+A &\longmapsto (a_1(A),a_2(A),\dots,a_n(A)),
+\end{align*}
+assigning to each matrix $A$ the vector of coefficients of its characteristic polynomial
+\begin{align*}
+\det(tI - A) = t^n + a_1(A)t^{n-1} + \cdots + a_n(A),
+\end{align*}
+is a polynomial map in the entries of $A$, and hence continuous.
+Moreover, it is well known that the roots of a complex polynomial depend continuously on its coefficients (see, for instance, \cite{HarrisMartin1987}).
+Hence we can construct 
+\begin{align*}
+    \lambda_1:C\longrightarrow\C,\cdots,\lambda_n:C\longrightarrow \C,
+\end{align*}
+such that $\sigma(X)=\{\lambda_i(X):1\leq i\leq n\}$.
+From \cref{thm:FJ-polynomial-map}, it follows that an element lies in $\F_p(\M_n(\C))$ if and only if all eigenvalues lie in $\F_p(\C)$.
+Hence for all $1\leq i\leq n$, one has that $\lambda_i(C)\subseteq C_i$, where $C_i$ is a Fatou component of $\F_p(\C)$.
+Since there exists no Fatou component of the pair $(p,\C)$, one must have the existence of $m$ such that $p^m(C_i)\subseteq C_i$ for all $1\leq i\leq n$.
+Hence $p^m(C)\subseteq C$.
+\end{proof}

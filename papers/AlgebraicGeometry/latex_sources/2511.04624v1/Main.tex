@@ -1,0 +1,668 @@
+% Definition: \emph{\textcolor{orange}{}}
+
+
+\documentclass[12pt]{amsart}
+\usepackage{amsthm,amstext,amsmath,amscd,amssymb,latexsym,mathrsfs}
+
+
+\usepackage{color}
+%\usepackage[matrix,arrow]{xy}
+\usepackage{amsfonts,array}
+%\usepackage[backref,colorlinks=true]{hyperref}
+\usepackage{todonotes}
+\usepackage{verbatim}
+\usepackage{float}	
+\usepackage{pgf,tikz}
+\usepackage[toc,page]{appendix}
+\usepackage[all,cmtip]{xy}
+\usepackage{stmaryrd}
+\usepackage{xparse}
+\usepackage{listings}
+\usepackage{enumitem}
+\setlist{nosep, left=0pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\usepackage{tabularx,booktabs}
+
+\usepackage{ragged2e} % better ragged-right for wrapped cells
+\usepackage{needspace}   % prevent orphaned heading
+\usepackage{ltablex}   % makes tabularx longtable-capable
+\keepXColumns         % keep X-column behaviour when using ltablex
+\usepackage{placeins} % optional: provides \FloatBarrier to flush floats
+
+% Define column types:
+%  L = fixed-width, left column for the symbol
+%  Y = stretchable description column (tabularx X but ragged right)
+\newcolumntype{L}{>{\RaggedRight\arraybackslash}p{3.5cm}}
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%\usepackage[alwaysadjust]{paralist}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{etoolbox}
+\usepackage{xcolor}             
+
+
+
+
+
+
+
+%\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue, citecolor=blue]{hyperref}
+\usepackage[shortalphabetic]{amsrefs}
+\usepackage[all]{xy}
+%\usepackage{mathptmx}
+\usepackage{newtxtext}
+\usepackage{newtxmath}
+\usepackage{framed}
+\usepackage{graphicx}
+\usepackage{wasysym}
+\usepackage{pdfpages}
+
+\usepackage[thinlines,thiklines]{easybmat}
+
+\usepackage{microtype} % Besseres spacing, sinnvoll?
+
+\usepackage{mathtools}  % for \xhookrightarrow
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%
+% If you'd want to change the enumeration scheme
+%
+%
+%\def\labelenumi{\theenumi}
+%\def\theenumi{(\alph{enumi})}
+%\def\labelenumii{\theenumii}
+%\def\theenumii{(\roman{enumii})}
+%\def\p@enumii{\theenumi}
+%\def\labelenumiii{\theenumiii.}
+%\def\theenumiii{\Alph{enumiii}}
+%\def\p@enumiii{\theenumi\theenumii}
+%\def\labelenumiv{\theenumiv.}
+%\def\theenumiv{\arabic{enumiv}}
+%\def\p@enumiv{\p@enumiii\theenumiii.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% For rational maps:
+
+\newcommand*{\DashedArrow}[1][]{\mathbin{\tikz [baseline=-0.25ex,-latex, dashed,#1] \draw [#1] (0pt,0.5ex) -- (1.3em,0.5ex);}}%
+
+% description:
+% https://tex.stackexchange.com/questions/38670/broken-arrow-symbol
+
+%\newcommand\mapsfrom{\mathrel{\reflectbox{\ensuremath{\mapsto}}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  proclamations and proof environment
+%
+%
+
+\hbadness = 10000
+
+
+% Kein Einrücken neuer Absätze
+%\setlength{\parindent}{0pt}
+%\definecolor{GoetheBlue}{RGB}{0,97,143}
+\usepackage{bbm}
+\usepackage[bookmarks=true, colorlinks=true, linkcolor=blue!50!black,
+citecolor=GoetheBlue, urlcolor=orange!50!black, pdfencoding=unicode]{hyperref}
+\usepackage[left=3.5cm,right=3.5cm,top=3cm,bottom=3cm,footskip=1cm
+]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+\makeatletter
+\def\thm@space@setup{%
+  \thm@preskip=5pt \thm@postskip=5pt
+}
+\makeatother
+
+
+
+
+
+\makeatletter
+% plain thebibliography
+\renewcommand\@biblabel[1]{[#1]\quad}%
+
+% if amsrefs defines \BibLabel, remove its \hfill and provide left-aligned label
+\@ifpackageloaded{amsrefs}{%
+  % remove any existing \hfill inside \BibLabel if present
+  \ifcsname BibLabel\endcsname
+    \usepackage{etoolbox}% safe to load; you already have it
+    \patchcmd{\BibLabel}{\hfill}{}{}{}%
+    \renewcommand{\BibLabel}{%
+      \ifcsname Hy@raisedlink\endcsname
+        \Hy@raisedlink{\hyper@anchorstart{cite.\CurrentBib}\hyper@anchorend}%
+        [\thebib]\quad
+      \else
+        [\thebib]\quad
+      \fi
+    }%
+  \fi
+}{}%
+\makeatother
+
+
+
+
+
+
+
+
+\newcommand{\restrict}{\,\rule[-5pt]{0.4pt}{12pt}\,{}}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+\renewcommand{\thesection}{\arabic{section}}
+
+\def\Bl{\operatorname{Bl}}
+%\renewcommand{\labelenumi}{(\arabic{enumi})}
+%\newcommand{\Ndash}{\nobreakdash--}
+%\newcommand{\somespace}{\hfill{}\\ \vspace{-0.7cm}}
+%\newcommand{\by}{}
+%\newcommand{\paper}{: \begin{it}}
+%\newcommand{\jour }{, \end{it}}
+%\newcommand{\vol}{}
+%\newcommand{\pages}{}
+%newcommand{\yr}{}
+
+
+\numberwithin{equation}{section}
+
+
+\newcommand{\abs}[1]{\lvert#1\rvert}
+
+\newcommand{\blankbox}[2]{%
+  \parbox{\columnwidth}{\centering
+
+    \setlength{\fboxsep}{0pt}%
+    \fbox{\raisebox{0pt}[#2]{\hspace{#1}}}%
+  }
+}
+
+\newcommand{\ybul}{\ensuremath{Y_\bullet}}
+\newcommand{\dyl}{\ensuremath{\Delta_{\ybul}(L)}}
+\newcommand{\dyx}{\ensuremath{\Delta_{\ybul}(X)}}
+\newcommand{\equ}{\ensuremath{\,=\,}}
+\newcommand{\congg}{\ensuremath{\,\simeq\,}}
+\newcommand{\dgeq}{\ensuremath{\,\geq\,}}
+\newcommand{\dleq}{\ensuremath{\,\leq\,}}
+\newcommand{\deq}{\ensuremath{\stackrel{\textrm{def}}{=}}}
+\newcommand{\sC}{\ensuremath{\mathscr{C}}}
+\DeclareMathOperator{\pr}{pr}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\aff}{aff}
+\DeclareMathOperator{\lin}{lin}
+\DeclareMathOperator{\relint}{relint}
+\DeclareMathOperator{\Doub}{Doub}
+\DeclareMathOperator{\length}{length}
+\DeclareMathOperator{\lint}{int}
+\DeclareMathOperator{\ver}{vert}
+\newcommand{\gyl}{\ensuremath{\Gamma_{\ybul}(L)}}
+
+\newcommand{\Ra}{`\ensuremath{\Rightarrow}'  }
+\newcommand{\La}{`\ensuremath{\Leftarrow}' }
+\newcommand{\LI}{`\ensuremath{\subseteq}'  }
+\newcommand{\RI}{`\ensuremath{\supseteq}'  }
+
+
+
+\newcommand{\BA}{{\mathbb{A}}}
+\newcommand{\BB}{{\mathbb{B}}}
+\newcommand{\BC}{{\mathbb{C}}}
+\newcommand{\BD}{{\mathbb{D}}}
+\newcommand{\BE}{{\mathbb{E}}}
+\newcommand{\BF}{{\mathbb{F}}\,\!{}}
+\newcommand{\BG}{{\mathbb{G}}}
+\newcommand{\BH}{{\mathbb{H}}}
+\newcommand{\BI}{{\mathbb{I}}}
+\newcommand{\BJ}{{\mathbb{J}}}
+\newcommand{\BK}{{\mathbb{K}}}
+\newcommand{\BL}{{\mathbb{L}}}
+\newcommand{\BM}{{\mathbb{M}}}
+\newcommand{\BN}{{\mathbb{N}}}
+\newcommand{\BO}{{\mathbb{O}}}
+\newcommand{\BP}{{\mathbb{P}}}
+\newcommand{\BQ}{{\mathbb{Q}}}
+\newcommand{\BR}{{\mathbb{R}}}
+\newcommand{\BS}{{\mathbb{S}}}
+\newcommand{\BT}{{\mathbb{T}}}
+\newcommand{\BU}{{\mathbb{U}}}
+\newcommand{\BV}{{\mathbb{V}}}
+\newcommand{\BW}{{\mathbb{W}}}
+\newcommand{\BX}{{\mathbb{X}}}
+\newcommand{\BY}{{\mathbb{Y}}}
+\newcommand{\BZ}{{\mathbb{Z}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\Fa}{{\mathfrak{a}}}
+\newcommand{\Fb}{{\mathfrak{b}}}
+\newcommand{\Fc}{{\mathfrak{c}}}
+\newcommand{\Fd}{{\mathfrak{d}}}
+\newcommand{\Fe}{{\mathfrak{e}}}
+\newcommand{\Ff}{{\mathfrak{f}}}
+\newcommand{\Fg}{{\mathfrak{g}}}
+\newcommand{\Fh}{{\mathfrak{h}}}
+\newcommand{\Fi}{{\mathfrak{i}}}
+\newcommand{\Fj}{{\mathfrak{j}}}
+\newcommand{\Fk}{{\mathfrak{k}}}
+\newcommand{\Fl}{{\mathfrak{l}}}
+\newcommand{\Fm}{{\mathfrak{m}}}
+\newcommand{\Fn}{{\mathfrak{n}}}
+\newcommand{\Fo}{{\mathfrak{o}}}
+\newcommand{\Fp}{{\mathfrak{p}}}
+\newcommand{\Fq}{{\mathfrak{q}}}
+\newcommand{\Fr}{{\mathfrak{r}}}
+\newcommand{\Fs}{{\mathfrak{s}}}
+\newcommand{\Ft}{{\mathfrak{t}}}
+\newcommand{\Fu}{{\mathfrak{u}}}
+\newcommand{\Fv}{{\mathfrak{v}}}
+\newcommand{\Fw}{{\mathfrak{w}}}
+\newcommand{\Fx}{{\mathfrak{x}}}
+\newcommand{\Fy}{{\mathfrak{y}}}
+\newcommand{\Fz}{{\mathfrak{z}}}
+
+\newcommand{\FA}{{\mathfrak{A}}}
+\newcommand{\FB}{{\mathfrak{B}}}
+\newcommand{\FC}{{\mathfrak{C}}}
+\newcommand{\FD}{{\mathfrak{D}}}
+\newcommand{\FE}{{\mathfrak{E}}}
+\newcommand{\FF}{{\mathfrak{F}}}
+\newcommand{\FG}{{\mathfrak{G}}}
+\newcommand{\FH}{{\mathfrak{H}}}
+\newcommand{\FI}{{\mathfrak{I}}}
+\newcommand{\FJ}{{\mathfrak{J}}}
+\newcommand{\FK}{{\mathfrak{K}}}
+\newcommand{\FL}{{\mathfrak{L}}}
+\newcommand{\FM}{{\mathfrak{M}}}
+\newcommand{\FN}{{\mathfrak{N}}}
+\newcommand{\FO}{{\mathfrak{O}}}
+\newcommand{\FP}{{\mathfrak{P}}}
+\newcommand{\FQ}{{\mathfrak{Q}}}
+\newcommand{\FR}{{\mathfrak{R}}}
+\newcommand{\FS}{{\mathfrak{S}}}
+\newcommand{\FT}{{\mathfrak{T}}}
+\newcommand{\FU}{{\mathfrak{U}}}
+\newcommand{\FV}{{\mathfrak{V}}}
+\newcommand{\FW}{{\mathfrak{W}}}
+\newcommand{\FX}{{\mathfrak{X}}}
+\newcommand{\FY}{{\mathfrak{Y}}}
+\newcommand{\FZ}{{\mathfrak{Z}}}
+
+
+\newcommand{\CA}{{\mathcal A}}
+\newcommand{\CB}{{\mathcal B}}
+\newcommand{\CC}{{\mathcal C}}
+\renewcommand{\CD}{{\mathcal D}}
+\newcommand{\CE}{{\mathcal E}}
+\newcommand{\CF}{{\mathcal F}}
+\newcommand{\CG}{{\mathcal G}}
+\newcommand{\CH}{{\mathcal H}}
+\newcommand{\CI}{{\mathcal I}}
+\newcommand{\CJ}{{\mathcal J}}
+\newcommand{\CK}{{\mathcal K}}
+\newcommand{\CL}{{\mathcal L}}
+\newcommand{\CM}{{\mathcal M}}
+\newcommand{\CN}{{\mathcal N}}
+\newcommand{\CO}{{\mathcal O}}
+\newcommand{\CP}{{\mathcal P}}
+\newcommand{\CQ}{{\mathcal Q}}
+\newcommand{\CR}{{\mathcal R}}
+\newcommand{\CS}{{\mathcal S}}
+\newcommand{\CT}{{\mathcal T}}
+\newcommand{\CU}{{\mathcal U}}
+\newcommand{\CV}{{\mathcal V}}
+\newcommand{\CW}{{\mathcal W}}
+\newcommand{\CX}{{\mathcal X}}
+\newcommand{\CY}{{\mathcal Y}}
+\newcommand{\CZ}{{\mathcal Z}}
+
+\newcommand{\sO}{{\mathscr O}}
+
+% algebraic geom.
+
+
+
+\DeclareMathOperator{\gin}{gin}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Oo}{O}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Proj}{Proj}
+\newcommand{\DSpec}{D\!-\!\Spec}
+\newcommand{\bProj}{\mathop{\text{\textbf{Proj}}}\nolimits}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\HHom}{Hom}
+\DeclareMathOperator{\syz}{syz}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\word}{word}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\HHilb}{Hilb}
+\DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\Image}{Image}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\NF}{NF}
+\DeclareMathOperator{\pd}{pd}
+\DeclareMathOperator{\SO}{SO}
+\DeclareMathOperator{\Frac}{Frac}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\Ort}{O}
+\DeclareMathOperator{\Spez}{Sp}
+\DeclareMathOperator{\wdim}{wdim}
+\DeclareMathOperator{\edim}{edim}
+\DeclareMathOperator{\ldim}{ldim}
+\DeclareMathOperator{\cha}{char}
+\DeclareMathOperator{\trdeg}{trdeg}
+\DeclareMathOperator{\codim}{codim}
+\DeclareMathOperator{\vdim}{vdim}
+\DeclareMathOperator{\height}{height}
+\DeclareMathOperator{\Ass}{Ass}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\Seg}{Seg}
+\DeclareMathOperator{\mult}{mult}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\Cl}{Cl}
+\DeclareMathOperator{\Cr}{Cr}
+\DeclareMathOperator{\Eff}{Eff}
+\DeclareMathOperator{\Nef}{Nef}
+\DeclareMathOperator{\rad}{rad}
+\DeclareMathOperator{\Cone}{Cone}
+\DeclareMathOperator{\Mov}{Mov}
+\DeclareMathOperator{\NS}{N}
+\DeclareMathOperator{\NE}{NE}
+\DeclareMathOperator{\J}{J}
+\DeclareMathOperator{\Cox}{Cox}
+\DeclareMathOperator{\sldim}{\sigma ldim}
+\DeclareMathOperator{\disc}{disc}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Rel}{Rel}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Amp}{Amp}
+\DeclareMathOperator{\cone}{cone}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\Reg}{Reg}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\Span}{Span}
+\DeclareMathOperator{\Jac}{Jac}
+\DeclareMathOperator{\Mob}{Mob}
+\DeclareMathOperator{\sB}{\mathbf{B}}
+\DeclareMathOperator{\Bbig}{Big}
+\DeclareMathOperator{\Set}{Set}
+
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+		\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}    
+
+\newcommand{\?}{\circled{{\large\bf ?}}}  
+
+
+% groups, operations on them, Galois groups
+
+\newcommand{\GSp}{{\rm GSp}}
+\newcommand{\SP}{{\rm Sp}}
+\newcommand{\GL}{{\rm GL}}
+\newcommand{\SL}{{\rm SL}}
+\newcommand{\PGL}{{\rm PGL}}
+\newcommand{\PSL}{{\rm PSL}}
+\newcommand{\Matz}{{\rm Mat}}
+\newcommand{\Lie}{\mathop{\rm Lie}\nolimits}
+
+\newcommand{\Cent}{\mathop{\rm Cent}\nolimits}
+\newcommand{\Norm}{\mathop{\rm Norm}\nolimits}
+\newcommand{\Stab}{\mathop{\rm Stab}\nolimits}
+\newcommand{\Ind}{{\mathop{\hbox{Ind}}\nolimits}}
+\newcommand{\Res}{{\mathop{\hbox{Res}}\nolimits}}
+\newcommand{\Quot}{\mathop{\rm Quot}\nolimits}
+\newcommand{\Cores}{\hbox{{\rm Cores}}}
+\newcommand{\trace}{\mathop{\rm Tr}\nolimits}
+\newcommand{\Char}{\mathop{\rm char}\nolimits}
+
+\newcommand{\Gal}{\mathop{\rm Gal}\nolimits}
+\newcommand{\Frob}{{\rm Frob}}
+\newcommand{\Gen}{{\rm Gen}}
+\newcommand{\Rat}{{\rm Rat}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\definecolor{GoetheBlue}{RGB}{0,97,143}
+\usepackage[bookmarks=true, colorlinks=true, linkcolor=blue!50!black,
+citecolor=GoetheBlue, urlcolor=orange!50!black, pdfencoding=unicode]{hyperref}
+\usepackage[left=3.5cm,right=3.5cm,top=3cm,bottom=3cm,footskip=1cm
+]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+\makeatletter
+\def\thm@space@setup{%
+  \thm@preskip=5pt \thm@postskip=5pt
+}
+\makeatother
+
+
+
+\newtheorem*{theorem*}{Theorem}
+
+\newtheorem{maintheorem}{Theorem}[section]
+\renewcommand{\themaintheorem}{\Alph{maintheorem}} % "letter-numbered" theorem
+\newtheorem{maincorollary}[maintheorem]{Corollary}
+
+
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+
+\newtheorem{defprop}[theorem]{Definition and Proposition}	
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary} 
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{project}{Project}
+
+%\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{remarks}[theorem]{Remarks}
+
+
+% define an environment whose counter prints as A, B, C, ...
+\newtheorem{introthm}{Theorem}
+\renewcommand{\theintrothm}{\Alph{introthm}} % use letters instead of numbers
+
+
+%%%----------------------------------------------------------------------------%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%
+%  some changes to the standard setting:
+%  apart from the commands below, renewcommand was used to
+%  alter the commands \mod and \pr (whatever they used to be)
+
+\def\phi{\varphi}
+\def\epsilon{\varepsilon}
+\def\setminus{\smallsetminus}
+\let\oldbullet\bullet
+\def\bullet{{\mathchoice{\oldbullet}%
+                        {\oldbullet}%
+                        {\scriptscriptstyle\oldbullet}%
+                        {\oldbullet}}}
+\let\oldemptyset\emptyset
+\let\emptyset\varnothing
+
+
+\def\eps{\varepsilon}
+\def\Eins{{\mathcal O}}
+\def\Leg#1#2{\left(\frac{#1}{#2}\right)}
+%%%%%%%%%%%%%%%%
+% old:
+%\newtheorem{theorem}{Theorem}[section]
+%\newtheorem{thm}[theorem]{Theorem}
+%\newtheorem{lemma}[theorem]{Lemma}
+%\newtheorem{proposition}[theorem]{Proposition}
+%\newtheorem{corollary}[theorem]{Corollary}
+%\newtheorem{conjecture}[theorem]{Conjecture}
+%\newtheorem{claim}[theorem]{Claim}
+%\newtheorem{question}[theorem]{Question}
+%\theoremstyle{definition}
+%\newtheorem{definition}[theorem]{Definition}
+%\newtheorem{defprop}[theorem]{Definition and Proposition}
+%\newtheorem{notation}[theorem]{Notation}
+%\newtheorem{example}[theorem]{Example}
+%\newtheorem{xca}[theorem]{Exercise}
+%\newtheorem*{theoremA}{Theorem A}
+
+%\theoremstyle{remark}
+%\newtheorem{remark}[theorem]{Remark}
+%\newtheorem{rmk}[theorem]{Remark}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                          Title                                                                             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Torsor and Quotient Presentations for $D$-homogeneous Spectra} 
+
+\date{06.11.2025}
+\author{Felix G\"obler}
+\address{Institut f\"ur Mathematik, Goethe-Universit\"at Frankfurt, Robert-Mayer-Str. 6-10, D-60325 Frankfurt am Main, Germany }
+\email{goebler@math.uni-frankfurt.de}
+
+
+
+
+\begin{document}
+
+\pagenumbering{arabic} % or arabic, depending on your style
+\setcounter{page}{1}
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{abstract}
+
+
+\tableofcontents
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section*{Introduction}
+Projective space is the basic example of a variety obtained from a graded ring, and the usual \(\Proj\) construction for \(\BN\)-graded rings is the standard algebraic tool that realizes this correspondence. 
+However, many natural geometric objects carry rings graded by finitely generated abelian groups (called \emph{multigraded rings}) rather than by \(\BN\).
+Concretely, this is the case for Cox rings of toric (pre)varieties, and more generally, coordinate rings of divisorial varieties or Mori dream spaces.
+These multigradings encode divisor class information and symmetries that cannot be captured by the classical \(\BN\)-graded Proj.
+
+
+Despite the ubiquity of multigraded rings in modern algebraic geometry, their projective geometry remains underdeveloped compared to the classical theory. The $D$-graded $\Proj$ construction, introduced by \cite{BS}, provides the natural framework for studying these objects, yet its foundational aspects and geometric interpretation have received limited attention. This paper aims to fill this gap by providing a comprehensive treatment of the properties of $D$-graded rings, with particular focus on the quotient description of the corresponding $D$-graded Proj construction.
+Specifically, that quotient description recovers familiar quotient and coordinate descriptions (in particular, Cox-type quotients).
+The geometric interpretation of the $D$-graded Proj construction, as well as the strong connection to toric prevarieties, will be discussed in our forthcoming papers\footnote{This paper is an excerpt from the author's doctoral thesis. Available at: \url{https://sites.google.com/view/felixgoebler/home/research}}
+
+Let $D$ be a finitely generated abelian group and
+\[
+S \equ \bigoplus_{d\in D} S_d
+\]
+a $D$-graded ring. Following \cite{BS}, the homogeneous elements $f \in S$, whose group of units $D^f$ in $S_f$ has finite index in $D$  are called \emph{relevant}. Then the $D$-homogeneous spectrum is defined by
+\[
+\Proj^D(S) \deq \bigcup_{f \in S \text{ relevant}}\Spec\bigl(S_{(f)}\bigr),
+\]
+and the \emph{irrelevant ideal} $S_+$ is defined to be the ideal generated by all relevant elements in $S$.
+The relevance of $f$ ensures that the basic affine opens $\Spec(S_{(f)})$ are of equal dimension $\dim(S) - \rank(D)$ (see Lemma~\ref{lem:dim_proj}).
+
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+$\Proj^D(S)$ is not just a formal generalization of ordinary Proj, it is the correct coordinate ring picture for many important non-affine varieties. In the toric case, for example, every simplicial toric variety $X$ is naturally isomorphic to the geometric quotient $(\Spec(\Cox(X)) \setminus Z) \sslash G$ (see \cite{Cox}, Theorem 2.1). The corresponding generalization for $D$-graded rings is the following.
+
+
+
+\begin{introthm}[{\autoref{lem:periodic_quotient}}]
+Let $S$ be an effectively $D$-graded ring, $F$ be the free part of $D$, and assume that $S$ is a finitely generated $S_F$-module.
+Then for all relevant $f \in S$, the map $\pi_f \colon \Spec(S_f) \to \Spec(S_{(f)})$ induced by $S_{(f)} \to S_f$ is a geometric quotient in the category of schemes. 
+In particular, these patches glue to the geometric quotient
+\begin{align*}
+    \Proj^D(S) \stackrel{\sim}{\equ} D(S_+) \sslash \Spec(S_0[D])
+\end{align*}
+\end{introthm}
+
+Hence, the GIT presentation of simplicial toric varieties is indeed a special case of the $D$-graded Proj construction.
+
+
+In addition, we examine the related concept of a \emph{pseudo $G$-torsor} (see  \cite[\href{https://stacks.math.columbia.edu/tag/0498}{Definition 0498}]{stacks-project}),  also studied in \cite{May}, Proposition 5.13. We prove a stronger result.
+
+
+\begin{introthm}[\autoref{thm:quotient_pi_f_general}]
+    Let $S$ be effectively $D$-graded, $f \in S$ relevant and $\pi_f\colon \Spec(S_f) \to \Spec(S_{(f)})$ be the map induced by $S_{(f)} \to S_f$. Then $\Spec(S_f)$ is a pseudo $G$-torsor if and only if $\deg( (S_f)^\times) = D$ (or equivalently $D^f = D$) and $S$ is integral.
+    In particular, if $\deg( (S_f)^\times) = D$ holds and $S$ is integral, then $\pi_f$ is Zariski locally trivial for the base change $S_0 \to S_{(f)}$.
+\end{introthm}
+
+
+
+\subsection*{Acknowledgements}
+First, I would like to thank my supervisor, Alex Küronya, for his tremendous support and insightful feedback on this version.
+I am also very grateful to Johannes Horn, Andrés Jaramillo Puentes, Kevin Kühn, Jakob Stix, Martin Ulirsch, and Stefano Urbinati for many helpful discussions and valuable comments.
+
+Partially funded by the Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) TRR 326 \textit{Geometry and Arithmetic of Uniformized Structures}, project number 444845124, and by the LOEWE grant \emph{Uniformized Structures in Algebra and Geometry}.
+
+
+
+
+
+
+
+
+
+\section{$D$-graded Proj}\label{sec:mult_ring}
+\input{Multigraded_Ring}
+
+
+\section{$D$-graded Proj via quotient constructions}
+\input{Proj_GIT}
+% via GIT like?
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Appendix A. Details on the group scheme $G = \Spec(S_0[D])$}
+\input{Appendix_A}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\input{Bibliography}
+
+
+
+
+\end{document}
+ 

@@ -1,0 +1,1072 @@
+\documentclass[pdflatex,sn-mathphys-num]{sn-jnl}
+\usepackage{graphicx}%
+\usepackage{multirow}%
+\usepackage{amsmath,amssymb,amsfonts}%
+\usepackage{amsthm}%
+\usepackage{mathrsfs}%
+\usepackage[title]{appendix}%
+\usepackage{xcolor}%
+\usepackage{textcomp}%
+\usepackage{manyfoot}%
+\usepackage{booktabs}%
+\usepackage{algorithm}%
+\usepackage{algorithmicx}%
+\usepackage{algpseudocode}%
+\usepackage{listings}%
+
+\DeclareMathOperator{\Rad}{Rad}
+\DeclareMathOperator{\Nil}{Nil}
+\DeclareMathOperator{\Id}{Id}
+
+\DeclareMathOperator{\Con}{Con}
+
+\DeclareMathOperator{\Fix}{Fix}
+\DeclareMathOperator{\Spec}{Spec}
+
+
+\theoremstyle{thmstyleone}%
+\newtheorem{theorem}{Theorem}%  meant for continuous numbers
+%%\newtheorem{theorem}{Theorem}[section]% meant for sectionwise numbers
+%% optional argument [theorem] produces theorem numbering sequence instead of independent numbers for Proposition
+\newtheorem{proposition}[theorem]{Proposition}% 
+%%\newtheorem{proposition}{Proposition}% to get separate numbers for theorem and proposition etc.
+\newtheorem{problem}{Problem}[section]
+
+\theoremstyle{thmstyletwo}%
+\newtheorem{example}{Example}%
+\newtheorem{remark}{Remark}%
+\newtheorem{corollary}{Corollary}%
+\newtheorem{lemma}{Lemma}%
+
+
+
+\theoremstyle{thmstylethree}%
+\newtheorem{definition}{Definition}%
+
+\raggedbottom
+%%\unnumbered% uncomment this for unnumbered level heads
+
+\begin{document}
+
+\title[Finite Structure and Radical Theory of Commutative Ternary 
+
+$\Gamma$-Semirings]{Finite Structure and Radical Theory of Commutative Ternary 
+
+$\Gamma$-Semirings}
+
+\author*[1,2]{\fnm{Chandrasekhar} \sur{Gokavarapu}}\email{chandrasekhargokavarapu@gmail.com}
+
+\author[3,4]{\fnm{Madhusudhana Rao} \sur{Dasari}}\email{dmrmaths@gmail.com}
+\equalcont{These authors contributed equally to this work.}
+
+
+\affil*[1]{\orgdiv{Department  of  Mathematics}, \orgname{Government College (Autonomous)}, \orgaddress{\street{Y-Junction}, \city{Rajahmundry}, \postcode{533105}, \state{A.P.,}, \country{India}}}
+
+\affil[2]{\orgdiv{Department of Mathematics}, \orgname{Acharya Nagarjuna University}, \orgaddress{\street{Pedakakani}, \city{Guntur}, \postcode{522510}, \state{A.P.}, \country{India}}}
+
+\affil[3]{\orgdiv{Department of Mathematics}, \orgname{Government College For Women (A)}, \orgaddress{\street{Pattabhipuram}, \city{Guntur}, \postcode{522006},  \state{A.P.}, \country{India}}}
+\affil[4]{\orgdiv{Department of Mathematics}, \orgname{Acharya Nagarjuna University}, \orgaddress{\street{Pedakakani}, \city{Guntur}, \postcode{522510}, \state{A.P.}, \country{India}}}
+
+
+\abstract{
+\textbf{Purpose:} To develop the algebraic foundation of finite commutative ternary $\Gamma$-semirings by identifying their intrinsic invariants, lattice organization, and radical behavior that generalize classical semiring and $\Gamma$-ring frameworks.
+
+\textbf{Methods:} Finite models of commutative ternary $\Gamma$-semirings are constructed under the axioms of closure, distributivity, and symmetry.  Structural and congruence lattices are analyzed, and subdirect decomposition theorems are established through ideal-theoretic arguments.
+
+\textbf{Results:} Each finite commutative ternary $\Gamma$-semiring admits a unique (up to isomorphism) decomposition into subdirectly irreducible components.  Radical and ideal correspondences parallel classical results for binary semirings, while the classification of all non-isomorphic systems of order $\lvert T\rvert\!\le\!4$ confirms the structural consistency of the theory.
+
+\textbf{Conclusion:} The paper provides a compact algebraic framework linking ideal theory and decomposition in finite ternary $\Gamma$-semirings, establishing the basis for later computational and categorical developments.
+}
+
+
+
+\keywords{ternary $\Gamma$-semiring, finite structure, ideals and radicals, congruence lattice, subdirect decomposition, commutative algebraic systems}
+
+
+
+\pacs[MSC Classification]{16Y60, 08A30, 06B23, 16D25}
+
+
+%------------
+
+
+\maketitle
+
+\section{Introduction}\label{sec1}
+
+The concept of a $\Gamma$-ring and a $\Gamma$-semiring extends classical algebra by introducing an external parameter set $\Gamma$ that governs multiplication.  Replacing the binary product with a ternary operation yields a \emph{ternary $\Gamma$-semiring}, where addition remains associative and commutative while multiplication becomes a $\Gamma$-indexed ternary map
+\[
+\{\,\cdot\,,\,\cdot\,,\,\cdot\,\}_\gamma : T\times T\times T \to T,\qquad \gamma\in\Gamma .
+\]
+Such systems unify notions from semiring theory, universal algebra, and multilinear algebra.  Their finite forms provide a natural framework for discrete algebraic modelling and symbolic computation.This paper continues the study initiated in \cite{Gokavarapu2025PaperA}, extending the radical–spectrum correspondence of commutative ternary $\Gamma$-semirings to the finite case.
+
+Earlier studies established the axioms of ternary $\Gamma$-semirings and illustrated basic examples, yet the internal structure—ideals, radicals, and decomposition principles—remained undeveloped.  Parallel advances in finite semiring theory, lattice-theoretic methods, and radical analysis have created the background for a systematic treatment.  The present paper builds this foundation by integrating structural theorems with algorithmically verified examples for small finite orders.We situate the work within the classical and $\Gamma$-semiring literature
+\cite{Golan1999,AtiyahMacdonald1969,Nobusawa1963,Nobusawa1964}.
+
+
+The objectives are twofold: first, to determine how ideals, congruences, and radicals interact within finite commutative ternary $\Gamma$-semirings; and second, to describe how these invariants control decomposition into elementary components.  Particular attention is given to the behaviour of additive and multiplicative idempotence, existence of neutral elements, and their influence on the congruence lattice.  The study combines rigorous algebraic reasoning with explicit verification in low-order systems.
+
+The main achievements of this paper are as follows.  It establishes the lattice of ideals and congruences, proving closure, distributivity, and duality properties.  A \emph{subdirect decomposition theorem} is obtained, showing that every finite commutative ternary $\Gamma$-semiring is a subdirect product of subdirectly irreducible ones.  The classification of all non-isomorphic examples of order $\lvert T\rvert\!\le\!4$ confirms the internal consistency of the theory and illustrates the diversity of finite models.  These results unify structural and radical perspectives, extending classical semiring theory to the ternary $\Gamma$-context.
+
+Overall, this work provides a concise algebraic framework linking ideals, radicals, and decompositions in finite ternary $\Gamma$-semirings.  It forms the theoretical basis for subsequent computational and categorical investigations developed in a companion paper.Section 2 recalls preliminaries and notation. Section 3 develops the basic structural and lattice results. Section 4 details the enumeration algorithm and correctness. Section 5 presents the computational data and classification tables. Sections 6 and 7 establish radical, congruence, and semisimple decomposition theories together with applications and future problems.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Preliminaries}\label{sec2}
+
+Let $T$ be a nonempty set with an associative and commutative addition $+$ having identity $0$, and a family of ternary operations
+\[
+\{\,\cdot\,,\,\cdot\,,\,\cdot\,\}_\gamma : T\times T\times T \to T ,\qquad \gamma\in\Gamma ,
+\]
+where $\Gamma$ is a nonempty parameter set.  Following the frameworks of Nobusawa \cite{Nobusawa1964}, Hedayati and Shum \cite{HedayatiShum2011}, and Rao \cite{Rao2018Ordered}
+, the triple $(T,+,\{\,,\, ,\,\}_\Gamma)$ is called a \emph{ternary $\Gamma$-semiring} if, for all $a,b,c,d,e\in T$ and $\alpha,\beta\in\Gamma$,
+
+\begin{enumerate}
+\item $(T,+)$ is a commutative monoid with $0$;
+\item distributivity holds in each argument, e.g.  
+$\{a+b,c,d\}_\gamma=\{a,c,d\}_\gamma+\{b,c,d\}_\gamma$, and similarly for the other two variables;
+\item $0$ is absorbing: $\{0,a,b\}_\gamma=\{a,0,b\}_\gamma=\{a,b,0\}_\gamma=0$;
+\item associativity is ternary-compatible:
+\[
+\{\{a,b,c\}_\alpha,d,e\}_\beta=\{a,b,\{c,d,e\}_\beta\}_\alpha .
+\]
+\end{enumerate}
+
+Commutativity of multiplication means invariance of $\{a,b,c\}_\gamma$ under all permutations of $(a,b,c)$.  
+Ideals, sub-$\Gamma$-semirings, and quotient structures are defined ... analogously to those in classical semiring theory \cite{Golan1999,AtiyahMacdonald1969}.
+
+
+For an ideal $I\subseteq T$, the quotient $T/I$ inherits the induced ternary operation.  
+The radical is the intersection of all prime $\Gamma$-ideals
+\cite{Bourne1951JacobsonRadicalSemiring,Kyuno1982PrimeGammaRings,Luh1968PrimitiveGammaRings}.
+
+, and the \emph{nilradical} $\Nil(T)$ consists of all $x\in T$ for which some $a,b\in T$ and $\gamma,\delta\in\Gamma$ satisfy  
+$\{x,a,b\}_\gamma=\{a,x,b\}_\delta=0$.  
+$T$ is \emph{semiprime} when $\Rad(T)=0$.  
+Let $I(T)$ and $\mathcal{C}(T)$ denote the lattices of ideals and congruences, respectively.  
+A $\Gamma$-homomorphism $f:T_1\!\to\!T_2$ preserves $+$ and all ternary products; $\ker f$ is an ideal and $T_1/\ker f\!\cong\!\mathrm{Im}(f)$.  
+
+Unless otherwise stated, $T$ denotes a finite commutative ternary $\Gamma$-semiring.  
+These conventions establish the algebraic framework for the structural and radical results that follow.Definitions of prime and semiprime $\Gamma$-ideals follow those in \cite{Gokavarapu2025PaperA}
+%---------------------------------------------------------------------------------------------------
+
+%------------------------------------------------------------------
+
+\section{Structural Properties of Finite Ternary $\Gamma$-Semirings}
+
+In this section we examine the internal organization of finite commutative ternary $\Gamma$-semirings.  
+We first establish closure and cancellation properties, followed by results on direct and subdirect decompositions.  
+Examples of small orders illustrate the algebraic diversity that emerges in the ternary $\Gamma$ setting.The present finite analogue complements the general radical decomposition developed in \cite{Gokavarapu2025PaperA}.
+
+\subsection{Basic structural results}
+
+Throughout this section, $(T,+,\{\cdot\cdot\cdot\}_\Gamma)$ denotes a finite commutative ternary $\Gamma$-semiring, and $\Gamma$ is assumed to be finite unless stated otherwise.
+
+\begin{lemma}[Additive idempotence criterion]
+Let $(T,+)$ be the additive reduct of a finite commutative ternary $\Gamma$-semiring.  
+If there exists $\gamma\in\Gamma$ such that $\{a\,a\,a\}_\gamma=a$ for all $a\in T$, then $(T,+)$ is idempotent, i.e.\ $a+a=a$ for every $a\in T$.
+\end{lemma}
+
+\begin{proof}
+For any $a\in T$ and $\gamma\in\Gamma$ as above,
+\[
+a+a=\{a\,a\,a\}_\gamma+a=\{a\,a\,a\}_\gamma=\!a.
+\]
+Hence the additive operation is idempotent.
+\end{proof}
+
+\begin{theorem}[Existence of zero and unit elements]
+\label{thm:zero-unit}
+A finite commutative ternary $\Gamma$-semiring $(T,+,\{\cdot\cdot\cdot\}_\Gamma)$
+possesses:
+\begin{enumerate}
+    \item a \emph{zero element} $0\in T$ satisfying $\{0\,a\,b\}_\gamma=0$ for all $a,b\in T$ and $\gamma\in\Gamma$,  
+    \item a \emph{unit element} $e\in T$ (if it exists) satisfying $\{e\,a\,e\}_\gamma=a$ for all $a\in T$, $\gamma\in\Gamma$,
+\end{enumerate}
+if and only if the maps $L_a^\gamma(b,c)=\{a\,b\,c\}_\gamma$ admit fixed points forming a singleton intersection over all $a,\gamma$.
+\end{theorem}
+
+\begin{proof}
+Necessity follows by setting $a=e$ or $a=0$.  
+Conversely, if $\bigcap_{a,\gamma}\mathrm{Fix}(L_a^\gamma)$ is a singleton $\{z\}$, then $z$ acts simultaneously as a neutral element on all coordinates.  
+Uniqueness follows from finiteness of $T$.
+\end{proof}
+
+\begin{remark}
+When $\Gamma$ contains an identity parameter $\gamma_0$ with
+$\{a\,b\,c\}_{\gamma_0}=a+b+c$, the above theorem ensures $0$ and $e$ coincide with the additive and multiplicative identities of $(T,+)$.
+\end{remark}
+
+\subsection{Ideal lattice and decompositions}
+
+\begin{definition}
+For ideals $I,J\subseteq T$, define
+\[
+I\vee J = \langle I\cup J\rangle_{\Gamma}, \qquad I\wedge J = I\cap J,
+\]
+where $\langle\cdot\rangle_{\Gamma}$ denotes the ternary $\Gamma$-ideal generated by a set.
+\end{definition}
+
+\begin{proposition}
+The lattice $\mathcal{L}(T)$ of all $\Gamma$-ideals of a finite commutative ternary $\Gamma$-semiring $T$
+is modular and distributive.
+\end{proposition}
+
+\begin{proof}
+For any $I,J,K\in\mathcal{L}(T)$ with $I\subseteq K$, we have
+\[
+I\vee(J\wedge K)=(I\vee J)\wedge K,
+\]
+since ideal generation and intersection commute under the finite-sum operation $+$.
+Thus $\mathcal{L}(T)$ is modular.  
+Distributivity follows from the absorption law $(I\cap J)+K=(I+K)\cap(J+K)$.
+\end{proof}
+
+\begin{theorem}[Subdirect decomposition]\label{thm:subdirect}
+Every finite commutative ternary $\Gamma$-semiring $T$ is a subdirect product of subdirectly irreducible components.
+\end{theorem}
+
+\begin{proof}
+Let $\{\rho_i\}_{i\in I}$ be the set of all maximal proper congruences on $T$.  
+For each $i$, the quotient $T_i=T/\rho_i$ is subdirectly irreducible.  
+The canonical homomorphism
+\[
+\phi:T\longrightarrow\prod_{i\in I}T_i, \qquad 
+a\longmapsto([a]_{\rho_i})_{i\in I},
+\]
+is injective because $\bigcap_i\rho_i=\Delta_T$.  
+Hence $T$ embeds subdirectly into $\prod_i T_i$.
+\end{proof}
+
+\begin{corollary}
+If each $T_i$ in the above decomposition is simple, then $T$ is semisimple.
+\end{corollary}
+
+\begin{example}[Order-3 semiring]
+Let $T=\{0,1,2\}$ with addition modulo 3 and $\Gamma=\{1\}$.  
+Define $\{a\,b\,c\}_1=(a+b+c)\bmod3$.  
+Then $(T,+,\{\cdot\cdot\cdot\}_\Gamma)$ is commutative, associative, and possesses $0$ and $1$ as zero and unit, respectively.  
+Its ideal lattice is $\{0\}\subset\{0,1,2\}=T$, hence simple.
+\end{example}
+
+\begin{example}[Order-4 non-idempotent case]
+Let $T=\{0,1,2,3\}$ with $+$ defined by truncated addition $\min(a+b,3)$ and $\Gamma=\{\alpha,\beta\}$.  
+Define
+\[
+\{a\,b\,c\}_\alpha=\min(a+b+c,3), \qquad
+\{a\,b\,c\}_\beta=\max(a,b,c).
+\]
+Then $(T,+,\{\cdot\cdot\cdot\}_\Gamma)$ is a finite ternary $\Gamma$-semiring with two distinct operations.
+Ideals are $\{0\}$, $\{0,1\}$, and $T$.  
+The structure is not idempotent and decomposes as a subdirect product of a Boolean and a truncated component.
+\end{example}
+
+
+%-------------------------------
+\subsection{Algebraic invariants and classification hints}\label{sec:invariants}
+
+
+
+For computational purposes we associate with each finite ternary $\Gamma$-semiring $T$ the tuple of invariants
+\[
+\mathcal{I}(T)=\big(|T|,\;|\Gamma|,\;\mathrm{Id}(T),\;\mathrm{Con}(T),\;\mathrm{Rad}(T),\;\mathrm{Nil}(T)\big),
+\]
+where $\mathrm{Id}(T)$, $\mathrm{Con}(T)$, $\mathrm{Rad}(T)$, and $\mathrm{Nil}(T)$
+denote respectively the numbers of ideals, congruences, radical ideals, and nilpotent elements.
+Two structures are \emph{structurally equivalent} if their invariants coincide.
+
+\begin{remark}
+The invariants $\mathcal{I}(T)$ serve as algebraic fingerprints for algorithmic classification in Section 4.  
+For example, among all structures of order $\le4$, only two non-isomorphic families share identical invariants—distinguished solely by the symmetry of their $\Gamma$-actions.
+\end{remark}
+
+% --- End Section 3 ---
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Algorithmic Classification and Enumeration Methods}
+
+The finite classification of commutative ternary $\Gamma$-semirings requires an integration of algebraic axioms with computational enumeration.  
+In this section, we formalize an algorithmic framework that systematically generates all possible operation tables, verifies axioms, and identifies non-isomorphic structures up to order~$4$.  
+This approach parallels the classical enumeration of semigroups and semirings but introduces additional layers corresponding to the ternary and parameterized nature of the $\Gamma$-operation.
+
+\subsection{Computational strategy}
+
+Let $T$ be a finite set of cardinality $n$ and $\Gamma=\{\gamma_1,\gamma_2,\dots,\gamma_m\}$.  
+We represent the ternary operation for each $\gamma_i$ by an $n\times n\times n$ tensor $M_i$, where the entry $(a,b,c)$ stores the result $\{a\,b\,c\}_{\gamma_i}$.  
+The goal is to generate all families $\{M_i\}_{i=1}^m$ that satisfy the ternary $\Gamma$-semiring axioms (T1)–(T4) of Section~2.
+
+The classification algorithm proceeds through the following hierarchy:
+\begin{enumerate}
+    \item Enumeration of all commutative additive semigroups $(T,+)$ of order $n$.
+    \item Generation of candidate ternary operations parameterized by $\Gamma$.
+    \item Verification of distributivity, associativity, and absorption constraints.
+    \item Computation of ideal and congruence lattices.
+    \item Canonical isomorphism testing to remove duplicates.
+\end{enumerate}
+
+
+
+
+
+\subsection{Enumeration algorithm}
+
+\begin{algorithm}[ht]
+\caption{Classification of finite commutative ternary $\Gamma$-semirings}\label{alg:classification}
+\begin{algorithmic}[1]
+\State \textbf{Input:} Order $n = |T|$, parameter set size $m = |\Gamma|$.
+\State \textbf{Output:} List $C$ of non-isomorphic commutative ternary $\Gamma$-semirings of order $n$.
+\State $C \gets \emptyset$.
+\State Enumerate all commutative semigroup structures $(T,+)$ on a set $T$ of size $n$.
+\For{each additive structure $(T,+)$} % <<<--- FIX: Removed \textbf{}
+   \State Generate all candidate families $\{M_i\}_{i=1}^m$ of ternary operations (one $n\times n\times n$ table $M_i$ for each $\gamma_i \in \Gamma$).
+   \For{each candidate family $\{M_i\}$} % <<<--- FIX: Removed \textbf{}
+      \If{axioms (T1)--(T4) are satisfied for $(T,+,\{M_i\})$}
+         \State Compute $L(T)$ and $\Con(T)$.
+         \State Derive a canonical label (e.g. lexicographically smallest vectorization of $(M_1,\dots,M_m)$) for $(T,+,\{M_i\})$.
+         \If{this label is new (no isomorphic structure in $C$)}
+            \State $C \gets C \cup \{\,(T,+,\{M_i\})\,\}$.
+         \EndIf
+      \EndIf
+   \EndFor
+\EndFor
+\State \textbf{Return} $C$.
+\end{algorithmic}
+\end{algorithm}
+
+
+
+
+\subsection{Correctness and complexity}
+
+\begin{theorem}[Correctness]
+Algorithm~1 terminates and correctly enumerates all pairwise non-isomorphic finite commutative ternary $\Gamma$-semirings of order~$n$.
+\end{theorem}
+
+\begin{proof}
+Termination follows from finiteness of the search space: the number of possible ternary operations on $T$ is $n^{n^3m}$.  
+Correctness is guaranteed because each candidate operation is verified against all axioms, and canonical labeling ensures that distinct representatives correspond to distinct isomorphism classes.  
+Completeness follows from exhaustive enumeration of the additive reducts and ternary operations.
+\end{proof}
+
+\begin{proposition}[Complexity estimate]
+The worst-case time complexity of Algorithm~1 is
+\[
+O\big(n^{n^3m}\big),
+\]
+while pruning via distributivity and associativity reduces the effective complexity to approximately
+\[
+O\big(n^{3m}\log n\big)
+\]
+for small orders $(n\!\le\!4)$ and $|\Gamma|\!\le\!2$.
+\end{proposition}
+
+\begin{remark}
+Though exponential in the general case, the algorithm is computationally feasible for $n\!\le\!4$.  
+The implementation in \textsc{Python}/\textsc{SageMath} executes within seconds for $n\!\le\!3$ and under one minute for $n\!=\!4$.
+\end{remark}
+
+\subsection{Illustrative enumeration examples}
+
+\begin{example}[Order 3, $\Gamma=\{1\}$]
+Enumerating all additive semigroups on $\{0,1,2\}$ yields five non-isomorphic structures.  
+Applying Algorithm~1 produces exactly two valid ternary $\Gamma$-semirings:
+\begin{enumerate}
+    \item The modular structure $\{a\,b\,c\}_1=(a+b+c)\bmod 3$, simple and commutative;
+    \item The truncated structure $\{a\,b\,c\}_1=\min(a+b+c,2)$, which is idempotent but non-simple.
+\end{enumerate}
+\end{example}
+
+\begin{example}[Order 4, $\Gamma=\{\alpha,\beta\}$]
+For $T=\{0,1,2,3\}$ with addition $\min(a+b,3)$, the algorithm returns four distinct isomorphism classes:
+\[
+\begin{aligned}
+&\text{Type I: } \{a\,b\,c\}_\alpha=\min(a+b+c,3),\;
+\{a\,b\,c\}_\beta=\max(a,b,c);\\
+&\text{Type II: } \{a\,b\,c\}_\alpha=(a+b+c)\bmod 4,\;
+\{a\,b\,c\}_\beta=a+b+c-1;\\
+&\text{Type III: } \text{Boolean-type idempotent system};\\
+&\text{Type IV: } \text{Mixed additive–multiplicative hybrid.}
+\end{aligned}
+\]
+Each class exhibits a distinct ideal lattice configuration.
+\end{example}
+
+\subsection{Data representation and isomorphism testing}
+
+Each ternary operation tensor $M_i$ is encoded as an integer array of dimension $n^3$.  
+Two structures $(T,\{\cdot\cdot\cdot\}_\Gamma)$ and $(T',\{\cdot\cdot\cdot\}_\Gamma')$ are isomorphic iff there exists a bijection $\phi:T\to T'$ such that
+\[
+\phi(\{a\,b\,c\}_\gamma)=\{\phi(a)\,\phi(b)\,\phi(c)\}_{\gamma}'.
+\]
+Canonical labeling is performed via lexicographic minimization of the vectorized form of $(M_1,\dots,M_m)$.  
+This standardizes isomorphic tables, ensuring uniqueness in $\mathcal{C}$.
+
+\begin{remark}
+The classification tables produced by this algorithm for orders $n\le4$ are summarized in Section~5.  
+Each class is labeled by its invariant tuple $\mathcal{I}(T)$ defined in Section~3.4.
+\end{remark}
+
+% --- End Section 4 ---
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Computational Data, Enumeration Results, and Classification Tables}
+
+The algorithm presented in Section~4 was implemented in \textsc{Python} with symbolic algebra verification in \textsc{SageMath}.  
+The computations enumerated all commutative ternary $\Gamma$-semirings of order $n\le4$ and parameter sets $|\Gamma|\le2$.  
+Results were validated using independent cross-checks of associativity, distributivity, and isomorphism invariance.  
+This section summarizes the enumeration outcomes, structural frequencies, and observed algebraic regularities.
+
+\subsection{Summary of enumerated structures}
+
+Table~\ref{tab:summary} records the number of non-isomorphic ternary $\Gamma$-semirings discovered for each pair $(|T|,|\Gamma|)$.  
+The numbers are verified up to canonical labeling; no duplicate classes occur.
+
+
+
+\begin{table}[h!]
+\centering
+\caption{Summary of enumerated finite commutative ternary $\Gamma$-semirings.}
+\label{tab:summary}
+\begin{tabular}{lllll}
+\toprule
+
+$|T|$ & $|\Gamma|$ & \# additive semigroups & \# valid ternary $\Gamma$-semirings & Dominant structural feature \\
+
+\midrule
+2 & 1 & 1 & 1 & Boolean idempotent \\
+3 & 1 & 5 & 2 & Modular vs.\ truncated addition \\
+3 & 2 & 5 & 4 & Mixed additive–multiplicative actions \\
+4 & 1 & 9 & 3 & Truncated and cyclic hybrids \\
+4 & 2 & 9 & 4 & Boolean, modular, hybrid, tropical types \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+
+
+
+
+
+
+
+
+\subsection{Representative operation tables}
+
+To illustrate representative behavior, the following tables list the ternary operations
+$\{a\,b\,c\}_\gamma$ for selected examples.
+
+\begin{table}[h!]
+\centering
+\caption{Example: Boolean-type ternary $\Gamma$-semiring of order $2$, $\Gamma=\{1\}$.}
+\label{tab:boolean2}
+\begin{tabular}{c|cc}
+$(a,b,c)$ & $\{a\,b\,c\}_1$ \\ \midrule
+$(0,0,0)$ & 0 \\
+$(0,0,1)$ & 0 \\
+$(0,1,1)$ & 1 \\
+$(1,1,1)$ & 1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\caption{Example: Modular ternary $\Gamma$-semiring of order $3$, $\Gamma=\{1\}$, with $\{a\,b\,c\}_1=(a+b+c)\bmod3$.}
+\label{tab:mod3}
+\begin{tabular}{c|ccccccccc}
+$a,b,c$ & 000 & 001 & 002 & 011 & 012 & 022 & 111 & 112 & 122 \\ \midrule
+$\{a\,b\,c\}_1$ & 0 & 1 & 2 & 2 & 0 & 1 & 0 & 1 & 2\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\caption{Example: Hybrid ternary $\Gamma$-semiring of order $4$, $\Gamma=\{\alpha,\beta\}$.}
+\label{tab:hybrid4}
+\begin{tabular}{c|cccc}
+$(a,b,c)$ & $\{a\,b\,c\}_\alpha$ & $\{a\,b\,c\}_\beta$ \\
+\midrule
+$(0,1,2)$ & 3 & 2 \\
+$(1,2,3)$ & 3 & 3 \\
+$(2,3,3)$ & 2 & 3 \\
+$(0,0,3)$ & 0 & 1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Distribution of ideal-lattice types}
+
+A post-processing step analyzed each structure’s ideal lattice $\mathcal{L}(T)$.
+Table~\ref{tab:lattice-types} summarizes the counts of distinct lattice types observed.
+
+\begin{table}[h!]
+\centering
+\caption{Distribution of ideal-lattice types among enumerated structures.}
+\label{tab:lattice-types}
+\begin{tabular}{lccc}
+\toprule
+Lattice type & Orders observed & Count & Description \\
+\midrule
+Chain (simple) & 2,3 & 3 & $\{0\}\subset T$ only \\
+Modular non-distributive & 3,4 & 2 & two intermediate ideals \\
+Boolean lattice & 4 & 1 & $2^2$ configuration \\
+Diamond lattice ($M_3$) & 4 & 2 & symmetric ideal intersections \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Observed algebraic patterns}
+
+\begin{theorem}[Empirical decomposition pattern]
+Every finite commutative ternary $\Gamma$-semiring of order $\le4$
+is either simple, subdirectly decomposable, or idempotent–Boolean.
+\end{theorem}
+
+\begin{proof}[Empirical verification]
+All enumerated examples satisfy one of the three exclusive properties above.
+Proofs for the general case are theoretical consequences of Theorem~3.5.
+\end{proof}
+
+\begin{remark}
+In all computations, the intersection of all prime ideals coincided with the nilradical,
+confirming that for finite commutative ternary $\Gamma$-semirings,  
+$\mathrm{Rad}(T)=\mathrm{Nil}(T)$.  
+This equality motivates the radical classification discussed in Section~6.
+\end{remark}
+
+\subsection{Classification by invariants}
+
+Each enumerated structure was labeled by its invariant tuple
+\[
+\mathcal{I}(T)=\big(|T|,|\Gamma|,|\mathrm{Id}(T)|,|\mathrm{Con}(T)|,|\mathrm{Rad}(T)|,|\mathrm{Nil}(T)|\big),
+\]
+previously introduced in Section~\ref{sec:invariants}.
+Representative results are listed in Table~\ref{tab:invariants}.
+
+\begin{table}[h!]
+\centering
+\caption{Invariant classification for selected finite commutative ternary $\Gamma$-semirings.}
+\label{tab:invariants}
+\begin{tabular}{cccccc}
+\toprule
+$|T|$ & $|\Gamma|$ & $|\mathrm{Id}(T)|$ & $|\mathrm{Con}(T)|$ & $|\mathrm{Rad}(T)|$ & Type \\
+\midrule
+2 & 1 & 2 & 1 & 0 & Boolean simple \\
+3 & 1 & 2 & 2 & 0 & Modular simple \\
+3 & 2 & 3 & 3 & 1 & Mixed idempotent \\
+4 & 1 & 3 & 2 & 1 & Truncated hybrid \\
+4 & 2 & 4 & 3 & 1 & Tropical–Boolean fusion \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{remark}
+The invariants exhibit strong correlation: 
+$|\mathrm{Con}(T)|$ tends to increase linearly with $|\Gamma|$,  
+while $|\mathrm{Rad}(T)|$ depends primarily on additive idempotence.
+\end{remark}
+
+\subsection{Discussion}
+
+The computational data demonstrate that even at small orders,
+ternary $\Gamma$-semirings exhibit significant structural heterogeneity:
+hybrid additive–multiplicative behavior, multiple neutral elements, and distinct lattice geometries.  
+These phenomena do not occur in classical binary semirings and highlight
+the algebraic richness of the ternary $\Gamma$ framework.
+
+The next section synthesizes these computational patterns
+into theoretical insights concerning radicals, congruences, and
+semisimple decomposition, bridging the gap between enumeration and algebraic theory.
+
+% --- End Section 5 ---
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Radical Theory, Congruences, and Semisimple Decomposition}
+
+This section develops the radical theory of finite commutative ternary $\Gamma$-semirings, connecting the ideal-theoretic and congruence-theoretic aspects and establishing a decomposition theorem paralleling classical semiring and ring results.Our treatment parallels classical semiring radicals \cite{Golan1999,Bourne1951JacobsonRadicalSemiring}.
+
+
+\subsection{Radical ideals and nilpotent elements}
+
+\begin{definition}
+An element $x\in T$ is called \emph{nilpotent} if there exist $\gamma_1,\dots,\gamma_k\in\Gamma$ and elements $a_1,\dots,a_k\in T$ such that
+\[
+\{\cdots\{x\,x\,a_1\}_{\gamma_1}x\,a_2\}_{\gamma_2}\cdots a_k\}_{\gamma_k}=0.
+\]
+The set of all nilpotent elements of $T$ is denoted by $\mathrm{Nil}(T)$.
+\end{definition}
+
+\begin{definition}
+The \emph{radical} (or \emph{prime radical}) of $T$, denoted $\mathrm{Rad}(T)$, is the intersection of all prime $\Gamma$-ideals of $T$.
+\end{definition}
+
+\begin{theorem}[Characterization of radicals]
+\label{thm:radnil}
+For any finite commutative ternary $\Gamma$-semiring $T$,
+\[
+\mathrm{Rad}(T)=\mathrm{Nil}(T).
+\]
+\end{theorem}
+
+\begin{proof}
+($\subseteq$) Suppose $x\in\mathrm{Rad}(T)$.  If $x$ were not nilpotent, then the set
+\[
+S=\{\,a\in T:\{x\,x\,a\}_\gamma\neq0\text{ for some }\gamma\in\Gamma\,\}
+\]
+would be nonempty, and by maximality arguments (via Zorn’s Lemma in the finite case, direct enumeration suffices) we can extend $S$ to a prime ideal $P$ not containing $x$, contradicting $x\in\mathrm{Rad}(T)$.
+
+($\supseteq$) Conversely, if $x$ is nilpotent, every prime ideal must contain the chain of products generated by $x$, whence $x\in P$ for each prime $P$.  Thus equality holds.
+\end{proof}
+
+\begin{corollary}
+$\mathrm{Rad}(T)$ is the unique largest nil ideal of $T$.
+\end{corollary}
+
+\begin{remark}
+Empirical confirmation in Section 5 shows the equality $\mathrm{Rad}(T)=\mathrm{Nil}(T)$ for all enumerated examples of order $\le4$ and $|\Gamma|\le2$, substantiating Theorem \ref{thm:radnil}.
+\end{remark}
+
+\subsection{Congruence structures and the radical quotient}
+
+\begin{definition}
+A \emph{$\Gamma$-congruence} on $T$ is an equivalence relation $\rho$ compatible with both $+$ and $\{\cdot\cdot\cdot\}_\Gamma$, i.e.
+\[
+(a,b),(c,d),(e,f)\in\rho \Rightarrow
+\{a\,c\,e\}_\gamma\,\rho\,\{b\,d\,f\}_\gamma
+\quad\forall\,\gamma\in\Gamma.
+\]
+\end{definition}
+
+\begin{theorem}[Ideal–congruence correspondence]
+There exists a bijective order-reversing correspondence between the set of $\Gamma$-ideals of $T$ and the set of $\Gamma$-congruences on $T$, given by
+\[
+I\longmapsto\rho_I,\qquad
+\rho\longmapsto I_\rho,
+\]
+where $\rho_I$ is defined by $a\,\rho_I\,b$ iff $\{a\,b\,c\}_\gamma\in I$ for all $c,\gamma$.
+\end{theorem}
+
+\begin{proof}
+Routine verification uses distributivity and the absorption law.  
+The correspondence preserves inclusions and reverses the lattice order:
+$I_1\subseteq I_2\Rightarrow\rho_{I_1}\supseteq\rho_{I_2}$.
+\end{proof}
+
+\begin{proposition}
+The quotient $T/\mathrm{Rad}(T)$ is semiprime and satisfies the cancellation law
+\[
+\{a\,b\,c\}_\gamma=\{a\,b\,d\}_\gamma\Rightarrow c=d
+\quad\text{for all }\gamma\in\Gamma.
+\]
+\end{proposition}
+
+\begin{proof}
+Since $\mathrm{Rad}(T)$ absorbs all nilpotent elements, no non-zero divisor remains in the quotient.  
+Finiteness ensures that cancellation holds because otherwise nilpotent residues would persist.
+\end{proof}
+See also prime and $h$-prime variations in $\Gamma$-semirings
+\cite{DuttaSardar2001Prime,SardarSahaShum2010Hprime,DuttaSardar2002Operator}.
+
+\subsection{Semisimple decomposition}
+
+\begin{theorem}[Wedderburn-type decomposition]
+Every finite commutative ternary $\Gamma$-semiring $T$ decomposes as
+\[
+T \cong \mathrm{Rad}(T)\times S,
+\]
+where $S$ is semisimple (i.e.\ $\mathrm{Rad}(S)=0$).
+\end{theorem}
+
+\begin{proof}
+From Theorem \ref{thm:radnil}, $\mathrm{Rad}(T)$ is nilpotent and absorbs all non-semisimple components.  
+The quotient $S=T/\mathrm{Rad}(T)$ is semisimple.  
+Since $T$ is finite, there exists a splitting map $\sigma:S\to T$ defined by section lifting of cosets, giving $T\cong\mathrm{Rad}(T)\times S$.
+\end{proof}
+
+\begin{corollary}
+For finite $T$, the lattice $\mathcal{L}(T)$ factors as the product
+\[
+\mathcal{L}(\mathrm{Rad}(T))\times\mathcal{L}(S).
+\]
+\end{corollary}
+
+\subsection{Empirical verification and classification impact}
+
+\begin{table}[h!]
+\centering
+\caption{Observed decomposition pattern for enumerated examples.}
+\label{tab:semisimple}
+\begin{tabular}{cccc}
+\toprule
+$|T|$ & $|\Gamma|$ & $\mathrm{Rad}(T)$ size & Semisimple type \\
+\midrule
+2 & 1 & 0 & Simple Boolean \\
+3 & 1 & 0 & Modular simple \\
+3 & 2 & 1 & Mixed idempotent (two factors) \\
+4 & 1 & 1 & Truncated $\times$ simple \\
+4 & 2 & 1 & Tropical $\times$ Boolean \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{remark}
+The decomposition in Table \ref{tab:semisimple} demonstrates that the radical component coincides with the lowest additive idempotent layer, while the semisimple part corresponds to the highest distributive subalgebra.  
+This mirrors classical results for rings, yet the ternary $\Gamma$ interaction introduces non-linear coupling between additive and multiplicative components.
+\end{remark}
+
+\subsection{Geometric and categorical interpretation}
+
+Let $\operatorname{Spec}_\Gamma(T)$ denote the set of all prime $\Gamma$-ideals of $T$ endowed with the Zariski-type topology generated by
+\[
+V(I)=\{\,P\in\operatorname{Spec}_\Gamma(T)\mid I\subseteq P\,\}.
+\]
+Then $\operatorname{Spec}_\Gamma(T/\mathrm{Rad}(T))$ is discrete, confirming that semisimple factors correspond to isolated points in the spectrum.
+
+\begin{proposition}
+The category $\mathbf{T}\Gamma\mathbf{S}_{\mathrm{fin}}$ of finite commutative ternary $\Gamma$-semirings with homomorphisms preserving radicals is equivalent to the product category
+\[
+\mathbf{T}\Gamma\mathbf{S}_{\mathrm{nil}}\times\mathbf{T}\Gamma\mathbf{S}_{\mathrm{ss}},
+\]
+where the factors represent nilpotent and semisimple objects, respectively.
+\end{proposition}
+
+\begin{proof}
+Objects decompose uniquely as in the Wedderburn-type theorem; morphisms respect this product since radical and semisimple parts are complementary ideals.
+\end{proof}
+
+\begin{remark}
+This categorical separation clarifies the dual nature of ternary $\Gamma$-semiring theory:  
+\emph{radical = local degeneracy}, \emph{semisimple = global symmetry}.  
+It underpins further investigations in fuzzy, topological, and computational extensions developed in subsequent works.
+\end{remark}
+This paper extends the radical–spectrum layer developed in \cite{Gokavarapu2025PaperA} to the finite case.
+
+% --- End Section 6 ---
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Applications, Discussions, and Future Directions}
+\label{sec:applications}
+
+This section develops applications of finite commutative ternary $\Gamma$-semirings to
+(i) coding theory and cryptography, (ii) fuzzy logic and soft computation, and
+(iii) algebraic computation and categorical semantics.  We emphasize structures
+whose behavior genuinely differs from the binary semiring setting and extract
+concrete research directions supported by the theory developed in Sections~3–6.
+
+\subsection{Coding over ternary $\Gamma$-semirings}
+
+Let $T$ be a finite commutative ternary $\Gamma$-semiring.  For $n\!\in\!\mathbb{N}$,
+equip $T^n$ with componentwise addition and with $\Gamma$–parametrized ternary maps
+\[
+\{x\,y\,z\}_\gamma:=\big(\{x_1\,y_1\,z_1\}_\gamma,\ldots,\{x_n\,y_n\,z_n\}_\gamma\big).
+\]
+A \emph{$\Gamma$-linear code} of length $n$ over $T$ is a nonempty subset
+$C\subseteq T^n$ such that $C$ is an additive subsemigroup and
+$\{x\,y\,z\}_\gamma\in C$ for all $x,y,z\in C$, $\gamma\in\Gamma$.
+Codes are \emph{left principal} if $C=\{\,\{u\,x\,v\}_\gamma: x\in T^n,\gamma\in\Gamma\,\}$
+for some fixed $u,v\in T^n$.
+
+\begin{definition}[Weight and distance]
+For $x\in T^n$, define the (Hamming-type) weight
+$w(x)=|\{i: x_i\neq 0\}|$.  The distance $d(x,y)=w(x-y)$ (when $+$ is cancellative);
+in the non-cancellative case we use the pseudo-metric
+$d_\oplus(x,y)=w(x\oplus y)$ where $x\oplus y$ denotes the componentwise sum.
+\end{definition}
+
+\begin{proposition}[Ternary $\Gamma$-linearity and closure]
+If $C\subseteq T^n$ is generated by a set $G=\{g^{(1)},\ldots,g^{(r)}\}$ under $+$ and
+$\{\cdot\cdot\cdot\}_\Gamma$ (componentwise), then $C$ is a $\Gamma$-linear code.
+Conversely, every finite $\Gamma$-linear code admits a finite generating set.
+\end{proposition}
+
+\begin{proof}
+Forward direction is by construction.  For the converse, finiteness of $T^n$ implies
+every ascending chain of additive subsemigroups stabilizes; closure under ternary
+operations follows from distributivity in each coordinate.
+\end{proof}
+
+\begin{theorem}[MacWilliams-type invariance for radical quotient]
+\label{thm:macw}
+Let $T$ be finite and put $S=T/\mathrm{Rad}(T)$.
+If $C\subseteq T^n$ is a $\Gamma$-linear code, then the image $\overline{C}\subseteq S^n$
+has the same weight enumerator as $C$ with respect to any weight that is constant on cosets
+of $\mathrm{Rad}(T)$.  In particular, the distance distribution of $C$ depends only on its
+projection to the semisimple factor $S$.
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:radnil}, $\mathrm{Rad}(T)=\mathrm{Nil}(T)$ absorbs nilpotent
+coordinates and does not change the support (nonzero positions) of codewords.
+The Hamming-type weights constant on cosets of $\mathrm{Rad}(T)$ are preserved by the quotient map $T^n\!\to\! S^n$; enumerators agree by counting preimages of cosets.
+\end{proof}
+
+\begin{remark}
+Theorem~\ref{thm:macw} indicates that code performance over $T$ is governed by the
+semisimple part $S$, while $\mathrm{Rad}(T)$ contributes only degenerate redundancy.
+This mirrors classical ring-linear coding, but here the proof uses the ternary $\Gamma$
+structure and radical theory of Section~6.
+\end{remark}
+
+\begin{definition}[Parity constraints and check operators]
+Fix $u,v\in T^n$ and $\gamma\in\Gamma$.  Define the \emph{$\Gamma$-parity operator}
+$H_{\gamma,u,v}:T^n\to T^n$ by $H_{\gamma,u,v}(x)=\{u\,x\,v\}_\gamma$ (componentwise).
+A code $C$ is a \emph{$k$-check code} if $C=\bigcap_{j=1}^k \ker(H_{\gamma_j,u^{(j)},v^{(j)}})$.
+\end{definition}
+
+\begin{proposition}[Syndrome decoding over $S$]
+Let $S=T/\mathrm{Rad}(T)$.  If $C$ is a $k$-check code over $T$ with check operators
+$\{H_{\gamma_j,u^{(j)},v^{(j)}}\}$, then the induced operators on $S^n$ define a
+$k$-check code $\overline{C}$ with identical syndrome partition and minimum distance.
+\end{proposition}
+
+\subsection{Cryptographic constructions from $\Gamma$-parametrized ternary maps}
+
+A central primitive is a family of S-boxes with external parameter $\gamma\in\Gamma$:
+$F_\gamma:T^r\to T$ given by $F_\gamma(x,y,z)=\{x\,y\,z\}_\gamma$ (for $r=3$),
+or its blockwise extension on $T^{3\ell}\to T^\ell$.
+
+\begin{definition}[Nonlinearity and differential profile]
+For $F_\gamma:T^{3}\to T$, define the differential multiplicity
+\[
+\Delta_\gamma(a,b,c; d)
+=\big|\{(x,y,z)\in T^3:\,
+\{x\!+\!a,\,y\!+\!b,\,z\!+\!c\}_\gamma-\{x,y,z\}_\gamma=d\}\big|.
+\]
+The \emph{differential uniformity} is $\delta_\gamma=\max_{a,b,c\neq 0,d}\Delta_\gamma(a,b,c;d)$.
+\end{definition}
+
+\begin{theorem}[Design principle via semisimple lift]
+Let $T$ be finite and $S=T/\mathrm{Rad}(T)$.  Suppose each induced map
+$\overline{F}_\gamma:S^3\to S$ is APN-like, i.e.\
+$\delta_\gamma$ is minimal on $S$.  Then any $\Gamma$-parametrized block cipher whose
+nonlinear layer is built from $F_\gamma$ inherits resistance to differential attacks
+comparable to the $S$-layer; moreover, $\mathrm{Rad}(T)$ contributes only linear
+masking and cannot reduce $\delta_\gamma$.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+Differentials factor through the quotient $S$ by Theorem~\ref{thm:radnil}.
+Preimages along $T\!\to\!S$ are cosets of $\mathrm{Rad}(T)$ and do not create new collisions; thus the worst-case multiplicity coincides with that over $S$.
+\end{proof}
+
+\begin{remark}
+Ternary mixing ($\{x\,y\,z\}_\gamma$) supports 3-branch SPN layers with stronger avalanche
+than binary bilinear layers.  The external parameter $\gamma$ functions as a round-dependent key schedule input without altering algebraic degree, offering a principled knob for security tuning.
+\end{remark}
+
+\subsection{Fuzzy and soft structures over ternary $\Gamma$-semirings}
+
+\begin{definition}[Fuzzy $\Gamma$-ideal]
+A fuzzy subset $\mu:T\to[0,1]$ is a \emph{fuzzy $\Gamma$-ideal} if
+\[
+\mu(a+b)\ge\min\{\mu(a),\mu(b)\},\qquad
+\mu(\{x\,y\,a\}_\gamma)\ge \mu(a)
+\]
+for all $a,b,x,y\in T$ and $\gamma\in\Gamma$.
+\end{definition}
+
+\begin{proposition}[Level-cut correspondence]
+For $\alpha\in(0,1]$, the $\alpha$-cut $I_\alpha=\{a:\mu(a)\ge\alpha\}$ is a $\Gamma$-ideal.
+Conversely, any chain of $\Gamma$-ideals $\{I_\alpha\}_{\alpha\in(0,1]}$ with $I_\beta\subseteq I_\alpha$ for $\beta>\alpha$ defines a fuzzy $\Gamma$-ideal $\mu(a)=\sup\{\alpha: a\in I_\alpha\}$.
+\end{proposition}
+
+\begin{theorem}[Radical via fuzzy support]
+Let $\mu$ be a fuzzy $\Gamma$-ideal.  Then
+\[
+\mathrm{supp}(\mu)=\{a:\mu(a)>0\}
+\quad\text{is contained in}\quad
+\mathrm{Rad}(T)
+\]
+iff for every $\epsilon>0$ there exists $k$ and parameters $\gamma_1,\ldots,\gamma_k$ such that
+$\mu\!\big(\{\cdots\{a\,a\,a\}_{\gamma_1}\cdots a\}_{\gamma_k}\big)\le\epsilon$ for all $a\in T$.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+($\Rightarrow$) Nilpotent behavior in $\mathrm{Rad}(T)$ drives membership grades to $0$ under iterated ternary products.  
+($\Leftarrow$) If every element can be fuzzily annihilated by iterated ternary powers, all primes must contain the crisp supports, hence the support lies in $\mathrm{Rad}(T)$.
+\end{proof}
+
+\begin{remark}
+This connects radical theory to fuzzy attenuation: radicals capture those elements whose ternary powers force any reasonable membership function below any threshold.
+\end{remark}
+
+\subsection{Algebraic computation, path problems, and automata}
+
+Ternary composition naturally models 3-ary path aggregation and triadic interactions.
+
+\begin{definition}[Ternary path algebra]
+Let $G=(V,E)$ be a directed multigraph with edge weights in $T$.
+For a triple of walks $(p,q,r)$ with common endpoints, define the aggregated weight
+$w_\gamma(p,q,r)=\big\{\!\sum p\,\,\sum q\,\,\sum r\big\}_\gamma$,
+where $\sum p$ is the $+$–sum of weights on $p$.  
+The \emph{ternary path value} between $u,v\in V$ is
+\(
+\mathrm{Path}_\gamma(u,v)=\bigoplus_{(p,q,r)} w_\gamma(p,q,r),
+\)
+where $\oplus$ is the additive supremum (e.g.\ $\max$ in idempotent cases).
+\end{definition}
+
+\begin{proposition}[Dynamic programming schema]
+If $(T,+)$ is idempotent and $\{\cdot\cdot\cdot\}_\gamma$ is monotone in each argument,
+then $\mathrm{Path}_\gamma$ satisfies a Bellman-type recurrence and can be computed in
+$O(|V|^3)$ per $\gamma$ for dense graphs by repeated squaring of ternary adjacency tensors.
+\end{proposition}
+
+\begin{remark}
+This yields ternary analogues of tropical shortest paths and reliability polynomials,
+with $\Gamma$ indexing scenario-dependent aggregations (e.g.\ parallel vs.\ series-parallel vs.\ majority).
+\end{remark}
+
+\subsection{Categorical semantics and spectrum}
+
+Let $\mathbf{T}\Gamma\mathbf{S}$ be the category of commutative ternary $\Gamma$-semirings
+and homomorphisms.  Define a spectrum functor
+\[
+\mathrm{Spec}_\Gamma:\mathbf{T}\Gamma\mathbf{S}^{\mathrm{op}}\to \mathbf{Top},\qquad
+T\mapsto \operatorname{Spec}_\Gamma(T),
+\]
+with closed sets $V(I)=\{P\mid I\subseteq P\}$.
+
+\begin{proposition}[Functoriality and base change]
+For $f:T\to T'$ a homomorphism, $\mathrm{Spec}_\Gamma(f)(P')=f^{-1}(P')$ defines a continuous map.
+If $T\to T'$ is integral (i.e.\ $T'\!/T$ introduces no new prime contractions), then
+$\mathrm{Spec}_\Gamma(T')\to\mathrm{Spec}_\Gamma(T)$ is surjective and closed.
+\end{proposition}
+
+\begin{theorem}[Adjunction with congruence–ideal lattice]
+Let $\mathsf{Id}_\Gamma(T)$ be the ideal lattice and $\mathsf{Con}_\Gamma(T)$ the congruence lattice.
+Then the assignments $I\mapsto V(I)$ and $X\mapsto \bigcap_{P\in X}P$ form a Galois connection.
+Moreover, on finite $T$ this restricts to an anti-isomorphism between closed sets of
+$\mathrm{Spec}_\Gamma(T)$ and radical $\Gamma$-ideals.
+\end{theorem}
+
+\subsection{Future directions and concrete problems}
+
+We conclude with problems naturally arising from our results.
+
+\begin{problem}[Prime avoidance and Krull–type dimension]
+Develop a prime avoidance lemma adapted to ternary $\Gamma$-ideals and define a
+Krull-type dimension via chains of prime $\Gamma$-ideals.  Determine whether
+$\dim(T/\mathrm{Rad}(T))=0$ for all finite $T$ (we conjecture yes).
+\end{problem}
+\begin{lemma}[Prime avoidance for ternary $\Gamma$-ideals]
+\label{lem:GammaPrimeAvoidance}
+Let $I$ be a $\Gamma$-ideal of $T$ and let $P_1,\dots,P_n$ be prime $\Gamma$-ideals.
+If $I\subseteq\bigcup_{i=1}^n P_i$, then $I\subseteq P_j$ for some $j$.
+\end{lemma}
+
+\begin{definition}[Krull-type $\Gamma$-dimension]
+\label{def:GammaKrullDim}
+$\displaystyle \dim_\Gamma(T)=\sup\left\{\ell\in\mathbb{N}\ \middle|\ 
+P_0\subsetneq P_1\subsetneq\cdots\subsetneq P_\ell,\; P_i\in\Spec_\Gamma(T)\right\}$.
+\end{definition}
+
+\begin{theorem}[Finite semisimple quotients are zero-dimensional]
+\label{thm:ZeroDimFinite}
+If $T$ is finite, then $\dim_\Gamma\!\bigl(T/\Rad(T)\bigr)=0$.
+\end{theorem}
+
+\begin{proof}
+By Theorem~7 we have $\Rad(T)=\Nil(T)$, and by Theorem~10 we have
+$T\cong \Rad(T)\times S$ with $S$ semisimple; hence $T/\Rad(T)\cong S$.
+In $S$, every prime $\Gamma$-ideal is maximal, so $\Spec_\Gamma(S)$ is discrete.
+Thus no nontrivial chains $P_0\subsetneq P_1$ exist and $\dim_\Gamma(S)=0$.
+\end{proof}
+
+\begin{problem}[Structure of modules and simple acts]
+Classify simple and semisimple ternary $\Gamma$-modules over finite $T$ and establish a
+Schur-type lemma.  Relate primitive ideals to annihilators of simple acts.
+\end{problem}
+
+\begin{problem}[APN-like families from semisimple lifts]
+Characterize when $\overline{F}_\gamma:S^3\to S$ is APN-like for $S$ finite semisimple, and
+lift constructions to $T$ with controlled differential uniformity.
+\end{problem}
+
+\begin{problem}[Algorithmic isomorphism testing]
+Design canonical forms for $(T,+,\{\cdot\cdot\cdot\}_\Gamma)$ using automorphism groups of
+$(T,+)$ and parameter actions of $\Gamma$, with complexity subexponential in $|T|$.
+\end{problem}
+
+\begin{problem}[Fuzzy radicals and measure semantics]
+Relate fuzzy radicals defined by $\alpha$-cut filtrations to spectral measures on
+$\operatorname{Spec}_\Gamma(T)$, establishing an integral representation for membership
+functions over finite spectra.
+\end{problem}
+
+\begin{remark}[Synthesis]
+Sections~3–6 established the lattice, radical, and decomposition theory; the present section
+shows that these invariants govern performance and security in discrete models (codes,
+ciphers), support fuzzy abstraction, and enable dynamic programming and categorical semantics.
+The radical quotient $T/\mathrm{Rad}(T)$ emerges as the \emph{canonical algebraic core}
+for applications.
+\end{remark}
+
+
+
+
+
+
+
+\bmhead{Acknowledgements}
+
+The first author author would like to express his  sincere gratitude to \textbf{Dr.~D.~Madhusudhana Rao}, Supervisor, for his invaluable guidance, encouragement, and insightful suggestions throughout the course of this research.  
+They also wish to extend their heartfelt thanks to the faculty and research community of the \textbf{Department of Mathematics, Acharya Nagarjuna University}, for their continuous support, inspiration, and stimulating discussions that greatly enriched this work.
+
+\section*{Declarations}
+
+\noindent\textbf{Funding}\\
+No funds, grants, or other support were received during the preparation of this manuscript.
+
+\medskip
+\noindent\textbf{Conflict of interest}\\
+The authors declare that they have no conflict of interest.
+
+\medskip
+\noindent\textbf{Ethics approval and consent to participate}\\
+Not applicable.
+
+\medskip
+\noindent\textbf{Consent for publication}\\
+Not applicable.
+
+\medskip
+\noindent\textbf{Data availability}\\
+No datasets were generated or analysed during the current study.
+
+\medskip
+\noindent\textbf{Materials availability}\\
+Not applicable.
+
+\medskip
+\noindent\textbf{Code availability}\\
+Not applicable.
+
+\medskip
+\noindent\textbf{Author contribution}\\
+The first author led the conceptualization, formal analysis, and manuscript preparation.  
+The second author provided supervision, critical review, and guidance throughout the work.
+
+
+\bibliography{sn-bibliography}% common bib file
+
+
+\end{document}

@@ -1,0 +1,2561 @@
+\documentclass[a4paper, 11pt]{amsart}
+
+%% Standard AMS Math
+\usepackage{amsfonts,mathtools,amssymb,amsthm} 
+
+%% Layout
+\usepackage[a4paper,margin=2.5cm]{geometry}
+%\usepackage{parskip}
+\usepackage{csquotes}
+\usepackage{adjustbox}
+\usepackage[symbol]{footmisc}
+\usepackage{float}
+\usepackage{color,enumitem}
+
+%% Fonts
+\usepackage{bm}
+\usepackage{microtype}
+\usepackage{mathrsfs}
+\usepackage[font=small]{caption}
+\usepackage[normalem]{ulem}
+
+%% Referencing and Bibliography
+\usepackage[backend=bibtex,
+style=numeric,
+autocite=inline,maxbibnames=100,sortcites,doi=false,isbn=false]{biblatex}
+\addbibresource{references.bib}
+\renewbibmacro{in:}{}
+\renewcommand*{\bibfont}{\small}
+\usepackage{hyperref}
+\usepackage{graphicx,cleveref}
+
+%% Diagrams and figures
+\usepackage{tikz-cd,tkz-euclide,pgfplots,quiver,xypic,nicematrix}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{arrows}
+\pgfplotsset{compat=1.18}
+\NiceMatrixOptions{cell-space-limits = 2pt}
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+
+\numberwithin{equation}{section}
+
+% Useful commands and definitions
+
+%% Theorems
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem*{conjecture*}{Conjecture}
+\newtheorem*{theorem*}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+
+\newtheorem{namedthm}{Theorem}
+\newenvironment{thm*}[1]{%
+  \renewcommand\thenamedthm{#1}%
+  \namedthm}{\endnamedthm}
+
+\newtheorem{namedconj}{Conjecture}
+\newenvironment{conj*}[1]{%
+  \renewcommand\thenamedconj{#1}%
+  \namedconj}{\endnamedconj}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{remark}[theorem]{Remark}
+
+%% The standard sets of numbers
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+
+%% Miscellaneous operators
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\PGL}{PGL}
+\DeclareMathOperator{\SL}{SL}
+\DeclareMathOperator{\PSL}{PSL}
+\DeclareMathOperator{\Mat}{Mat}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Homeo}{Homeo}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\Ho}{H}
+\DeclareMathOperator{\coker}{Coker}
+\DeclareMathOperator{\vcd}{vcd}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\cd}{cd}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\pd}{pd}
+\DeclareMathOperator{\glob}{gldim}
+\DeclareMathOperator{\Con}{Con}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+%% Commands for Convienience
+\newcommand{\G}{\Gamma}
+\newcommand{\ZG}{\Z G}
+\newcommand{\ZF}{\Z F}
+\newcommand{\ZH}{\Z H}
+\newcommand{\ZB}{\Z B}
+\newcommand{\SLZ}{\SL_{2}(\Z)}
+\newcommand{\g}{\gamma}
+\newcommand{\Gp}{\G^{\prime}}
+\newcommand{\Hil}{\mathcal{H}}
+\newcommand{\lmod}[1]{#1{\operatorname{-mod}}}
+\newcommand{\rmod}[1]{{\operatorname{mod-}}#1}
+\newcommand{\lMod}[1]{#1{\operatorname{-Mod}}}
+\newcommand{\rMod}[1]{{\operatorname{Mod-}}#1}
+\newcommand{\catname}[1]{{\normalfont\textbf{#1}}}
+\newcommand{\Ab}{\catname{Ab}}
+\newcommand{\FPinf}{\catname{FP}_{\infty}}
+\newcommand{\FP}{\catname{FP}}
+\newcommand{\VFP}{\catname{VFP}}
+\newcommand{\FL}{\catname{FL}}
+\newcommand{\om}{\omega}
+\newcommand{\Rmod}{\lmod{R}}
+\newcommand{\RMod}{\lMod{R}}
+\newcommand{\Smod}{\lmod{S}}
+\newcommand{\SMod}{\lMod{S}}
+\newcommand{\ZGmod}{\lMod{\ZG}}
+\newcommand{\ZHmod}{\lMod{\ZH}}
+\newcommand{\ZGamod}{\lMod{\Z\G}}
+\newcommand{\Zmod}{\lMod{\Z}}
+\newcommand{\pr}{^{\prime}}
+\newcommand{\ma}{\mathfrak{m}}
+\newcommand{\loc}{(R,\ma,k)}
+\newcommand{\Pol}{\overline{P}_{\bullet}}
+\newcommand{\Fox}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\Foxi}[1]{\frac{\partial #1}{\partial x_{i}}}
+\newcommand{\foxi}{\Foxi{ }}
+\newcommand{\od}{\overline{d}}
+\newcommand{\Ngk}[2]{\mathbf{N}_{#1}^{#2}}
+\newcommand{\op}{\overline{\partial}}
+\newcommand{\sig}[1]{\sigma_{#1}}
+\newcommand{\so}{x}
+\newcommand{\st}{y}
+\newcommand{\sh}{z}
+\newcommand{\br}[2]{\sig{#1}\sig{#2}\sig{#1}=\sig{#2}\sig{#1}\sig{#2}}
+\newcommand{\opp}{\overline{P}}
+\newcommand{\off}{\overline{F}}
+\newcommand{\Fol}{\overline{F}_{\bullet}}
+\newcommand{\ZGk}{\Z\G_{k}}
+\newcommand{\oph}{\overline{\varphi}}
+\newcommand{\bul}[1]{{#1}_{\bullet}}
+
+\title{Eventually periodic resolutions with applications to integral group rings}
+\author{Sean P. Carroll}
+\address{Department of Mathematics, Northeastern University, 43 Leon Street, Boston, MA 02115, USA}
+\email{carroll.sea@northeastern.edu}
+
+\begin{document}
+    \makeatletter
+    \@namedef{subjclassname@2020}{\textup{2020} Mathematics Subject Classification}
+    \makeatother
+    \subjclass[2020]{16E05, 18G10, 20J05, 20J06}
+    \keywords{periodic resolutions, group cohomology, integral group ring, mapping cone}
+
+    \date{\today}
+
+    \begin{abstract}
+        We present a general construction of eventually periodic projective resolutions for modules over quotients of rings of finite left global dimension by a regular central element. Our approach utilizes a construction of Shamash, combined with the iterated mapping cone technique, to systematically `purge' homology from a complex. The construction is applied specifically to the integral group rings of groups with finite virtual cohomological dimension. We demonstrate the computability of our method through explicit calculations for several families of groups including hyperbolic triangle groups and mapping class groups of the punctured plane.
+    \end{abstract}
+    
+    \maketitle
+    \vspace{-.25in}
+    \tableofcontents
+    \vspace{-.25in}
+
+    \section{Introduction}
+    The study of projective resolutions and their periodic behavior has long been a central theme in both commutative algebra and the cohomology of groups. One of the foundational results is due to Eisenbud \cite[Thm.~6.1, p.51]{matfac}: 
+    \begin{thm*}{A}[Eisenbud~1980]\label{thm:ebud}
+        Let $\loc$ be a commutative regular local ring with $x\in\ma$ a non-zero-divisor, and $S=R/(x)$ the quotient ring. Then every finitely generated $S$-module has a minimal free resolution which is eventually $2$-periodic.
+    \end{thm*}
+    The existence of these eventually $2$-periodic resolutions gave rise to the theory of \emph{matrix factorizations} and established a remarkable equivalence between the stable category of \emph{maximal Cohen-Macaulay modules} over $S$ and the homotopy category of matrix factorizations of $x\in R$, see the book of Yoshino \cite{yoshino}, or the survey of Martsinkovsky \cite{mart} and the references it contains. In the realm of group cohomology, the search for analogous resolutions has been an active area of research since the works of Artin-Tate (unpublished, but see \cite[\S XII]{cartanelienberg}), Swan \cite{swanperiod}, and Milnor \cite{sphere} related periodicity in the (Tate) cohomology of finite groups to free actions on homotopy spheres. 
+    
+    Now, for any group, $G$, there is a free $G$-CW-complex, $\mathcal{S}_{G}$, that is homotopy equivalent to a sphere. One way to construct such a space is to start with $X=\widetilde{K(G,1)}$, the universal cover of the classifying space for $G$. Then $X$ is contractible and, for any $n>0$, the space $\mathcal{S}_{G} = X\times S^{n}$, where $G$ acts diagonally (and trivially on $S^{n}$), is a free $G$-CW-complex that is homotopy equivalent to a sphere. However, since there was no finiteness assumption on $X$, the space $\mathcal{S}_{G}$ is not necessarily finite dimensional as a CW-complex. The papers of C.T.C Wall \cite{wallppr}, Mislin-Talelli \cite{mislintalelli}, and Talelli \cite{talelliperiodiccohomology, talelli2005} give a historical overview of problems related to the existence of these spaces, and formalize the above observations into the following
+    \begin{conj*}{A}\label{Conj}
+        A group $G$ has eventually periodic cohomology if and only if $G$ admits a finite-dimensional free $G$-CW-complex that is homotopy equivalent to a sphere.
+    \end{conj*}
+    In this way, the presence of eventual periodicity in the cohomology of $G$ is believed to be the algebraic characterization for the existence of a \emph{finite dimensional} $\mathcal{S}_{G}$. For more about this viewpoint we suggest the survey of Jo \cite{joalginv}.
+    
+    F.E.A Johnson first proved a special case of Conjecture~\ref{Conj} for groups $G$ which fit into short exact sequences $1\to K\to G\to H\to 1$, with $K$ a group of type $\FP$ (see Definition \ref{Def:FP}), and $H$ a finite group with periodic cohomology \cite{johnson}. Connolly and Prassidis \cite{connolloy} then proved the case when $G$ has finite \emph{virtual cohomological dimension} (see Definition \ref{Def:VFP}). Mislin and Talelli \cite{mislintalelli} extended this result to a class of groups, first defined by Kropholler \cite{KrophollerFP}, denoted by $\mathrm{H}\mathfrak{F}_{b}$. This class is closed under extensions and contains all groups of finite virtual cohomological dimension. In \cite{ademsmith}, Adem and Smith proved Conjecture~\ref{Conj} under the additional assumption that the periodicity in cohomology is induced by cup product with a positive degree, invertible class in the cohomology ring, $\Ho^{\bullet}(G,\Z)$. It is expected that the periodicity isomorphisms in cohomology will always be given by such a cup product and Talelli provides several equivalent statements in \cite[\S3]{talelli2005}, including the existence of an \emph{eventually periodic resolution} for $G$. Indeed, if there is an exact sequence
+     \[\begin{tikzcd}[ampersand replacement=\&, sep=small]
+            	0 \& {\Omega^{k+q}} \&[1.5em] {P_{k+q-1}} \& \cdots \& {P_{k}} \&\& {P_{k-1}} \& \cdots \& {P_{0}} \& \Z \& 0 \\
+            	\&\&\&\&\& {\Omega^{k}}
+            	\arrow[from=1-1, to=1-2]
+            	\arrow["{\eta_{k+q}}", from=1-2, to=1-3]
+            	\arrow[from=1-3, to=1-4]
+            	\arrow[from=1-4, to=1-5]
+            	\arrow["{d_{k}}", from=1-5, to=1-7]
+            	\arrow["{\rho_{k}}"', two heads, from=1-5, to=2-6]
+            	\arrow[from=1-7, to=1-8]
+            	\arrow[from=1-8, to=1-9]
+            	\arrow["\varepsilon", from=1-9, to=1-10]
+            	\arrow[from=1-10, to=1-11]
+            	\arrow["{\eta_{k}}"', hook, from=2-6, to=1-7]
+        \end{tikzcd}\]
+    where $\Z\in\ZGmod$ is the trivial module, $P_{i}\in\ZGmod$ is projective for $0\le i\le k+1-q$, and $\Omega^{k}=\Omega^{k+q}$. Then the exact sequence
+        \begin{equation}\label{Eq:yonedaext}
+            \begin{tikzcd}[ampersand replacement=\&]
+            	0 \& {\Omega^{k+q}} \& {P_{k+q-1}} \& \cdots \& {P_{k}} \& {\Omega^{k}} \& 0
+            	\arrow[from=1-1, to=1-2]
+            	\arrow["{\eta_{k+q}}", from=1-2, to=1-3]
+            	\arrow[from=1-3, to=1-4]
+            	\arrow[from=1-4, to=1-5]
+            	\arrow["{\rho_{k}}", from=1-5, to=1-6]
+            	\arrow[from=1-6, to=1-7]
+            \end{tikzcd}
+        \end{equation}
+    can be spliced infinitely many times onto the tail of the first sequence, and the result is a projective resolution of $\Z\in\ZGmod$ which is periodic, of period $q$, after $k$-steps. This implies that the group cohomology functors $\Ho^{i}(G,-)$ and $\Ho^{i+q}(G,-)$ are naturally equivalent for $i>k$. Furthermore, this equivalence is given by cup product with the invertible element in $\Ext_{\ZG}^{q}(\Omega^{k},\Omega^{k+q})$ represented by the exact sequence (\ref{Eq:yonedaext}), using Yoneda's interpretation of the $\Ext$ functor \cite{yoneda}.
+
+    \subsection{Main results}
+    The present work provides a general construction for eventually periodic projective resolutions for modules of type $\FPinf$ over quotient rings $S=R/(x)$, where $R$ need not be commutative. The construction proceeds via \emph{iterated mapping cones}, building upon the framework outlined by Nguyen and Veliche \cite{imc}. The key ingredient is Lemma \ref{Lem:shamash}, due to Shamash, which constructs a chain map $\Psi: \Sigma \Pol\to \Pol$ (similar to those in \cite{webb2002}) that induces an isomorphism on first homology groups, where $P_{\bullet}\to N\in\RMod$ is an $R$-projective resolution and $\Pol = P_\bullet \otimes_{R} S$. This chain map is used to `purge' the homology of the complex $\Pol$ to successively higher degrees, which, after taking a direct limit, gives the desired resolution:
+    \begin{thm*}{1}[\textbf {= Construction~\ref{Con:imc} \& Theorem~\ref{Thm:main}}]
+        Let $R$ be a ring with finite left global dimension and $1\neq x\in Z(R)$ a regular element. Let $S\coloneqq R/(x)$ and suppose that $N\in\FPinf(S)$ with $\pd_{R}(N)=n<\infty$. Then $N$ has an $S$-projective resolution that is $2$-periodic in degrees $\ge n-1$.
+    \end{thm*}
+    Taking $R=\loc$ to be a regular local ring with $1\neq x\in \ma$ recovers the result of Eisenbud from Theorem \ref{thm:ebud} without using any tools from commutative algebra, such as \emph{depth}.
+    
+    As an application, we consider Construction \ref{Con:imc} for integral group rings $S=\Z\G$ where $\G = G/\langle c\rangle$ is type $\VFP$ and $G$ is a group of type $\FP$ with a central element $1\neq c\in Z(G)$. Our main contribution is the following:
+    \begin{thm*}{2}[\textbf{= Theorem \ref{Thm:zg}}]
+        With the notation as above, any $\Z\G$-module of type $\FPinf$ has a finite type projective resolution that is eventually $2$-periodic. In particular, if  $G$ is type $\FL$ with $n=\cd(G)<\infty$, then the trivial module $\Z\in\ZGamod$ has a finite type free resolution which is $2$-periodic in degrees $\ge n-1$.
+    \end{thm*}
+    In this context we are also able to prove that the free rank in the $2$-periodic part of the resolution from Construction \ref{Con:imc} stabilizes to a unique value called the \emph{stable rank} (cf. the proof of Theorem \ref{Thm:zg}).
+
+    After choosing a basis, the differentials in these finite type free resolutions can be realized as matrices with entries in the integral group ring, $\Z\G$. In this way, the (co)homology groups of $\G$ with integer coefficients can be calculated by finding the \emph{Smith Normal Form} of the integral matrices obtained by applying the canonical augmentation map $\varepsilon:\Z\G\to \Z$ to the entries of the differentials.
+    
+    \vskip 5pt
+    \noindent {\bf Examples (= \S \ref{S:examples}).}\label{Ex:examples}
+        To demonstrate the computability of Construction \ref{Con:imc}, we provide some explicit calculations of eventually periodic resolutions for the following families of groups:
+        \begin{enumerate}
+            \item Amalgamated products of cyclic groups (= Theorem \ref{Thm:tknot}): Let $p,q,k\in\N$ be such that $\gcd(p,q)=1$. Then the group 
+            \[\G_{k}:= \langle S,U\mid S^{kp}=U^{kq}=1, \; S^{p}=U^{q}\rangle\cong \Z/kp *_{\Z/k} \Z/kq\] 
+            has a $2$-periodic free resolution in degrees $\ge 1$, with stable rank $2$.
+
+            \item Central quotients of Heisenberg groups (= Theorem \ref{Thm:hberg}): For $k\in\N$, the group
+            \[\Hil_{k}\coloneqq\langle x,y,z\mid [x,y]=z,\; [x,z]=1,\; [y,z]=1,\; z^{k}=1\rangle\] 
+            has a $2$-periodic resolution in degrees $\ge 2$, with stable rank $4$.
+            
+            \item Hyperbolic Triangle groups (= Theorem \ref{Thm:tri}): Let $2\le l\le m\le n\in\Z$ and suppose $\frac{1}{l}+\frac{1}{m}+\frac{1}{n}<1$. Then the group \[T=T(l,m,n)\coloneqq\langle a,b\mid a^{l}=b^{m}=(ab)^{n}=1\rangle\]
+            has a $2$-periodic resolution in degrees $\ge 2$, with stable rank $3$.
+
+            \item Mapping class groups of the punctured plane (= Theorem \ref{Thm:mcgperiod}): For any integer $n\ge 2$, the group 
+            \[\mathrm{Mod}(\mathbb{P}_{n+1}) \cong B_{n+1}/Z(B_{n+1})\] has a $2$-periodic resolution in degrees $\ge n$, with stable rank $2^{n-1}$.
+        \end{enumerate}
+    \vskip 5pt
+    
+    \subsection{Organization of the paper}
+    The paper is organized as follows.
+
+    Section \ref{S:notation} introduces the conventions we follow and states the standing assumptions needed for the rest of the paper. We then give concise background on modules of type $\FP_{n}$.
+
+    In Section \ref{S:overview}, we give an overview of the main steps that will be taken to produce eventually periodic resolutions. Then we present two important change-of-ring results, Lemmata \ref{Lem:tori} and \ref{Lem:fpinfquo}, which will be needed for the main construction.
+
+    In Section \ref{S:maps}, we prove the existence of particular chain maps which will be used to inductively `purge' the non-zero degree homology from a given complex. In Lemma \ref{Lem:shamash}, we give an explicit construction for such maps, originally due to Shamash.
+
+    In Section \ref{S:gencons}, we present our main Construction \ref{Con:imc} for producing resolutions over quotient rings. The construction uses the iterated mapping cone framework provided by Nguyen and Veliche, together with the chain maps constructed in \S\ref{S:maps}, to produce a directed family of complexes with homology concentrated in successively higher degrees. The direct limit of this family will be the desired resolution.
+
+    Section \ref{S:period} is devoted to proving that the resolution produced by Construction \ref{Con:imc} is eventually 2-periodic. In Theorem \ref{Thm:main} we provide a complete description of the modules and differentials in this resolution.
+
+    In Section \ref{S:applications}, we first recall some background from group cohomology regarding projective resolutions and finiteness properties for groups. We then apply our main construction specifically to integral group rings. In this context we prove that the free rank in the $2$-periodic part of the constructed resolution stabilizes to a unique value. These results are given in Theorem \ref{Thm:zg}.
+
+    Section \ref{S:examples} contains explicit calculations of eventually $2$-periodic free resolutions for the families of groups listed in \S\ref{Ex:examples}. In each case, the constructed resolution is used to calculate group homology and cohomology, with integer coefficients.
+
+    \section{Notation and conventions}\label{S:notation}
+    Let $R$ be an associative ring with identity. The category of \emph{left} $R$-modules is denoted by $\lMod{R}$. By an \emph{$R$-module} we will always mean a \emph{left} $R$-module.
+
+    In order to keep the convention of matrices acting on the opposite side of scalars, maps of free modules $R^{n}\to R^{m}$ are represented by $n\times m$ matrices with entries in $R$ that act on the \emph{right} of \emph{row vectors}. That is to say, if $f:\ZG^{n}\to \ZG^{m}$ is represented by the $n\times m$ matrix $A$ and $x=(x_{1},\ldots, x_{n})\in\ZG^{n}$ then,
+    \[(x)f \coloneqq (x_{1},\ldots, x_{n})A.\]
+    Furthermore, composition of maps will be done \emph{left to right}, so that the composition of $\delta$ and $d$ will be written $\delta d$. This is done so that composition of maps of free $R$-modules can be calculated with normal matrix multiplication.
+
+    A \emph{complex} of $R$-modules $\bul{C}=(C_{j},\partial_{j})_{j\in\Z}$ is a sequence of $R$-modules and morphisms
+    \[
+        \begin{tikzcd}
+			\cdots \arrow[r] & C_{j+1} \arrow[r, "\partial_{j+1}"] & C_{j} \arrow[r, "\partial_{j}"] & C_{j-1} \arrow[r] & \cdots
+	   \end{tikzcd}
+    \]
+    where $\partial_{j}\partial_{j+1}=0$ for all $j\in\Z$.
+    
+    We will use $\Sigma$ to denote the \emph{suspension} of a complex of $R$-modules. It is the complex with modules and morphisms given by
+    \[(\Sigma C)_{j} = C_{j-1},\;\; \partial_{j}^{\Sigma C} = -\partial^{C}_{j-1}.\]
+
+    Let $\bul{f}:\bul{A}\to\bul{B}$ be a chain map of complexes of $R$-modules. The \emph{mapping cone} of $\bul{f}$ is the chain complex $\Con(\bul{f})$ with 
+    \[\Con(\bul{f})_{i}=A_{i-1}\oplus B_{i}\]
+    and differential given by 
+    \[\partial_{i}=\begin{bmatrix}
+        -d^{A}_{i-1} & -f_{i-1} \\
+        0 & d^{B}_{i}
+    \end{bmatrix}.\]
+    By \cite[1.5.2, p.19]{weibel}, there is an associated short exact sequence of complexes of $R$-modules
+    \begin{equation}\label{Eq:sesmc}
+		\begin{tikzcd}
+			0 \arrow[r] & \bul{B} \arrow[r] & \Con(\bul{f}) \arrow[r] & \Sigma\bul{A} \arrow[r] & 0.
+		\end{tikzcd}
+	\end{equation}
+    
+    We fix throughout this paper the following datum relating to $R$:
+    \begin{itemize}
+        \item $R$ has finite left global dimension $d=\glob(R)<\infty$;
+        \item $1\neq x\in Z(R)$ a regular central element;
+        \item $S\coloneqq R/(x)$ the quotient ring. 
+    \end{itemize}
+    The main rings of interest are integral group rings $R=\ZG$ with $G$ an infinite discrete group. Modules over these rings are abelian groups with a (left) $G$-action. To account for the fact that $R=\ZG$ is very rarely noetherian (cf. Part 3 in \cite{passman}), restrictions are placed on the modules of study to ensure finite generation of successive kernels in a projective resolution. We follow the definitions given by Bieri \cite[\S I.1]{bieri}:
+    \begin{definition}
+        For $n\in \N$, we say that a module $N\in\RMod$ is \emph{type $\FP_{n}$} over $R$ if there is a projective resolution $\bul{P}\to N$ with $P_{i}\in\RMod$ finitely generated and projective for $i\le n$. If $N$ is type $\FP_{n}$ for all $n\ge 0$ (equivalently, if $P_{i}\in\RMod$ is finitely generated and projective for all $i\ge 0$), then $N$ is of \emph{type $\FPinf$} over $R$ and the resolution $\bul{P}$ is called \emph{finite type}.
+    \end{definition}
+    There are full subcategories $\FPinf(R)\subset \lmod{R}\subset\RMod$ where $\FPinf(R)$ is the category of all modules of type $\FPinf$, and $\lmod{R}$ is the category of all finitely generated $R$-modules.
+
+    \begin{remark}
+        Importantly, if $N\in\FP_{n}(R)$ for some $n$ (possibly infinite) then $N$ has a \emph{free} resolution $\bul{P}$ which is finitely generated in degrees $\le n$. In particular, if $n=\infty$ then, $N\in\FPinf(R)$ has a free resolution of finite type (finitely generated in each degree) but not necessarily of finite length (see \cite[\S VIII.6]{brown} for more about when such a finite length free resolution can exist).
+    \end{remark}
+
+    It is well-known that the $\Ext$ and $\Tor$ functors behave nicely with certain (co)limits:
+    \begin{lemma}\label{Lem:extlimit}
+        For any $N\in\RMod$ and any $i\ge 0$:
+        \begin{enumerate}
+            \item The functor $\Tor^{R}_{i}(-,N)$ commutes with direct limits.
+            \item The functor $\Ext^{i}_{R}(N,-)$ commutes with direct products.
+        \end{enumerate}
+    \end{lemma}
+    This follows directly from the fact that $N\otimes_{R}-$ commutes with colimits, and $\Hom_{R}(N,-)$ commutes with limits. This, in turn, is a general fact about the derived functors of any adjoint pair of functors cf. \cite[Thm.~2.6.10, p.55]{weibel}. In fact, Lemma \ref{Lem:extlimit} can be stated in more precisely using \emph{exact} (co)limits as in e.g. \cite[Prop.~1.1, p.8]{bieri}.
+
+    In general, the functors $\Hom_{R}(N,-)$ do not commute with direct limits so we would not expect $\Ext^{i}_{R}(N,-)$ to commute limits. However, if the module $N$ is type $\FP_{n}$ then Brown \cite[Thm.~1, p.130]{hcff} and Bieri-Eckmann \cite[Prop.~1.2, p.76]{bierieckfinprop} prove:
+    \begin{theorem}\label{Thm:fpcomm}
+        The following are equivalent for $N\in\RMod$:
+        \begin{enumerate}
+            \item $N\in\FPinf(R)$.
+            \item For all $i\ge 0$ the functors $\Tor^{R}_{i}(-,N)$ commute with direct products.
+            \item For all $i\ge 0$ the functors $\Ext^{i}_{R}(N,-)$ commutes with direct limits.
+        \end{enumerate}
+    \end{theorem}
+    Similar statements can be made for $N\in\FP_{n}(R)$ with $n\in\N$ except that the statement will hold only for $i\le n$. For these statements, see \cite[Thm.~1.3, p.10-12]{bieri} and for a more general survey of these finiteness results, see \cite{strebhomfin}.
+    
+    \section{Overview and preliminaries}\label{S:overview}
+    In this section, we describe our main construction of projective resolutions using iterated mapping cones to `purge' homology. 
+    
+    Given $N\in\FPinf(S)$ with a (finite type) $R$-projective resolution $\bul{P}$ of length $n<\infty$, the outline for the construction of a (finite type) $S$-projective resolution is three-fold:
+    \begin{enumerate}
+        \item In Lemma \ref{Lem:tori} we prove that chain complex of $S$-modules $\Pol:=\bul{P}\otimes_{R}S$ has homology concentrated in degrees $0$ and $1$. Furthermore, $\Ho_{j}(\Pol)=N$ for $j=0,1$.
+        
+    	\item By a result of Shamash \cite[Lem.~1, p.454-5]{shamash1}, there is a chain map $\Psi:\Sigma\Pol\to\Pol$ which induces an isomorphism on first homology groups.
+        
+    	\item The construction outlined in \cite[\S3.1, p.7]{imc} performs a sequence of iterated mapping cones starting with $\Pol$ which `purge' the homology in degree $1$ to successively higher degrees.
+    \end{enumerate} 
+    These steps yields a directed family of complexes of (finitely generated) projective $S$-modules $\{\bul{M}^{i},\eta^{i}\}_{i\ge 0}$, with injective morphisms of complexes $\eta^{i}:\bul{M}^{i}\to \bul{M}^{i+1}$ for all $i\ge 0$. Taking the direct limit of this family $M_{\bullet} = \lim\limits_{i\to \infty} \bul{M}^{i}$ gives a (finite type) $S$-projective resolution of $N$.
+
+    This idea has been used perviously in several different contexts to `purge' homology from a complex with homology concentrated in degrees $0$ and $1$, see \cite[p.72]{nhi2} and \cite[\S7 \& 8]{webb2002}, in particular. However, we will present the construction in a very general setting that can then be specialized to particular contexts of interest.
+    
+    Firstly, from the assumptions in \S\ref{S:notation} there is a short exact sequence of $R$-modules:
+	\begin{equation}\label{Eq:resquo}
+		\begin{tikzcd}
+			0 \arrow[r] & R \arrow[r,"\lambda_{x}"] & R \arrow[r] & S \arrow[r] & 0
+		\end{tikzcd}
+	\end{equation}
+	where $\lambda_{x}:R\to R$ is multiplication by $x\in Z(R)$ on the right. This gives an $R$-free resolution of the module $S\in\RMod$.
+	
+	\begin{remark}\label{Rem:resquo}
+		We record some important observations about this resolution, and about $S$-modules more generally:
+		\begin{enumerate}
+		    \item Since $x\in Z(R)$ it follows from \cite[Ex.~2.1.9, p.44]{dercat} that the multiplication map $\lambda_{x}:S\to S$ is an $R$-module homomorphism and can be lifted to a chain map (endomorphism) on the free resolution (\ref{Eq:resquo}).
+
+            \item Since $x\in\Ann_{R}(S)$ the Comparison Lemma \cite[Thm.~2.2.6, p.35]{weibel} implies that this lift is null-homotopic.
+		
+		    \item More generally, given $N\in\SMod$, it follows from $S=R/(x)$ that $x\in\Ann_{R}(N)$, hence if $\bul{P}\to N$ is an $R$-projective resolution, then the map $\lambda_{x}:N\to N$ lifts to a null-homotopic chain map $\lambda_{x}:\bul{P}\to\bul{P}$, which we also denote $\lambda_{x}$.
+        \end{enumerate}
+	\end{remark}
+    This innocuous remark will be used in Lemma \ref{Lem:shamash} to construct explicit chain maps which induce an isomorphism on specific homology groups. For now, consider the reduction of an $R$-projective resolution by the central element $x\in Z(R)$:
+    \begin{lemma}\label{Lem:tori}
+		Let $\bul{P}$ be a projective resolution of $N\in\RMod$ and suppose $x\in\Ann_{R}(N)$ (equivalently, $N\in\SMod$). Then the complex of $S$-modules $\Pol=\bul{P}\otimes_{R}S$ satisfies
+		\[\mathrm{H}_{j}(\Pol)=\mathrm{H}_{j}(P_{\bullet}\otimes_{R}S)=\Tor_{j}^{R}(N,S)=\begin{cases}
+			N &\text{if $j=0,1$,}\\
+			0 &\text{else.}
+		\end{cases}\]
+        Furthermore, if $\bul{P}$ is finite type, then $\Pol$ is a complex of finitely generated projective $S$-modules.
+	\end{lemma}
+	\begin{proof}
+		Recall that the bifunctor $\Tor_{*}^{R}(-,-)$ is balanced\footnote[1]{For a definition of \emph{balanced} and proof of this fact, see \cite[Thm.~2.7.2, pp.58-9]{weibel} and \cite[Lem.~3.2.8, pp.71-2]{weibel}}, so for each $j\ge 0$ the group $\Tor_{j}^{R}(N,S)$ can be calculated by applying the functor $N\otimes_{R}-$ to the free resolution of $S$ from (\ref{Eq:resquo}).
+		
+		Since free modules are flat it follows that $\Tor_{j}^{R}(N,R)=0$ for $i>0$ and the long exact sequence of the functors $\Tor_{\bullet}^{R}(N,-)$ reduces to a complex of the form:
+		\[
+		\begin{tikzcd}
+			0 \arrow[r] & \Tor_{1}^{R}(N,S) \arrow[r] & N\otimes_{R}R \arrow[r,"1\otimes\lambda_{x}"] & N\otimes_{R}R \arrow[r] & N\otimes_{R}S \arrow[r] & 0
+		\end{tikzcd}
+		\]
+		Hence $\Tor_{1}^{R}(N,S)\cong\ker(1\otimes \lambda_{x})$ and $N\otimes_{R}S\cong\coker(1\otimes \lambda_{x})$.
+		
+		There is an isomorphism $N\otimes_{R}R\cong N$ given by $n\otimes1\mapsto n\in N$ and since $x\in\Ann_{R}(N)$ it follows that $1\otimes\lambda_{x}:N\to N$ is the zero map and hence
+		\begin{align*}
+			\Tor_{1}^{R}(N,S)\cong\ker(\lambda_{c})=N, \;\;\; N\otimes_{R}S\cong\coker(\lambda_{c})=N,
+		\end{align*}
+		as required.
+
+        Now suppose that $\bul{P}$ is finite type. To see that $\Pol$ is a complex of finitely generated projective $S$-modules, it suffices to notice that if $R^{n}\in\Rmod$ is a finitely generated free module then the tensor product $R^{n}\otimes_{R}S\cong S^{n}$ is a finitely generated free $S$-module of the same rank. Hence $-\otimes_{R}S$ takes finitely generated projective $R$-modules to finitely generated $S$-modules.
+	\end{proof}
+    
+	The following ensures that modules of type $\FPinf$ over $S$ are also type $\FPinf$ over $R$:
+    \begin{lemma}\label{Lem:fpinfquo}
+        Let $\pi:R\to S$ be the canonical quotient ring homomorphism and let $N\in\FPinf(S)$. Then $N\in\FPinf(R)$.
+    \end{lemma}
+    \begin{proof}
+        Associated to the composition of functors
+		\[
+		\begin{tikzcd}[ampersand replacement=\&, row sep=large, column sep=5em]
+			\RMod \arrow[r, "{-\otimes_{R}S}"] \& \SMod \arrow[r, "{-\otimes_{S}N}"] \& \Ab.
+		\end{tikzcd}
+		\]
+		there is a Grothendieck spectral sequence 
+		\[E_{p,q}^{2}\coloneqq\Tor_{p}^{S}(\Tor_{q}^{R}(-,S),N)\implies \Tor_{p+q}^{R}(-,N).\footnote[2]{This spectral sequence is sometimes called the \emph{change-of-rings} spectral sequence cf. \cite[Ex.~5.6.3 \& 5.8.5, p.145 \& 152]{weibel}.}\]
+		Since $S\in\RMod$ has a finite length free resolution (\ref{Eq:resquo}) it is type $\FPinf$ over $R$, and by assumption $N\in\FPinf(S)$. Then by Theorem \ref{Thm:fpcomm} both the functors $\Tor^{R}_{i}(-,S)$ and $\Tor^{S}_{i}(-,N)$ commute with direct products for all $i\ge 0$. 
+
+        Let $\prod\limits_{\alpha \in A} R$ be an arbitrary product. Using the finite type free resolution for $S\in\RMod$ (\ref{Eq:resquo}) to calculate the inner term:
+        \begin{align*}
+            \text{For $q=0$, }\Tor_{0}^{R}\left(\prod_{\alpha \in A}R,S\right)&\cong \left(\prod_{\alpha \in A} R\right)\otimes_{R}S \cong \prod_{\alpha \in A}(R\otimes_{R}S)\cong \prod_{\alpha \in A} S.\\ 
+            \text{For $q\ge 1$, }\Tor_{q}^{R}\left(\prod_{\alpha \in A}R,S\right) &\cong \prod_{\alpha \in A}\Tor_{q}^{R}(R,S) = 0.
+        \end{align*}
+        Thus the spectral sequence is concentrated with $q=0$ and collapses on the $E^{2}$-page. Then, for each $p\ge 0$, there are isomorphisms
+        \[\Tor_{p}^{S}\left(\prod\limits_{\alpha \in A} S , N\right) \cong \Tor_{p}^{R}\left(\prod\limits_{\alpha \in A} R , N\right),\;\;\; \prod\limits_{\alpha \in A}\Tor_{p}^{S}(S,N) \cong \prod\limits_{\alpha \in A}\Tor_{p}^{R}(R,N),\]
+        which fit into a commutative diagram of isomorphisms
+        \[
+		\begin{tikzcd}[ampersand replacement=\&, row sep=large, column sep=large]
+			\Tor_{p}^{S}\left(\prod\limits_{\alpha \in A} S , N\right) \arrow[d, "\cong"] \arrow[r, "\cong"] \& \Tor_{p}^{R}\left(\prod\limits_{\alpha \in A} R , N\right) \arrow[d, dashed] \\
+            \prod\limits_{\alpha \in A}\Tor_{p}^{S}(S,N) \arrow[r, "\cong"] \& \prod\limits_{\alpha \in A}\Tor_{p}^{R}(R,N)
+		\end{tikzcd}
+		\]
+        The dashed arrow is then also an isomorphism for each $p\ge 0$ and hence $N\in\FPinf(R)$ by Theorem \ref{Thm:fpcomm}.
+    \end{proof}
+
+    \section{Chain maps to purge homology}\label{S:maps}
+    We now consider chain complexes of projectives which have homology concentrated in only two degrees. In particular, complexes of the form $\Pol=\bul{P}\otimes_{R}S$, as in Lemma \ref{Lem:tori}. We first show that for these complexes it is easy to construct chain maps which induce an isomorphism on first homology groups. These maps will then be used in $\S\ref{S:gencons}$ to systematically `purge' the homology of $\Pol$ (cf. Construction \ref{Con:imc}).
+
+    \begin{lemma}\label{Lem:lifty}
+        Suppose $Q_{\bullet}$ is a chain complex with $Q_{i}\in\RMod$ projective for $0\le i\le n$ and $Q_{i}=0$ for $i>n$ for some $n<\infty$, and
+        \[\mathrm{H}_{j}(Q_{\bullet})=\begin{cases}
+		N & \text{if } j=0,1, \\
+		0 & \text{else,}\\ 
+	    \end{cases}\]
+        where $N\in\FPinf(R)$.
+        Then there is a chain map $\Psi:\Sigma Q_{\bullet}\to Q_{\bullet}$ such that the induced map $\Psi_{*}:\mathrm{H}_{1}(\Sigma Q_{\bullet})\to \mathrm{H}_{1}(Q_{\bullet})$ is an isomorphism.
+    \end{lemma}
+    \begin{proof}
+    Firstly, we construct the maps $\psi_{1}$ and $\psi_{2}$ to ensure that they induce an isomorphism on $\mathrm{H}_{1}$.
+    
+    Consider the modified diagram
+    \[
+    	\begin{tikzcd}[ampersand replacement=\&, row sep=large, column sep=large ]
+        	Q_{2} \& Q_{1} \& Q_{0} \& N \& 0 \\
+        	\& Q_{2} \& Q_{1} \& Q_{0} \\
+        	0 \& {\im(\partial_{2})} \& {\ker(\partial_{1})} \& {\mathrm{H}_{1}(Q_{\bullet})} \& 0
+        	\arrow["-\partial_{2}", from=1-1, to=1-2]
+        	\arrow["-\partial_{1}", from=1-2, to=1-3]
+        	\arrow["{\psi_{2}}", dashed, from=1-2, to=2-2]
+        	\arrow["{f_{2}}"'{pos=0.8}, curve={height=18pt}, dashed, from=1-2, to=3-2]
+        	\arrow["\varepsilon", from=1-3, to=1-4]
+        	\arrow["{\psi_{1}}"', dashed, from=1-3, to=2-3]
+        	\arrow["{f_{1}}"{pos=0.8}, curve={height=-18pt}, dashed, from=1-3, to=3-3]
+        	\arrow[from=1-4, to=1-5]
+        	\arrow["\gamma", curve={height=-18pt}, from=1-4, to=3-4]
+        	\arrow["\partial_{2}", from=2-2, to=2-3]
+        	\arrow["q"', two heads, from=2-2, to=3-2]
+        	\arrow["\partial_{1}", from=2-3, to=2-4]
+        	\arrow[from=3-1, to=3-2]
+        	\arrow["\nu", from=3-2, to=3-3]
+        	\arrow["\iota"', hook, from=3-3, to=2-3]
+        	\arrow["\rho", from=3-3, to=3-4]
+        	\arrow[from=3-4, to=3-5]
+        \end{tikzcd}
+	\]
+    where $\gamma:N\to\Ho_{1}(\bul{Q})$ is an isomorphism. The map $f_{1}:Q_{0}\to\ker(\partial_{1})$ is constructed by the lifting of the following diagram
+    \[\begin{tikzcd}[ampersand replacement=\&, row sep=large, column sep=large]
+    	\& {Q_{0}} \\
+    	{\ker(\partial_{1})} \& {\mathrm{H}_{1}(Q_{\bullet})} \& 0
+    	\arrow["{f_{1}}"', dashed, from=1-2, to=2-1]
+    	\arrow["{\varepsilon\gamma}", from=1-2, to=2-2]
+    	\arrow["\rho"', from=2-1, to=2-2]
+    	\arrow[from=2-2, to=2-3]
+    \end{tikzcd}\]
+    Composing $f_{1}$ with the canonical inclusion $\iota:\ker(\partial_{1})\to Q_{1}$ gives a well-defined map $\psi_{1}:Q_{0}\to Q_{1}$. Further, there is a commutative diagram
+    \[
+        \begin{tikzcd}[ampersand replacement=\&]
+        	Q_{2} \& Q_{1} \& Q_{0} \& N \& 0 \\
+        	\&\& Q_{1} \\
+        	\&\& {\ker(\partial_{1})} \& {\mathrm{H}_{1}(Q_{\bullet})} \& 0
+        	\arrow["-\partial_{2}", from=1-1, to=1-2]
+        	\arrow["-\partial_{1}", from=1-2, to=1-3]
+        	\arrow["\varepsilon", from=1-3, to=1-4]
+        	\arrow["{\psi_{1}}"', from=1-3, to=2-3]
+        	\arrow["{f_{1}}", curve={height=-18pt}, from=1-3, to=3-3]
+        	\arrow[from=1-4, to=1-5]
+        	\arrow["\gamma", from=1-4, to=3-4]
+        	\arrow["\iota"', hook, from=3-3, to=2-3]
+        	\arrow["\rho", from=3-3, to=3-4]
+        	\arrow[from=3-4, to=3-5]
+        \end{tikzcd}
+    \]
+    where $\gamma:N\to \mathrm{H}_{1}(Q_{\bullet})\cong N$ is an isomorphism. Then $-\partial_{1}f_{1}\rho  = \partial_{1}\varepsilon\gamma$, and by exactness $\partial_{1}\varepsilon=0$ and it follows that $-\partial_{1}f_{1}$ factors through $\ker(\rho)$.  Again, by exactness of the bottom row from above $\ker(\rho)\cong\im(\partial_{2})$, hence there is a map $f_{2}:Q_{1}\to\im(\partial_{2})$ so that the following diagram commutes:
+    \[
+        \begin{tikzcd}[ampersand replacement=\&, row sep=large, column sep=large]
+        	Q_{1}\& Q_{0} \\
+        	{\im(\partial_{2})} \& {\ker(\partial_{1})}
+        	\arrow["{-\partial_{1}}", from=1-1, to=1-2]
+        	\arrow["{f_{2}}"', from=1-1, to=2-1]
+        	\arrow["{f_{1}}"', from=1-2, to=2-2]
+        	\arrow["\nu"', from=2-1, to=2-2]
+        \end{tikzcd}
+    \]
+    This gives a diagram
+    \[
+        \begin{tikzcd}[ampersand replacement=\&, row sep=large, column sep=large]
+        	\& Q_{1} \\
+        	Q_{2} \& {\im(\partial_{2})} \& 0
+        	\arrow["{\psi_{2}}"', dashed, from=1-2, to=2-1]
+        	\arrow["{f_{2}}"', from=1-2, to=2-2, swap]
+        	\arrow["q"', from=2-1, to=2-2]
+        	\arrow[from=2-2, to=2-3]
+        \end{tikzcd}
+    \]
+    and since $Q_{1}$ is projective there is a lift $\psi_{2}:Q_{1}\to Q_{2}$ making the diagram commute. Now there is a commutative square
+    \[
+        \begin{tikzcd}[ampersand replacement=\&, row sep=large, column sep=large]
+        	Q_{1} \& Q_{0} \\
+        	Q_{2} \& Q_{1}
+        	\arrow["{-\partial_{1}}", from=1-1, to=1-2]
+        	\arrow["{\psi_{2}}"', from=1-1, to=2-1]
+        	\arrow["{\psi_{1}}", from=1-2, to=2-2]
+        	\arrow["{\partial_{2}}"', from=2-1, to=2-2]
+        \end{tikzcd}
+    \]
+    Indeed, we have
+    \begin{align*}
+        \psi_{2}\partial_{2} = \psi_{2}(q\nu\iota) =(\psi_{2}q)(\nu\iota)=f_{2}(\nu\iota) =(f_{2}\nu)\iota =(-\partial_{1}f_{1})\iota =-\partial_{1}(f_{1}\iota) =-\partial_{1}\psi_{1}.
+    \end{align*}
+    Notice that, by construction, the induced map $\Psi_{*}:\mathrm{H}_{1}(\Sigma Q_{\bullet})\to \mathrm{H}_{1}(Q_{\bullet})$ is an isomorphism.
+
+    We now show that $\psi_{2}$ can be lifted to $\psi_{3}$. There is a diagram
+    \[
+        \begin{tikzcd}[ampersand replacement=\&, row sep=large, column sep=large]
+        	\& Q_{2} \\
+        	Q_{3} \& {\im(\partial_{3})} \& 0
+        	\arrow["{\psi_{3}}"', dashed, from=1-2, to=2-1]
+        	\arrow["{\psi_{2}}"', from=1-2, to=2-2, swap]
+        	\arrow[from=2-1, to=2-2]
+        	\arrow[from=2-2, to=2-3]
+        \end{tikzcd}
+    \]
+    and since $Q_{2}$ is projective there is a lift $\psi_{3}:Q_{2}\to Q_{3}$ making the diagram commute. Then the following is a commutative square
+    \[
+        \begin{tikzcd}[ampersand replacement=\&, row sep=large, column sep=large]
+        	Q_{2} \& Q_{1} \\
+        	Q_{3} \& Q_{2}
+        	\arrow["{-\partial_{2}}", from=1-1, to=1-2]
+        	\arrow["{\psi_{3}}"', from=1-1, to=2-1]
+        	\arrow["{\psi_{2}}", from=1-2, to=2-2]
+        	\arrow["{\partial_{3}}"', from=2-1, to=2-2]
+        \end{tikzcd}
+    \]
+    Since $Q_{j}$ is projective for all $j\ge 0$, the lifting of $\psi_{j}$ for $j\ge 3$ can be done in exactly the same way. The result is a chain map $\Psi:\Sigma Q_{\bullet}\to Q_{\bullet}$ of the form
+    \[
+        \begin{tikzcd}[row sep=large, column sep=3em]
+        	Q_{n} & Q_{n-1} & Q_{n-2} & \cdots & Q_{2} & Q_{1} & Q_{0} \\
+        	& Q_{n} & Q_{n-1} & \cdots & Q_{3} & Q_{2} & Q_{1} & Q_{0}
+        	\arrow["-\partial_{n}", from=1-1, to=1-2]
+        	\arrow["-\partial_{n-1}", from=1-2, to=1-3]
+        	\arrow["\psi_{n}", from=1-2, to=2-2]
+            \arrow["-\partial_{n-2}", from=1-3, to=1-4]
+        	\arrow["\psi_{n-1}", from=1-3, to=2-3]
+        	\arrow["-\partial_{3}", from=1-4, to=1-5]
+        	\arrow["-\partial_{2}", from=1-5, to=1-6]
+        	\arrow["\psi_{3}", from=1-5, to=2-5]
+        	\arrow["-\partial_{1}", from=1-6, to=1-7]
+        	\arrow["\psi_{2}", from=1-6, to=2-6]
+        	\arrow["\psi_{1}", from=1-7, to=2-7]
+        	\arrow["\partial_{n}", from=2-2, to=2-3]
+            \arrow["\partial_{n-1}", from=2-3, to=2-4]
+        	\arrow["\partial_{4}", from=2-4, to=2-5]
+        	\arrow["\partial_{3}", from=2-5, to=2-6]
+        	\arrow["\partial_{2}", from=2-6, to=2-7]
+        	\arrow["\partial_{1}", from=2-7, to=2-8]
+        \end{tikzcd}
+    \]
+    \end{proof}
+    Lemma \ref{Lem:lifty} proves the existence of a chain map $\Psi:\Sigma\Pol\to\Pol$ which induces an isomorphism on first homology groups. We will now present a result of Shamash that gives a way of constructing these chain maps explicitly \cite[Lem.~1, p.454-5]{shamash1}:
+
+    Suppose that $N\in\FPinf(S)$ and let $\bul{P}\to N\in\Rmod$ be a finite type $R$-projective resolution of length $n=\pd_{R}(N)<\infty$.
+    Let $\lambda_{x}:N\to N$ denote multiplication on the right by $x$. Then by Remark \ref{Rem:resquo}, the lift of this map to $\lambda_{x}:\Pol\to \Pol$ is null-homotopic and this null-homotopy determines a chain map $\Psi:\Sigma\Pol\to\Pol$:
+    \begin{lemma}[Shamash 1969]\label{Lem:shamash}
+        Let $\{\varphi_{i}:P_{i-1}\to P_{i}\}_{i\ge 1}$ be a null-homotopy for the chain map $\lambda_{x}:\bul{P}\to\bul{P}$. If $\Pol=P_{\bullet}\otimes_{R}S$ denotes the corresponding complex of $S$-modules, then the collection $\{\varphi_{i}\otimes_{R} S=\overline{\varphi}_{i}:\overline{P}_{i-1}\to \overline{P}_{i}\}_{i\ge 1}$ defines a chain map $\Psi:\Sigma\Pol\to\Pol$ which induces an isomorphism on first homology groups $\Psi_{*}:\mathrm{H}_{1}(\Sigma\Pol)\to \mathrm{H}_{1}(\Pol)$.
+    \end{lemma}
+    \begin{proof}
+        By assumption, the collection $\{\varphi_{i}:P_{i-1}\to P_{i}\}_{i\ge 1}$ is a null-homotopy, so $d_{i}\varphi_{i}+\varphi_{i+1}d_{i+1}=\lambda_{x}:P_{i}\to P_{i}$ for all $i\ge 0$. Applying the functor $\overline{(-)}=-\otimes_{R}S$, it follows that $\overline{d}_{i}\overline{\varphi}_{i}+\overline{\varphi}_{i+1}\overline{d}_{i+1} = 0$ for all $i\ge 0$. Equivalently, and more helpfully, $\overline{\varphi}_{i+1}\overline{d}_{i+1} = -\overline{d}_{i}\overline{\varphi}_{i}$ for all $i\ge 0$, and hence the collection $\{\overline{\varphi}_{i}:\overline{P}_{i-1}\to \overline{P}_{i}\}_{i\ge 1}$ defines a chain map $\Sigma \Pol\to \Pol$.
+
+        The fact that the induced map on first homology groups is an isomorphism is proved by arguing exactly as in the beginning of the proof of Lemma \ref{Lem:lifty}.
+    \end{proof}
+    The idea of Lemma \ref{Lem:shamash} is best summarized with the following diagram:
+    \[
+        \begin{tikzcd}[ampersand replacement=\&, row sep=large, column sep=2.8em]
+        	0 \arrow[r] \& P_{n} \arrow[r, "d_{n}"] \arrow[d, "\lambda_{x}"] \& P_{n-1} \arrow[r, "d_{n-1}"] \arrow[dl, "\textcolor{red}{\varphi_{n}}", dashed, red] \arrow[d, "\lambda_{x}"] \& \cdots \arrow[r, "d_{3}"] \& P_{2} \arrow[r,"d_{2}"] \arrow[d, "\lambda_{x}"] \& P_{1} \arrow[r, "d_{1}"] \arrow[dl, "\textcolor{red}{\varphi_{2}}", dashed, red] \arrow[d, "\lambda_{x}"] \& P_{0} \arrow[dl, "\textcolor{red}{\varphi_{1}}", dashed, red] \arrow[d, "\lambda_{x}"] \arrow[r, "\varepsilon"]  \& N \arrow[d, "\lambda_{x}"] \arrow[r] \& 0 \\
+        	0 \arrow[r] \& P_{n} \arrow[r, "d_{n}"] \& P_{n-1} \arrow[r, "d_{n-1}"] \& \cdots \arrow[r, "d_{3}"]  \& P_{2} \arrow[r,"d_{2}"] \& P_{1} \arrow[r, "d_{1}"] \& P_{0} \arrow[r, "\varepsilon"]  \& N \arrow[r] \& 0
+        \end{tikzcd}
+    \]
+    The dashed arrows are a null-homotopy for the lift of $\lambda_{x}:N\to N$ which, after applying the functor $-\otimes_{R}S$, determine a chain map $\Psi:\Sigma\Pol\to\Pol$ as in Lemma \ref{Lem:lifty}.
+
+    \section{General construction}\label{S:gencons}
+    Suppose that $N\in\FPinf(S)$ and let $\bul{P}\to N\in\Rmod$ be a (finite type) $R$-projective resolution of length $n=\pd_{R}(N)<\infty$. Applying Lemma \ref{Lem:shamash} to the complex $\Pol=\bul{P}\otimes_{R}S$ gives a chain map $\Psi:\Sigma\Pol\to\Pol$ which induces an isomorphism on degree $1$ homology. The idea is to now perform a sequence of iterated mapping cones in order to `purge' the homology in degree $1$ to successively higher degrees. This process is based on the construction given in \cite[\S3.1, p.7]{imc}, so we recall their notation.
+
+    Firstly, let $\{\phi^{i}:\bul{C}^{i}\to \bul{C}^{i-1}\}_{i\ge1}$ be the sequence of chain maps of bounded below complexes of (finitely generated) projective $S$-modules defined as follows:
+
+    Begin with $\bul{C}^{0}=\Pol=P_{\bullet}\otimes_{R} S$. Then by Lemma \ref{Lem:tori} the homology is given by
+    \[\mathrm{H}_{j}(\bul{C}^{0})=\begin{cases}
+        N & j=0,1,\\
+        0 &\text{else}.
+    \end{cases}\]
+    Next, let $\bul{C}^{1} = \Sigma \Pol$ and $\phi^{1}:\bul{C}^{1}\to \bul{C}^{0}$ be the map $\Psi:\Sigma\Pol\to\Pol$ constructed in Lemma \ref{Lem:shamash}. The homology of $\bul{C}^{1}$ is
+    \[\mathrm{H}_{j}(\bul{C}^{1})=\begin{cases}
+        N & j=1,2,\\
+        0 &\text{else}
+    \end{cases}\]
+    and the map $\phi^{1}=\Psi$ induces an isomorphism $\phi^{1}_{\ast}:\mathrm{H}_{1}(\bul{C}^{1})\to \mathrm{H}_{1}(\bul{C}^{0}).$
+    
+    Continuing, for $i\ge 1$, let $\bul{C}^{i+1} = \Sigma^{i+1}\Pol$ and $\phi^{i+1}:\bul{C}^{i+1}\to \bul{C}^{i}$ be the map $\Sigma^{i}\Psi$. Then the homology is
+    \[\mathrm{H}_{j}(\bul{C}^{i})=\begin{cases}
+        N & j=i,i+1,\\
+        0 &\text{else}.
+    \end{cases}\]
+    and there is an induced map $\phi^{i}_{\ast}:\mathrm{H}_{i}(\bul{C}^{i})\to \mathrm{H}_{i}(\bul{C}^{i-1})$ which reduces to the isomorphism $\Psi_{\ast}$ from Lemma \ref{Lem:shamash}, as above.
+
+    With the sequence $\{\phi^{i}:\bul{C}^{i}\to \bul{C}^{i-1}\}_{i\ge1}$ defined, the next step is to begin applying iterated mapping cones:
+    
+    Start by setting $\bul{M}^{0}=\bul{C}^{0}$, $\psi^{1}=\phi^{1}$ and $\bul{M}^{1}=\Con(\psi^{1})$ and consider the diagram of complexes
+    \begin{equation}\label{Eq:firstlift}
+        \begin{tikzcd}[row sep=large, column sep=large ]
+        	&&& {\Sigma \bul{C}^{2}} \\
+        	0 & {\bul{M}^{0}} & {\bul{M}^{1}} & {\Sigma \bul{C}^{1}} & 0
+        	\arrow["{\psi^{2}}"', dashed, from=1-4, to=2-3]
+        	\arrow["{\Sigma \phi^{2}}", from=1-4, to=2-4]
+        	\arrow[from=2-1, to=2-2]
+        	\arrow["{\eta^{0}}", from=2-2, to=2-3]
+        	\arrow["{\nu^{1}}", from=2-3, to=2-4]
+        	\arrow[from=2-4, to=2-5]
+        \end{tikzcd}
+    \end{equation}
+    Since $\bul{C}^{2}$ is a complex of (finitely generated) projective $S$-modules \cite[Prop.~5.2.2, p.205-6]{dercat} implies that the functor $\Hom_{S}(\bul{C}^{2},-)$ is exact, and there exists a lifting $\psi^{2}:\Sigma \bul{C}^{2}\to \bul{M}^{1}$ that makes the diagram commute. Set $\bul{M}^{2}=\Con(\psi^{2})$.
+
+    Continuing this process inductively gives a morphism $\psi^{i+1}:\Sigma^{i} \bul{C}^{i+1}\to \bul{M}^{i}$ for each $i\ge 1$ that makes the following diagram commute.
+    \begin{equation}\label{Eq:secondlift}
+        \begin{tikzcd}[row sep=large, column sep=large ]
+        	&&& {\Sigma^{i} \bul{C}^{i+1}} \\
+        	0 & {\bul{M}^{i-1}} & {\bul{M}^{i}} & {\Sigma \bul{C}^{1}} & 0
+        	\arrow["{\psi^{i+1}}"', dashed, from=1-4, to=2-3]
+        	\arrow["{\Sigma^{i} \phi^{i+1}}", from=1-4, to=2-4]
+        	\arrow[from=2-1, to=2-2]
+        	\arrow["{\eta^{i-1}}", from=2-2, to=2-3]
+        	\arrow["{\nu^{i}}", from=2-3, to=2-4]
+        	\arrow[from=2-4, to=2-5]
+        \end{tikzcd}
+    \end{equation}
+    Again, define $\bul{M}^{i+1}=\Con(\psi^{i+1})$. This yields a directed sequence $\{\bul{M}^{i},\eta^{i}\}_{i\ge 0}$ where each $\bul{M}^{i}$ is a complex of (finitely generated) projective $S$-modules and $\eta^{i}:\bul{M}^{i}\to \bul{M}^{i+1}$ is injective for all $i\ge 0$. The direct limit of this sequence is denoted $M_{\bullet} = \lim\limits_{i\to \infty} \bul{M}^{i}.$
+
+    \begin{remark}\label{Rem:reindex}
+        Notice that, with the above notation, $C^{i+1}_{j} = (\Sigma^{i+1}\opp)_{j} = \opp_{j-i-1}$ and hence the map $\phi^{i+1}:\bul{C}^{i+1}\to \bul{C}^{i}$ can be taken to be $0$ in degrees $\le i+1$. As such, the constructed mapping $\psi^{i+1}$ is re-indexed so that the first non-zero degree $j=2i+1$ is given index $j=1$. That is to say, we will write $\psi^{i+1}_{j}:\Sigma^{i+1}C^{i}_{j}\to M^{i}_{2i+1+j}$ or equivalently $\psi^{i+1}_{j}:\opp_{j}\to M^{i}_{2i+1+j}$.
+    \end{remark}
+
+    \begin{construction}\label{Con:imc}
+        With the notation as above, let $\{\bul{M}^{i},\eta^{i}\}_{i\ge 0}$ be the sequence of mapping cones. Then the following hold:
+        \begin{enumerate}
+            \item For $i>0$ the $i$-th mapping cone $\bul{M}^{i}=(M^{i}_{j},\partial^{i}_{j})$ is given recursively by
+            \[M^{i}_{j}=\begin{cases}
+                M^{i-1}_{j} & 0\le j\le 2i-1,\\
+                \opp_{j-2i}\oplus M^{i-1}_{j} & 2i\le j\le 2i+n-2,\\
+                \opp_{j-2i} & j=2i+n-1,\;\; 2i+n.
+            \end{cases}\]
+            \[\partial^{i}_{j}=\begin{cases}
+                \partial^{i-1}_{j} & 1\le j\le 2i-1, \\[10pt]
+                \begin{bmatrix}
+                    -\psi^{i}_{1} \\
+                    \partial^{i-1}_{2i}
+                \end{bmatrix} & j=2i, \\[15pt]
+                \renewcommand\arraystretch{1.5}
+                \begin{bmatrix}
+                    \od_{j-2i} & -\psi^{i}_{j-(2i-1)}\\
+                    0 & \partial^{i-1}_{j}
+                \end{bmatrix} & 2i+1\le j\le 2i+n-2,\\[18pt]
+                \begin{bmatrix}
+                    \od_{n-1} & -\psi^{i}_{n}
+                \end{bmatrix} & j=2i+n-1,\\[10pt]
+                \od_{n} & j=2i+n.
+            \end{cases}\]
+            In particular, $\bul{M}^{i}$ is a complex of (finitely generated) projective $S$-modules.
+            \item For $i>0$ the homology of the $i$-th mapping cone $\bul{M}^{i}$ is given by
+            \[\mathrm{H}_{j}(\bul{M}^{i})=\begin{cases}
+                N & j=0,\;2i+1,\\
+                0 &\text{else}.
+            \end{cases}\]
+            \item For $i>0$ The maps $\psi^{i+1}:\Sigma^{i} \bul{C}^{i+1}\to \bul{M}^{i}$ induce isomorphisms on homology
+            \[\psi^{i+1}_{\ast}:\mathrm{H}_{2i+1}(\Sigma^{i} \bul{C}^{i+1})\to \mathrm{H}_{2i+1}(\bul{M}^{i}),\]
+            or equivalently $\psi^{i+1}_{*}:\mathrm{H}_{2i+1}(\Sigma^{2i+1}\Pol) \to \mathrm{H}_{2i+1}(\bul{M}^{i})$.
+            \item The direct limit $\bul{M}=\lim\limits_{i\to \infty} \bul{M}^{i}$ is a (finite type) projective resolution of $N\in\SMod$.
+        \end{enumerate}
+    \end{construction}
+    \begin{proof}
+        The first three parts are proved by induction on $i\ge1$ and then together will imply the fourth.
+        
+        By construction $M^{0}=C^{0}=\Pol$ and by Lemma \ref{Lem:tori} the homology is given by
+        \[\mathrm{H}_{j}(C^{0})=\mathrm{H}_{j}(\Pol)=\begin{cases}
+                N & j=0,1,\\
+                0 &\text{else}.
+        \end{cases}\]
+        Consider the map $\Psi:\Sigma\Pol\to\Pol$ constructed in Lemma \ref{Lem:shamash}. The mapping cone, $\bul{M}^{1} = \Con(\psi^{1}) = \Con(\Psi)$, will be of the form
+        \[\begin{tikzcd}[ampersand replacement=\&]
+            \opp_{n} \& \opp_{n-1} \& \opp_{n-2}\oplus\opp_{n} \& \cdots \& \opp_{0}\oplus\opp_{2} \& \opp_{1} \& \opp_{0}
+            \arrow["\partial^{1}_{n+2}", from=1-1, to=1-2]
+            \arrow["\partial^{1}_{n+1}", from=1-2, to=1-3]
+            \arrow["\partial^{1}_{n}", from=1-3, to=1-4]
+            \arrow["\partial^{1}_{3}", from=1-4, to=1-5]
+            \arrow["\partial^{1}_{2}", from=1-5, to=1-6]
+            \arrow["\partial^{1}_{1}", from=1-6, to=1-7]
+        \end{tikzcd}\]
+        with differentials
+        \[
+            \partial^{1}_{j}=\begin{cases}
+                \od_{1} & j=1,\\[10pt]
+                \begin{bmatrix}
+                    -\psi_{1} \\
+                    \od_{2}
+                \end{bmatrix} & j=2, \\[15pt]
+                \begin{bmatrix}
+                    \od_{j-2} & -\psi_{j-1} \\
+                    0 & \od_{j}
+                \end{bmatrix} & 3\le j\le n,\\[15pt]
+                \begin{bmatrix}
+                    \od_{n-1} & -\psi_{n}
+                \end{bmatrix} & j=n+1,\\[10pt]
+                \od_{n} & j=n+2.
+            \end{cases}
+        \]
+        Now, there is a short exact sequence of complexes as in (\ref{Eq:sesmc}) and the corresponding long exact sequence in homology is given by:
+        \begin{center}
+            \begin{tikzcd}
+                 0 \ar[r] 
+                   & \mathrm{H}_{4}(\Pol) \ar[r] 
+                      & \mathrm{H}_{4}(\Con(\Psi)) \ar[r] 
+                                  \ar[d, phantom, ""{coordinate, name=Z}]
+                         & \mathrm{H}_{4}(\Sigma^{2}\Pol) \ar[dll, rounded corners,
+                                                   to path={ -- ([xshift=2ex]\tikztostart.east)
+                						|- (Z) [pos=0.3]\tikztonodes
+                						-| ([xshift=-2ex]\tikztotarget.west) 
+                						-- (\tikztotarget)}] 
+                \\
+                   & \mathrm{H}_{3}(\Pol) \ar[r] 
+                      & \mathrm{H}_{3}(\Con(\Psi)) \ar[r, "{\nu^{1}_{\ast}}"] 
+                                  \ar[d, phantom, ""{coordinate, name=Z}]
+                         & \mathrm{H}_{3}(\Sigma^{2}\Pol) \ar[dll, rounded corners,
+                                                   to path={ -- ([xshift=2ex]\tikztostart.east)
+                						|- (Z) [pos=0.3]\tikztonodes
+                						-| ([xshift=-2ex]\tikztotarget.west) 
+                						-- (\tikztotarget)}] 
+                \\
+                   & \mathrm{H}_{2}(\Pol) \ar[r] 
+                      & \mathrm{H}_{2}(\Con(\Psi)) \ar[r] 
+                                  \ar[d, phantom, ""{coordinate, name=Z}]
+                         & \mathrm{H}_{2}(\Sigma^{2}\Pol) \ar[dll, "{\Psi_{*}}", rounded corners,
+                                                   to path={ -- ([xshift=2ex]\tikztostart.east)
+                						|- (Z) [pos=0.3]\tikztonodes
+                						-| ([xshift=-2ex]\tikztotarget.west) 
+                						-- (\tikztotarget)}]
+                \\
+                   & \mathrm{H}_{1}(\Pol) \ar[r] 
+                      & \mathrm{H}_{1}(\Con(\Psi)) \ar[r] 
+                                  \ar[d, phantom, ""{coordinate, name=Z}]
+                         & \mathrm{H}_{1}(\Sigma^{2}\Pol) \ar[dll, rounded corners,
+                                                   to path={ -- ([xshift=2ex]\tikztostart.east)
+                						|- (Z) [pos=0.3]\tikztonodes
+                						-| ([xshift=-2ex]\tikztotarget.west) 
+                						-- (\tikztotarget)}]
+                \\
+                    & \mathrm{H}_{0}(\Pol) \ar[r, "{\eta^{0}_{\ast}}"] 
+                      & \mathrm{H}_{0}(\Con(\Psi)) \ar[r] 
+                         & \mathrm{H}_{0}(\Sigma^{2}\Pol) 
+            \end{tikzcd}
+        \end{center}
+        Recall the homology of the suspension is
+        \[\mathrm{H}_{j}(\Sigma \bul{C}^{1}) = \mathrm{H}_{j}(\Sigma^{2}\Pol)=\begin{cases}
+                N & j=2,3,\\
+                0 &\text{else}.
+        \end{cases}\]
+        Then the long exact sequence in homology becomes 
+        \begin{center}
+            \begin{tikzcd}
+                 0 \ar[r] 
+                   & 0 \ar[r] 
+                      & \mathrm{H}_{4}(\Con(\Psi)) \ar[r] 
+                                  \ar[d, phantom, ""{coordinate, name=Z}]
+                         & 0 \ar[dll, rounded corners,
+                                                   to path={ -- ([xshift=2ex]\tikztostart.east)
+                						|- (Z) [pos=0.3]\tikztonodes
+                						-| ([xshift=-2ex]\tikztotarget.west) 
+                						-- (\tikztotarget)}] 
+                \\
+                   & 0 \ar[r] 
+                      & \mathrm{H}_{3}(\Con(\Psi)) \ar[r, "{\nu^{1}_{\ast}}"] 
+                                  \ar[d, phantom, ""{coordinate, name=Z}]
+                         & N \ar[dll, rounded corners,
+                                                   to path={ -- ([xshift=2ex]\tikztostart.east)
+                						|- (Z) [pos=0.3]\tikztonodes
+                						-| ([xshift=-2ex]\tikztotarget.west) 
+                						-- (\tikztotarget)}] 
+                \\
+                   & 0 \ar[r] 
+                      & \mathrm{H}_{2}(\Con(\Psi)) \ar[r] 
+                                  \ar[d, phantom, ""{coordinate, name=Z}]
+                         & N \ar[dll, "{\Psi_{*}}", rounded corners,
+                                                   to path={ -- ([xshift=2ex]\tikztostart.east)
+                						|- (Z) [pos=0.3]\tikztonodes
+                						-| ([xshift=-2ex]\tikztotarget.west) 
+                						-- (\tikztotarget)}]
+                \\
+                   & N \ar[r] 
+                      & \mathrm{H}_{1}(\Con(\Psi)) \ar[r] 
+                                  \ar[d, phantom, ""{coordinate, name=Z}]
+                         & 0 \ar[dll, rounded corners,
+                                                   to path={ -- ([xshift=2ex]\tikztostart.east)
+                						|- (Z) [pos=0.3]\tikztonodes
+                						-| ([xshift=-2ex]\tikztotarget.west) 
+                						-- (\tikztotarget)}]
+                \\
+                    & N \ar[r, "{\eta^{0}_{\ast}}"] 
+                      & \mathrm{H}_{0}(\Con(\Psi)) \ar[r] 
+                         & 0
+            \end{tikzcd}
+        \end{center}
+        which reduces to three isomorphisms
+        \begin{align}
+            &\nu^{1}_{\ast}:\mathrm{H}_{3}(\Con(\Psi))\to \mathrm{H}_{3}(\Sigma^{2}\Pol),\label{Iso:nu1} \\
+            &\Psi_{\ast}: \mathrm{H}_{2}(\Sigma^{2}\Pol)\to \mathrm{H}_{1}(\Pol), \nonumber\\
+            &\eta^{0}_{\ast}:\mathrm{H}_{0}(\Pol)\to \mathrm{H}_{0}(\Con(\Psi)). \nonumber
+        \end{align}
+        Hence the homology of $\Con(\Psi)$ is given by
+        \[\mathrm{H}_{j}(\Con(\Psi))=\mathrm{H}_{j}(\bul{M}^{1}) = \begin{cases}
+        		N & \text{if } j=0,3, \\
+        		0 & \text{else.}\\ 
+        \end{cases}\]
+        To build the map $\psi^{2}:\Sigma \bul{C}^{2}\to \bul{M}^{1}$ consider Diagram (\ref{Eq:firstlift}) which, after applying the definition of the maps in the collection $\{\phi^{i}:C^{i}\to C^{i-1}\}_{i\ge 1}$, is of the form
+        \[\begin{tikzcd}[row sep=large, column sep=large]
+        	&&& {\Sigma^{3} \Pol} \\
+        	0 & {\Pol} & {\Con(\Psi)} & {\Sigma^{2} \Pol} & 0
+        	\arrow["{\psi^{2}}"', dashed, from=1-4, to=2-3]
+        	\arrow["{\Sigma^{2}\Psi}", from=1-4, to=2-4]
+        	\arrow[from=2-1, to=2-2]
+        	\arrow["{\eta^{0}}", from=2-2, to=2-3]
+        	\arrow["{\nu^{1}}", from=2-3, to=2-4]
+        	\arrow[from=2-4, to=2-5]
+        \end{tikzcd}\]
+        By construction, $\psi^{2}\nu^{1} = \Sigma\phi^{2} =\Sigma^{2}\Psi$ and this map induces an isomorphism in degree 3 homology $(\Sigma^{2}\Psi)_{\ast} : \mathrm{H}_{3}(\Sigma^{3}\Pol)\to \mathrm{H}_{3}(\Sigma^{2}\Pol).$
+        This, combined with the above isomorphism (\ref{Iso:nu1}), implies that the induced map $\psi^{2}_{\ast}:\mathrm{H}_{3}(\Sigma^{3}\Pol)\to \mathrm{H}_{3}(\Con(\Psi))$
+        is an isomorphism given by $\psi^{2}_{\ast} = (\Sigma^{2}\Psi)_{\ast}(\nu^{1}_{\ast})^{-1}$.
+
+        Now suppose that the construction holds for $\bul{M}^{i}=\Con(\psi^{i})$ where $i\ge1$. The map $\psi^{i+1}:\Sigma^{i}\bul{C}^{i+1}\to \bul{M}^{i}$ is given by
+        \[\begin{tikzcd}
+        	\opp_{n} & \opp_{n-1} & \cdots & \opp_{2} & \opp_{1} & \opp_{0} & & & & \\
+        	& M^{i}_{2i+n} & \cdots & M^{i}_{2i+3} & M^{i}_{2i+2} & M^{i}_{2i+1} & M^{i}_{2i} & \cdots & &
+        	\arrow["-\od_{n}", from=1-1, to=1-2]
+        	\arrow["-\od_{n-1}", from=1-2, to=1-3]
+        	\arrow["\psi^{i+1}_{n}", from=1-2, to=2-2]
+        	\arrow["-\od_{3}", from=1-3, to=1-4]
+        	\arrow["-\od_{2}", from=1-4, to=1-5]
+        	\arrow["\psi^{i+1}_{3}", from=1-4, to=2-4]
+        	\arrow["-\od_{1}", from=1-5, to=1-6]
+        	\arrow["\psi^{i+1}_{2}", from=1-5, to=2-5]
+        	\arrow["\psi^{i+1}_{1}", from=1-6, to=2-6]
+        	\arrow["\partial^{i}_{2i+n}", from=2-2, to=2-3]
+        	\arrow["\partial^{i}_{2i+4}", from=2-3, to=2-4]
+        	\arrow["\partial^{i}_{2i+3}", from=2-4, to=2-5]
+        	\arrow["\partial^{i}_{2i+2}", from=2-5, to=2-6]
+        	\arrow["\partial^{i}_{2i+1}", from=2-6, to=2-7]
+            \arrow[from=2-7, to=2-8]
+        \end{tikzcd}\]
+        and hence the mapping cone $\bul{M}^{i+1}=\Con(\psi^{i+1})$ is given by
+        \[M^{i+1}_{j}=\begin{cases}
+                M^{i}_{j} & 0\le j\le 2i+1,\\
+                \opp_{j-(2i+2)}\oplus M^{i}_{j} & 2i+2\le j\le 2i+n,\\
+                \opp_{j-(2i+2)} & j=2i+1+n,\;\;\; 2i+2+n.
+            \end{cases}\]
+            \[\partial^{i+1}_{j}=
+            \begin{aligned}
+            \begin{cases}
+                \partial^{i}_{j} & 1\le j\le 2i+1,\\[10pt]
+                \begin{bmatrix}
+                    -\psi^{i+1}_{1} \\
+                    \partial^{i}_{2i+2}
+                \end{bmatrix} & j=2i+2, \\[15pt]
+                \renewcommand\arraystretch{1.5}
+                \begin{bmatrix}
+                    \od_{j-(2i+2)} & -\psi^{i+1}_{j-(2i+1)}\\
+                    0 & \partial^{i}_{j}
+                \end{bmatrix} & 2i+3\le j\le 2i+n,\\[18pt]
+                \begin{bmatrix}
+                    \od_{n-1} & -\psi^{i+1}_{n}
+                \end{bmatrix} & j=2i+1+n,\\[10pt]
+                \od_{n} & j=2i+2+n.
+            \end{cases}
+            \end{aligned}\]
+        By the inductive hypothesis the homology of $\bul{M}^{i}$ is 
+        \[\mathrm{H}_{j}(\bul{M}^{i})=\begin{cases}
+                N & j=0,\;2i+1,\\
+                0 &\text{else}.
+            \end{cases}\]
+        and the map $\psi^{i+1}:\Sigma^{i}\bul{C}^{i+1}\to \bul{M}^{i}$ induces an isomorphism on homology in degree $2i+1$
+        \[\psi^{i+1}_{\ast}:\mathrm{H}_{2i+1}(\Sigma^{2i+1} \Pol)\to \mathrm{H}_{2i+1}(\bul{M}^{i}).\]
+        There is a short exact sequence of complexes as in \ref{Eq:sesmc}:
+        \[
+            \begin{tikzcd}
+            	0 \arrow[r] & \bul{M}^{i} \arrow[r, "\eta^{i}"] \arrow[d, "\cong"] & \bul{M}^{i+1} \arrow[r, "\nu^{i+1}"]\arrow[d, "\cong"] & \Sigma(\Sigma^{i} C^{i+1}) \arrow[d, "\cong"]\arrow[r] & 0 \\
+                0 \arrow[r] & \bul{M}^{i} \arrow[r] & \bul{M}^{i+1} \arrow[r] & \Sigma^{2i+2} \Pol \arrow[r] & 0
+            \end{tikzcd}
+        \]
+        Recall that the homology is given by 
+        \[\mathrm{H}_{j}(\Sigma(\Sigma^{i}\bul{C}^{i+1})) = \mathrm{H}_{j}(\Sigma^{2i+2}\Pol)=\begin{cases}
+                N & j=2i+2,\;2i+3,\\
+                0 &\text{else}.
+        \end{cases}\]
+        Then in the long exact sequence in homology there will only be two non-zero entries each for $\mathrm{H}_{j}(\bul{M}^{i})$ and $\mathrm{H}_{j}(\Sigma^{2i+2}\Pol)$ respectively:
+        \begin{center}
+            \begin{tikzcd}
+                 \cdots \ar[r] 
+                   & \mathrm{H}_{2i+4}(\bul{M}^{i}) \ar[r] 
+                      & \mathrm{H}_{2i+4}(\bul{M}^{i+1}) \ar[r] 
+                                  \ar[d, phantom, ""{coordinate, name=Z}]
+                         & \mathrm{H}_{2i+4}(\Sigma^{2i+2}\Pol) \ar[dll, rounded corners,
+                                                   to path={ -- ([xshift=2ex]\tikztostart.east)
+                						|- (Z) [pos=0.3]\tikztonodes
+                						-| ([xshift=-2ex]\tikztotarget.west) 
+                						-- (\tikztotarget)}] 
+                \\
+                   & \mathrm{H}_{2i+3}(\bul{M}^{i}) \ar[r] 
+                      & \mathrm{H}_{2i+3}(\bul{M}^{i+1}) \ar[r, "{\nu^{i+1}_{\ast}}"] 
+                                  \ar[d, phantom, ""{coordinate, name=Z}]
+                         & \mathrm{H}_{2i+3}(\Sigma^{2i+2}\Pol) \ar[dll, rounded corners,
+                                                   to path={ -- ([xshift=2ex]\tikztostart.east)
+                						|- (Z) [pos=0.3]\tikztonodes
+                						-| ([xshift=-2ex]\tikztotarget.west) 
+                						-- (\tikztotarget)}] 
+                \\
+                   & \mathrm{H}_{2i+2}(\bul{M}^{i}) \ar[r] 
+                      & \mathrm{H}_{2i+2}(\bul{M}^{i+1}) \ar[r] 
+                                  \ar[d, phantom, ""{coordinate, name=Z}]
+                         & \mathrm{H}_{2i+2}(\Sigma^{2i+2}\Pol) \ar[dll, "{\psi^{i+1}_{\ast}}", rounded corners,
+                                                   to path={ -- ([xshift=2ex]\tikztostart.east)
+                						|- (Z) [pos=0.3]\tikztonodes
+                						-| ([xshift=-2ex]\tikztotarget.west) 
+                						-- (\tikztotarget)}]
+                \\
+                   & \mathrm{H}_{2i+1}(\bul{M}^{i}) \ar[r] 
+                      & \mathrm{H}_{2i+1}(\bul{M}^{i+1}) \ar[r] 
+                                  \ar[d, phantom, ""{coordinate, name=Z}]
+                         & \mathrm{H}_{2i+1}(\Sigma^{2i+2}\Pol) \ar[dll, rounded corners,
+                                                   to path={ -- ([xshift=2ex]\tikztostart.east)
+                						|- (Z) [pos=0.3]\tikztonodes
+                						-| ([xshift=-2ex]\tikztotarget.west) 
+                						-- (\tikztotarget)}]
+                \\
+                   &  \;\cdots\cdots\; \ar[r] 
+                      & \mathrm{H}_{2}(\bul{M}^{i+1}) \ar[r] 
+                                  \ar[d, phantom, ""{coordinate, name=Z}]
+                         & \mathrm{H}_{2}(\Sigma^{2i+2}\Pol) \ar[dll, rounded corners,
+                                                   to path={ -- ([xshift=2ex]\tikztostart.east)
+                						|- (Z) [pos=0.3]\tikztonodes
+                						-| ([xshift=-2ex]\tikztotarget.west) 
+                						-- (\tikztotarget)}]
+                \\
+                   & \mathrm{H}_{1}(\bul{M}^{i}) \ar[r] 
+                      & \mathrm{H}_{1}(\bul{M}^{i+1}) \ar[r] 
+                                  \ar[d, phantom, ""{coordinate, name=Z}]
+                         & \mathrm{H}_{1}(\Sigma^{2i+2}\Pol) \ar[dll, rounded corners,
+                                                   to path={ -- ([xshift=2ex]\tikztostart.east)
+                						|- (Z) [pos=0.3]\tikztonodes
+                						-| ([xshift=-2ex]\tikztotarget.west) 
+                						-- (\tikztotarget)}]
+                \\
+                    & \mathrm{H}_{0}(\bul{M}^{i}) \ar[r, "{\eta^{i}_{\ast}}"] 
+                      & \mathrm{H}_{0}(\bul{M}^{i+1}) \ar[r] 
+                         & \mathrm{H}_{0}(\Sigma^{2i+2}\Pol) 
+            \end{tikzcd}
+        \end{center}
+        This will again reduce to three isomorphisms 
+        \begin{align}
+           &\nu^{i+1}_{\ast}:\mathrm{H}_{2i+3}(\bul{M}^{i+1})\to \mathrm{H}_{2i+3}(\Sigma^{2i+2}\Pol),\label{Iso:nui}\\
+            &\psi^{i+1}_{\ast}: \mathrm{H}_{2i+1}(\Sigma^{2i+1}\Pol)\to \mathrm{H}_{2i+1}(\bul{M}^{i}), \nonumber\\
+            &\eta^{i}_{\ast}:\mathrm{H}_{0}(\bul{M}^{i})\to \mathrm{H}_{0}(\bul{M}^{i+1}). \nonumber
+        \end{align}
+        and hence the homology of $\bul{M}^{i+1}$ is given by
+        \[\mathrm{H}_{j}(\bul{M}^{i+1}) = \begin{cases}
+        		N & \text{if } j=0,\;2i+3, \\
+        		0 & \text{else.}\\ 
+        \end{cases}\]
+
+         To build the map $\psi^{i+2}:\Sigma^{i+1} \bul{C}^{i+2}\to \bul{M}^{i+1}$ consider Diagram (\ref{Eq:secondlift}, which is of the form
+        \[\begin{tikzcd}[row sep=large, column sep=large]
+        	&&& {\Sigma^{2i+3} \Pol} \\
+        	0 & {\bul{M}^{i}} & {\bul{M}^{i+1}} & {\Sigma^{2i+2} \Pol} & 0
+        	\arrow["{\psi^{i+2}}"', dashed, from=1-4, to=2-3]
+        	\arrow["{\Sigma^{2i+2}\Psi}", from=1-4, to=2-4]
+        	\arrow[from=2-1, to=2-2]
+        	\arrow["{\eta^{i}}", from=2-2, to=2-3]
+        	\arrow["{\nu^{i+1}}", from=2-3, to=2-4]
+        	\arrow[from=2-4, to=2-5]
+        \end{tikzcd}\]
+        By construction, the map $\psi^{i+2}\nu^{n+1} =\Sigma^{2i+3}\Psi$ induces an isomorphism in degree $2i+3$ homology
+        \[(\Sigma^{2i+2}\Psi)_{\ast} : \mathrm{H}_{2i+3}(\Sigma^{2i+3}\Pol)\to \mathrm{H}_{2i+3}(\Sigma^{2i+2}\Pol).\]
+        This, combined with the isomorphism (\ref{Iso:nui}), imply that the induced map 
+        \[\psi^{i+1}_{\ast}:\mathrm{H}_{2i+3}(\Sigma^{2i+3}\Pol)\to \mathrm{H}_{2i+3}(\bul{M}^{i+1})\]
+        is the isomorphism given by $\psi^{i+1}_{\ast} = (\Sigma^{2i+2}\Psi)_{\ast}(\nu^{i+1}_{\ast})^{-1}$.
+
+        By induction on $i\ge 1$ the first three parts hold.
+
+        Now consider the direct limit $M_{\bullet}=\lim\limits_{i\to \infty} \bul{M}^{i}$ of the constructed sequence $\{\bul{M}^{i},\eta^{i}\}_{i\ge 0}$. 
+        This colimit is filtered so by \cite[Cor.~2.6.17, p.58]{weibel} it commutes with the homology functor and we have
+        \[\mathrm{H}_{j}(M_{\bullet})=\mathrm{H}_{j}\left(\lim_{i\to\infty}\bul{M}^{i}\right)=\lim_{i\to\infty}\mathrm{H}_{j}(\bul{M}^{i}) = \begin{cases}
+    		N & \text{if } i=0, \\
+    		0 & \text{else.}\\ 
+    	\end{cases}\]
+        Hence $M_{\bullet}\to N$ is a projective resolution of $N\in\SMod$.
+    \end{proof}
+    By construction of the sequence $\{\bul{M}^{i},\eta^{i}\}_{i\ge 0}$ we get the following:
+    \begin{corollary}\label{Cor:shiftedpsi}
+        For each $i \ge1$, the map $\psi^{i+1}:\Sigma^{2i+1}\Pol\to \bul{M}^{i}$ in Construction \ref{Con:imc} can be chosen so that in each degree $k$ it is the composition 
+        \[\psi^{i+1}_{k} = \phi^{i+1}_{k}(-1)^{i}\nu^{i}_{k} = (-1)^{i}(\Sigma^{i}\Psi_{k})\nu^{i}_{k}\]
+        where $\nu^{i}_{k}$ is the inclusion $\Sigma^{i}\opp_{k}\to M^{i}_{k}$, with $M^{i}_{k} =C^{i}_{k-i}\oplus M^{i-1}_{k}=\Sigma^{i}\opp_{k}\oplus M^{i-1}_{k}$.
+
+        Then, by re-indexing as in Remark \ref{Rem:reindex}, the map is given by
+        \[\psi^{i+1}_{j}:\opp_{j}\to M^{i}_{2i+1+j} = \opp_{j+1}\oplus M^{i-1}_{2i+1+j},\]
+        which coincides the map $\psi^{1}=\Psi:\Sigma\Pol\to\Pol$ shifted by $2i+1$ and then included into $\bul{M}^{i}$ by the map $\nu^{i}$.
+    \end{corollary}
+    \begin{proof}
+        By \cite[Prop.~3.3]{imc} it suffices to show that the collection $\{\phi^{i}:\bul{C}^{i}\to \bul{C}^{i-1}\}_{i\ge 1}$ used in Construction \ref{Con:imc} is be a sequence of chain maps of bounded below complexes of projective $S$-modules, that is to say; $\phi^{i+1}\phi^{i} = 0$ for all $i \ge0$. Now, by construction, $\phi^{i+1}\phi^{i} = 0$ if and only if $\psi^{i+1}\psi^{i}=0$, so it will suffice to prove the later statement for $i\ge 0$. 
+        
+        To this end, let $i\ge 0$. Then for $2i+2\le j\le 2i+n$, the differentials will be given as in Construction \ref{Con:imc}:
+        \[\partial^{i+1}_{j+1}=\renewcommand\arraystretch{1.5}\begin{bmatrix}
+                    \od_{j+1-(2i+2)} & -\psi^{i+1}_{j+1-(2i+1)}\\
+                    0 & \partial^{i}_{j+1}
+                \end{bmatrix},\;\; \partial^{i+1}_{j}=\renewcommand\arraystretch{1.5}\begin{bmatrix}
+                    \od_{j-(2i+2)} & -\psi^{i+1}_{j-(2i+1)}\\
+                    0 & \partial^{i}_{j}
+                \end{bmatrix}.\]
+        Since $\bul{M}^{i+1}$ is a complex the composition $\partial^{i+1}_{j+1}\partial^{i+1}_{j}=0$. On the other hand, one of the entries in this composition is $-\psi^{i+1}_{j-(2i+1)}\partial^{i}_{j+1}$ where
+        \[\partial^{i}_{j+1} = \renewcommand\arraystretch{1.5}\begin{bmatrix}
+                    \od_{j+1-2i} & -\psi^{i}_{j+1-(2i-1)}\\
+                    0 & \partial^{i-1}_{j+1}
+                \end{bmatrix}\]
+        and hence there is be term of the form $\psi^{i+1}_{j-(2i+1)}\psi^{i}_{j+1-(2i-1)}$, which is necessarily $0$. This holds for all $2i+2\le j\le 2i+n$ so that $\psi^{i+1}\psi^{i}=0$.
+    \end{proof}
+
+    \begin{remark}\label{Rem:psij}
+        Since the mapping $\psi^{i+1}=\Sigma^{2i+1}\Psi$ is just $\psi^{1}=\Psi:\Sigma\Pol\to \Pol$ shifted by $2i+1$, it follows that we can drop the superscript by re-indexing. That is to say, we can simply write, with no confusion 
+        \[\psi_{j}:\opp_{j}\to M^{i}_{2i+1+j}.\]
+        Furthermore, by Corollary \ref{Cor:shiftedpsi}, we can identify this map with $\Psi_{j}:\Sigma\opp_{j}\to\opp_{j}$ for each $1\le j\le n$.
+    \end{remark}
+
+    \section{Eventual periodicity}\label{S:period}
+    In this section, we study the structure of the complexes in the directed sequence $\{\bul{M}^{i},\eta^{i}\}_{i\ge 0}$ from Construction \ref{Con:imc}. The goal is to prove that the limit of the sequence, $\bul{M}$, is eventually $2$-periodic. 
+    
+    We warn the reader that while many of the results in this section are relatively straightforward, they have tedious and unenlightening proofs which revolve around the recursive formulae from Construction \ref{Con:imc} and separating into various cases depending on parity. This often descends into subscript bookkeeping. Nevertheless, we have made considerable efforts to make the computations as easy to follow as possible.
+
+    To start, the recursive nature of $\{\bul{M}^{i},\eta^{i}\}_{i\ge 0}$ described in the first part of Construction \ref{Con:imc} implies the modules and differentials eventually stabilize in the following sense:
+    \begin{corollary}\label{Cor:mistable}
+        Let $j\ge 0$. Then for all $i\ge\ceil*{\frac{j+1}{2}}$ we have $M_{j} = M^{i}_{j}$ and $\partial_{j}=\partial^{i}_{j}$.
+    \end{corollary}
+    \begin{proof}
+        Let $j\ge 0$, and set $l=\ceil{\frac{j+1}{2}}$. Then since $M_{\bullet}=\lim\limits_{i\to \infty} \bul{M}^{i}$ it suffices to show that $M^{l+i}_{j} = M^{l}_{j}$ and $\partial^{l+i}_{j}=\partial^{l}_{j}$ for all $i\ge 1$. This follows directly from the first part of Construction \ref{Con:imc} since for any $i\ge 1$ we have
+        \[j\le 2\ceil*{\frac{j+1}{2}}+1=2l+1\le 2(l+i)-1\]
+        so that $M^{l+i}_{j} = M^{l}_{j}$ and $\partial^{l+i}_{j}=\partial^{l}_{j}$.
+    \end{proof}
+    Recall that $n=\pd_{R}(N)<\infty$ by assumption. For the complexes $\bul{M}^{i}$ with index $i\le \frac{n}{2}$, there is an explicit description of the modules and differentials in terms of the complex $\bul{C}^{0}=\Pol$: the modules are ascending summations of either the even or odd terms of $\Pol$ and the differentials are constructed as `zig-zag' morphisms between these summations as in \cite[Thm.~4.1]{imc}: 
+    \begin{corollary}\label{Cor:sumsofp}
+        For $i\le\frac{n}{2}$ the modules in the $i$-th mapping cone $\bul{M}^{i}$ are given by
+        \[M^{i}_{j} = \begin{cases}
+            \bigoplus\limits_{k=0}^{\floor*{\frac{j}{2}}} \opp_{j-2k} & 0\le j\le 2i-1, \\[10pt]
+            \bigoplus\limits_{k=0}^{i}\opp_{j-2k} & 2i\le j\le n,\\[10pt]
+            \bigoplus\limits_{k=\ceil*{\frac{j-n}{2}}}^{i}\opp_{j-2k} & n+1\le j\le 2i+n.\\
+        \end{cases}\]
+        Similarly, for each $1\le j\le2i+n-1$, the differential $\partial^{i}_{j}:M^{i}_{j}\to M^{i}_{j-1}$ is given by the diagram
+        \begin{equation}\label{Eq:diffmi}
+             \xymatrixrowsep{2pc}
+             \xymatrixcolsep{4pc}
+             \xymatrix{
+             &\opp_{j\phantom{+2}}
+             \ar@{}[d]_{\bigoplus}
+             \ar@{->}[r]^{\od_{j}}
+             &\opp_{j-1}\ar@{}[d]_{\bigoplus} & \\
+             &\opp_{j-2}\ar@{}[d]_{\bigoplus}
+             \ar@{->}[ur]^{-\psi_{j-1}}
+             \ar@{->}[r]^{\od_{j-2}}
+             &\opp_{j-3}\ar@{}[d]_{\bigoplus} & \\
+             &\opp_{j-4}\ar@{}[d]_{\vdots}
+             \ar@{->}[ur]^{-\psi_{j-3}}
+             \ar@{->}[r]^{\od_{j-4}}
+             &\opp_{j-5}\ar@{}[d]_{\vdots} & \\
+             & & &\\
+            &\opp_{j-2k}\ar@{}[d]_{\vdots}
+            \ar@{->}[ur]^{-\psi_{j-2k+1}}
+            \ar@{->}[r]^{\od_{j-2k}}
+            &\opp_{j-2k+1}\ar@{}[d]_{\vdots} & \\
+            & & &
+             }
+        \end{equation}
+        where $\psi_{j}:\opp_{j}\to M^{i}_{2i+1+j}$ is identified with $\Psi_{j}:\Sigma\opp_{j}\to\opp_{j}$ is as in Remark \ref{Rem:psij}.
+    \end{corollary}
+    \begin{proof}
+        Both statements follow directly from the recursive description of $\bul{M}^{i}=(M^{i}_{j},\partial^{i}_{j})_{j\ge0}$ from the first part of Construction \ref{Con:imc}.
+
+        Alternatively, consider the following ``staircase diagram'' of $i\le\frac{n}{2}$ copies of the complex $\Pol$ together with the maps $\phi^{i+1}_{j}=\Sigma^{i}\Psi_{j}:\Sigma^{i+1}\opp_{j}\to\Sigma^{i}\opp_{j}$ as in Remark \ref{Rem:psij}:
+        \[\begin{tikzcd}[ampersand replacement=\&, row sep = scriptsize, column sep = small, cramped]
+			{\opp_{n}} \& {\opp_{n-1}} \& {\opp_{n-2}} \& {\opp_{n-3}} \& {\opp_{n-4}} \& {\cdots} \& {\opp_{1}} \& {\opp_{0}} \\
+			\& {\opp_{n}} \& {\opp_{n-1}} \& {\opp_{n-2}} \& {\opp_{n-3}} \& {\cdots} \& {\opp_{2}} \& {\opp_{1}} \&  {\opp_{0}} \\
+			\&\&  {\opp_{n}} \&  {\opp_{n-1}} \&  {\opp_{n-2}} \&  {\cdots} \&  {\opp_{3}} \&  {\opp_{2}} \&  {\opp_{1}} \& {\opp_{0}} \\
+			\&\&\& {\opp_{n}} \& {\opp_{n-1}} \& \cdots \& {\opp_{4}} \& {\opp_{3}} \& {\opp_{2}} \& {\opp_{1}} \& {\opp_{0}} \\
+			\&\&\&\& {\opp_{n}} \& \cdots \& {\opp_{5}} \& {\opp_{4}} \& {\opp_{3}} \& {\opp_{2}} \& {\opp_{1}} \& {\opp_{0}}
+			\arrow["{\od}", from=1-1, to=1-2]
+			\arrow["{\od}", from=1-2, to=1-3]
+			\arrow["{\psi}", from=1-2, to=2-2]
+			\arrow["{\od}", from=1-3, to=1-4]
+			\arrow["{\psi}", from=1-3, to=2-3]
+			\arrow["{\od}", from=1-4, to=1-5]
+			\arrow["{\psi}", from=1-4, to=2-4]
+			\arrow[from=1-5, to=1-6]
+			\arrow["{\psi}", from=1-5, to=2-5]
+			\arrow[from=1-6, to=1-7]
+			\arrow["{\od}", from=1-7, to=1-8]
+			\arrow["{\psi}", from=1-7, to=2-7]
+			\arrow["{\psi}", from=1-8, to=2-8]
+			\arrow["{-\od}", from=2-2, to=2-3]
+			\arrow["{-\od}", from=2-3, to=2-4]
+			\arrow["{\psi}", from=2-3, to=3-3]
+			\arrow["{-\od}", from=2-4, to=2-5]
+			\arrow["{\psi}", from=2-4, to=3-4]
+			\arrow[from=2-5, to=2-6]
+			\arrow["{\psi}", from=2-5, to=3-5]
+			\arrow[from=2-6, to=2-7]
+			\arrow["{-\od}", from=2-7, to=2-8]
+			\arrow["{\psi}", from=2-7, to=3-7]
+			\arrow["{-\od}", from=2-8, to=2-9]
+			\arrow["{\psi}", from=2-8, to=3-8]
+			\arrow["{\psi}", from=2-9, to=3-9]
+			\arrow["{\od}", from=3-3, to=3-4]
+			\arrow["{\od}", from=3-4, to=3-5]
+			\arrow["{\psi}", from=3-4, to=4-4]
+			\arrow[from=3-5, to=3-6]
+			\arrow["{\psi}", from=3-5, to=4-5]
+			\arrow[from=3-6, to=3-7]
+			\arrow["{\od}", from=3-7, to=3-8]
+			\arrow["{\psi}", from=3-7, to=4-7]
+			\arrow["{\od}", from=3-8, to=3-9]
+			\arrow["{\psi}", from=3-8, to=4-8]
+			\arrow["{\od}", from=3-9, to=3-10]
+			\arrow["{\psi}", from=3-9, to=4-9]
+			\arrow["{\psi}", from=3-10, to=4-10]
+			\arrow["{-\od}", from=4-4, to=4-5]
+			\arrow[from=4-5, to=4-6]
+			\arrow["{\psi}", from=4-5, to=5-5]
+			\arrow[from=4-6, to=4-7]
+			\arrow["{-\od}", from=4-7, to=4-8]
+			\arrow["{\psi}", from=4-7, to=5-7]
+			\arrow["{-\od}", from=4-8, to=4-9]
+			\arrow["{\psi}", from=4-8, to=5-8]
+			\arrow["{-\od}", from=4-9, to=4-10]
+			\arrow["{\psi}", from=4-9, to=5-9]
+			\arrow["{-\od}", from=4-10, to=4-11]
+			\arrow["{\psi}", from=4-10, to=5-10]
+			\arrow["{\psi}", from=4-11, to=5-11]
+			\arrow["{\od}", from=5-5, to=5-6]
+			\arrow[from=5-6, to=5-7]
+			\arrow["{\od}", from=5-7, to=5-8]
+			\arrow["{\od}", from=5-8, to=5-9]
+			\arrow["{\od}", from=5-9, to=5-10]
+			\arrow["{\od}", from=5-10, to=5-11]
+			\arrow["{\od}", from=5-11, to=5-12]
+		\end{tikzcd}\]
+        
+        Taking the direct sum along the $j$-th diagonal of slope $+1$ gives the module $M_{j}^{i}$. The differentials $\partial^{i}_{j}$ are the corresponding morphisms between successive diagonals (taken with appropriate negative signs as in \S\ref{S:notation}), which are precisely the maps given in (\ref{Eq:diffmi}).
+    \end{proof}
+    
+    We now investigate the structure of the complexes $\bul{M}^{i}$ with $i=\ceil*{\frac{n}{2}}$. At this point the periodicity in the successive complexes $\bul{M}^{i}$ and $\bul{M}^{i+1}$ will begin to appear. In particular, the `tail' of the complexes (degrees $\ge n-1$) starts to show $2$-periodicity:
+    \begin{lemma}\label{Lem:nexttwo}
+        Let $n=\pd_{R}(N)<\infty$ and $i=\ceil*{\frac{n}{2}}$. Then $M^{i+1}_{j+2} = M^{i}_{j}$ for all $j\ge n-1$.
+    \end{lemma}
+    \begin{proof}
+        There will be three cases depending on the degree, $j\ge 0$, as in the first part of Construction \ref{Con:imc}:
+        \begin{enumerate}[label=(\roman*)]
+            \item ($n+1\le j+2\le 2i+1$). Then $M^{i+1}_{j+2} = M^{i}_{j+2}=\opp_{j+2-2i}\oplus M^{i-1}_{j+2}$, and since $i-1\le\frac{n}{2}$, Corollary \ref{Cor:sumsofp} implies that $M^{i-1}_{j+2} = \bigoplus\limits_{k=1}^{i-1}\opp_{j+2-2k}.$ Together, this gives 
+            \[M^{i+1}_{j+2}=\opp_{j+2-2i}\oplus M^{i-1}_{j+2}=\bigoplus_{k=1}^{i}\opp_{j-2(k-1)} = \bigoplus_{k=0}^{i-1}\opp_{j-2k} = M^{i}_{j}.\]
+            \item ($2i+2\le j+2<2i+n+1$). In this case there are three terms:
+            \[M^{i+1}_{j+2} = \opp_{j+2-2(i+1)}\oplus M^{i}_{j+2} = \opp_{j+2-2(i+1)}\oplus\opp_{j+2-2i}\oplus M^{i-1}_{j+2}.\]
+            Again, $i-1\le\frac{n}{2}$, so Corollary \ref{Cor:sumsofp} implies that $M^{i-1}_{j+2} = \bigoplus\limits_{k=\ceil*{\frac{j+2-n}{2}}}^{i-1}\opp_{j+2-2k}$
+            and hence
+            \begin{align*}
+                M^{i+1}_{j+2} &= \opp_{j+2-2(i+1)}\oplus\opp_{j+2-2i}\oplus M^{i-1}_{j+2}\\ 
+                &= \opp_{j-2i}\oplus\left(\bigoplus_{k=\ceil*{\frac{j+2-n}{2}}}^{i}\opp_{j+2-2k}\right)
+            \end{align*}
+            \begin{align*}
+                \phantom{M^{i+1}_{j+2}} &= \opp_{j-2i}\oplus\left(\bigoplus_{k=\ceil*{\frac{j-n}{2}}+1}^{i}\opp_{j-2(k-1)}\right)
+            \end{align*}
+            \begin{align*}
+                \phantom{M^{i+1}_{j+2}} &= \opp_{j-2i}\oplus\left(\bigoplus_{k=\ceil*{\frac{j-n}{2}}}^{i-1}\opp_{j-2k}\right) \\
+                &= \bigoplus_{k=\ceil*{\frac{j-n}{2}}}^{i}\opp_{j-2k} = M^{i}_{j}.
+            \end{align*}
+            
+            \item ($j+2\ge 2i+n+1$). Then $j+2=2i+n+1$ (or $j+2=2i+n+2$ respectively) so that $M^{i+1}_{j+2}=P_{n-1}$ (resp. $M^{i+1}_{j+2}=P_{n}$), which is precisely $M^{i}_{j}$ since $j=2i+n-1$ (resp. $j=2i+n$).
+        \end{enumerate} 
+    \end{proof}
+    The modules in the emerging periodic part of the complexes $\bul{M}^{i}$ with $i\ge\ceil*{\frac{n}{2}}$ are ascending direct sums of the even or odd parts of the complex $C^{0}=\Pol$ from Lemma \ref{Lem:tori} and Construction \ref{Con:imc}. The structure of the maps between these modules will depend on the parity of $n=\pd_{R}(N)$:
+    \begin{corollary}\label{Cor:firstperiod}
+        For $t=\ceil{\frac{n}{2}}+1$, the sequence
+        \begin{equation}\label{Eq:4termexact}
+            \begin{tikzcd}
+                {M_{n+2}^{t}} & {M_{n+1}^{t}} & {M_{n}^{t}} & {M_{n-1}^{t}}
+                \arrow["{\partial_{n+2}^{t}}", from=1-1, to=1-2]
+                \arrow["{\partial_{n+1}^{t}}", from=1-2, to=1-3]
+                \arrow["{\partial_{n}^{t}}", from=1-3, to=1-4]
+            \end{tikzcd}
+        \end{equation}
+        is exact at $M^{t}_{n}$ and $M^{t}_{n+1}$. Furthermore, 
+        \begin{enumerate}
+            \item $M^{t}_{n-1}=M^{t}_{n+1}$; 
+            \item $M^{t}_{n}=M^{t}_{n+2}$;
+            \item $\partial^{t}_{n+2}=\partial_{n}^{t}$.
+        \end{enumerate}
+    \end{corollary}
+    \begin{proof}
+        To see that the sequence is exact at $M^{t}_{n}$ and $M^{t}_{n+1}$ recall from Construction \ref{Con:imc} that the homology of $\bul{M}^{t}$ is given by
+        \[\mathrm{H}_{j}(\bul{M}^{t})=\begin{cases}
+               	N & j=0,\;2t+1,\\
+                0 &\text{else}.
+            \end{cases}\]
+        By assumption $0<n+1<2\ceil*{\frac{n}{2}}+3 = 2t+1$, so $\Ho_{n}(\bul{M}^{t})=0=\Ho_{n+1}(\bul{M}^{t})$ and the sequence is exact at $M^{t}_{n}$ and $M^{t}_{n+1}$.
+
+        To prove the three equalities the idea is to apply the recursive formulae from Construction \ref{Con:imc} to $\bul{M}^{i}$ until $i\le \frac{n}{2}$ and then use the explicit description for the modules and differentials from Corollary \ref{Cor:sumsofp}. There will be two cases depending on the parity of $n=\pd_{R}(N)$.
+
+        Firstly, suppose that $n=2l$ is even. Then $t=\ceil{\frac{n}{2}}+1=\ceil{\frac{2l}{2}}+1=l+1$, that is $l=t-1$. By Construction \ref{Con:imc} there are two subcases for $M^{t}_{j}$ depending on the degree $j$:
+        \begin{itemize}
+            \item If $j\le n+1$, then $j<2t-1$ so $M^{t}_{j}=M^{t-1}_{j}$.
+            \item If $j=n+2$, then $M^{t}_{j}=\opp_{0}\oplus M^{t-1}_{j}$.
+        \end{itemize}
+    
+        In either case, since $t-1=l=\frac{n}{2}$ Corollary \ref{Cor:sumsofp} implies
+        \begin{align*}
+           M^{t-1}_{n+1} = \bigoplus_{k=1}^{t-1}\opp_{n+1-2k} = \bigoplus_{k=0}^{t-2}\opp_{n-1-2k} = M^{t-1}_{n-1} = M^{t}_{n-1}, \\
+            M^{t}_{n+2} = \opp_{0}\oplus M^{t-1}_{n+2} = \bigoplus_{k=1}^{t}\opp_{n+2-2k} = \bigoplus_{k=0}^{t-1}\opp_{n-2k}=M^{t-1}_{n} =M^{t}_{n}.
+        \end{align*}
+        Hence $M^{t}_{n+1}= M^{t}_{n-1}$ and $M^{t}_{n+2}=M^{t}_{n}$, with the first being the sum of all the odd terms of $\Pol$ and the latter the sum of all the even terms.
+
+        To prove equality of the differentials notice that $2t=2(l+1) = n+2$ and $2(t-1)=2l=n$, then by Corollary \ref{Cor:sumsofp}: 
+        \begin{align}\label{Eq:partialpsi}
+            \partial^{t}_{n+2} = \begin{bNiceMatrix}[nullify-dots,xdots/line-style=loosely dotted, columns-width = 7mm]
+    			-\psi_{1} & 0 & & & \Cdots & 0 \\
+    			\od_{2} & -\psi_{3} & \Ddots &  & & \Vdots \\
+    			0 & \od_{4} & -\psi_{5} & & & \\
+    			\Vdots & & \Ddots & \Ddots & &  \\
+    			& & \Ddots & & & 0 \\
+    			& & & & & -\psi_{2l-1} \\
+    			0 & \Cdots & & & 0 & \od_{2l}
+    		\end{bNiceMatrix} = \partial^{t-1}_{n}=\partial^{t}_{n}.
+        \end{align}
+        The other differential in the exact sequence (\ref{Eq:4termexact}) is
+        \begin{align}\label{Eq:partiald}
+        \partial_{n+1} = \begin{bNiceMatrix}[nullify-dots,xdots/line-style=loosely dotted, columns-width = 7.8mm]
+    			\od_{1} & -\psi_{2} & 0 & & \Cdots & 0 \\
+    			0 & \od_{3} & -\psi_{4} & \Ddots & & \Vdots \\
+    			\Vdots & & \od_{5} & \Ddots & & \\
+    			& & \Ddots & \Ddots & & 0 \\
+    			0 &\Cdots  & & 0 & \od_{2l-1} & -\psi_{2l} \end{bNiceMatrix}.
+    	\end{align}
+
+        For the second case, suppose that $n=2m+1$ is odd. Then $t=\ceil{\frac{n}{2}}+1=\ceil*{\frac{2m+1}{2}}+1=m+2$, that is $m=t-2$. Again, there are two subcases depending on the degree $j$ as in Construction \ref{Con:imc}:
+        \begin{itemize}
+            \item If $j=n-1$ or $j=n$ then $M^{t}_{j}=M^{t-1}_{j}=M^{t-2}_{j}$.
+            \item If $j=n+1$ or $j=n+2$ then $M^{t}_{j} = M^{t-1}_{j}=\opp_{j-2(t-1)} \oplus M^{t-2}_{j}$.
+        \end{itemize}
+    
+        Now $t-2=m\le\frac{n}{2}$, so in either case Corollary \ref{Cor:sumsofp} implies 
+        \begin{align*}
+            M^{t-1}_{n+1} &= \opp_{n+1-2(t-1)} \oplus M^{t-2}_{n+1} = \bigoplus_{k=1}^{t-1}\opp_{n+1-2k} = \bigoplus_{k=0}^{t-2}\opp_{n-1-2k} = M^{t-2}_{n-1},\\
+            M^{t-1}_{n+2} &= \opp_{n+2-2(t-1)} \oplus M^{t-2}_{n+2} = \bigoplus_{k=1}^{t-1}\opp_{n+2-2k} = \bigoplus_{k=0}^{t-2}\opp_{n-2k} = M^{t-2}_{n}.
+        \end{align*}
+        Then $M^{t}_{n+1}= M^{t}_{n-1}$ and $M^{t}_{n+2}=M^{t}_{n}$.
+
+        Equality of differentials follows from Corollary \ref{Cor:sumsofp} and the fact that $2(t-2)+1=2m+1=n$ and $2(t-1)+1=2m+3=n+2$:
+        \begin{align}\label{Ex:pard2}
+                \partial^{t}_{n+2} = \partial^{t-1}_{n+2} = \begin{bNiceMatrix}[nullify-dots,xdots/line-style=loosely dotted, columns-width = 7mm]
+                \od_{1} & -\psi_{2} & 0 & & \Cdots & 0 \\
+                0 & \od_{3} & -\psi_{4} & \Ddots & & \Vdots \\
+                \Vdots & & \od_{5} & \Ddots & & \\
+                & & \Ddots & \Ddots & & 0 \\
+                & & & & & -\psi_{2m} \\
+                0 & \Cdots & & & 0 & \od_{2m+1}           
+                \end{bNiceMatrix} = \partial^{t-2}_{n} = \partial^{t}_{n}.
+        \end{align}
+        The other differential in the exact sequence (\ref{Eq:4termexact}) is given by
+        \begin{align}\label{Ex:parps2}
+            \partial^{t}_{n+1} = 
+            \begin{bNiceMatrix}[nullify-dots,xdots/line-style=loosely dotted, columns-width = 7mm]
+                -\psi_{1} & 0 & & & \Cdots & 0 \\
+                \od_{2} & -\psi_{3} & \Ddots &  & & \Vdots \\
+                0 & \od_{4} & -\psi_{5} & & & \\
+                \Vdots & & \Ddots & \Ddots & &  \\
+                & & \Ddots & & & 0 \\
+                0 & \Cdots & & 0 & \od_{2m} & -\psi_{2m+1}   
+            \end{bNiceMatrix}.
+        \end{align}
+    \end{proof}
+    The dependence on the parity of $n=\pd_{R}(R)$ in Corollary \ref{Cor:firstperiod} is summarized in the following table.
+    \begin{table}[h!]
+        \centering
+            \bgroup
+            \def\arraystretch{2}%
+            \begin{tabular}{|c|c|c|}
+                \cline{1-3}
+                & \text{$n$ even} & \text{$n$ odd}   \\
+                \cline{1-3}
+                $M^{t}_{n-1}=M^{t}_{n+1}$ & $\bigoplus\limits_{odd}\opp_{i}$ & $\bigoplus\limits_{even}\opp_{i}$ \\
+                \cline{1-3}
+                $\partial^{t}_{n}$ & $\partial_{\psi}$ & $\partial_{d}$ \\
+                \cline{1-3}
+                $M^{t}_{n}=M^{t}_{n+2}$ & $\bigoplus\limits_{even}\opp_{i}$ & $\bigoplus\limits_{odd}\opp_{i}$ \\
+                \cline{1-3}
+                $\partial^{t}_{n+1}$ & $\partial_{d}$ & $\partial_{\psi}$  \\
+                \cline{1-3}
+            \end{tabular}
+            \egroup
+            \caption{The modules and differentials in the exact sequence (\ref{Eq:4termexact}) based on the parity of $n=\pd_{R}(N).$}
+            \label{Tab:eotab}
+    \end{table}
+    Here $\partial_{d}:\bigoplus\limits_{odd}\opp_{i}\to \bigoplus\limits_{even}\opp_{i}$ has odd values of the differential on the main diagonal as in (\ref{Eq:partiald}) and (\ref{Ex:pard2}), and $\partial_{\psi}:\bigoplus\limits_{even}\opp_{i}\to \bigoplus\limits_{odd}\opp_{i}$ has odd values of the chain map $-\psi_{i}$ on the main diagonal as in (\ref{Eq:partialpsi}) and (\ref{Ex:parps2}).
+
+    This observation together with the recursive description of the differentials in Construction \ref{Con:imc} and Corollaries \ref{Cor:mistable} and \ref{Cor:sumsofp} (particularly the description of the differentials given in (\ref{Eq:diffmi})) allow a complete description of the low degree terms of $\bul{M}^{t}$:
+    \begin{corollary}\label{Cor:submatrices}
+        Let $t=\ceil{\frac{n}{2}}+1$. Then for $j<n-1$, the modules in $\bul{M}^{t}$ are given by
+        \[M_{j}^{t} = \bigoplus\limits_{k=0}^{\floor*{\frac{j}{2}}} \opp_{j-2k},\]
+        and, for $0<j<n-1$, the differentials in $\bul{M}^{t}$ are given by
+        \[\partial^{t}_{j}=\begin{cases}
+            \partial_{d}[(k+1)\times (k+1)] & j=2k+1 \text{ is odd}, \\
+            \partial_{\psi}[(k+1)\times k] & j=2k\text{ is even}.
+        \end{cases}\]
+        where, for a matrix $\partial$, the notation $\partial[i\times j]$ is the $(i\times j)$-submatrix consisting of the first $i$-rows and $j$-columns.
+    \end{corollary}
+
+    \begin{example}
+        If $d_{\psi}$ is the matrix (\ref{Ex:parps2}) in the proof of Corollary \ref{Cor:firstperiod}, then $\partial_{2} = \partial_{\psi}[3\times 2]$ is given by the highlighted submatrix
+        \[\partial_{\psi}[3\times 2] \sim \begin{bNiceMatrix}[nullify-dots,xdots/line-style=loosely dotted, columns-width = 7mm]
+                \CodeBefore
+                    \rectanglecolor{blue!15}{1-1}{3-2}
+                \Body
+                -\psi_{1} & 0 & & & \Cdots & 0 \\
+                \od_{2} & -\psi_{3} & \Ddots &  & & \Vdots \\
+                0 & \od_{4} & -\psi_{5} & & & \\
+                \Vdots & & \Ddots & \Ddots & &  \\
+                & & \Ddots & & & 0 \\
+                0 & \Cdots & & 0 & \od_{2m} & -\psi_{2m+1}   
+            \end{bNiceMatrix}\implies \partial_{2}=\begin{bmatrix}
+                -\psi_{1} & 0\\
+                \od_{2} & -\psi_{3} \\
+                0 & \od_{4}
+            \end{bmatrix}.\]
+    \end{example}
+
+    The idea is to now show, by induction, that the exact sequence (\ref{Eq:4termexact}) from Corollary \ref{Cor:firstperiod} is repeated further along the complex with each successive mapping cone. This produces a $2$-periodic section in the complexes $\bul{M}^{t+i}$ that increases in length with $i\ge0$:
+    \begin{corollary}\label{Cor:2period}
+        Let $t=\ceil*{\frac{n}{2}}+1$. Then for all $i\ge 0$:
+        \begin{enumerate}
+            \item $M^{t+i}_{j+2}=M^{t+i}_{j}$ for $n-1\le j <2t+2i$.
+            \item $M^{t+i+1}_{j+2} = M^{t+i}_{j}$ for all $j\ge n-1$.
+        \end{enumerate}
+    \end{corollary}
+    \begin{proof}
+        Both parts are proved by induction on $i\ge0$ at the same time.
+
+        The base case for the first statement is precisely the statement of Corollary \ref{Cor:firstperiod}.
+
+        For the second statement there are three cases depending on the degree $j$ as in Construction \ref{Con:imc}.
+        \begin{enumerate}[label=(\roman*)]
+        	\item ($j+2<2(t+1)$). Then $j<2t$ and $M^{t+1}_{j+2} = M^{t}_{j+2} = M^{t}_{j}$, where the last equality follows by Corollary \ref{Cor:firstperiod}.
+        	\item ($2(t+1)\le j+2<2(t+1)+n-1$).  Then we have $M^{t+1}_{j+2} = \opp_{j+2-2(i+1)}\oplus M^{t}_{j+2}$ and similarly  $M^{t}_{j}=\opp_{j-2i}\oplus M^{t-1}_{j}$. Now Lemma \ref{Lem:nexttwo} and Corollary \ref{Cor:firstperiod} imply that $M^{t}_{j+2}=M^{t-1}_{j}$ so that $M^{t+1}_{j+2} = M^{t}_{j}$.
+        	\item ($j+2>2(t+1)+n-2$). Then either $j+2=2(t+1)+n-1$ (or $j+2=2(t+1)+n$ respectively) and $M^{t+1}_{j+2}=\opp_{n-1}$ (resp. $M^{t+1}_{j+2}=\opp_{n}$) which is exactly $M^{t}_{j}$ since $j+2=2t+n-1$ (resp. $j+2=2i+n$).
+        \end{enumerate}
+        For the inductive step, let $i\ge 0$ and suppose that both statements hold for all $k\le i$:
+        \begin{equation}\label{Eq:ih1}
+            M^{t+k}_{j+2}=M^{t+k}_{j} \text{ for } n-1\le j <2t+2k.
+        \end{equation}
+        \begin{equation}\label{Eq:ih2}
+            M^{t+k+1}_{j+2} = M^{t+k}_{j} \text{ for all } j\ge n-1.
+        \end{equation}
+
+        For the first statement, let $n-1\le j<2t+2(i+1)$ and consider $M^{t+i+1}_{j+2}$. There are two cases according to Construction \ref{Con:imc}:
+        \begin{itemize}
+        	\item ($j+2<2(t+i+1)$). Then $M^{t+i+1}_{j+2} = M^{t+i}_{j+2}$ and by (\ref{Eq:ih1}) we have $M^{t+i}_{j+2} = M^{t+i}_{j}$. Hence $M^{t+i+1}_{j+2}=M^{t+i}_{j}$.
+        	
+        	\item ($2(t+i+1)\le j+2<2t+2i+4$). Then $M^{t+i+1}_{j+2} = \opp_{j+2-2(t+i+1)}\oplus M^{t+i}_{j+2}$ and similarly $M^{t+i}_{j}=\opp_{j-2(t+i)}\oplus M^{t+i-1}_{j}$.
+        	Now by (\ref{Eq:ih2}) $M^{t+i}_{j+2}=M^{t+i-1}_{j}$ which implies $M^{t+i+1}_{j+2}=M^{t+i}_{j}$.
+        \end{itemize}
+        In either case $j<2(t+i+1)$ so that $M^{t+i+1}_{j} = M^{t+i}_{j}$. Hence $M^{t+i+1}_{j+2}= M^{t+i}_{j} = M^{t+i+1}_{j}$, which proves the first statement.
+
+        For the second statement, let $j\ge n-1$ and consider $M^{t+i+2}_{j+2}$ there will be three cases:
+        \begin{enumerate}[label=(\roman*)]
+        	\item ($j+2<2(t+i+2)$). Then $M^{t+i+2}_{j+2} = M^{i+j+1}_{j+2}$ and by (\ref{Eq:ih2}) $M^{t+i+1}_{j+2}=M^{t+i}_{j}$. Hence $M^{t+i+2}_{j+2}=M^{t+i}_{j}$.
+        	\item ($2(t+j+1)\le k+2<2(t+j+1)+n-1$). In this case $M^{t+i+2}_{j+2} = \opp_{j+2-2(t+i+2)}\oplus M^{t+i+1}_{j+2}$ and by (\ref{Eq:ih2}) $M^{t+i+2}_{j+2}=M^{t+i}_{j}$. This gives
+            \[M^{t+i+2}_{j+2}=\opp_{j+2-2(t+i+2)}\oplus M^{t+i+1}_{j+2} = \opp_{j-2(t+i+1)}\oplus M^{t+i}_{j} = M^{t+i+1}_{j}.\]
+        	\item ($j+2>2(t+i+2)+n-2$). Then $j+2=2(t+i+2)+n-1$ (resp. $j+2=2(t+i+1)+n$) so that $M^{t+i+1}_{j+2}$ is $\opp_{n-1}$  (resp. $\opp_{n}$) and this agrees with $M^{t+i}_{j}$ since $j=2(t+i)+n-1$  (resp. $j=2(t+i)+n$).
+        \end{enumerate}
+        
+        By induction on $i\ge 0$ both statements hold.
+    \end{proof}
+        
+    The description of $\bul{M}^{t}=(M^{t}_{j},\partial^{t}_{j})_{j\ge 0}$ from Corollary \ref{Cor:submatrices} together with the stability of Corollary \ref{Cor:mistable} and the periodicity of Corollary \ref{Cor:2period} give a complete description of the resolution $M_{\bullet}=(M_{j},\partial_{j})_{j\ge 0}$ from Construction \ref{Con:imc} in terms of the complex $\bul{M}^{t}$:
+    \begin{theorem}\label{Thm:main}
+        Let $M_{\bullet}=(M_{j},\partial_{j})_{j\ge 0}$ be the limit of the construction from Construction \ref{Con:imc}. Then $\bul{M}$ is $2$-periodic in degrees $\ge n-1$ and given by
+        \[M_{j} = \begin{aligned}
+            \begin{cases}
+                M^{t}_{j} & 0\le j < n-1,\\
+                M^{t}_{n-1} & j=n+2k-1, \; k\ge 0,\\
+                M^{t}_{n} & j=n+2k, \; k\ge 0.
+            \end{cases}
+        \end{aligned}\]
+        \[\partial_{j} = \begin{aligned}
+            \begin{cases}
+                \partial^{t}_{j} & 0\le j \le n-1,\\
+                \partial^{t}_{n} & j=n+2k, \; k\ge 0,\\
+                \partial^{t}_{n+1} & j=n+2k+1, \; k\ge 0.
+            \end{cases}
+        \end{aligned}\]
+        where $t=\ceil*{\frac{n}{2}}+1$. More precisely, the $2$-periodic part of the resolution $\bul{M}$ (with $j\ge n-1$) is given by
+    	\begin{align*}
+            &\hspace{3em}M_{j} = \bigoplus_{\substack{0\le j\le k\\ j\equiv k\pmod{2}}}\opp_{k} ,
+            &&\partial_{j} = \begin{cases}
+        		\partial_{d} & j\equiv1\pmod{2}, \\
+        		\partial_{\varphi} & j\equiv 0\pmod{2}.
+        	\end{cases}\\
+			\partial_{d} &= \renewcommand\arraystretch{1.5}\begin{bmatrix}
+					\od_{1}    & -\oph_{2} & 0         & 0        & \cdots \\
+					0          & \od_{3}   & -\oph_{4} & 0        & \cdots \\
+					\vdots     & 0         & \od_{5}   & -\oph_{6}& \ddots \\
+					\vdots     & \vdots    & 0         & \od_{7}  & \ddots \\
+					\vdots     & \vdots    & \vdots    & \vdots   & \ddots
+				\end{bmatrix}
+            &&\partial_{\varphi} = \renewcommand\arraystretch{1.5}\begin{bmatrix}
+					-\oph_{1}  & 0         & 0         & 0        & \cdots \\
+					\od_{2}    & -\oph_{3} & 0         & 0        & \cdots \\
+					0          & \od_{4}   & -\oph_{5} & 0        & \cdots \\
+					\vdots     & 0         & \od_{6}   & \oph_{7}& \ddots \\
+					\vdots     & \vdots    & \vdots    & \ddots   & \ddots
+			\end{bmatrix}
+        \end{align*}
+    	where $\od_{j}:\opp_{j}\to\opp_{j-1}$ is the (reduced) differential and $\oph_{j}:\opp_{j-1}\to\opp_{j}$ are the components of the chain map $\Psi:\Sigma\Pol\to\Pol$ from Lemma \ref{Lem:shamash}. The lower degree part (with $j < n-1$) is determined by the periodic part:
+    	\[M_{j} = \bigoplus\limits_{k=0}^{\floor*{\frac{j}{2}}} \opp_{i-2k}, \hspace{3em} \partial_{j}=\begin{cases}
+    		\partial_{d}[(k+1)\times (k+1)] & j\equiv1\pmod{2}, \\
+    		\partial_{\varphi}[(k+1)\times k] & j\equiv 0\pmod{2}.
+    	\end{cases}\]
+    \end{theorem}
+    \begin{proof}
+        Let $t=\ceil*{\frac{n}{2}}+1$ and let $k\ge0$. Then by applying Corollary \ref{Cor:mistable} it follows that $M_{n+2k-1} = M^{t+k}_{n+2k-1}$
+        since $t+k = \ceil*{\frac{n}{2}}+1+k > \ceil*{\frac{n+2k-1+1}{2}}=\ceil*{\frac{n}{2}}+k$.
+        Now by Lemma \ref{Eq:diffmi} and Corollary \ref{Cor:2period} it follows that $M_{n+2k-1}=M^{t+j}_{n+2k-1} = M^{t}_{n-1}=M^{t}_{n+1}$ for all $k\ge 0$. By the same reasoning  $M_{n+2k}=M^{t+k}_{n+2k} = M^{t}_{n}$ for all $k\ge 0$.
+        
+        With the modules identified it follows from Corollary \ref{Cor:firstperiod} and the description in (\ref{Eq:diffmi}) that the corresponding differentials are given by 
+        \[\partial_{n+2k} = \partial_{n}^{t}:M^{t}_{n} \to  M^{t}_{n-1},\;\;\; \partial_{n+2k+1} = \partial_{n+1}^{t}:M^{t}_{n+1} \to  M^{t}_{n}\]
+        for all $k\ge 0$.
+
+        For the lower degree terms: if $0\le j<n-1$, then $t\ge \ceil*{\frac{j+1}{2}}$ so by Corollary \ref{Cor:mistable} it follows that $M_{j}=M^{t}_{j}$ and similarly $\partial_{j}=\partial^{t}_{j}$. Furthermore, Table \ref{Tab:eotab} and Corollary \ref{Cor:submatrices} together give complete descriptions of $M_{j}$ and $\partial_{j}$ based on the parity of $n=\pd_{R}(N)$.
+
+        Finally, since $M_{j}$ is a finite direct sum of finitely generated projective $S$-modules for each $j\ge 0$, it follows that $\bul{M}$ is finite type.
+    \end{proof}
+
+    \begin{remark}
+        The resolution $M_{\bullet}=\lim\limits_{i\to \infty} \bul{M}^{i}$ is completely determined by $M^{t}_{\bullet}$ where $t=\ceil*{\frac{n}{2}}+1$. That is to say, Construction \ref{Con:imc} is a \emph{finite} procedure which can always be computed in $O(\frac{n}{2})=\ceil*{\frac{n}{2}}+1$ steps (i.e. mapping cones) where $n=\pd_{R}(N)<\infty$ is the projective dimension of $N\in\RMod$.
+    \end{remark}
+    \begin{remark}\label{Rem:unique}
+        Theorem \ref{Thm:main} together with Lemma \ref{Lem:shamash} imply that the resolution $M_{\bullet}=(M_{j},\partial_{j})_{j\ge 0}$ is completely determined (up to homotopy) by an $R$-free resolution $P_{\bullet}\to N$ and a null-homotopy $\{\varphi_{i}:P_{i-1}\to P_{i}\}_{i\ge 1}$ for the chain map $\lambda_{x}:P_{\bullet}\to P_{\bullet}$, in the following sense:
+		\begin{itemize}
+			\item The modules $M_{j}$ are ascending summations of either even or odd terms of the complex $\Pol=\bul{P}\otimes_{R}S$ as in Corollary \ref{Cor:firstperiod} and Table \ref{Tab:eotab}.
+			\item From Corollary \ref{Cor:submatrices} the differentials $\partial_{j}$ have blocks comprised of differentials, $\od_{i}$, from the complex $\Pol$ and the components of the chain map $\oph_{i}$ from Lemma \ref{Lem:shamash}.
+		\end{itemize}
+	\end{remark}
+
+    \section{Application to integral group rings}\label{S:applications}
+    In this section Construction \ref{Con:imc} is applied in the particular case when $R=\ZG$ is the integral group ring of an infinite discrete group $G$.
+
+    In order to ensure the associated group rings satisfy the assumptions from \S\ref{S:notation}, we need to restrict our attention to a particular class of groups. The most important restriction is that the ring $\ZG$ has finite global dimension, and to understand when this occurs we will need some background from group cohomology.
+
+    \subsection{Finiteness conditions and free differential calculus}
+    We begin by recalling the various finiteness properties of group rings. The standard references are, of course, \cite[\S VII]{brown} and \cite[\S I]{bieri}.
+    
+    \begin{definition}\label{Def:FP}
+		A group $G$ is \emph{type $\FP$} if the trivial module $\Z\in\ZGmod$ admits a finite type projective resolution of finite length, that is an exact sequence of the form
+		\[
+		\begin{tikzcd}[ampersand replacement=\&]
+			0 \arrow[r] \& P_{n} \arrow[r] \& \cdots \arrow[r] \& P_{0} \arrow[r, "\varepsilon"] \& \Z \arrow[r] \& 0
+		\end{tikzcd}
+		\]
+		with $P_{i}\in\ZGmod$ finitely generated and projective for $0\le i\le n$. The \emph{cohomological dimension} of $G$ is defined as $\cd(G):=\pd_{\ZG}(\Z)$. That is, the infimum over the length of all projective resolutions of $\Z\in\ZGmod$.
+	\end{definition}
+	
+	Since any group of type $\FP$ necessarily has finite cohomological dimension, it is also torsion-free (cf. \cite[Cor.~VIII.2.5, p. 187]{brown}).
+	
+	If one makes the strictly stronger requirement that all the modules in the resolution are finitely generated and \emph{free}, then we get the following
+
+	\begin{definition}
+		A group $G$ is type $\FL$ if the trivial module $\Z\in\ZGmod$ admits a finite type free resolution of finite length
+		\[
+		\begin{tikzcd}[ampersand replacement=\&]
+			0 \arrow[r] \& F_{n} \arrow[r] \& \cdots \arrow[r] \& F_{0} \arrow[r,"\varepsilon"] \& \Z \arrow[r] \& 0.
+		\end{tikzcd}
+		\]
+        Further, if $G$ has finite cohomological dimension, then one can take $n=\cd(G)$.
+	\end{definition}
+
+    The definition of groups of type $\FP$ mirrors the construction of finite CW-complexes and as such we can define a notion of \emph{Euler characteristic} in an analogous way:
+	\begin{definition}\label{Def:euler}
+		Suppose $G$ is a group of type $\FP$ with $\cd(G)=n<\infty$, and let $\bul{P}\to \Z\in\ZGmod$ be a finite type projective resolution. Then the Euler characteristic of $G$ is defined to be
+		\[\chi(G):=\chi(\Z)=\sum_{i=0}^{n}(-1)^{i}\rank_{\ZG}(P_{i})\]
+		where $\rank_{\ZG}(P_{i})\coloneqq\rank_{\Z}(\Z\otimes_{\ZG}P_{i})$.
+	\end{definition}
+	For examples and discussion of the Euler characteristic as defined above, see \cite[Ch.~ VIII]{brown}.
+	\begin{definition}\label{Def:VFP}
+		A group $\G$ is \emph{virtually type $\FP$} ($\catname{VFP}$) if every finite index torsion-free subgroup $\G\pr \le \G$ is type $\FP$. In this case we define the \emph{virtual cohomological dimension} of $\G$ to be $\vcd(\G):=\cd(\G\pr)$.
+	\end{definition}
+
+    It should be noted that the definition of $\vcd(G)$ appears to depend on the choice of the finite index subgroup $\G\pr \le \G$. This is, however, not the case -- it is a non-trivial result due to Serre that $\vcd(\G)$ is indeed well-defined \cite[Prop. 5, p.86]{serredisc}. This is discussed in detail in \cite[\S VIII.3]{brown} and \cite[\S 1]{cdone}.
+
+    The following result for groups with finite cohomological dimension ensures that the ring $R=\ZG$ satisfies the assumptions from $\S$\ref{S:notation}:
+    \begin{lemma}\label{Lem:gdim}
+    	Let $G$ be a group with $\cd(G)=d<\infty$, then $\ZG$ has finite left global dimension $\glob(\ZG)\le d+1$.
+    \end{lemma}
+    \begin{proof}
+    	Let $A\in\ZGmod$ and consider the composition of functors
+        \[
+		\begin{tikzcd}[ampersand replacement=\&, row sep=large, column sep=5em]
+			\ZGmod \arrow[r, "{\Hom_{\Z}(A,-)}"] \& \ZGmod \arrow[r, "{(-)^{G}}"] \& \Ab
+		\end{tikzcd}
+		\]
+    	where $(-)^{G}\cong \Hom_{\ZG}(\Z,-)$ with $\Z\in\ZGmod$ taken with trivial action. By \cite[Cor.~III.6.6, p.73]{brown} this composition sends projective $\ZG$-modules to $(-)^{G}$-acylic modules so, as in Lemma \ref{Lem:fpinfquo}, for any $B\in\ZGmod$ there is a Grothendieck spectral sequence of the form
+    	\[E_{2}^{p,q} = \Ext_{\ZG}^{p}(\Z,\Ext_{\Z}^{q}(A,B))\implies \Ext_{\ZG}^{p+q}(A,B).\]
+    	Then \cite[Lem.~3.3.1, p.73]{weibel} implies that $\Ext_{\Z}^{q}(A,B)=0$ for $q>1$ and hence $\pd_{\ZG}(A)\le\pd_{\ZG}(\Z)+1=\cd(G)+1$.
+    \end{proof}
+    
+    We now recall the construction due to Lyndon which gives the first three terms of a free resolution for the trivial module $\Z\in\ZGmod$ when $G$ is a finitely presented group \cite{lyndon}.
+    
+    Suppose that $G=\langle g_{1},\ldots, g_{k}\mid r_{1},\ldots, r_{m}\rangle$ is a finitely presented group. Then $G$ fits into a short exact sequence of groups
+    \[
+    \begin{tikzcd}
+    	1 \arrow[r] & R \arrow[r] & F \arrow[r, "\om"] & G \arrow[r] & 1
+    \end{tikzcd}
+    \]
+    where $F$ is the free group on the set of generators $\{x_{1},\ldots,x_{k}\}$, $\om:F\to G$ is the canonical map defined by $\om(x_{i})=g_{i}$ for each $1\le i\le k$, and $R$ is the normal closure of of the relations $\omega^{-1}(r_{1}),\ldots,\omega^{-1}(r_{m})$ in $F$.
+    
+    \begin{definition}
+    	A \emph{derivation} from a group $G$ to a $\ZG$-module $A$ is a mapping $D:G\to A$ that satisfies $D(u\cdot v)=D(u)+u\cdot D(v)$
+    	for all $u,v\in A$.
+    \end{definition}
+    
+    \begin{theorem}[Fox 1953]\label{Thm:foxdif}
+    	Let $F$ be the free group on the set of generators $\{x_{1},\ldots,x_{k}\}$. Then for each of the generators $x_{i}$ of $F$ there exists a unique derivation $\foxi:F\to\ZF$, called the $i$-th \emph{Fox derivative}, defined by
+    	\[\Foxi{x_{j}}=\delta_{ij}=\begin{cases}
+    		1 &\text{ if $i=j$},\\
+    		0 &\text{ if $i\neq j$.}
+    	\end{cases}\]
+        Furthermore, for any element $y\in F$, there is the \emph{fundamental formula}
+    	\[y-1 = \sum_{i=1}^{n}\Foxi{y}(x_{i}-1).\]
+    \end{theorem}
+    \begin{proof}
+        See \cite[\S 2, pp.550-3]{fox} or \cite[\S 3, pp.653-4]{lyndon}.
+    \end{proof}
+    
+    \begin{corollary}\label{Cor:freeaug}
+    	If $F$ is the free group on the set of generators $\{x_{1},\ldots,x_{k}\}$, then the augmentation ideal $I_{F}$ as a left ideal of $\ZF$ is the free module on the base $\{x_{1}-1,\ldots, x_{k}-1\}.$
+    \end{corollary}
+    \begin{proof}
+    	Let $M\cong \ZF^{k}$ be free with basis $e_{1},\ldots,e_{k}$. Consider the map $\phi:M\to I_{F}$ given by $(e_{i})\phi=x_{i}-1$ for each $1\le i\le k$. Then by the fundamental formula of Theorem \ref{Thm:foxdif} the mapping $\psi:I_{F}\to M$ given by $(x-1)\psi=\sum_{i=1}^{k}\left(\Fox{x}{x_{i}}\right)\cdot e_{i}$ is the inverse to $\phi$. Hence $I_{F}\cong M\cong \ZF^{n}$.
+    \end{proof}
+    
+    \begin{theorem}[Lyndon 1950]\label{Thm:preres}
+    	Suppose that $G\cong F/R$ is a finitely presented group as above. Then there is an exact sequence of $\ZG$-modules
+    	\[
+    	\begin{tikzcd}
+    		0 \arrow[r] & R/R\pr \arrow[r,"\theta"] & \ZG^{k} \arrow[r, "d"] & \ZG \arrow[r, "\varepsilon"] & \Z \arrow[r] & 0
+    	\end{tikzcd}
+    	\]
+    	where $\ZG^{k}$ is free on the basis $\{e_{1},\ldots,e_{k}\}$ and $R/R\pr=R/[R,R]$ is the abelianization of $R$ which has $G$ action given by $g\cdot r = \overline{ara^{-1}}$ where $a\in F$ satisfies $\om(a)=g$\footnote{Note that the action of $G$ on $R/R\pr$ is well-defined since if $a,b\in F$ are elements such that $\om(a)=g=\om(b)$ then $a^{-1}ra \equiv b^{-1}rb$ modulo $R\pr$. Hence $g\cdot r$ does not depend on the lift of $g$ back to $F$ via $\omega$.}. Moreover, the maps are defined by $(e_{i})d=x_{i}-1$ for each $1\le i\le k$, and 
+    	\[(\overline{r})\theta=\sum_{i=1}^{n}\om^{*}\left(\Foxi{r}\right)e_{i}\]
+    	where $\overline{r}=r\pmod{R\pr}$, and $\om^{*}:\ZF\to\ZG$ is the map induced by the canonical quotient $\om:F\to G$. Furthermore, if $G$ is generated by the relations $\{r_{1},\ldots, r_{m}\}\subset F$, then the module $R/R\pr$ is generated as a $\ZG$-module by the images 
+    	$\{\overline{r_{1}},\ldots,\overline{r_{m}}\}\subset R/R\pr$.
+    \end{theorem}
+    \begin{proof}
+        For a proof of Theorem \ref{Thm:preres}, see \cite[\S 5, pp.656-7]{lyndon}.
+    \end{proof}
+    
+    \begin{corollary}\label{Cor:orgres}
+        If $G=\langle X\mid r\rangle$ is a torsion-free one-relator group, then $G$ is type $\FL$ with $\cd(G)= 2$ and $\Z\in\ZGmod$ has a free resolution of the form
+        \[
+        	\begin{tikzcd}
+        		0 \arrow[r] & \ZG \arrow[r,"d_{2}"] & \ZG^{n} \arrow[r, "d_{1}"] & \ZG \arrow[r, "\varepsilon"] & \Z \arrow[r] & 0
+        	\end{tikzcd}
+        \]
+        where $d_{2}:\ZG\to\ZG^{n}$ and $d_{1}:\ZG^{n}\to \ZG$ are given in matrix form by 
+        \[d_{2} = \begin{bmatrix}
+            \om^{*}\left(\Fox{r}{x_{1}}\right) & \cdots & \om^{*}\left(\Fox{r}{x_{n}}\right)
+        \end{bmatrix},\;\; d_{1}=\begin{bmatrix}
+            g_{1}-1 \\
+            \vdots \\
+            g_{n}-1
+        \end{bmatrix}.\]
+    \end{corollary}
+    \begin{proof}
+        This follows from Theorem \ref{Thm:preres} since in this case $R/R\pr\cong \ZG$ will be the free $\ZG$-module generated by the image $\overline{r}$ of the single relator $r\in F(X)$.
+    \end{proof}
+
+    In order to simplify notation when working in integral group rings we introduce some convenient notation.
+    \begin{definition}
+    	Let $G$ be a group, and $k\in\N$. Then for any $g\in G$ define $\Ngk{g}{k}\coloneqq\sum\limits_{i=0}^{k}g^{i}\in\ZG$.
+    \end{definition}
+    These elements, $\Ngk{g}{k}\in\ZG$, appear as Fox derivatives of `torsion relations' of the form $r=g^{k+1}\in F$, and will be present in all the calculations in \S\ref{S:examples}.
+
+    \subsection{Eventually 2-periodic resolutions}
+    With the background material established, consider the following datum: 
+    \begin{itemize}
+        \item A group $G$ of type $\FP$ with $\cd(G)=d<\infty$; 
+        \item A non-trivial central element $c\in Z(G)$;
+        \item The quotient group $\G:=G/\langle c\rangle$, which we assume to be type $\VFP$.
+    \end{itemize}  
+    Then there is a short exact sequence of groups, that is; a central extension
+    \begin{equation}\label{ses:VFP}
+        \begin{tikzcd}
+        	1 \arrow[r] & \langle c \rangle \arrow[r] & G \arrow[r] & \G \arrow[r] & 1
+        \end{tikzcd}
+    \end{equation}
+    with $\langle c\rangle \cong \Z$. Further, since $G$ is torsion free, the central element $0\neq c-1\in Z(\ZG)$ is a non-zero-divisor and by \cite[\S3.3, pp.134-8]{miles} there is an isomorphism of rings $\Z\G\cong\ZG/\langle c-1\rangle$ where $\langle c-1\rangle\trianglelefteq\ZG$ is the two-sided ideal generated by $c-1$. This gives a finite type free resolution for $\Z\G\in\ZGmod$ of length $1$, as in (\ref{Eq:resquo}):
+    \[
+        \begin{tikzcd}
+            	0 \arrow[r] & \ZG \arrow[r, "\lambda_{x}"] & \ZG \arrow[r] & \Z\G \arrow[r] & 0.
+        \end{tikzcd}
+    \]
+    Summarizing these observations regarding the two rings $\ZG$ and $\Z\G$:
+    \begin{itemize}
+        \item By Lemma \ref{Lem:gdim}, $\ZG$ has finite left global dimension $\glob(\ZG)=d-1<\infty$;
+        \item $1\neq c-1\in Z(\ZG)$ a regular central element;
+        \item $\Z\G \cong \ZG/(c-1)$ is the quotient ring. 
+    \end{itemize}
+    Then the blanket assumptions from \S\ref{S:notation} are satisfied, and hence we may apply Construction \ref{Con:imc} in this context. This will give eventually $2$-periodic resolutions for modules over $\Z\G$ and, in certain cases, the rank of the modules in the $2$-periodic part will stabilize to a unique value:
+    \begin{corollary}\label{Thm:zg}
+    	Let $N\in\FPinf(\Z\G)$ with $n=\pd_{\ZG}(N)<\infty$. Then $N$ has a finite type $\Z\G$-projective resolution $M_{\bullet}=(M_{j},\partial_{j})_{j\ge 0}$ which is $2$-periodic in degrees $\ge n-1$.
+        In particular, if $G$ is type $\FL$ and  $N=\Z\in\ZGamod$ is the trivial module with $\Fol\to N$ a finite type free resolution of length $n=\cd(G)<\infty$, then the \emph{stable rank} in the periodic part of $\bul{M}$ is given by 
+    	\[r\coloneqq\sum\limits_{i\equiv 0\pmod{2}}\rank_{R}(F_{i}) = \sum\limits_{i\equiv 1\pmod{2}}\rank_{R}(F_{i}),\]
+    	so that $M_{j}\cong \Z\G^{r}$ for all $j\ge n-1$.
+    \end{corollary}
+    \begin{proof}
+    	Firstly, if $N\in\FPinf(\Z\G)$, the existence of an eventually $2$-periodic resolution follows directly from Construction \ref{Con:imc} and Theorem \ref{Thm:main}.
+
+        Now suppose that $G$ is type $\FL$ and let $N=\Z\in\ZGamod$ with a finite type free resolution $\bul{F}\to N$ of length $n=\cd(G)<\infty$.  If $\bul{M}=(M_{j},\partial_{j})_{j\ge 0}$ denotes the eventually $2$-periodic resolution, then the description of the modules and differentials in the periodic part from Theorem \ref{Thm:main} implies that the ranks of $M_{n-1}$ and $M_{n}$ are given by $\sum\limits_{i\equiv 0\pmod{2}}\rank_{R}(F_{i})$ and $\sum\limits_{i\equiv 1\pmod{2}}\rank_{R}(F_{i})$ (depending on the parity of $n$).
+        
+        It remains to show that there is an equality between the two expressions. To this end, consider the short exact sequence of groups (\ref{ses:VFP})
+    	\[
+    	\begin{tikzcd}
+    		1 \arrow[r] & \langle c\rangle \arrow[r] & G \arrow[r] & \G \arrow[r] & 1.
+    	\end{tikzcd}
+    	\]
+    	By assumption, $\G$ is type $\VFP$ so, by \cite[Prop.~IX.7.3.d), p.250-2]{brown}, the Euler characteristic of $G$ is
+    	\[\chi(G)=\chi(\langle c\rangle)\cdot\chi(\G).\]
+    	But $\langle c\rangle\cong \Z$ and since the circle $S^{1}$ is the Eilenberg-MacLane space for $\Z$ it follows that $\chi(\Z)=\chi(S^{1})=0$ and hence $\chi(G)=0$. Now, using Definition \ref{Def:euler} to calculate $\chi(G)$ from any finite type free resolution $F_{\bullet}\to\Z$ of length $n=\cd(G)<\infty$ gives
+    	\[0=\chi(G) = \sum_{i=0}^{n}(-1)^{i}\rank_{\ZG}(F_{i}) \iff  \sum_{i\equiv 0\pmod{2}}\rank_{\ZG}(F_{i})= \sum_{i\equiv 1\pmod{2}}\rank_{\ZG}(F_{i}),\]
+        which proves the equality.
+    \end{proof}
+    
+    \section{Explicit calculations}\label{S:examples}
+    In this section we apply Construction \ref{Con:imc} to obtain explicit resolutions over integral group rings $\ZG$ for various families of groups. These resolutions are readily used to calculate integral group (co)homology using Smith Normal Form. For a brief refresher on Smith Normal Form we recommend \cite[\S2.4]{smithnorm}, and for connections with group cohomology specifically, see \cite[\S4]{compgroupres}.
+
+    \subsection{Finite cyclic groups}
+    Firstly, as a brief sanity check, we apply Construction \ref{Con:imc} in the simplest non-trivial case.
+
+    Consider the group of integers, $\Z$, written multiplicatively with generator $t$. Let $0,1\neq m\in\Z$ and consider the short exact sequence of groups
+    \[
+    \begin{tikzcd}
+    	1 \arrow[r] & \langle t^{m} \rangle \arrow[r] & \Z \arrow[r] & \Z/m \arrow[r] & 1.
+    \end{tikzcd}
+    \]
+    The group ring $\Z[\Z]$ is isomorphic to the ring of integral Laurent polynomials in the variable $t$, $\Z[t,t^{-1}]$, and by Corollary \ref{Cor:freeaug} there is a free resolution $\bul{F}$ for the trivial module $\Z\in\lMod{\Z[t,t^{-1}]}$
+    \[
+    \begin{tikzcd}
+    	0 \arrow[r] & \Z[t,t^{-1}] \arrow[r, "t-1"] & \Z[t,t^{-1}] \arrow[r, "\varepsilon"] & \Z \arrow[r] & 0.
+    \end{tikzcd}
+    \]
+    Following Theorem \ref{Thm:zg}, to construct a free resolution for the trivial module over the quotient group $\Z/m$, it suffices to find a null-homotopy for the map $\lambda_{x}:F_{\bullet}\to F_{\bullet}$, which is given by multiplication by $x=t^{m}-1\in\Z[t,t^{-1}]$.
+    \[\begin{tikzcd}[ampersand replacement=\&, row sep=large, column sep=large ]
+    	0 \& {\Z[t,t^{-1}]} \& {\Z[t,t^{-1}]} \& \Z \& 0 \\
+    	0 \& {\Z[t,t^{-1}]} \& {\Z[t,t^{-1}]} \& \Z \& 0
+    	\arrow[from=1-1, to=1-2]
+    	\arrow["{t-1}", from=1-2, to=1-3]
+    	\arrow["{\lambda_{x}}", from=1-2, to=2-2]
+    	\arrow[from=1-3, to=1-4]
+    	\arrow["\varphi", red, dashed, from=1-3, to=2-2]
+    	\arrow["{\lambda_{x}}", from=1-3, to=2-3]
+    	\arrow[from=1-4, to=1-5]
+    	\arrow["{\lambda_{x}}", from=1-4, to=2-4]
+    	\arrow[from=2-1, to=2-2]
+    	\arrow["{t-1}"', from=2-2, to=2-3]
+    	\arrow[from=2-3, to=2-4]
+    	\arrow[from=2-4, to=2-5]
+    \end{tikzcd}\]
+    By factoring $t^{m}-1=(t-1)(1+t+\cdots+t^{m-1}) = (t-1)\Ngk{t}{m-1}$, so that $\varphi:\Z[t,t^{-1}]\to\Z[t,t^{-1}]$ is multiplication by $\Ngk{t}{m-1}$. Then, by splicing this sequence together infinitely many times, we recover the usual $2$-periodic resolution for the finite cyclic group $G=\Z/m$ as found in \cite[I.6.3, p.21]{brown}:
+    \[
+    	\begin{tikzcd}
+    		\cdots \arrow[r, "\Ngk{t}{m-1}"] & \ZG \arrow[r, "t-1"] & \ZG \arrow[r, "\Ngk{t}{m-1}"] & \ZG \arrow[r, "t-1"] & \ZG \arrow[r, "\varepsilon"] & \Z \arrow[r] & 0.
+    	\end{tikzcd}
+    \]
+
+    \subsection{Amalgamated products of cyclic groups}
+    A knot is an embedding of the unit circle $S^{1}$ inside $\R^{3}$. By restricting such an embedding to certain subsets of $\R^{3}$ (in such a way that it is still an embedding) one can study knots on surfaces. For example, the standard embedding of the two-torus $T=S^{1}\times S^{1}$ gives the notion of \emph{torus knots}:
+    \begin{lemma}\label{lem:tknot}
+        Let $p,q\in\N$. Then the map $f:S^{1}\to S^{1}\times S^{1}\subset \R^{3}$ defined by $f(z)=(z^{p},z^{q})$ is an embedding if and only if $\gcd(p,q)=1$. 
+    \end{lemma}
+    This knot, denoted $K_{p,q}$, wraps the torus $p$-times in the longitudinal direction and $q$-times in the meridional direction. For a proof of Lemma \ref{lem:tknot} and more discussion, see \cite[\S3.C]{rolf}.
+
+    Suppose now, and for the rest of this section, that $\gcd(p,q)=1$. 
+    \begin{definition}
+        The ($p,q$)\emph{-torus knot group} is the one-relator group
+        \[G_{p,q}=\langle a,b\mid a^{p}=b^{q}\rangle\cong \pi(\R^{3}\setminus K_{p,q}).\]
+    \end{definition}
+
+    \begin{lemma}
+        The center of $G_{p,q}$ is infinite cyclic generated by $a^{p}=b^{q}$.
+    \end{lemma}
+    \begin{proof}
+        See \cite[Prop.~3.2.3, p.25-6]{tknot} for a proof.
+    \end{proof}
+
+    Then there is a central extension
+    \[
+        \begin{tikzcd}
+        	1 \arrow[r] & \langle a^{p} \rangle \arrow[r] & G_{p,q} \arrow[r] & G_{p,q}/\langle a^{p} \rangle  \arrow[r] & 1,
+        \end{tikzcd}
+    \]
+    and hence Construction \ref{Con:imc} will give resolutions over the quotient group 
+    \[G_{p,q}/\langle a^{p}\rangle\cong \langle a,b\mid a^{p}=b^{q}=1\rangle\cong \Z/p * \Z/q.\] 
+    In fact, we can be slightly more general and take the quotient by any positive power of the central generator to get resolutions for amalgamated products of finite cyclic groups:
+    \begin{theorem}\label{Thm:tknot}
+        Let $p,q,k\in\N$ be such that $\gcd(p,q)=1$. Let $G=G_{p,q}$ be the $(p,q)$-torus knot group and $1\neq a^{kp}\in Z(G)$, so that \[\G_{k}:=G/\langle a^{kp}\rangle\cong \langle S,U\mid S^{kp}=U^{kq}=1, \; S^{p}=U^{q}\rangle\cong \Z/kp *_{\Z/k} \Z/kq.\] 
+        Then the trivial module $\Z\in\lMod{\ZGk}$ has a $2$-periodic free resolution in degrees $\ge 1$ of the form
+        \[
+            \begin{tikzcd}
+                \cdots \arrow[r, "\partial_{2}"] & \ZGk^{2} \arrow[r, "\partial_{3}"] & \ZGk^{2} \arrow[r, "\partial_{2}"] & \ZGk^{2} \arrow[r, "\partial_{1}"] & \ZGk \arrow[r, "\varepsilon"] & \Z \arrow[r] & 0,
+            \end{tikzcd}
+        \]
+        with differentials given by
+        \[\partial_{1}=\begin{bmatrix}
+        S-1 \\
+        U-1
+        \end{bmatrix},\;\;\partial_{2}=\begin{bmatrix}
+        	    \Ngk{S}{kp-1} & 0 \\
+                \Ngk{S}{p-1} & -\Ngk{U}{q-1}
+        	\end{bmatrix},\;\;\partial_{3} =\begin{bmatrix}
+        	    S-1 & 0\\
+                U-1 & (1-U)\Ngk{U^{q}}{k-1}
+        	\end{bmatrix}.\]
+    \end{theorem}
+    \begin{proof}
+        Let $F_{\bullet}\to\Z$ be the free resolution from Corollary \ref{Cor:orgres}:
+        \[
+        	\begin{tikzcd}
+        		0 \arrow[r] & \ZG \arrow[r,"d_{2}"] & \ZG^{2} \arrow[r, "d_{1}"] & \ZG \arrow[r, "\varepsilon"] & \Z \arrow[r] & 0
+        	\end{tikzcd}
+        \]
+        \[d_{1}=\begin{bmatrix}
+            a-1 \\
+            b-1
+        \end{bmatrix},\;\; d_{2} = \begin{bmatrix}
+            \om^{*}\left(\Fox{r}{x}\right) & \om^{*}\left(\Fox{r}{y}\right)
+        \end{bmatrix}= \begin{bmatrix}
+            \Ngk{a}{p-1} & -\Ngk{b}{q-1}
+        \end{bmatrix}.\]
+        Following Theorem \ref{Thm:zg}, to construct a free resolution for the trivial module over the quotient group $\G_{k}$, it suffices to find a null-homotopy for the map $\lambda_{x}:F_{\bullet}\to F_{\bullet}$ where $x=1-a^{kp}\in Z(G)$
+        \[\begin{tikzcd}[ampersand replacement=\&, row sep=large, column sep=large ]
+        	\ZG \& {\ZG^{2}} \& \ZG \\
+        	\ZG \& {\ZG^{2}} \& \ZG
+        	\arrow["{d_{2}}", from=1-1, to=1-2]
+        	\arrow["{\lambda_{x}}"', from=1-1, to=2-1]
+        	\arrow["{d_{1}}", from=1-2, to=1-3]
+        	\arrow["{\varphi_{2}}"', dashed, red, from=1-2, to=2-1]
+        	\arrow["{\lambda_{x}}"', from=1-2, to=2-2]
+        	\arrow["{\varphi_{1}}"', dashed, red, from=1-3, to=2-2]
+        	\arrow["{\lambda_{x}}"', from=1-3, to=2-3]
+        	\arrow["{d_{2}}"', from=2-1, to=2-2]
+        	\arrow["{d_{1}}"', from=2-2, to=2-3]
+        \end{tikzcd}\]
+        \begin{align*}
+            \varphi_{1} =\begin{bmatrix}
+                -\Ngk{a}{kp-1} & 0
+            \end{bmatrix}, \;\;\;
+            \varphi_{2} = \begin{bmatrix}
+                0 \\
+                (b-1)\Ngk{b^{q}}{k-1}
+            \end{bmatrix}.
+        \end{align*}
+        Then by Theorem \ref{Thm:main} the differentials are given by
+        \[\partial_{1}=\od_{1},\;\;\partial_{2}=\begin{bmatrix}
+            -\varphi_{1} \\
+            \od_{2}
+        \end{bmatrix},\;\;\partial_{3}=\begin{bmatrix}
+            \od_{1} & -\varphi_{2}
+        \end{bmatrix}.\]
+    \end{proof}
+
+    \begin{corollary}\label{Cor:homfreeprod}
+        The homology and cohomology of $\Gamma_{k}$ with integer coefficients are given by
+        \[\Ho_{i}(\G_{k},\Z) = \begin{cases}
+            \Z & i=0,\\
+            \Z/l & i\equiv1\pmod{2},\\
+            0 & i\equiv0\pmod{2},\; i>0,
+        \end{cases}\hspace{2em} \Ho^{i}(\G_{k},\Z) = \begin{cases}
+            \Z & i=0,\\
+            0 & i\equiv1\pmod{2},\\
+            \Z/l & i\equiv0\pmod{2},\; i>0,
+            \end{cases}
+        \]
+        where $l=\lcm(k,p,q)$.
+    \end{corollary}
+    \begin{proof}
+        Consider the the integral matrices $\varepsilon\partial_{i}$ obtained by applying the augmentation map $\varepsilon:\Z\G_{k}\to \Z$ to the entries of the differentials from Theorem \ref{Thm:tknot}. Calculating the Smith Normal Form of these gives:
+        \[\varepsilon\partial_{1}=\begin{bmatrix}
+        0 \\
+        0
+        \end{bmatrix},\;\;\varepsilon\partial_{2}=\begin{bmatrix}
+        	    kp & 0 \\
+                p & q
+        	\end{bmatrix}\sim\begin{bmatrix}
+        	    1 & 0 \\
+                0 & \lcm(k,p,q)
+        	\end{bmatrix},\;\;\varepsilon\partial_{3} =\begin{bmatrix}
+        	    0 & 0\\
+                0 & 0
+        	\end{bmatrix}.\]
+    \end{proof}
+    Of course, because the groups $\G_{k}$ are amalgamated free products, these results also follow directly from a Mayer-Vietoris argument as in \cite[\S1, pp.541-2]{stallmv} and \cite[Lem.~2.1, p.592]{swancd1}. More generally, since $\G_{k}$ acts on a tree with finite stabilizers one can study these groups using Bass-Serre theory as outlined in the first chapter of \cite{trees}.
+
+    \begin{example}
+        As a particular application, taking $p=2$, $q=3$, and $k=2$ in Theorem \ref{Thm:tknot} gives a resolution for the group $\G=\SLZ=\langle S,U\mid S^{4}=U^{6}=1, \; S^{2}=U^{3}\rangle\cong \Z/4 *_{\Z/2} \Z/6 $ of the form
+        \[
+            \begin{tikzcd}
+                \cdots \arrow[r, "\partial_{2}"] & \Z\G^{2} \arrow[r, "\partial_{3}"] & \Z\G^{2} \arrow[r, "\partial_{2}"] & \Z\G^{2} \arrow[r, "\partial_{1}"] & \Z\G\arrow[r, "\varepsilon"] & \Z \arrow[r] & 0,
+            \end{tikzcd}
+        \]
+        with the differentials given by
+        \[\partial_{1}=\begin{bmatrix}
+        S-1 \\
+        U-1
+        \end{bmatrix},\;\;\partial_{2}=\begin{bmatrix}
+        	    1+S+S^{2}+S^{3} & 0 \\
+                1+S & -(1+U+U^{2})
+        	\end{bmatrix},\;\;\partial_{3} =\begin{bmatrix}
+        	    S-1 & 0\\
+                U-1 & (1-U)(1+U^{3})
+        	\end{bmatrix},\]
+        where $S=\begin{bmatrix}
+		0 & -1 \\
+		1 & 0
+    	\end{bmatrix}, \;U=\begin{bmatrix}
+    		0 & -1 \\
+    		1 & 1
+    	\end{bmatrix}\in\SLZ$.
+        
+        This is essentially the same resolution as the one constructed by Bui and Ellis in \cite[\S3]{bui} -- in the sense that both resolutions have the same free rank in each degree and both are $2$-periodic in degrees $\ge 1$. In this case, the (co)homology calculation from Corollary \ref{Cor:homfreeprod} recovers the well-known integral group (co)homology of $\SLZ$, see e.g. \cite[Ex.~3.3.5, pp.238-241]{ellis}. 
+    \end{example}
+
+    \subsection{Central quotients of Heisenberg groups}
+    In this section and beyond we use the convention that the commutator of $x,y\in G$ is $[x,y]=xyx^{-1}y^{-1}$.
+
+    The \emph{real Heisenberg group} (of rank $3$) is the group
+    \[H_{3}(\R) =\left\{ \begin{bmatrix}
+        1 & x & z\\
+        0 & 1 & y\\
+        0 & 0 & 1
+    \end{bmatrix}\Bigg\vert x,y,z,\in\R \right\} \subset\SL_{3}(\R).\] 
+    It is a connected nilpotent Lie group and the associated Lie algebra $\mathfrak{h}\subset\mathfrak{sl}_{3}$ is three-dimensional over $\R$ with a basis given by
+    \[X=\begin{bmatrix}
+        0 & 1 & 0 \\
+        0 & 0 & 0 \\
+        0 & 0 & 0
+    \end{bmatrix},\;\; Y=\begin{bmatrix}
+        0 & 0 & 0 \\
+        0 & 0 & 1 \\
+        0 & 0 & 0
+    \end{bmatrix},\;\; Z=\begin{bmatrix}
+        0 & 0 & 1 \\
+        0 & 0 & 0 \\
+        0 & 0 & 0
+    \end{bmatrix}.\]
+    The Lie bracket in $\mathfrak{h}$ is the matrix commutator and the relations are $[X,Y]=Z$, $[X,Z]=[Y,Z]=0$. The representation theory of $H_{3}(\R)$, and its Lie algebra $\mathfrak{h}$, are very well studied with various applications in harmonic analysis \cite{harmonic}, quantum computing \cite{heisquantcomp}, and quantum field theory \cite{heisquantgrp}. For more general references on the Heisenberg group and its representations, see \cite{heisenref} or \cite{ernst}.
+    
+    \begin{definition}
+        The \emph{integral Heisenberg group} (of rank $3$) is the finitely presented group 
+        \[H=H_{3}(\Z)=\langle x,y,z\mid [x,y]=z,\; [x,z]=1,\; [y,z]=1\rangle.\]
+    \end{definition}
+    It is easy to verify that there is a representation $\rho:H\to\SL_{3}(\Z)$ given by
+    \[\rho(x)=\begin{bmatrix}
+        1 & 1 & 0 \\
+        0 & 1 & 0 \\
+        0 & 0 & 1
+    \end{bmatrix},\;\; \rho(y)=\begin{bmatrix}
+        1 & 0 & 0 \\
+        0 & 1 & 1 \\
+        0 & 0 & 1
+    \end{bmatrix},\;\; \rho(z)=\begin{bmatrix}
+        1 & 0 & 1 \\
+        0 & 1 & 0 \\
+        0 & 0 & 1
+    \end{bmatrix}.\]
+    The center of $H$ is infinite cyclic generated by $z$, and the central quotient is 
+    \[H/Z(H)\cong\langle x,y,z\mid [x,y]=z=1,\; [x,z]=1,\; [y,z]=1\rangle\cong \langle x,y\mid [x,y]=1\rangle\cong \Z^{2}.\] 
+    This gives a central series $1\trianglelefteq Z(H) \trianglelefteq H$, with free abelian quotients.
+    Thus $H$ is a finitely generated torsion-free nilpotent group with \emph{Hirsch rank}\footnote{The \emph{Hirsch rank} is the sum of the free ranks of the abelian quotients in any central series of a solvable group, see \cite[\S7.3]{bieri}} equal to $3$, and hence $H$ is type $\FL$ with $\cd(H)=3$ by \cite[Ex.~9.8.1, p.166]{bieri} and \cite[Thm.~8.8.5, p.149]{gru2}.    
+    
+    A finite type free resolution for the trivial module $\Z\in\ZHmod$ is given in \cite[\S3]{h3res}:
+    \begin{equation}\label{Eq:hbergres}
+        F_{\bullet}=	\begin{tikzcd}
+            	0 \arrow[r] & \ZH \arrow[r,"d_{3}"] & \ZH^{3} \arrow[r,"d_{2}"] & \ZH^{3} \arrow[r, "d_{1}"] & \ZH \arrow[r, "\varepsilon"] & \Z \arrow[r] & 0
+            \end{tikzcd}
+    \end{equation}
+    with differentials given by
+    \[d_{1}=\begin{bmatrix}
+                x-1 \\
+                y-1 \\
+                z-1
+        \end{bmatrix},\;\; d_{2} = \begin{bmatrix}
+                1-zy & x-z & -1 \\
+                1-z & 0 & x-1 \\
+                0 & 1-z & y-1
+            \end{bmatrix},\;\;d_{3} = \begin{bmatrix}
+            z-1 & 1-zy & x-z
+        \end{bmatrix}.
+    \]
+    \begin{remark}
+        The group homology and cohomology of $H_{3}(\Z)$ is calculated by using this resolution by Majumdar and Sultana in \cite[\S4 \& 5]{h3res} and, more generally, the group cohomology of all integral Heisenberg groups of odd rank, $H_{2n+1}(\Z)$, was calculated by Lee and Parker in \cite[Thm.~1.8, p. 231]{leeparker}. 
+    \end{remark}
+    
+    Now, let $k\in\N$ and consider the central subgroup $\langle z^{k}\rangle\subset Z(H)\trianglelefteq H$. The quotient group
+    \[\Hil_{k}=H/\langle z^{k}\rangle\cong\langle x,y,z\mid [x,y]=z, [x,z]=1, [y,z]=1, z^{k}=1\rangle,\]  
+    fits into a central extension
+    \[
+        \begin{tikzcd}
+        		1 \arrow[r] & \langle z^{k} \rangle \arrow[r] & H \arrow[r] & \mathcal{H}_{k} \arrow[r] & 1.
+        \end{tikzcd}
+    \]
+    We will apply Construction \ref{Con:imc} in this context, starting with the finite type free resolution (\ref{Eq:hbergres}), to produce eventually periodic resolutions over the quotient groups $\mathcal{H}_{k}$.
+    \begin{theorem}\label{Thm:hberg}
+        Let $k\in\N$. Then the trivial module $\Z\in\lMod{\ZGk}$ has a $2$-periodic resolution in degrees $\ge 2$ of the form
+        \[
+            \begin{tikzcd}
+                \cdots \arrow[r, "\partial_{3}"] & \Z\Hil_{k}^{4} \arrow[r, "\partial_{4}"] & \Z\Hil_{k}^{4}  \arrow[r, "\partial_{3}"] & \Z\Hil_{k}^{4}  \arrow[r, "\partial_{2}"] & \Z\Hil_{k}^{3}  \arrow[r, "\partial_{1}"] & \Z\Hil_{k} \arrow[r, "\varepsilon"] & \Z \arrow[r] & 0
+            \end{tikzcd}
+        \]
+        with the differentials given by
+        \begin{align*}
+            \partial_{1}=\begin{bmatrix}
+            x-1 \\
+            y-1 \\
+            z-1
+            \end{bmatrix},\;\; \partial_{2}&=\begin{bmatrix}
+                	    0 & 0 & \Ngk{z}{n-1}  \\
+                        1-zy & x-z & -1\\
+                        1-z & 0 & x-1\\
+                        0 & 1-z & y-1
+                	\end{bmatrix},\;\; \partial_{3} =\begin{bmatrix}
+                	    x-1 & 0 & -\Ngk{z}{n-1} & 0\\
+                        y-1 & 0 & 0 & -\Ngk{z}{n-1} \\
+                        z-1 & 0 & 0 & 0 \\
+                        0 & z-1 & 1-zy & x-z
+                	\end{bmatrix}, \\
+                    \partial_{4}&=\begin{bmatrix}
+                	    0 & 0 & \Ngk{z}{n-1} & 0\\
+                        1-zy & x-z & -1 & \Ngk{z}{n-1} \\
+                        z-1 & 0 & x-1 & 0 \\
+                        0 & 1-z & y-1 & 0
+                	\end{bmatrix}.
+        \end{align*}
+    \end{theorem}
+    \begin{proof}
+        Following Theorem \ref{Thm:zg}, to construct a free resolution for the trivial module over the quotient group $\mathcal{H}_{k}$, it suffices to find a null-homotopy for the map $\lambda_{x}:F_{\bullet}\to F_{\bullet}$ which is left multiplication by $x=1-z^{k}\in\Z H$.
+        \[\begin{tikzcd}[ampersand replacement=\&, row sep=large, column sep=large ]
+        	\ZH \& {\ZH^{3}} \& {\ZH^{3}} \& \ZH \\
+        	\ZH \& {\ZH^{3}} \& {\ZH^{3}} \& \ZH
+        	\arrow["{d_{3}}", from=1-1, to=1-2]
+        	\arrow["{\lambda_{x}}"', from=1-1, to=2-1]
+        	\arrow["{d_{2}}", from=1-2, to=1-3]
+        	\arrow["{\varphi_{3}}"', dashed, red, from=1-2, to=2-1]
+        	\arrow["{\lambda_{x}}"', from=1-2, to=2-2]
+        	\arrow["{\varphi_{2}}"', dashed, red, from=1-3, to=2-2]
+        	\arrow["{\lambda_{x}}"', from=1-3, to=2-3]
+            \arrow["{\lambda_{x}}"', from=1-4, to=2-4]
+        	\arrow["{d_{1}}", from=1-3, to=1-4]
+        	\arrow["{\varphi_{1}}"', dashed, red, from=1-4, to=2-3]
+        	\arrow["{d_{3}}"', from=2-1, to=2-2]
+        	\arrow["{d_{2}}"', from=2-2, to=2-3]
+            \arrow["{d_{1}}"', from=2-3, to=2-4]
+        \end{tikzcd}\]
+        \begin{align*}
+            \varphi_{1} = \begin{bmatrix}
+                0 & 0 & -\Ngk{z}{k-1}
+            \end{bmatrix},\;\;\;
+            \varphi_{2}=\begin{bmatrix}
+                        0 & \Ngk{z}{k-1} & 0\\
+                        0 & 0 & \Ngk{z}{k-1} \\
+                        0 & 0 & 0
+                \end{bmatrix}, \;\;\; \varphi_{3} = \begin{bmatrix}
+                    -\Ngk{z}{k-1} \\
+                                0\\
+                                0
+                \end{bmatrix}.
+        \end{align*}
+        Then by Theorem \ref{Thm:main} the differentials are given by
+        \begin{align*}
+            \partial_{1}=\od_{1},\;\;\partial_{2}=\begin{bmatrix}
+                -\varphi_{1} \\
+                \od_{2}
+            \end{bmatrix},\;\;
+            \partial_{3}=\begin{bmatrix}
+                \od_{1} & -\varphi_{2} \\
+                0 & \od_{3}
+            \end{bmatrix},\;\; 
+            \partial_{4} = \begin{bmatrix}
+                -\varphi_{1} & 0\\
+                \od_{2} & -\varphi_{3}
+            \end{bmatrix}.
+        \end{align*}
+    \end{proof}
+
+    \begin{corollary}
+        The homology and cohomology of $\Hil_{k}$ with integer coefficients are given by
+        \begin{align*}
+            \Ho_{i}(\Hil_{k},\Z) = \begin{cases}
+                \Z & i=0,\\
+                \Z^{2} & i=1,\\
+                \left(\Z/k\right)^{2}\oplus \Z & i=2,\\
+                \Z/k^{2} & i\equiv1\pmod{2},\; i>1,\\
+                \left(\Z/k\right)^{2} & i\equiv0\pmod{2},\; i>2.
+            \end{cases} \\
+            \Ho^{i}(\Hil_{k},\Z) = \begin{cases}
+                \Z & i=0,\\
+                \Z^{2} & i=1,\\
+                \left(\Z/k\right)^{2}\oplus \Z & i=2,\\
+                \left(\Z/k\right)^{2} & i\equiv1\pmod{2},\; i>1,\\
+                \Z/k^{2} & i\equiv0\pmod{2},\; i>2.
+            \end{cases}
+        \end{align*}
+    \end{corollary}
+    \begin{proof}
+        Calculating the Smith Normal Form of the corresponding integral matrices $\varepsilon\partial_{i}$ obtained from Theorem \ref{Thm:hberg}:
+        \begin{align*}
+            &\varepsilon\partial_{1}=\begin{bmatrix}
+                0 \\
+                0 \\
+                0
+            \end{bmatrix}, &&\varepsilon\partial_{2}=\begin{bmatrix}
+                0 & 0 & k \\
+                0 & 0 & -1\\
+                0 & 0 & 0 \\
+                0 & 0 & 0
+            \end{bmatrix}\sim\begin{bmatrix}
+                1 & 0 & 0 \\
+                0 & 0 & 0 \\
+                0 & 0 & 0 \\
+                0 & 0 & 0
+            \end{bmatrix}, \\
+            &\varepsilon\partial_{3}= \begin{bmatrix}
+            	    0 & 0 & -k & 0\\
+                    0 & 0 & 0 & -k \\
+                    0 & 0 & 0 & 0 \\
+                    0 & 0 & 0 & 0
+            	\end{bmatrix}\sim \begin{bmatrix}
+            	    k & 0 & 0 & 0\\
+                    0 & k & 0 & 0 \\
+                    0 & 0 & 0 & 0 \\
+                    0 & 0 & 0 & 0
+            	\end{bmatrix}, &&\varepsilon\partial_{4} =\begin{bmatrix}
+            	    0 & 0 & k & 0\\
+                    0 & 0 & -1 & k \\
+                    0 & 0 & 0 & 0 \\
+                    0 & 0 & 0 & 0
+            	\end{bmatrix} \sim \begin{bmatrix}
+            	    1 & 0 & 0 & 0\\
+                    0 & k^{2} & 0 & 0 \\
+                    0 & 0 & 0 & 0 \\
+                    0 & 0 & 0 & 0
+            	\end{bmatrix}.
+        \end{align*}
+    \end{proof}
+
+    \subsection{Hyperbolic triangle groups}
+    Let $l,m,n\in\N$, with $2\le l\le m\le n$, be such that $\frac{1}{l}+\frac{1}{m}+\frac{1}{n}<1.$ Then there is a \emph{hyperbolic triangle} $\tau\subset\mathbb{H}^{2}=\{z\in\C\mid \Im(z)>0\}$ with edges $A,B,C$, opposite angles $\frac{\pi}{m}, \frac{\pi}{n}, \frac{\pi}{l}$, respectively.
+    \begin{figure}[h!]
+        \centering
+        \begin{tikzpicture}
+             \path (0,0) coordinate (A) (8,2) coordinate (B) (4,-4) coordinate (C);
+             \draw[thick,path picture={
+             \foreach \X in {A,B,C}
+             {\draw[line width=0.4pt] (\X) circle (1);}}]
+             let \p1=($(B)-(A)$),\p2=($(C)-(B)$),\p3=($(C)-(A)$),
+             \n1={atan2(\y1,\x1)},\n2={atan2(\y2,\x2)},\n3={atan2(\y3,\x3)},
+             \n4={veclen(\y1,\x1)},\n5={veclen(\y2,\x2)},\n6={veclen(\y3,\x3)} in
+             (A) node[left]{$\phantom{v_{3}}$}  arc(-90-15+\n1:-90+15+\n1:{\n4/(2*sin(15))})
+             --(B) node[above right]{$\phantom{v_{2}}$} 
+              arc(-90-15+\n2:-90+15+\n2:{\n5/(2*sin(15))})
+             --(C) node[below]{$\phantom{v_{1}}$} 
+             arc(90-15+\n3:90+15+\n3:{\n6/(2*sin(15))}) -- cycle;
+             
+             % Add edge labels
+             \path (A) -- (B) node[midway,above] {$A$};
+             \path (A) -- (C) node[midway,left] {$B$};
+             \path (B) -- (C) node[midway,right] {$C$};
+             
+             % Add angle labels inside the triangle
+             \node at ($(A)!0.15!(B)!0.15!(C)$) {$\frac{\pi}{l}$};
+             \node at ($(B)!0.15!(A)!0.15!(C)$) {$\frac{\pi}{n}$};
+             \node at ($(C)!0.15!(A)!0.15!(B)$) {$\frac{\pi}{m}$};
+             
+             \node at (barycentric cs:A=1,B=1,C=1) {$\tau$};
+        \end{tikzpicture}
+        \caption{Hyperbolic triangle $\tau\subset\mathbb{H}^{2}$}
+        \label{Fig:tri}
+    \end{figure}
+
+    \begin{definition}
+        The $(l,m,n)$\emph{-hyperbolic triangle group} is the finitely presented group
+        \[T=T(l,m,n)=\langle a,b\mid a^{l}=b^{m}=(ab)^{n}=1\rangle.\]
+    \end{definition}
+
+    In \cite[Thm.~II.5.2.8, p.81]{magnustess} Magnus interpreted the group $T(l,m,n)$ geometrically as the orientation preserving homeomorphisms of the hyperbolic plane which are generated by reflections about the edges of the hyperbolic triangle $\tau$, as in Figure \ref{Fig:tri}.
+    
+    By \cite[Lem.~3.1]{milnorpqr} there is a central extension of groups
+    \[
+        	\begin{tikzcd}
+        		1 \arrow[r] & \langle c \rangle \arrow[r] & G(l,m,n) \arrow[r] & T(l,m,n) \arrow[r] & 1,
+        	\end{tikzcd}
+    \]
+    where $G=G(l,m,n)=\langle a,b\mid a^{l}=b^{m}=(ab)^{n}\rangle$ and $c=a^{l}\in Z(G)$ is central. From \cite[Thm.~A]{streb} there is a finite type free resolution $\bul{F}\to\Z\in\ZGmod$ of the form
+    \begin{equation}\label{Eq:Trires}
+        F_{\bullet}=	\begin{tikzcd}
+            		0 \arrow[r] & \ZG \arrow[r,"d_{3}"] & \ZG^{2} \arrow[r,"d_{2}"] & \ZG^{2} \arrow[r, "d_{1}"] & \ZG \arrow[r, "\varepsilon"] & \Z \arrow[r] & 0,
+            	\end{tikzcd}
+    \end{equation}
+    where the differentials given by
+    \[
+        d_{1}=\begin{bmatrix}
+            a-1\\
+            b-1
+        \end{bmatrix},\;\; d_{2}= \begin{bmatrix}
+            \Ngk{ab}{n-1} & \Ngk{ab}{n-1}\cdot a - \Ngk{b}{m-1}\\
+            \Ngk{ba}{n-1}\cdot b - \Ngk{a}{l-1} & \Ngk{ba}{n-1}
+        \end{bmatrix},\;\; d_{3} = \begin{bmatrix}
+            1-b & 1-a
+        \end{bmatrix},
+    \]
+    and hence $G$ is type $\FL$ with $\cd(G)=3$.
+
+    \begin{theorem}\label{Thm:tri}
+        The trivial module $\Z\in\lMod{\Z T}$ has a $2$-periodic resolution in degrees $\ge 2$ of the form
+        \[
+            \begin{tikzcd}
+                \cdots \arrow[r, "\partial_{3}"] & \Z T^{3} \arrow[r, "\partial_{4}"] & \Z T^{3}  \arrow[r, "\partial_{3}"] & \Z T^{3}  \arrow[r, "\partial_{2}"] & \Z T^{2}  \arrow[r, "\partial_{1}"] & \Z T \arrow[r, "\varepsilon"] & \Z \arrow[r] & 0,
+            \end{tikzcd}
+        \]
+        with the differentials given by
+        \begin{align*}
+            \partial_{1}=\begin{bmatrix}
+            a-1 \\
+            b-1 
+            \end{bmatrix},\;\; \partial_{2}&=\begin{bmatrix}
+                	    \Ngk{a}{l-1} & 0 \\
+                        \Ngk{ab}{n-1} & \Ngk{ab}{n-1}\cdot a - \Ngk{b}{m-1}\\
+                        \Ngk{ba}{n-1}\cdot b - \Ngk{a}{l-1} & \Ngk{ba}{n-1}
+                	\end{bmatrix},\;\; \partial_{3} =\begin{bmatrix}
+                	    a-1 & 0 & 0 \\
+                        b-1 & 0 & ba-1\\
+                        0 & 1-b & 1-a
+                	\end{bmatrix}, \\
+                    \partial_{4}&=\begin{bmatrix}
+                	    \Ngk{a}{l-1} & 0 & 0\\
+                        \Ngk{ab}{n-1} & \Ngk{ab}{n-1}\cdot a-\Ngk{b}{m-1} & -\Ngk{b}{m-1} \\
+                        \Ngk{ba}{n-1}\cdot b-\Ngk{a}{l-1} & \Ngk{ba}{n-1} & 0
+                	\end{bmatrix}.
+        \end{align*}
+    \end{theorem}
+    \begin{proof}
+        Following Theorem \ref{Thm:zg}, to construct a free resolution for the trivial module over the quotient group $T(l,m,n)$, it suffices to find a null-homotopy for the map $\lambda_{x}:F_{\bullet}\to F_{\bullet}$, where $\bul{F}\to\Z$ is the resolution from (\ref{Eq:Trires}) and $\lambda_{x}$ is multiplication by $x=1-a^{l}\in\ZG$.
+        \[\begin{tikzcd}[ampersand replacement=\&, row sep=large, column sep=large ]
+        	\Z T \& {\Z T^{2}} \& {\Z T^{2}} \& \Z T \\
+        	\Z T \& {\Z T^{2}} \& {\Z T^{2}} \& \Z T
+        	\arrow["{d_{3}}", from=1-1, to=1-2]
+        	\arrow["{\lambda_{c}}"', from=1-1, to=2-1]
+        	\arrow["{d_{2}}", from=1-2, to=1-3]
+        	\arrow["{\varphi_{3}}"', dashed, red, from=1-2, to=2-1]
+        	\arrow["{\lambda_{c}}"', from=1-2, to=2-2]
+        	\arrow["{\varphi_{2}}"', dashed, red, from=1-3, to=2-2]
+        	\arrow["{\lambda_{x}}"', from=1-3, to=2-3]
+            \arrow["{\lambda_{x}}"', from=1-4, to=2-4]
+        	\arrow["{d_{1}}", from=1-3, to=1-4]
+        	\arrow["{\varphi_{1}}"', dashed, red, from=1-4, to=2-3]
+        	\arrow["{d_{3}}"', from=2-1, to=2-2]
+        	\arrow["{d_{2}}"', from=2-2, to=2-3]
+            \arrow["{d_{1}}"', from=2-3, to=2-4]
+        \end{tikzcd}\]
+        \begin{align*}
+            \varphi_{1} = \begin{bmatrix}
+            -\Ngk{a}{l-1} & 0
+        \end{bmatrix},\;\;
+            \varphi_{2}=\begin{bmatrix}
+                            0 & 0 \\
+                            0 & 1-ba
+                             \end{bmatrix},\;\;
+            \varphi_{3}=\begin{bmatrix}
+                            \Ngk{b}{m-1} \\
+                            0
+                             \end{bmatrix}.
+        \end{align*}
+        Then by Theorem \ref{Thm:main} the differentials are given by
+        \begin{align*}
+            \partial_{1}=\od_{1},\;\;\partial_{2}=\begin{bmatrix}
+                -\varphi_{1} \\
+                \od_{2}
+            \end{bmatrix},\;\;
+            \partial_{3}=\begin{bmatrix}
+                \od_{1} & -\varphi_{2} \\
+                0 & \od_{3}
+            \end{bmatrix},\;\; 
+            \partial_{4} = \begin{bmatrix}
+                -\varphi_{1} & 0\\
+                \od_{2} & -\varphi_{3}
+            \end{bmatrix}.
+        \end{align*}
+    \end{proof}
+    \begin{corollary}\label{Cor:trihomology}
+        The homology and cohomology of $T=T(l,m,n)$ with integer coefficients are given by
+        \begin{align*}\Ho_{i}(T,\Z) = \begin{cases}
+            \Z & i=0,\\
+            \Z/l\oplus\Z/m & i=1,\\
+            \Z & i=2,\\
+            \Z/l\oplus\Z/m\oplus\Z/n & i\equiv1\pmod{2},\; i>1,\\
+            0 & i\equiv0\pmod{2},\; i>2,
+        \end{cases}\\ \\
+        \Ho^{i}(T,\Z) = \begin{cases}
+            \Z & i=0,\\
+            0 & i=1,\\
+            \Z/l\oplus\Z/m\oplus\Z & i=2,\\
+            0 & i\equiv1\pmod{2},\; i>1,\\
+            \Z/l\oplus\Z/m\oplus\Z/n & i\equiv0\pmod{2},\; i>2.
+        \end{cases}
+        \end{align*}
+    \end{corollary}
+    \begin{proof}
+        Calculating the Smith Normal Form of the corresponding integral matrices $\varepsilon\partial_{i}$ obtained from Theorem \ref{Thm:tri}:
+        \begin{align*}
+            &\varepsilon\partial_{1}=\begin{bmatrix}
+                0 \\
+                0 
+            \end{bmatrix}, &&\varepsilon\partial_{2}=\begin{bmatrix}
+                l & 0 \\
+                n & n-m \\
+                n-l & n
+            \end{bmatrix}\sim\begin{bmatrix}
+                d & 0 \\
+                0 & \alpha \\
+                0 & 0 
+            \end{bmatrix}, \\
+            &\varepsilon\partial_{3}=\begin{bmatrix}
+            	    0 & 0 & 0 \\
+                    0 & 0 & 0 \\
+                    0 & 0 & 0       
+            \end{bmatrix}, &&\varepsilon\partial_{4}  = \begin{bmatrix}
+                	    l & 0 & 0 \\
+                        n & n-m & m \\
+                        n-l & n & 0 
+                	\end{bmatrix} \sim \begin{bmatrix}
+            	    d & 0 & 0 \\
+                    0 & \alpha & 0 \\
+                    0 & 0 & \beta
+            	\end{bmatrix},
+        \end{align*}
+        \begin{align*}
+            &d=\gcd\{n-l,\;n-m,\;n,\;l\}, &&\alpha=\frac{a}{d}, \\
+            &a=\gcd\{n^{2}-(n-m)(n-l),\; l(n-m),\;ln\}, &&\beta = \frac{lmn}{a}=\frac{lmn}{d\alpha},\\
+            &\phantom{a}=\gcd\{ln+lm-mn,\; ln-lm,\; ln\}, && \\
+            &\phantom{a}=\gcd\{lm,\;ln,\;mn\}.
+        \end{align*}
+        By construction, $\beta =\lcm(d,\alpha,\beta)=\lcm(l,m,n)$, so the result follows from the Fundamental Theorem of Finitely Generated Abelian Groups \cite[\S5.2]{stillwell}.
+    \end{proof}
+    \begin{remark}
+        The calculation in the proof of Corollary \ref{Cor:trihomology} recovers the well-known result for the homology of triangle groups $T=T(l,m,n)$:
+        \[\Ho_{i}(T,\Z)\cong \Ho_{i}(\Z/l, \Z)\oplus \Ho_{i}(\Z/m, \Z)\oplus \Ho_{i}(\Z/n, \Z)\]
+        for all $i\ge 3$, see \cite[Prop.~6.4.1, p.442]{ellis}.
+    \end{remark}
+    Eventually periodic resolutions and (co)homology of the groups $T(l,m,n)$, and the central extensions $G(l,m,n)$, are studied in depth by Ellis and Williams \cite{ellistri}. These resolutions are constructed using a generalized version of a `perturbation' technique due originally to C.T.C Wall \cite[Thm.~1, p. 253]{wallresex}. This method works for groups which act by isometries on either the Euclidean or Hyperbolic plane. For each of the stabilizer groups of such an action it is easy to construct a free resolution. These resolutions can then be arranged into a filtration and the associated spectral sequence will converge to the desired resolution. The free resolution constructed for $T(l,m,n)$ in \cite[Eq.~(4), p.576]{ellistri} has rank $5$ in degree 1, and rank $4$ in degree 2, whereas the one constructed in Theorem \ref{Thm:tri} has rank $3$ in all degrees $\ge 1$. This technique has been used to calculate periodic resolutions for arithmetic groups \cite{ellispre} (including $\SL_{2}(\Z[\frac{1}{m}])$ \cite{bui}, $\PSL_{4}(\Z)$ \cite{ellispsl}, and $\GL_{3}(\mathcal{O})$ \cite{buigl}) and cyrstallographic groups \cite{elliscrystal} (see also \cite{ademcrystal} and \cite{ktheorycrystal}). See \cite{ellispoly} or \cite[\S3.3 \& 5.5]{ellis} for more details and examples. 
+
+    \subsubsection{Generalized triangle groups}
+    In fact, Ellis and Williams apply their machinery more broadly to \emph{generalized} triangle groups of the from
+    \[\G=\G_{w}(l,m,n)=\langle a,b\mid a^{l}=b^{m}=w^{n}=1\rangle,\]
+    where $w\in F(a,b)$ is any word. In particular, they address the case of the commutator word $w=[a,b]$ in \cite[Thm.~3, p.582]{ellistri} and produce a free resolution $\bul{C}\to \Z\in\ZGamod$ of the form
+    \[
+        \begin{tikzcd}[sep=scriptsize]
+                \cdots \arrow[r, "\partial_{5}"] & \Z\G^{9} \arrow[r, "\partial_{4}"] & \Z\G^{9} \arrow[r, "\partial_{5}"] & \Z\G^{9} \arrow[r, "\partial_{4}"] & \Z\G^{10}  \arrow[r, "\partial_{3}"] & \Z\G^{13}  \arrow[r, "\partial_{2}"] & \Z\G^{13}  \arrow[r, "\partial_{1}"] & \Z\G^{6} \arrow[r, "\varepsilon"] & \Z \arrow[r] & 0.
+        \end{tikzcd}
+    \]
+
+    There is a central extension of groups
+    \[
+        	\begin{tikzcd}
+        		1 \arrow[r] & \langle c \rangle \arrow[r] & G \arrow[r] & \G \arrow[r] & 1
+        	\end{tikzcd}
+    \]
+    where $G=\langle a,b\mid a^{l}=b^{m}=[a,b]^{n}\rangle$ and $c=a^{l}\in Z(G)$. Applying Construction \ref{Con:imc} produces a resolution which is $2$-periodic in degrees $\ge1$, with stable rank $3$ (cf. Theorem \ref{Thm:tri}), and this resolution agrees with the one given in \cite[Thm.~6.4.7, p.452]{ellis}.
+    
+    For more on generalized triangle groups and their cohomology, see the work of Fine and Rosenberg \cite{ecprocyc}, particularly \cite[Ch. VII]{algdiscgrp} and the references there.
+    
+    \subsection{Mapping class groups of the punctured plane}
+    Let $\Sigma^{n}_{g,k}$ denote a Riemann surface of genus $g\ge0$ with $k\ge 0$ boundary components and $n\ge0$ punctures (or marked points).
+    \begin{definition}
+        The \emph{mapping class group} 
+        \[\mathrm{Mod}(\Sigma^{n}_{g,k})\coloneqq\pi_{0}(\Homeo^{+}(\Sigma^{n}_{g,k},\partial \Sigma^{n}_{g,k})),\] 
+        is the group of isotopy classes of orientation preserving homeomorphisms of $\Sigma^{n}_{g,k}$, possibly permuting the punctures, which fix the boundary point-wise. 
+    \end{definition}
+
+    Of particular interest are the mapping class groups of the $(n+2)$-times punctured sphere, $\Sigma^{n+2}=\Sigma^{n+2}_{0,0}$ with $n\ge0$, and its finite index subgroups. Cohen showed in \cite[Thm.~1.1 \& 1.4, p.6-7]{bensoncohen} that the homology $\Ho_{\ast}(\textrm{Mod}(\Sigma^{n+2}),\Z)$ is all $p$-torsion with primes $p\le n+2$, and, in the same paper, there are explicit calculations of $\Ho^{\ast}(\textrm{Mod}(\Sigma^{6}),\mathbb{F}_{p})$ for $p=2,3,$ and $5$ \cite[Thm.~1.2 \& 1.7, p.7-8]{bensoncohen}. A complete description of the cohomology ring $\Ho^{\bullet}(\textrm{Mod}(\Sigma^{n+2}), \mathbb{F}_{p})$ is given by Bodigheimer, Cohen, and Peim in \cite[Thm.~2.4, p.20]{bcpmcg}.
+    
+    The groups $\mathrm{Mod}(\Sigma^{n+2})$ with $n\ge 2$ are closely central related to central quotients of Artin's braid groups \cite{artinbraid}, and so we now briefly recall some important properties of these groups.
+    \begin{definition}[Artin 1947]
+        Let $n\in\N$. The \emph{braid group} on $(n+1)$-strands is the finitely presented group
+       \[
+    	   B_{n+1} = \left\langle \sigma_1, \sigma_2, \dots, \sigma_{n} \,\middle|\,
+    	   \begin{array}{r@{{}={}}l@{\quad}l}
+    	   	\sigma_i \sigma_{i+1} \sigma_i & \sigma_{i+1} \sigma_i \sigma_{i+1} & \text{for } 1 \leq i \leq n-1, \\
+    	   	\sigma_i \sigma_j & \sigma_j \sigma_i & \text{for } |i - j| \geq 2
+    	   \end{array}
+    	   \right\rangle.
+       \]
+    \end{definition}
+    The ubiquity of the braid relation $\sigma_i \sigma_{i+1} \sigma_i = \sigma_{i+1} \sigma_i \sigma_{i+1}$ places braid groups at the center of many fundamental branches of mathematics, physics, and computer science including category theory \cite{joyal}, \cite{catbra}, conformal field theory \cite{todphys}, robotics \cite{robot}, quantum computing \cite{braidquan}, and quantum groups \cite{kassel}.
+
+    Birmann \cite{birmanmcg} proved that $B_{n+1}$ is isomorphic to the mapping class group of the the closed $2$-disk in $\R^{2}$ with $(n+1)$-punctures, which we denote $D_{n+1}$. That is, $B_{n+1}\cong\Homeo^{+}(D_{n+1},\partial D_{n+1})$, and under this isomorphism each generator $\sigma_{i}\in B_{n+1}$ corresponds to the homotopy class of a homeomorphism of the punctured disk $D_{n+1}$ given by a \emph{half-twist} about two punctures as in \cite[Fig.~9.5, p.244]{primer}.
+
+    The braid groups have desirable homological properties and their group (co)homology is well-studied. For specific information we recommend the survey \cite{versh} and the references there within. For our purposes a description of the (co)homology is not needed. Instead, we need the following:
+    \begin{proposition}\label{Prop:cdbraid}
+        Let $n\ge 1$. There is a free resolution of the trivial module $\Z\in\lMod{\Z B_{n+1}}$ of length equal to $n$, and hence the braid group on $(n+1)$-strands $B_{n+1}$ is type $\FL$ with $\cd(B_{n+1})=n$.
+    \end{proposition}
+    \begin{proof}
+        We sketch a proof by recalling the combinatorial description of the free $B_{n+1}$-CW complex, denoted $\bul{C}(B_{n+1})$, from \cite[\S4.1.5]{loday} which gives the desired resolution.
+
+        For each $0\le i\le n$ the free $\Z B_{n+1}$-module $C_{i}(B_{n+1})$ has a basis consisting of tuples $[p_{1},\ldots, p_{n+1-i}]$ of positive integers, $p_{j}$, with the property that $\sum_{j}p_{j}=n+1$. Hence, the free rank of $C_{i}(B_{n+1})$ is given by a stars-and-bars argument:
+        \[\rank_{\Z B_{n+1}}\left( C_{i}(B_{n+1})\right) = \binom{n}{n-i}.\] 
+        Such tuples are called $[p_{1},\ldots, p_{n+1-i}]$-\emph{shuffles} and arise from a recursive labeling of the faces of the \emph{permutahedron} $P_{n+1}$ by the generators $\sigma_{i}\in B_{n+1}$ as outlined in the Appendix of \cite{loday}. As a result of the recursive nature of this labeling, in order to define a differential $d_{i}:C_{i}\to C_{i-1}$ it suffices to specify $d_{n}([n+1])$ for all $n\ge 1$ (cf. \cite[\S2.2.2]{loday}). As such, we set
+        \[d_{n}([n+1]) = \sum_{i=1}^{n}\left(\sum\pm\gamma(k_{1},\ldots,k_{i},k_{i+1},\ldots,k_{n+1})\right)[i, n+1-i] \in C_{n-1},\]
+        where the inner summation is over all the $[i, n+1-i]$-shuffles $(k_{1},\ldots,k_{i},k_{i+1},\ldots,k_{n+1})$ and $\gamma(k_{1},\ldots,k_{i},k_{i+1},\ldots,k_{n+1})\in\Z B_{n+1}$ is the element corresponding to the path in $P_{n+1}$ from the chosen base point to the base point of the face corresponding to the shuffle.
+    \end{proof}
+    The original statement of Proposition \ref{Prop:cdbraid} was proved using the cellular decomposition of the \emph{configuration space} of $k$ points in the plane, $\textrm{Conf}_{k}(\R^{2})$, by \emph{Fox-Neuwirth-Fuks cells} due to \cite{FoxNeu} and \cite{fuks}. For a modern treatment of this decomposition, see \cite[\S2]{devfox} or \cite[\S3.1]{ellenbergfox}.
+    
+    The center of the braid groups was identified by Chow \cite[Thm.~III]{chow} (see also \cite{garside}):
+    \begin{theorem}
+        The center of $B_{n+1}$ is infinite cyclic generated by the \emph{full-twist} $\Delta_{n+1}\coloneqq\left(\sigma_{1}\sigma_{2}\cdots \sigma_{n}\right)^{n+1}$.
+    \end{theorem}
+    There is a central extension
+    \begin{equation}\label{Eq:mcgplane}
+        \begin{tikzcd}
+			1 \arrow[r] & \langle \Delta_{n+1}\rangle \arrow[r] & B_{n+1} \arrow[r] & G_{n+1} \arrow[r] & 1
+		\end{tikzcd}
+     \end{equation}
+    where $G_{n+1}\coloneqq B_{n+1}/\langle \Delta_{n+1}\rangle$ is isomorphic to the mapping class group of the $(n+1)$-times punctured plane $\mathbb{P}_{n+1}$ (cf. \cite[\S2.2, p.28-9]{braid}).
+
+    \begin{corollary}
+        The group $G_{n+1}$ is type $\VFP$ with $\vcd(G_{n+1})=n-1$.
+    \end{corollary}
+    \begin{proof}
+        Firstly, by \cite[p.248]{primer}, the group $G_{n+1}$ is a subgroup of index $n+2<\infty$ in the mapping class group of the $(n+2)$-times punctured sphere, $\mathrm{Mod}(\Sigma^{n+2})$. The work of Harer \cite{harer,harermoduli}, Ivanov \cite{ivanovmcg}, and Ivanov-Ji \cite{ivanovji}, implies that $\mathrm{Mod}(\Sigma^{n+2})$ is type $\VFP$ with $\vcd(\mathrm{Mod}(\Sigma^{n+2}))=n-1$, for all $n\ge1$. The result now follows from \cite[Prop.~VIII.10.2, p.224]{brown}.
+    \end{proof}
+
+    Applying Construction \ref{Con:imc} and Theorem \ref{Thm:main} to the short exact sequence of groups (\ref{Eq:mcgplane}) and starting with the resolution from Proposition \ref{Prop:cdbraid} gives the result for the groups $G_{n+1}$:
+    \begin{theorem}\label{Thm:mcgperiod}
+        For each $n\ge 2$, the mapping class of the $(n+1)$-times punctured plane $\mathrm{Mod}(\mathbb{P}_{n+1})\cong G_{n+1}$ has a $2$-periodic resolution in degrees $\ge n$. Furthermore, the stable rank in the $2$-periodic part is $2^{n-1}$.
+    \end{theorem}
+    \begin{proof}
+        The only thing that needs to be verified is the stable rank, which, by Theorem \ref{Thm:zg}, is given by
+        \[\rank_{G_{n+1}}(M_{n}) = \frac{1}{2}\sum_{i=0}^{n}\rank_{B_{n+1}}(C_{i}(B_{n+1})) = \frac{1}{2}\sum_{i=0}^{n}\binom{n}{n-i}=\frac{1}{2}2^{n}=2^{n-1}.\]
+    \end{proof}
+
+    \begin{example}\label{Ex:braid4}
+        As an explicit example of the construction from Theorem \ref{Thm:mcgperiod}, we consider the case when $n=3$.
+
+        The braid group on four strands is the finitely presented group
+        \[B_{4}=\langle \so,\st,\sh\mid \so\st\so=\st\so\st,\; \st\sh\st=\sh\st\sh,\; \so\sh=\sh\so\rangle,\]
+        where we denote the generators by $x,y,z$ instead of the usual $\sigma_{i}$ for ease of notation. Let $\Delta=\so\st\sh$. Then the full twist $\Delta^{4}$ generates the center $\langle \Delta^{4} \rangle = Z(B_{4})\trianglelefteq B_{4}$. 
+        
+        The trivial module $\Z\in\lMod{\ZB_{4}}$ has a resolution of the form
+        \[
+            \begin{tikzcd}
+    			0 \arrow[r] & \ZB_{4} \arrow[r, "d_{3}"] & \ZB_{4}^3 \arrow[r, "d_{2}"] & \Z B_{4}^{3} \arrow[r, "d_{1}"] & \Z B_{4} \arrow[r, "\varepsilon"] & \Z \arrow[r] & 0
+    		\end{tikzcd}
+         \]
+        where the first two differentials are found as in Theorem \ref{Thm:preres}
+        \[d_{1}=\begin{bmatrix}
+            \so-1\\
+            \st-1\\
+            \sh-1
+        \end{bmatrix},\;\; d_{2}=\begin{bmatrix}
+            1+\so\st-\st & \so-\st\so-1 & 0\\
+            0 & 1+\st\sh-\sh & \st-\sh\st-1\\
+            1-\sh & 0 & \so-1
+        \end{bmatrix},\] 
+        and the third, $d_{3}$, is constructed from a \emph{homotopical 2-syzygy} in \cite[\S4.1.4, pp.23-4]{loday}
+        \[d_{3} = \begin{bmatrix}
+            1+\st\sh-\sh-\so\st\so & 1+\st\so-\so-\sh\st\so & \st+\so\sh\st-1-\sh\st - \so\st - \st\so\sh\st
+        \end{bmatrix}.\]
+            Now, consider the mapping class group 
+            \[G=G_{4}\coloneqq \langle\so,\st,\sh\mid \br{1}{2},\;\br{1}{3},\; \so\sh=\sh\so,\; \Delta^{4}=1\rangle \cong B_{4}/Z(B_{4}).\] Then the trivial module $\Z\in\lMod{\ZG_{4}}$ has a $2$-periodic resolution in degrees $\ge 2$ of the form
+            \[
+                \begin{tikzcd}
+                    \cdots \arrow[r, "\partial_{3}"] & \ZG^{4} \arrow[r, "\partial_{4}"] & \ZG^{4}  \arrow[r, "\partial_{3}"] & \ZG^{4}  \arrow[r, "\partial_{2}"] & \ZG^{3}  \arrow[r, "\partial_{1}"] & \ZG \arrow[r, "\varepsilon"] & \Z \arrow[r] & 0
+                \end{tikzcd}
+            \]
+            with the differentials given by
+            \begin{align*}
+                \partial_{1}&=\begin{bmatrix}
+                    \so-1 \\
+                    \st-1 \\
+                    \sh-1
+                \end{bmatrix},\\
+                \partial_{2}&=\begin{bmatrix}
+            	    \Ngk{\Delta}{3} & \Ngk{\Delta}{3}\so & \Ngk{\Delta}{3}\so\st  \\
+                    1+\so\st-\st & \so-\st\so-1 & 0\\
+                    0 & 1+\st\sh-\sh & \st-\sh\st-1\\
+                    1-\sh & 0 & \so-1
+            	\end{bmatrix},\\
+                \partial_{3} &=\begin{bmatrix}
+            	    \so-1 & \Delta^{3} - \so & \Delta^{2}\so - \so\st\so & -\Delta^{3}\so\st + \Delta^{2} + \so^{2}\st -\so\st\\
+                    \st-1 & -\Delta\so + 1 & \Delta^{3}\so - \Delta\so\st\so & \Delta^{3} + \Delta\so^{2}\st - \Delta\so\st - \so\st \\
+                    \sh-1 & -\Delta^{2}\so + \so & \so - \Delta^{2}\so\st\so & \Delta^{2}\so^{2}\st - \Delta^{2}\so\st - \Delta\so\st  +1\\
+                    0 & 1+\st\sh-\sh-\Delta & 1+\st\so-\so-\sh\st\so & \st+\so\sh\st-1-\sh\st - \so\st - \st\so\sh\st
+            	\end{bmatrix},\\ 
+                \partial_{4}&=\begin{bmatrix}
+            	    \Ngk{\Delta}{3} & \Ngk{\Delta}{3}\so & \Ngk{\Delta}{3}\so\st & 0\\
+                    1+\so\st-\st & \so - \st\so- 1 & 0 & -\Delta^{3}+\so\st\so \\
+                    0 & 1+\st\sh-\sh & \st -\sh\st-1 & -1 + \Delta\so\st\so \\
+                    1-\sh & 0 & \so-1 & -\Delta^{2}\so+\so
+            	\end{bmatrix}.
+            \end{align*}
+            Indeed, in order to construct a resolution for $\Z\in\ZGmod$ it suffices, by Theorem \ref{Thm:zg}, to find a null-homotopy for the map $\lambda_{x}:F_{\bullet}\to F_{\bullet}$ where $x=1-\Delta^{4}\in\ZB_{4}$.
+            \[\begin{tikzcd}[ampersand replacement=\&, row sep=large, column sep=large ]
+            	\ZB_{4} \& {\ZB_{4}^{3}} \& {\ZB_{4}^{3}} \& \ZB_{4} \\
+            	\ZB_{4} \& {\ZB_{4}^{3}} \& {\ZB_{4}^{3}} \& \ZB_{4}
+            	\arrow["{d_{3}}", from=1-1, to=1-2]
+            	\arrow["{\lambda_{x}}"', from=1-1, to=2-1]
+            	\arrow["{d_{2}}", from=1-2, to=1-3]
+            	\arrow["{\varphi_{3}}"', dashed, red, from=1-2, to=2-1]
+            	\arrow["{\lambda_{x}}"', from=1-2, to=2-2]
+            	\arrow["{\varphi_{3}}"', dashed, red, from=1-3, to=2-2]
+            	\arrow["{\lambda_{x}}"', from=1-3, to=2-3]
+                \arrow["{\lambda_{x}}"', from=1-4, to=2-4]
+            	\arrow["{d_{1}}", from=1-3, to=1-4]
+            	\arrow["{\varphi_{1}}"', dashed, red, from=1-4, to=2-3]
+            	\arrow["{d_{3}}"', from=2-1, to=2-2]
+            	\arrow["{d_{2}}"', from=2-2, to=2-3]
+                \arrow["{d_{1}}"', from=2-3, to=2-4]
+            \end{tikzcd}\]
+            \begin{align*}
+                \varphi_{1} &= \begin{bmatrix}
+                    -\Ngk{\Delta}{3} & -\Ngk{\Delta}{3}\so & -\Ngk{\Delta}{3}\so\st
+                \end{bmatrix}, \\
+                \varphi_{2} &=\begin{bmatrix}
+            	     -\Delta^{3}+\so & -\Delta^{2}\so+\so\st\so & \Delta^{3}\so\st - \Delta^{2}-\so^{2}\st+\so\st\\
+                     \Delta\so-1 & -\Delta^{3}\so + \Delta\so\st\so & -\Delta^{3} -\Delta\so^{2}\st + \Delta\so\st + \so\st \\
+                     \Delta^{2}\so-\so & -\so+\Delta^{2}\so\st\so & -\Delta^{2}\so^{2}\st + \Delta^{2}\so\st + \Delta\so\st -1
+            	\end{bmatrix}, \\ 
+                \varphi_{3} &= \begin{bmatrix}
+                        \Delta^{3}-\so\st\so \\
+                        1-\Delta\so\st\so \\
+                        \Delta^{2}\so-\so
+                    \end{bmatrix}.
+            \end{align*}
+            Then by Theorem \ref{Thm:main} the differentials are given by
+            \begin{align*}
+                \partial_{1}=\od_{1},\;\;\partial_{2}=\begin{bmatrix}
+                    -\varphi_{1} \\
+                    \od_{2}
+                \end{bmatrix},\;\;
+                \partial_{3}=\begin{bmatrix}
+                    \od_{1} & -\varphi_{2} \\
+                    0 & \od_{3}
+                \end{bmatrix},\;\; 
+                \partial_{4} = \begin{bmatrix}
+                    -\varphi_{1} & 0\\
+                    \od_{2} & -\varphi_{3}
+                \end{bmatrix}.
+            \end{align*}
+        Calculating the Smith Normal Form of the corresponding integral matrices $\varepsilon\partial_{i}$:
+            \begin{align*}
+                &\varepsilon\partial_{1}=\begin{bmatrix}
+                    0 \\
+                    0 \\
+                    0
+                \end{bmatrix}, &&\varepsilon\partial_{2}=\begin{bmatrix}
+                    4 & 4 & 4 \\
+                    1 & -1 & 0 \\
+                    0 & 1 & -1 \\
+                    0 & 0 & 0
+                \end{bmatrix}\sim\begin{bmatrix}
+                    1 & 0 & 0 \\
+                    0 & 1 & 0 \\
+                    0 & 0 & 12 \\
+                    0 & 0 & 0
+                \end{bmatrix}, \\
+                &\varepsilon\partial_{3}= \begin{bmatrix}
+                	    0 & 0 & 0 & 0 \\
+                        0 & 0 & 0 & 0 \\
+                        0 & 0 & 0 & 0 \\
+                        0 & 0 & 0 & -2
+                	\end{bmatrix}\sim \begin{bmatrix}
+                	    2 & 0 & 0 & 0\\
+                        0 & 0 & 0 & 0 \\
+                        0 & 0 & 0 & 0 \\
+                        0 & 0 & 0 & 0
+                	\end{bmatrix}, &&\varepsilon\partial_{4}  \begin{bmatrix}
+                	    4 & 4 & 4 & 0 \\
+                        -1 & 1 & 0 & 0 \\
+                        0 & -1 & 1 & 0 \\
+                        0 & 0 & 0 & 0
+                	\end{bmatrix} \sim \begin{bmatrix}
+                	    1 & 0 & 0 & 0 \\
+                        0 & 1 & 0 & 0 \\
+                        0 & 0 & 12 & 0 \\
+                        0 & 0 & 0 & 0
+                	\end{bmatrix}.
+            \end{align*}
+            Then the homology and cohomology of $G_{4}$ with integer coefficients are given by
+            \[\Ho_{i}(G_{4},\Z) = \begin{cases}
+                \Z & i=0,\\
+                \Z/12 & i\equiv1\pmod{2},\\
+                \Z/2 & i\equiv0\pmod{2},\; i>0,
+            \end{cases}\hspace{2em} \Ho^{i}(G_{4},\Z) = \begin{cases}
+                \Z & i=0,\\
+                0 & i=1,\\
+                \Z/12 & i\equiv0\pmod{2},\; i>0,\\
+                \Z/2 & i\equiv1\pmod{2},\; i>1.
+            \end{cases}
+            \]
+    \end{example}
+
+    \begin{remark}
+        The mod-$2$ cohomology of $\mathrm{Mod}(\mathbb{P}_{n+1})\cong B_{n+1}/Z(B_{n+1})$ was described by Cohen using topological methods and the embedding $\Ho_{\ast}(G_{n+1},\mathbb{F}_{2})\to\Ho_{\ast}(\mathrm{Mod}(\Sigma^{n+2}),\mathbb{F}_{2})$, in \cite[Thm.~1.4, p.7]{bensoncohen}. Building on the approach of Cohen, and utilizing the so-called \emph{Gravity operad}, Rossi computed the mod-$p$ homology of $\mathrm{Mod}(\mathbb{P}_{n+1})$, for any prime $p$ and any $n\in \N$ in \cite[Thm. 1.1]{rossi}. Rossi's calculations also use the fact that both of the homotopy quotients, $(\mathcal{M}_{0,n+2})_{S_{n+2}}$ and $(\mathrm{UConf}_{n+1}(\C))_{S^{1}}$, are models for the classifying space of $B_{n+1}/Z(B_{n+1})$. The key insight being that the spectral Serre spectral sequence associated to the later quotient is much simpler than the former, due to the absence of monodromy, see \cite[\S 3.2]{rossi}. The calculation in Example \ref{Ex:braid4} recovers these results purely algebraically in the case $n=3$.
+    \end{remark}
+
+    \section*{Acknowledgments}
+
+    The author would like to thank his Ph.D. advisor Alex Martsinkovsky for his constant encouragement, patience, and discussions on the content of this paper. The author would also like to thank Vitor Gulisz for his very helpful, and thorough, comments, which significantly improved the body of this text.
+
+    \printbibliography
+    
+\end{document}

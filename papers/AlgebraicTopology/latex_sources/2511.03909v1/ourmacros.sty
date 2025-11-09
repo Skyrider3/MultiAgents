@@ -1,0 +1,146 @@
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{ourmacros}[2024/1/19 our macros Package]
+
+\usepackage{cite}
+\usepackage{xspace}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{booktabs,makecell}
+
+\usepackage{algorithm,algorithmic}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\renewcommand{\algorithmiccomment}[2]{\hspace{#1}$\triangleright$ {#2} \hfill }
+
+\newcommand{\sph}{\mathbb{S}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\Z}{\mathbb{Z}}
+
+
+% ... for comments
+\usepackage{color}
+\definecolor{darkorchid}{rgb}{0.6,0.196,0.8}
+\definecolor{cobalt}{rgb}{0.0, 0.28, 0.67}
+\newcommand{\payAttention}[3]{{[[\color{#1}{\textbf{#2: }}\color{#1}{#3}]]}}
+
+\newif\ifcameraready
+\camerareadyfalse % Start in 'draft' mode (comments are visible)
+
+\newcommand{\cameraReady}{\camerareadytrue}
+
+% The base command for showing or hiding comments
+% If NOT camera ready, show the content. If camera ready, show nothing.
+\newcommand{\showComment}[3]{%
+    \ifcameraready%
+        % Do nothing if \cameraReady has been called
+    \else%
+        \payAttention{#1}{#2}{#3}%
+    \fi%
+}
+
+% ... for referencing
+\newcommand{\algref}[1]{Algorithm~\ref{alg:#1}}
+\newcommand{\eqrefraw}[1]{(\ref{eq:#1})}
+\renewcommand{\eqref}[1]{Equation~\eqrefraw{#1}}
+\newcommand{\eqsref}[2]{Equations~\eqrefraw{#1} and~\eqrefraw{#2}}
+\newcommand{\shortalgref}[1]{Alg.~\ref{alg:#1}}
+\newcommand{\appendref}[1]{Appendix~\ref{append:#1}}
+\newcommand{\corref}[1]{Corollary~\ref{cor:#1}}
+\newcommand{\defref}[1]{Definition~\ref{def:#1}}
+\newcommand{\figref}[1]{Figure~\ref{fig:#1}}
+\newcommand{\figrefLabel}[1]{Figure \ref{#1}}
+\newcommand{\lemref}[1]{Lemma~\ref{lem:#1}}
+\newcommand{\mlref}[2]{\ref{ml:#1}}
+\newcommand{\mlrangeref}[2]{\mlref{#1}--\mlref{#2}}
+\newcommand{\remref}[1]{Remark~\ref{rem:#1}}
+\newcommand{\shortlineref}[2]{Line~\ref{line:#2-#1}}
+\newcommand{\shortlinerangeref}[3]{Lines~\ref{line:#3-#1}--\ref{line:#3-#2}}
+\newcommand{\partref}[2]{\thmref{#1}(\ref{part:#1-#2})}
+\newcommand{\partinref}[2]{(\ref{part:#1-#2})}
+\newcommand{\partdefref}[2]{Part (\ref{def:#1-#2}) of \defref{#1}}
+\newcommand{\propref}[1]{Proposition~\ref{prop:#1}}
+\newcommand{\secref}[1]{Section~\ref{sec:#1}}
+\newcommand{\ssref}[1]{Section~\ref{ss:#1}}
+\newcommand{\tabref}[1]{Table~\ref{tab:#1}}
+\newcommand{\thmref}[1]{Theorem~\ref{thm:#1}}
+\newcommand{\queref}[1]{Question~\ref{q:#1}}
+\newcommand{\obsref}[1]{Observation~\ref{obs:#1}}
+
+% % % % % % % % % % % % % % % % % % % %
+% PAPER SPECIFIC NOTATION
+
+\newcommand{\HH}{\mathbb{H}}
+\newcommand{\ip}[2]{\langle #1, #2 \rangle}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\vect}[1]{\mathbf{#1}}
+
+\newcommand{\heightfcn}[1]{h_{#1}} % 1=simplex
+\newcommand{\height}[2]{\heightfcn{#1}(#2)} % 1=simplex, 2=direction
+\newcommand{\ifn}{\mathbb{I}}
+\newcommand{\dif}{\mathop{}\!\mathrm{d}}
+
+\newcommand{\freudtriang}{\mathcal{F}}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\diwect}{DIWECT}
+\DeclareMathOperator{\ecf}{ECF}
+\DeclareMathOperator{\wecf}{WECF}
+\DeclareMathOperator{\wect}{WECT}
+\DeclareMathOperator{\clip}{clip}
+\DeclareMathOperator{\sgn}{sgn^*}
+\DeclareMathOperator{\atantwo}{atan2}
+\DeclareMathOperator{\subz}{neg}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\gr}{gr}
+\DeclareMathOperator{\sub}{sub}
+
+\newcommand{\cumsum}{\texttt{CumulativeSum}}
+\newcommand{\scadd}{\texttt{ScatterAdd}}
+\newcommand{\rmax}{\texttt{ReduceMax}}
+\newcommand{\rnorm}{\texttt{ReduceNorm}}
+
+\newcommand{\complex}{\texttt{Complex}}
+\newcommand{\vcoords}{\texttt{VertexCoords}}
+\newcommand{\fvals}{\texttt{Filters}}
+\newcommand{\numvals}{\texttt{NumVals}}
+\newcommand{\vweights}{\texttt{VertexWeights}}
+\newcommand{\directions}{\texttt{Directions}}
+\newcommand{\numdirs}{\texttt{NumDirs}}
+\newcommand{\numheights}{\texttt{NumHeights}}
+\newcommand{\maxheight}{\texttt{MaxVal}}
+\newcommand{\vindices}{\texttt{VIndices}}
+\newcommand{\msi}{\texttt{MaxSimpIndices}}
+\newcommand{\wecttensor}{\texttt{WECT}}
+\newcommand{\wecfs}{\texttt{WECFs}}
+\newcommand{\diffwect}{\texttt{diffWECT}}
+\newcommand{\diffwecfs}{\texttt{diffWECFs}}
+\newcommand{\zeros}{\texttt{zeros}}
+\newcommand{\compval}{\texttt{FunctionValues}}
+\newcommand{\filtsteps}{\texttt{FiltrationSteps}}
+\newcommand{\varecf}{\texttt{ECF}}
+\newcommand{\diffecf}{\texttt{diffECF}}
+
+% (W)ECT Implementations
+\newcommand{\pyect}{\texttt{pyECT}\xspace}
+\newcommand{\demeter}{\texttt{Demeter}\xspace}
+\newcommand{\sinatra}{\texttt{SINATRA}\xspace}
+\newcommand{\eucalc}{\texttt{EuCalc}\xspace}
+\newcommand{\fasttopology}{\texttt{FastTopology}\xspace}
+\newcommand{\gpuecc}{\texttt{GPU ECC}\xspace}
+
+\usepackage{pifont}
+\newcommand{\yes}{\textcolor{green}{\ding{51}} yes}
+\newcommand{\no}{\textcolor{red}{\ding{55}} no}
+
+% theorems (originally handled by SIAGA header)
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{obs}{Observation}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{remark}{Remark}[section]
+\newtheorem{example}{Example}[section]

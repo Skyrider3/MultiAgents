@@ -1,0 +1,1708 @@
+\section{Actions on super and graded \texorpdfstring{$\glt$}{gl2}-foams}
+\label{sec:action_on_foams}
+
+
+
+\input{sections/algebraic_background.tex}
+
+\subsection{Review of graded \texorpdfstring{$\glt$}{gl2}-foams}
+\label{subsec:review_graded_foam}
+
+In this subsection, we review the graded-2-category of $\glt$-foams $\pregfoam_d$ as introduced in \cite{SV_OddKhovanovHomology_2023}, and refer to \textit{op.\ cit.} for further details.
+
+Fix a positive integer $d\in\bN$.
+The objects of $\pregfoam_d$ are
+\begin{gather*}
+  \ob(\pregfoam_d)\coloneqq
+  \bigsqcup_{k\in\bN}\{\lambda\in\{1,2\}^k\mid \lambda_1+\ldots+\lambda_k=d\}.
+\end{gather*}
+For each $\lambda\in\ob(\pregfoam_d)$ with $k$ coordinates, we label its coordinates with
+\[l_\lambda\colon\{1,\ldots,k\}\to\{1,\ldots,d\},\]
+setting $l_\lambda(i)=\sum_{j<i}\lambda_j+1.$
+For instance, $l_{(1,1,2,1)}=(1,2,3,5)$.
+In other words, the label $l_\lambda(i)$ is a sort of ``weighted coordinate'', where coordinate with value $2$ counts double.
+Foreseeing the diagrammatics, we call this label the \emph{colour} of the coordinate.
+
+The 1-morphisms of $\pregfoam_d$ are \emph{directed $\glt$-webs} (or simply \emph{webs}), such as:
+\begin{center}
+  \tikzpic{
+    \webid[0][1.5][1]\webs[1][1.5]\webm[2][1.5]\webid[3][1.5][1]
+    \webm\webid[1][0][1]\webid[2][0][1]\webs[3][0]
+  }[xscale=.5,yscale=.4]
+\end{center}
+In general, a web is obtained from \emph{merge webs} ($M\coloneqq\tikzpic{\webm}[xscale=.5,yscale=.4]$) and \emph{split webs} ($S\coloneqq\tikzpic{\webs}[xscale=.5,yscale=.4]$), by adding single lines ($\tikzpic{\draw[web1] (0,0) to (1,0);}[xscale=.5,yscale=.4]$) and double lines ($\tikzpic{\draw[web2] (0,0) to (1,0);}[xscale=.5,yscale=.4]$) on top and on the bottom and then composing horizontally.
+Note that we read webs from right to left.
+Our webs are \emph{directed}, in the sense that when reading from right to left, the vertical cross section always has the same width (counting double the double lines); that is, the integer $d$ is fixed.
+We sometimes emphasize that point by orienting our webs from right to left.
+A web $W$ has an underlying unoriented flat tangle diagram, denoted $\undcomp(W)$, given by forgetting the double lines and the orientation.
+
+
+We now turn to the 2-morphisms of $\pregfoam_d$.
+For convenience, and in contrast to the introduction, we shall use the shading diagrammatics \cite{Schelstraete_OddKhovanovHomology_2024,Schelstraete_RewritingModuloDiagrammatic_2025} throughout the rest of the paper.
+It is given by projecting $\glt$-foams onto the plane along the front-to-back direction, and recording only the seams and 2-facets:
+\begin{IEEEeqnarray*}{CcC}
+  \vcenter{\hbox{\includegraphics[width=2.5cm]{foam/local_model_foams_mini.png}}}
+  &
+  \mspace{30mu}
+  \leftrightarrow
+  \mspace{30mu}
+  &
+  \tikzpic{\frst\node[left] at (0,1) {\footnotesize $i$};}[scale=1.5]
+  \\*
+  \text{\small $\glt$-foams}
+  &&
+  \text{\small shading diagrammatics}
+\end{IEEEeqnarray*}
+Recall the data $\ringfoam$, $\grpfoam$ and $\bilfoam$ from \cref{defn:graded_structure_foam}.
+
+% \ringfoam for ring in foams
+% \grpfoam for group in foams
+% \bilfoam for bilinear map in foams
+
+
+\begin{definition}
+  \label{defn:review_foam}
+  The $(\bZ^2,\bilfoam)$-graded-2-category $\pregfoam_d$ has its $(\bZ^2,\bilfoam)$-graded structure given as in \cref{defn:graded_structure_foam} and is presented with generators given in \cref{fig:string_generators_graded_foams} and relations given in \cref{fig:rel_diagfoam_graded}. 
+\end{definition}
+
+The \emph{quantum grading} is defined as $\qdeg(a,b)=a+b$ where $(a,b)$ is the $\grpfoam$-grading.
+Although the quantum grading is defined from the $\grpfoam$-grading, we view it as a distinct grading. We denote $\gfoam_d$ the additive $q$-shifted closure of $\pregfoam$; that means we allow formal direct sums and shifts in the quantum grading on objects, and restrict to foams with quantum degree zero (see \cite[subsection~2.1]{SV_OddKhovanovHomology_2023} for details).
+Compare to \cite{SV_OddKhovanovHomology_2023}, our notation is such that $\pregfoam_d=\gfoam_d^{\text{\cite{SV_OddKhovanovHomology_2023}}}$ 
+and $\gfoam_d=((\underline{\gfoam_d})^\oplus_q)^{\text{\cite{SV_OddKhovanovHomology_2023}}}$.
+
+Recall from \cref{defn:graded_structure_foam} what we mean by ``restrict to odd'' and ``restrict to even''.
+
+\begin{definition}
+  \label{defn:foam_and_sfoam}
+  We denote $\prefoam_d=\pregfoam_d\vert_{X=Y=Z=1}$ the restriction of $\pregfoam_d$ to even and $\presfoam_d=\pregfoam_d\vert_{X=Z=1,Y=-1}$ the restriction of $\pregfoam_d$ to odd.
+  We similarly define $\foam_d$ and $\sfoam_d$.
+\end{definition}
+
+This article mainly deals with three graded Lie algebras: the Lie algebra $\fg=\fgl_2^\leq$, the super Lie algebra $\fg=\gloo$, and the graded Lie algebra $\fg=\grgl_2^\leq$.
+For each of these cases, we write $\fg\foam_d$ for $\foam_d$, for $\sfoam_d$ and for $\gfoam_d$, respectively.
+We shall use similar notations throughout, depending on the choice of $\fg$.
+
+\begin{remark}[monoidal 2-categorical structure]
+  \label{rem:monoidal-2-categorical-structure}
+  One could gather the graded-2-categories $\pregfoam_d$ together as a certain ``monoidal graded-2-category'', leveraging the canonical graded-2-functors
+  \[
+    \pregfoam_{d_1}\times\pregfoam_{d_2}\to\pregfoam_{d_1+d_2}
+  \]
+  given on the pair $(F_1,F_2)$ by putting $F_1$ in front of $F_2$; in shading diagrammatics, it amounts to shifting the labels of $F_2$ and superposing the diagrams. 
+  While we avoid making this precise here, certain parts of our discussion implicitly use this extra monoidal structure. We refer to it as the \emph{front-back composition}, and denote it $\square$.
+\end{remark}
+
+\begin{remark}
+  \label{rem:variant_graded_gl2_foams}
+  There exists a variant of $\pregfoam_d$, denoted $\widetilde{\gfoam'_d}$ and with the same generators and relations, except for the following two relations:
+  \begin{gather*}
+    \tikzpic{
+      \funzip[0][1]\fzip\node at (.8+.5,-.3+1) {\scriptsize $i$};
+    }[scale=.7]
+    =
+    XYZ
+    \mspace{10mu}
+    \tikzpic{
+      \fdot\node at (.2,-.2) {\scriptsize $i$};
+    }[][(0,0)]
+    + Z
+    \mspace{10mu}
+    \tikzpic{
+      \fdot[0][0][2]\node at (.5,-.2) {\scriptsize $i+1$};
+    }[][(0,0)]
+    \quad\an\quad
+    \tikzpic{
+      \flst[0][3]\flst[0][2]\flst[0][1]\flst[0][0]
+      \frst[.5][3][2]\frst[.5][2][2]\frst[.5][1][2]\frst[.5][0][2]
+      \flst[1.5][3][2]\flst[1.5][2][2]\flst[1.5][1][2]\flst[1.5][0][2]
+      \frst[2][3]\frst[2][2]\frst[2][1]\frst[2][0]
+      \node[below=-2pt] at (0,0) {\scriptsize $i$};
+      \node[below=-2pt] at (1.5,0) {\scriptsize $i+1$};
+    }[scale=.35][(0,2*.35)]
+    %
+    \;=\;XYZ^{-1}\;
+    %
+    \tikzpic{
+      \fzip[0][3][2]
+      \funzip[0][0][2]
+      \begin{scope}[scale=2]
+        \fcup[-.25][1]
+        \fcap[-.25][0]
+      \end{scope}
+      \node[below=-2pt] at (-.5,0) {\scriptsize $i$};
+      \node[below=-2pt] at (1,0) {\scriptsize $i+1$};
+    }[scale=.35][(0,2*.35)]
+    \;.
+  \end{gather*}
+  It was shown in \cite{Schelstraete_RewritingModuloDiagrammatic_2025} that $\pregfoam_d$ and $\widetilde{\gfoam'_d}$ are to only two deformations of $\foam_d$, in a suitable sense.
+  When comparing with the classical definition of odd Khovanov homology \cite{ORS_OddKhovanovHomology_2013}, working with $\pregfoam_d$ gives type Y odd Khovanov homology, while working with $\widetilde{\gfoam'_d}$ gives type X odd Khovanov homology.
+  See also \cref{subsec:comparison_local_global}.
+\end{remark}
+
+\begin{figure}[p]
+  \centering
+
+  % SHADING DIAGRAMMATICS GENERATORS
+  \begin{equation*}
+    \allowdisplaybreaks
+    \begin{array}{cc}
+      \begin{tabular}{*{5}{c@{\hskip 7ex}}c}
+        $\tikzpic{\fdot\node at (.2,-.2) {\scriptsize $i$};}$
+        &
+        $\tikzpic{\fcup\node at (1,.4) {\scriptsize $i$};}$
+        &
+        $\tikzpic{\fcap\node at (1,.4) {\scriptsize $i$};}$
+        &
+        $\tikzpic{\fzip\node at (1,.6) {\scriptsize $i$};}$
+        &
+        $\tikzpic{\funzip\node at (1,.6) {\scriptsize $i$};}$
+        \\*[1ex]
+        %
+        \small dot &\small cup & \small cap &  \small zip & \small unzip
+        \\*[1ex]
+        $(1,1)$ & $(0,-1)$ & $(-1,0)$ & $(1,0)$ & $(0,1)$
+      \end{tabular}
+      &
+      %
+      \\[7ex]
+      %
+      \begin{tabular}{*{4}{c@{\hskip 3ex}}c}
+        %%%% downward crossing %%%%
+        $\tikzpic{
+          \fbcro
+          \node[left=-3pt] at (0,0) {\scriptsize $i$};
+          \node[right=-3pt] at (1,0){\scriptsize $j$};
+          % \node at (1.4,0) {\scriptsize $\lambda$};
+        }$
+        &
+        %%%% leftward crossing %%%%
+        $\tikzpic{
+          \flcro
+          \node[left=-3pt] at (0,0) {\scriptsize $i$};
+          \node[right=-3pt] at (1,0){\scriptsize $j$};
+          % \node at (1.4,0) {\scriptsize $\lambda$};
+        }$
+        &
+        %%%% upward crossing %%%%
+        $\tikzpic{
+          \ftcro
+          \node[left=-3pt] at (0,0) {\scriptsize $i$};
+          \node[right=-3pt] at (1,0){\scriptsize $j$};
+          % \node at (1.4,0) {\scriptsize $\lambda$};
+        }$
+        &
+        %%%% rightward crossing %%%%
+        $\tikzpic{
+          \frcro
+          \node[left=-3pt] at (0,0) {\scriptsize $i$};
+          \node[right=-3pt] at (1,0){\scriptsize $j$};
+          % \node at (1.4,0) {\scriptsize $\lambda$};
+        }$
+        &
+        if $\abs{i-j}>1$
+        \\*[1ex]
+        % \small \stackunder{\text{downward}}{\text{crossing}} & \small \stackunder{\text{rightward}}{\text{crossing}} & \small \stackunder{\text{upward}}{\text{crossing}} & \small \stackunder{\text{leftward}}{\text{crossing}}
+        \small \text{downward crossing} & \small \text{leftward crossing} & \small \text{upward crossing} & \small \text{rightward crossing}
+        \\*[1ex]
+        $(0,0)$ & $(0,0)$ & $(0,0)$ & $(0,0)$
+      \end{tabular}
+    \end{array}
+  \end{equation*}
+  \vspace*{-.5cm}
+
+  \caption{Generators in $\pregfoam_d$. Each generator has a grading in $\bZ\times\bZ$.}
+  \label{fig:string_generators_graded_foams}
+
+  % SHADING DIAGRAMMATICS RELATIONS
+  \def\scl{.7}
+  \newcommand{\ins}{0pt}% space between diagram and text
+  \newcommand{\outs}{7pt}% space between two (set of) relation(s)
+  \begin{gather*}
+    %%%%% BRAID-LIKE MOVES %%%%%
+    \tikzpic{
+      \draw[foamdraw1]  +(0,-.75) node[below] {\textcolor{black}{\scriptsize $i$}}
+        .. controls (0,-.375) and (1,-.375) .. (1,0)
+        .. controls (1,.375) and (0, .375) .. (0,.75);
+      \draw[foamdraw2]  +(1,-.75) node[below] {\textcolor{black}{\scriptsize $j$}}
+        .. controls (1,-.375) and (0,-.375) .. (0,0)
+        .. controls (0,.375) and (1, .375) .. (1,.75);
+    }[scale=.8*\scl][(0,0)]
+    \;=\;
+    \tikzpic{
+      \draw[foamdraw1] (0,-.75) node[below] {\textcolor{black}{\scriptsize $i$}} to (0,.75);
+      \draw[foamdraw2] (1,-.75) node[below] {\textcolor{black}{\scriptsize $j$}} to (1,.75);
+      % \node at (1.3,0) {\scriptsize $\lambda$};
+    }[scale=.8*\scl][(0,0)]
+    %
+    \mspace{80mu}
+    %
+    \tikzpic{
+      \draw[foamdraw1]  +(0,0)node[below] {\textcolor{black}{\scriptsize $i$}}
+        .. controls (0,0.5) and (2, 1) ..  +(2,2);
+      \draw[foamdraw3]  +(2,0)node[below] {\textcolor{black}{\scriptsize $k$}}
+        .. controls (2,1) and (0, 1.5) ..  +(0,2);
+      \draw[foamdraw2]  (1,0)node[below] {\textcolor{black}{\scriptsize $j$}}
+        .. controls (1,0.5) and (0, 0.5) ..  (0,1)
+        .. controls (0,1.5) and (1, 1.5) ..  (1,2);
+      % \node at (2.1,1) {\scriptsize $\lambda$};
+    }[scale=.7*\scl][(0,1*.7*\scl)]
+    \;=\;
+    \tikzpic{
+      \draw[foamdraw1]  +(0,0)node[below] {\textcolor{black}{\scriptsize $i$}}
+        .. controls (0,1) and (2, 1.5) ..  +(2,2);
+      \draw[foamdraw3]  +(2,0)node[below] {\textcolor{black}{\scriptsize $k$}}
+        .. controls (2,.5) and (0, 1) ..  +(0,2);
+      \draw[foamdraw2]  (1,0)node[below]{\textcolor{black} {\scriptsize $j$}}
+        .. controls (1,0.5) and (2, 0.5) ..  (2,1)
+        .. controls (2,1.5) and (1, 1.5) ..  (1,2);
+      % \node at (2.3,1) {\scriptsize $\lambda$};
+    }[scale=.7*\scl][(0,1*.7*\scl)]
+    \\[\ins]
+    \text{\footnotesize braid-like relations}
+    \\[\outs]
+    %%%%% PITCHFORKS %%%%%
+    \tikzpic{
+      \draw[foamdraw1](-.5,.4) to (0,-.3);
+      \draw[foamdraw2] (0.3,-0.3)
+        to[out=90, in=0] (0,0.2)
+        to[out = -180, in = 40] (-0.5,-0.3);
+      \node at (-0.5,-.5) {\scriptsize $j$};
+      \node at (0,-.5) {\scriptsize $i$};
+      % \node at (0.4,0) {\scriptsize $\lambda$};
+    }[scale=1.2*\scl][(0,0)]
+    \;=\;
+    \tikzpic{
+      \draw[foamdraw1](.6,.4) to (.1,-.3);
+      \draw[foamdraw2] (0.6,-0.3)
+        to[out=140, in=0] (0.1,0.2)
+        to[out = -180, in = 90] (-0.2,-0.3);
+      \node at (-0.2,-.5) {\scriptsize $j$};
+      \node at (0.1,-.5) {\scriptsize $i$};
+      % \node at (0.7,0) {\scriptsize $\lambda$};
+    }[scale=1.2*\scl][(0,0)]
+    %
+    \mspace{80mu}
+    %
+    \tikzpic{
+      \draw[foamdraw1](-.5,-.3) to (0,.4);
+      \draw[foamdraw2] (0.3,0.4)
+        to[out=-90, in=0] (0,-0.1)
+        to[out = 180, in = -40] (-0.5,0.4);
+      \node at (-0.5,.6) {\scriptsize $j$};
+      \node at (-0.05,.6) {\scriptsize $i$};
+      % \node at (0.5,0.1) {\scriptsize $\lambda$};
+    }[scale=1.2*\scl][(0,0)]
+    \;=\;
+    \tikzpic{
+      \draw[foamdraw1](.6,-.3) to (.1,.4);
+      \draw[foamdraw2] (0.6,0.4)
+        to[out=-140, in=0] (0.1,-0.1)
+        to[out = 180, in = -90] (-0.2,0.4);
+      \node at (-0.25,.6)  {\scriptsize $j$};
+      \node at (0.15,.6) {\scriptsize $i$};
+      % \node at (0.7,0.1) {\scriptsize $\lambda$};
+    }[scale=1.2*\scl][(0,0)]
+    \\[\ins]
+    \text{\footnotesize pitchfork relations}
+    \\[\outs]
+    %%%%% ZIGZAGS %%%%%
+    \begingroup
+      \tikzpic{
+        \fcap[0][1]\flst[2][1]\flst\fzip[1][0]
+        \node[left=-3pt] at (2,2) {\scriptsize $i$};
+      }[scale=.5][(0,1*.5)]
+      =
+      \tikzpic{
+        \flst[0][1]\flst\node[left=-3pt] at (0,2) {\scriptsize $i$};
+      }[scale=.5][(0,1*.5)]
+      %
+      \mspace{30mu}
+      %
+      \tikzpic{
+        \frst[0][1]\fcap[1][1]\fzip[0][0]\frst[2][0]
+        \node[left=-3pt] at (0,2) {\scriptsize $i$};
+      }[scale=.5][(0,1*.5)]
+      = X
+      \tikzpic{
+        \frst[0][1]\frst\node[left=-3pt] at (0,2) {\scriptsize $i$};
+      }[scale=.5][(0,1*.5)]
+      %
+      \mspace{30mu}
+      %
+      \tikzpic{
+        \funzip[0][1]\frst[2][1]\frst\fcup[1][0]
+        \node[left=-3pt] at (2,2) {\scriptsize $i$};
+      }[scale=.5][(0,1*.5)]
+      = Z^2
+      \tikzpic{
+        \frst[0][1]\frst\node[left=-3pt] at (0,2) {\scriptsize $i$};
+      }[scale=.5][(0,1*.5)]
+      %
+      \mspace{30mu}
+      %
+      \tikzpic{
+        \flst[0][1]\funzip[1][1]\fcup[0][0]\flst[2][0]
+        \node[left=-3pt] at (0,2) {\scriptsize $i$};
+      }[scale=.5][(0,1*.5)]
+      =
+      YZ^2\;
+      \tikzpic{
+        \flst[0][1]\flst\node[left=-3pt] at (0,2) {\scriptsize $i$};
+      }[scale=.5][(0,1*.5)]
+    \endgroup
+    \\[\ins]
+    \text{\footnotesize zigzag relations (or adjunction relations)}
+    \\[\outs]
+    %%%%% DOT-TYPE RELATIONS %%%%%
+    \begin{IEEEeqnarraybox}{cCcCc}
+      %%%%% DOT ANNIHILATION %%%%%
+      \left(\tikzpic{
+        \fdot\node at (.2,-.2) {\scriptsize $i$};
+      }[][(0,0)]\right)^2
+      =
+      0
+      &\mspace{50mu}&
+      %%%%% DOT SWAP %%%%%
+      \tikzpic{
+        \fdot[-1][1]\node at (-.7,.8) {\scriptsize $i$};
+        \frst[0][1]\frst\node[left=-3pt] at (0,2) {\scriptsize $i$};
+      }[scale=.5][(0,1*.5)]
+      =\;
+      \tikzpic{
+        \fdot[-1][1][2]\node at (-.7,.5) {\scriptsize $i+1$};
+        \frst[0][1]\frst\node[left=-3pt] at (0,2) {\scriptsize $i$};
+      }[scale=.5][(0,1*.5)]
+      &\mspace{50mu}&
+      %%%%% DOT SLIDE %%%%%
+      \tikzpic{
+        \fdot[-1][1][2]\node at (-.7,.8) {\scriptsize $j$};
+        \frst[0][1]\frst\node[left=-3pt] at (0,2) {\scriptsize $i$};
+      }[scale=.5][(0,1*.5)]
+      \;=\;
+      \tikzpic{
+        \fdot[1][1][2]\node at (-.7+2,.8) {\scriptsize $j$};
+        \frst[0][1]\frst\node[left=-3pt] at (0,2) {\scriptsize $i$};
+      }[scale=.5][(0,1*.5)]
+      %
+      \mspace{20mu}
+      %
+      \text{if }j\neq i,i+1
+      \\[\ins]
+      \text{\footnotesize dot annihilation}
+      &&
+      \text{\footnotesize dot migration}
+      &&
+      \text{\footnotesize dot slide}
+    \end{IEEEeqnarraybox}
+    \\[\outs]
+    %%%%% BUBBLES %%%%%
+    \begin{IEEEeqnarraybox}{cCc}
+      %%%%% COUNTER-CLOCKWISE BUBBLES %%%%%
+      \tikzpic{
+        \fdot[.5][1]\node at (.2+.5,-.2+1) {\scriptsize $i$};
+        \fcap[0][1]\fcup\node at (.8+.5,-.3+1) {\scriptsize $i$};
+      }[scale=.7]
+      =
+      1
+      \mspace{40mu}
+      \tikzpic{
+        \fcap[0][1]\fcup\node at (.8+.5,-.3+1) {\scriptsize $i$};
+      }[scale=.7]
+      =
+      0
+      & \mspace{70mu} &
+      %%%%% CLOCKWISE BUBBLES %%%%%
+      \begingroup
+        \tikzpic{
+          \funzip[0][1]\fzip\node at (.8+.5,-.3+1) {\scriptsize $i$};
+        }[scale=.7]
+        =
+        {Z}
+        \mspace{10mu}
+        \tikzpic{
+          \fdot\node at (.2,-.2) {\scriptsize $i$};
+        }[][(0,0)]
+        + XYZ
+        \mspace{10mu}
+        \tikzpic{
+          \fdot[0][0][2]\node at (.5,-.2) {\scriptsize $i+1$};
+        }[][(0,0)]
+      \endgroup
+      \\[\ins]
+      \text{\footnotesize evaluation of bubbles}
+      &&
+      \text{\footnotesize evaluation of shaded disks}
+    \end{IEEEeqnarraybox}
+    \\[\outs]
+    %%%%% SHADING RELATED RELATION %%%%%
+    \begin{IEEEeqnarraybox}{cCc}
+      %%%%% NECK-CUTTING RELATION %%%%%
+      \begingroup
+        \tikzpic{
+          \flst[0][1]\flst\node[left=-3pt] at (0,2) {\scriptsize $i$};
+          \frst[1][1]\frst[1][0];
+        }[scale=.7][(0,1*.7)]
+        %
+        \;=\;
+        %
+        \tikzpic{
+          \fdot[.5][1.8]\fcup[0][1]\fcap
+          \node[left=-3pt] at (0,2) {\scriptsize $i$};
+        }[scale=.7][(0,1*.7)]
+        \;+\;
+        \tikzpic{
+          \fdot[.5][.2]\fcup[0][1]\fcap
+          \node[left=-3pt] at (0,2) {\scriptsize $i$};
+        }[scale=.7][(0,1*.7)]
+      \endgroup
+      & \mspace{120mu} &
+      %%%%% ISOTOPY RELATION %%%%%
+      \begingroup
+      \tikzpic{
+          \flst[0][3]\flst[0][2]\flst[0][1]\flst[0][0]
+          \frst[.5][3][2]\frst[.5][2][2]\frst[.5][1][2]\frst[.5][0][2]
+          \flst[1.5][3][2]\flst[1.5][2][2]\flst[1.5][1][2]\flst[1.5][0][2]
+          \frst[2][3]\frst[2][2]\frst[2][1]\frst[2][0]
+          \node[below=-2pt] at (0,0) {\scriptsize $i$};
+          \node[below=-2pt] at (1.5,0) {\scriptsize $i+1$};
+        }[scale=.35][(0,2*.35)]
+        %
+        \;=\;Z^{-1}\;
+        %
+        \tikzpic{
+          \fzip[0][3][2]
+          \funzip[0][0][2]
+          \begin{scope}[scale=2]
+            \fcup[-.25][1]
+            \fcap[-.25][0]
+          \end{scope}
+          \node[below=-2pt] at (-.5,0) {\scriptsize $i$};
+          \node[below=-2pt] at (1,0) {\scriptsize $i+1$};
+        }[scale=.35][(0,2*.35)]
+      \endgroup
+      \\[\ins]
+      \text{\footnotesize neck-cutting relation}
+      &&
+      \text{\footnotesize squeezing relation}
+    \end{IEEEeqnarraybox}
+  \end{gather*}
+  \vspace*{-.5cm}
+
+  \caption{Relations in $\pregfoam_d$. We omit the objects labelling the regions of each diagram: this avoids clutter and emphasizes that relations are independent of the ambient object. If no shading is given, the relation holds for all shadings. In the case of the braid-like and pitchfork relations, colours should be so that the crossings exist.}
+  \label{fig:rel_diagfoam_graded}
+\end{figure}
+
+\subsection{Generic derivations and actions}
+\label{subsec:generic_derivation_action}
+
+In this subsection, we define derivations on the graded-2-category $\pregfoam_d$ of graded $\glt$-foams generically, depending on a family of parameters. We then give minimal conditions so that these derivations gather into an action of $\grsl_{2}^{\leq}$ by derivation on $\pregfoam_d$.
+We do the same analysis when restricting to the odd case $\presfoam_d$, extending to an action of $\gloo$.
+
+
+\subsubsection{Graded case}
+\label{subsubsec:generic_derivation_action_graded}
+
+\begin{lemma}
+  \label{lem:generic_derivations_on_graded_foam}
+  Let $\varf\coloneqq\{\varf^i\}_{1\leq i\leq d-1}$, $\delh$ and $\varh\coloneqq\{\varh^i\}_{1\leq i\leq d-1}$ be scalars in $\ringfoam$.
+  The graded-2-category $\pregfoam_d$ admits the following graded derivations $\sff_{\varf}$ and $\sfh_{\delh,\varh}$, of degree $(1,1)$ and $(0,0)$ respectively, and defined on the generators (\cref{fig:string_generators_graded_foams}) as zero on crossings and as:
+  \begin{center}
+    \def\spc{2ex}
+    \begin{tabular}{@{}l@{\hskip 5ex}*{4}{r@{\hskip 4ex}}r@{}}
+      &
+      $\tikzpic{\fdot\node at (.2,-.2) {\scriptsize $i$};}[scale=.5]$
+      &
+      $\tikzpic{\fcup\node at (1,.4) {\scriptsize $i$};}[scale=.5]$
+      &
+      $\tikzpic{\fzip\node at (1,.4) {\scriptsize $i$};}[scale=.5]$
+      &
+      $\tikzpic{\fcap\node at (1,.6) {\scriptsize $i$};}[scale=.5]$
+      &
+      $\tikzpic{\funzip\node at (1,.6) {\scriptsize $i$};}[scale=.5]$
+      \\*[2ex]
+      \midrule
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      $\sff_{\varf}$
+      &
+      $0$
+      &
+      $\varf^i\;\tikzpic{\fcup\fdot[.5][.8]\node at (1,.4) {\scriptsize $i$};}[scale=.5]$
+      &
+      $\varf^i\;\tikzpic{\fzip\fdot[-.3][.7]\node at (1,.4) {\scriptsize $i$};}[scale=.5]$
+      &
+      $-\varf^iXZ\;\tikzpic{\fcap\fdot[.5][.2]\node at (1,.6) {\scriptsize $i$};}[scale=.5]$
+      &
+      $-\varf^iYZ\;\tikzpic{\funzip\fdot[-.3][.3]\node at (1,.6) {\scriptsize $i$};}[scale=.5]$
+      \\*[\spc]
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      % $\lieh_1$
+      % &
+      % $-\;\tikzpic{\fdot\node at (.2,-.2) {\scriptsize $i$};}[scale=.5]$
+      % &
+      % $\tikzpic{\fcup\node at (1,.4) {\scriptsize $i$};}[scale=.5]$
+      % &
+      % $0$
+      % &
+      % $0$
+      % &
+      % $-\;\tikzpic{\funzip\node at (1,.6) {\scriptsize $i$};}[scale=.5]$
+      % \\*[\spc]
+      % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      % $\lieh_2$
+      % &
+      % $\tikzpic{\fdot\node at (.2,-.2) {\scriptsize $i$};}[scale=.5]$
+      % &
+      % $0$
+      % &
+      % $\tikzpic{\fzip\node at (1,.4) {\scriptsize $i$};}[scale=.5]$
+      % &
+      % $-\;\tikzpic{\fcap\node at (1,.6) {\scriptsize $i$};}[scale=.5]$
+      % &
+      % $0$
+      % \\*[\spc]
+      % \cmidrule(r){2-6}
+      % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      $\sfh_{\delh,\varh}$
+      &
+      $-\delh\;\tikzpic{\fdot\node at (.2,-.2) {\scriptsize $i$};}[scale=.5]$
+      &
+      $(\delh-\varh^i)\;\tikzpic{\fcup\node at (1,.4) {\scriptsize $i$};}[scale=.5]$
+      &
+      $-\varh^i\;\tikzpic{\fzip\node at (1,.4) {\scriptsize $i$};}[scale=.5]$
+      &
+      $\varh^i\;\tikzpic{\fcap\node at (1,.6) {\scriptsize $i$};}[scale=.5]$
+      &
+      $-(\delh-\varh^i)\;\tikzpic{\funzip\node at (1,.6) {\scriptsize $i$};}[scale=.5]$
+    \end{tabular}
+  \end{center}
+  % \begin{gather*}
+  %   \sff\left(\xy(0,0)*{\begin{tikzpicture}
+  %     \node[fdot1] at (0,0){};
+  %   \end{tikzpicture}}\endxy\right)
+  %   =0
+  %   \qquad
+  %   \sff\left(\xy(0,0)*{\begin{tikzpicture}[scale=.7]
+  %     \pic[transform shape] at (0,0){rcup=foamdraw1};
+  %   \end{tikzpicture}}\endxy\right)
+  %   =
+  %   \varf^i\;
+  %   \xy(0,0)*{\begin{tikzpicture}[scale=.7]
+  %     \pic[transform shape] at (0,0){rcup=foamdraw1};
+  %     \node[fdot1] at (.5,.7){};
+  %   \end{tikzpicture}}\endxy
+  %   \qquad
+  %   \sff\left(\xy(0,0)*{\begin{tikzpicture}[scale=.7]
+  %     \pic[transform shape] at (0,0){lcup=foamdraw1};
+  %   \end{tikzpicture}}\endxy\right)
+  %   =
+  %   \varf^i\;
+  %   \xy(0,0)*{\begin{tikzpicture}[scale=.7]
+  %     \pic[transform shape] at (0,0){lcup=foamdraw1};
+  %     \node[fdot1] at (-.5,.7){};
+  %   \end{tikzpicture}}\endxy
+  %   \\[1ex]
+  %   \sff\left(\xy(0,0)*{\begin{tikzpicture}[scale=.7]
+  %     \pic[transform shape] at (0,0){lcap=foamdraw1};
+  %   \end{tikzpicture}}\endxy\right)
+  %   =
+  %   -\varf^iXZ\;
+  %   \xy(0,0)*{\begin{tikzpicture}[scale=.7]
+  %     \pic[transform shape] at (0,0){lcap=foamdraw1};
+  %     \node[fdot1] at (.5,.3){};
+  %   \end{tikzpicture}}\endxy
+  %   \qquad
+  %   \sff\left(\xy(0,0)*{\begin{tikzpicture}[scale=.7]
+  %     \pic[transform shape] at (0,0){rcap=foamdraw1};
+  %   \end{tikzpicture}}\endxy\right)
+  %   =
+  %   -\varf^iYZ\;
+  %   \xy(0,0)*{\begin{tikzpicture}[scale=.7]
+  %     \pic[transform shape] at (0,0){rcap=foamdraw1};
+  %     \node[fdot1] at (-.5,.3){};
+  %   \end{tikzpicture}}\endxy
+  %   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  %   \\[4ex]
+  %   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  %   \sfh\left(\xy(0,0)*{\begin{tikzpicture}
+  %     \node[fdot1] at (0,0){};
+  %   \end{tikzpicture}}\endxy\right)
+  %   =
+  %   -\delh\;
+  %   \xy(0,0)*{\begin{tikzpicture}
+  %     \node[fdot1] at (0,0){};
+  %   \end{tikzpicture}}\endxy
+  %   \qquad
+  %   \sfh\left(\xy(0,0)*{\begin{tikzpicture}[scale=.7]
+  %     \pic[transform shape] at (0,0){rcup=foamdraw1};
+  %   \end{tikzpicture}}\endxy\right)
+  %   =
+  %   (\delh-\varh^i)\;
+  %   \xy(0,0)*{\begin{tikzpicture}[scale=.7]
+  %     \pic[transform shape] at (0,0){rcup=foamdraw1};
+  %   \end{tikzpicture}}\endxy
+  %   \qquad
+  %   \sfh\left(\xy(0,0)*{\begin{tikzpicture}[scale=.7]
+  %     \pic[transform shape] at (0,0){lcup=foamdraw1};
+  %   \end{tikzpicture}}\endxy\right)
+  %   =
+  %   -\varh^i\;
+  %   \xy(0,0)*{\begin{tikzpicture}[scale=.7]
+  %     \pic[transform shape] at (0,0){lcup=foamdraw1};
+  %   \end{tikzpicture}}\endxy
+  %   \\[1ex]
+  %   \sfh
+  %   \left(\xy(0,0)*{\begin{tikzpicture}[scale=.7]
+  %     \pic[transform shape] at (0,0){lcap=foamdraw1};
+  %   \end{tikzpicture}}\endxy\right)
+  %   =
+  %   \varh^i\;
+  %   \xy(0,0)*{\begin{tikzpicture}[scale=.7]
+  %     \pic[transform shape] at (0,0){lcap=foamdraw1};
+  %   \end{tikzpicture}}\endxy
+  %   \qquad
+  %   \sfh
+  %   \left(\xy(0,0)*{\begin{tikzpicture}[scale=.7]
+  %     \pic[transform shape] at (0,0){rcap=foamdraw1};
+  %   \end{tikzpicture}}\endxy\right)
+  %   =
+  %   -(\delh-\varh^i)\;
+  %   \xy(0,0)*{\begin{tikzpicture}[scale=.7]
+  %     \pic[transform shape] at (0,0){rcap=foamdraw1};
+  %   \end{tikzpicture}}\endxy
+  % \end{gather*}
+\end{lemma}
+
+\begin{proof}
+  We show that $\sff_{\varf}$ is well-defined.
+  Thanks to \cref{rem:derivation_uniquely_defn_on_generators_of_A}, it suffices to check it locally on the defining relations (\cref{fig:rel_diagfoam_graded}).
+  It is straightforward for braid-like relations, pitchfork relations, dot annihilation, dot migration, dot slide, and evaluation of dotted bubbles.
+  For the other evaluations, we have:
+  \def\scl{.5}
+  \begin{IEEEeqnarray*}{rCl}
+    %%%%% COUNTER-CLOCKWISE BUBBLES %%%%%
+    \sff_{\varf}\left(
+      \tikzpic{
+        \fcap[0][1]\fcup\node at (.8+.5,-.3+1) {\scriptsize $i$};
+      }[scale=\scl]
+    \right)
+    &=&
+    -\varf^iXZ \;
+    \tikzpic{
+        \fdot[.5][1]\node at (.2+.5,-.2+1) {\scriptsize $i$};
+        \fcap[0][1]\fcup\node at (.8+.5,-.3+1) {\scriptsize $i$};
+      }[scale=\scl]
+    +\bilfoam\big((1,1),(-1,0)\big)
+    \varf^i\;
+    \tikzpic{
+        \fdot[.5][1]\node at (.2+.5,-.2+1) {\scriptsize $i$};
+        \fcap[0][1]\fcup\node at (.8+.5,-.3+1) {\scriptsize $i$};
+      }[scale=\scl]
+    =
+    0
+    \\[2ex]
+    %%%%% CLOCKWISE BUBBLES %%%%%
+    \sff_{\varf}\left(
+      \tikzpic{
+        \funzip[0][1]\fzip\node at (.8+.5,-.3+1) {\scriptsize $i$};
+      }[scale=\scl]
+    \right)
+    &=&
+    -\varf^iYZ
+    \mspace{10mu}
+    \tikzpic{
+        \fdot[-.5][1]\node at (.2-.5,-.2+1) {\scriptsize $i$};
+        \funzip[0][1]\fzip\node at (.8+.5,-.3+1) {\scriptsize $i$};
+      }[scale=\scl]
+    +\bilfoam\big((1,1),(0,1)\big)
+    \varf^i
+    \mspace{10mu}
+    \tikzpic{
+        \fdot[-.5][1]\node at (.2-.5,-.2+1) {\scriptsize $i$};
+        \funzip[0][1]\fzip\node at (.8+.5,-.3+1) {\scriptsize $i$};
+      }[scale=\scl]
+    =0
+  \end{IEEEeqnarray*}
+  The neck-cutting gives:
+  \begin{gather*}
+    \sff_{\varf}\left(
+      \tikzpic{
+        \fdot[.5][1.8]\fcup[0][1]\fcap
+        \node[left=-3pt] at (0,2) {\scriptsize $i$};
+      }[scale=\scl][(0,1*\scl)]
+      \;+\;
+      \tikzpic{
+        \fdot[.5][.2]\fcup[0][1]\fcap
+        \node[left=-3pt] at (0,2) {\scriptsize $i$};
+      }[scale=\scl][(0,1*\scl)]
+    \right)
+    =
+    \Big[-\varf^iXZ \bilfoam\big((1,1),(1,0)\big)+\varf^i\Big]\;
+    \tikzpic{
+        \fdot[.5][.2]
+        \fdot[.5][1.8]\fcup[0][1]\fcap
+        \node[left=-3pt] at (0,2) {\scriptsize $i$};
+      }[scale=\scl][(0,1*\scl)]
+    =0
+  \end{gather*}
+  Finally, the squeezing relation gives:
+  \begin{IEEEeqnarray*}{rCl}
+    \sff_{\varf}\left(
+      \tikzpic{
+        \fzip[0][3][2]
+        \funzip[0][0][2]
+        \begin{scope}[scale=2]
+          \fcup[-.25][1]
+          \fcap[-.25][0]
+        \end{scope}
+        \node[below=-2pt] at (-.5,0) {\scriptsize $i$};
+        \node[below=-2pt] at (1,0) {\scriptsize $i+1$};
+      }[scale=.35][(0,2*.35)]
+    \right)
+    &=&
+    \varf^{i+1}
+    \tikzpic{
+      \fzip[0][3][2]
+      \funzip[0][0][2]
+      \begin{scope}[scale=2]
+        \fcup[-.25][1]
+        \fcap[-.25][0]
+      \end{scope}
+      \node[below=-2pt] at (-.5,0) {\scriptsize $i$};
+      \node[below=-2pt] at (1,0) {\scriptsize $i+1$};
+      %
+      \fdot[-.2][3.7][2][1.5]
+    }[scale=.35][(0,2*.35)]
+    +
+    \varf^i
+    \bilfoam\big((1,1),(1,0)\big)
+    \tikzpic{
+      \fzip[0][3][2]
+      \funzip[0][0][2]
+      \begin{scope}[scale=2]
+        \fcup[-.25][1]
+        \fcap[-.25][0]
+      \end{scope}
+      \node[below=-2pt] at (-.5,0) {\scriptsize $i$};
+      \node[below=-2pt] at (1,0) {\scriptsize $i+1$};
+      %
+      \fdot[1-.5][3][1][1.5]
+    }[scale=.35][(0,2*.35)]
+    \\
+    &&{}-\varf^iXZ
+    \bilfoam\big((1,1),(1,-1)\big)
+    \tikzpic{
+      \fzip[0][3][2]
+      \funzip[0][0][2]
+      \begin{scope}[scale=2]
+        \fcup[-.25][1]
+        \fcap[-.25][0]
+      \end{scope}
+      \node[below=-2pt] at (-.5,0) {\scriptsize $i$};
+      \node[below=-2pt] at (1,0) {\scriptsize $i+1$};
+      %
+      \fdot[1-.5][1][1][1.5]
+    }[scale=.35][(0,2*.35)]
+    -\varf^{i+1}YZ
+    \bilfoam\big((1,1),(0,-1)\big)
+    \tikzpic{
+      \fzip[0][3][2]
+      \funzip[0][0][2]
+      \begin{scope}[scale=2]
+        \fcup[-.25][1]
+        \fcap[-.25][0]
+      \end{scope}
+      \node[below=-2pt] at (-.5,0) {\scriptsize $i$};
+      \node[below=-2pt] at (1,0) {\scriptsize $i+1$};
+      %
+      \fdot[-.2][.3][2][1.5]
+    }[scale=.35][(0,2*.35)]
+    \\[1ex]
+    &=&
+    \Big[\varf^{i+1}\normafoam{+}{-}\varf^i\normafoam{-}{+}\varf^i-\varf^{i+1}\Big]
+    \tikzpic{
+      \fzip[0][3][2]
+      \funzip[0][0][2]
+      \begin{scope}[scale=2]
+        \fcup[-.25][1]
+        \fcap[-.25][0]
+      \end{scope}
+      \node[below=-2pt] at (-.5,0) {\scriptsize $i$};
+      \node[below=-2pt] at (1,0) {\scriptsize $i+1$};
+      %
+      \fdot[-.2][3.7][2][1.5]
+    }[scale=.35][(0,2*.35)]
+    =0
+  \end{IEEEeqnarray*}
+
+  We show that $\sfh_{\delh,\varh}$ is well-defined.
+  Given that $\sfh_{\delh,\varh}$ has trivial grading and it acts on each generator by multiplication with a certain scalar, its action on a generic diagram amounts to multiplying this diagram with the sum of the scalars associated to each of its generators.
+  With this remark, braid-like relations, pitchfork relations, dot annihilation, dot slide and evaluation of undotted bubbles are straightforward, and do not depend on the choice of scalars.
+  %
+  Zigzag relations force the scalars associated to the cup and unzip (resp.\ the cap and zip) to be opposite of one another.
+  %
+  Dot migration forces the scalar associated to the dot to be independent of $i$.
+  %
+  Neck-cutting imposes a linear relation between the scalars associated to the dot, the cup and the cap.
+  %
+  All the conditions above lead to the choice of scalars given in the lemma.
+  %
+  One check compatibility with the remaining relations similarly (squeezing, evaluation of dotted bubbles and evaluation of shaded disks).
+
+  This concludes.
+\end{proof}
+
+\begin{remark}[unicity of $\sff$ and $\sfh$]
+  \label{rem:unicity_generic_graded}
+  Recall the front-back composition from \cref{rem:monoidal-2-categorical-structure}.
+  It is natural to ask for derivations to satisfy a Leibniz rule with respect to this composition as well. If so, then each derivation of degree $(1,1)$ is of the form $\sff_{\varf}$, where moreover all variables $\varf^i$ are equal.
+  % in principle, the action of f could have "far-away" dots
+  Similarly, in this case each derivation of degree $(0,0)$ is of the form $\sfh_{\delh,\varh}$, where moreover all variables $\varh^i$ are equal.
+\end{remark}
+
+\begin{lemma}
+  \label{lem:commutator_graded_case}
+  The commutators of the derivations $\sff_{\varf}$ and $\sfh_{\delh,\varh}$ defined in \cref{lem:generic_derivations_on_graded_foam} are
+  \[[\sfh_{\delh,\varh},\sff_{\varf}]=-\delh\sff_{\varf}
+  \quad\an\quad
+  [\sff_{\varf},\sff_{\varf}]=[\sfh_{\delh,\varh},\sfh_{\delh',\varh'}]=0\]
+  for any choice of (family of) parameters $\varf$, $(\delh,\varh)$ and $(\delh',\varh')$.
+\end{lemma}
+
+\begin{proof}
+  Thanks to \cref{rem:derivation_uniquely_defn_on_generators_of_A}, it suffices to check the equalities on generators.
+  Checking the claimed equalities amounts to straightforward computation.
+  We give another argument for the relation $[\sfh_{\delh,\varh},\sff_{\varf}]=-\delh\sff_{\varf}$.
+  Recall from the previous proof that $\sfh_{\delh,\varh}$ acts by multiplying a diagram by the sum of scalars associated to its generators; in particular, for any generator $D$, $\sfh_{\delh,\varh}$ acts by a certain scalar $\lambda_D$.
+  On the other hand, the action of $\sff_{\varf}$ on the generator $D$ ``adds a dot'', up to scalar. It follows that 
+  \[[\sfh_{\delh,\varh},\sff_{\varf}](D)=\sfh_{\delh,\varh}\sff_{\varf}(D)-\sff_{\varf}\sfh_{\delh,\varh}(D)
+  =(\lambda_D-\delh)\sff(D)-\lambda_D\sff(D)=-\delh\sff(D).\]
+  This concludes.
+\end{proof}
+
+With the help of \cref{rem:action_uniquely_defn_by_generators_of_g}, it follows that:
+
+\begin{corollary}
+  \label{cor:generic_action_on_graded_foam}
+  For any choice of parameters $\varf$, $\varh$ and $\varh'$ as in \cref{lem:generic_derivations_on_graded_foam},
+  The application
+  \[\{\lief\mapsto \sff_{\varf},\lieh_1\mapsto\sfh_{1,\varh},\lieh_2\mapsto\sfh_{-1,\varh'}\}\]
+  % (resp.\ the application $\{\liee\mapsto \sff_{\varf},\lieh_1\mapsto\sfh_{-1,\varh},\lieh_2\mapsto\sfh_{1,\varh'}\}$)
+  defines an action of $\grgl_{2}^{\leq}$
+  % (resp.\ $\grgl_{2}^{\geq}$)
+  by derivation on the graded-2-category $\pregfoam_d$.
+  \hfill\qed
+\end{corollary}
+
+We pick a standard choice of action:
+
+\begin{definition}
+  \label{defn:action_on_foam_graded_case}
+  We view $\pregfoam_d$ as a $\grgl_{2}^{\leq}$-2-category with the action of $\grgl_{2}^{\leq}$ by derivation given in \cref{defn:action_on_foam_super_case} (ignoring the action of $\liee$).
+\end{definition}
+
+
+\subsubsection{Super case}
+\label{subsubsec:generic_derivation_action_super}
+
+\begin{lemma}
+  \label{lem:generic_derivation_on_super_foam}
+  Let $\vare\in\ringfoam$ be a choice of parameter.
+  The super-2-category $\presfoam_d$ admits the derivation $\sfe_{\vare}$, defined on the generators (\cref{fig:string_generators_graded_foams}) as zero on crossings and as:
+  \begin{center}
+    \def\spc{2ex}
+    \begin{tabular}{@{}l@{\hskip 5ex}*{4}{r@{\hskip 4ex}}r@{}}
+      &
+      $\tikzpic{\fdot\node at (.2,-.2) {\scriptsize $i$};}[scale=.5]$
+      &
+      $\tikzpic{\fcup\node at (1,.4) {\scriptsize $i$};}[scale=.5]$
+      &
+      $\tikzpic{\fzip\node at (1,.4) {\scriptsize $i$};}[scale=.5]$
+      &
+      $\tikzpic{\fcap\node at (1,.6) {\scriptsize $i$};}[scale=.5]$
+      &
+      $\tikzpic{\funzip\node at (1,.6) {\scriptsize $i$};}[scale=.5]$
+      \\*[2ex]
+      \midrule
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      $\sfe_{\vare}$
+      &
+      $\normafoam{\vare}{(-1)^i\vare}\id_\emptyset$
+      &
+      $0$
+      &
+      $0$
+      &
+      $0$
+      &
+      $0$
+    \end{tabular}
+  \end{center}
+\end{lemma}
+
+\begin{proof}
+  \def\scl{.5}
+  It suffices to check that $\sfe_{\vare}$ is compatible with the defining relations (\cref{fig:rel_diagfoam_graded}).
+  Relations that do not involve dots are straightforward.
+  Compatibility with dot annihilation and neck-cutting relation essentially follows from the fact that $\sfe_{\vare}$ is a super derivation:
+  \begin{gather*}
+    \sfe_{\vare}\left(\;
+    \tikzpic{
+      \fdot[0][1]\fdot\node at (.2,-.2) {\scriptsize $i$};
+    }[scale=\scl]
+    \right)
+    =
+    \vare[1-1]\;\tikzpic{\fdot}
+    =0
+    \mspace{10mu}\an\mspace{10mu}
+    \sfe_{\vare}\left(
+      \tikzpic{
+        \fdot[.5][1.8]\fcup[0][1]\fcap
+        \node[left=-3pt] at (0,2) {\scriptsize $i$};
+      }[scale=\scl][(.5,1*\scl)]
+      \;+\;
+      \tikzpic{
+        \fdot[.5][.2]\fcup[0][1]\fcap
+        \node[left=-3pt] at (0,2) {\scriptsize $i$};
+      }[scale=\scl][(.5,1*\scl)]
+    \right)
+    =
+    \vare[1-1]\;
+    \tikzpic{
+        \fcup[0][1]\fcap
+        \node[left=-3pt] at (0,2) {\scriptsize $i$};
+      }[scale=\scl][(.5,1*\scl)]
+    =0.
+  \end{gather*}
+  This explains why $\sfe_{\vare}$ can only be defined in the super case.
+  Compatibility with dot migration and evaluation of shaded disks follows from the fact that $\vare$ does not depend on $i$.
+  % \begin{gather*}
+  %   \sfe\left(\;
+  %   \tikzpic{
+  %     \fdot\node at (.2,-.2) {\scriptsize $i$};
+  %   }
+  %   % \mspace{10mu}
+  %   -
+  %   \mspace{10mu}
+  %   \tikzpic{
+  %     \fdot[0][0][2]\node at (.5,-.3) {\scriptsize $i+1$};
+  %   }
+  %   \right)
+  %   =0
+  % \end{gather*}
+  Compatibility with dot slide and evaluation of bubbles is straightforward. This concludes.
+\end{proof}
+
+\begin{lemma}
+  \label{lem:commutator_super_case}
+  The (super) commutators of the super derivation $\sfe_{\vare}$ (\cref{lem:generic_derivation_on_super_foam}) with the (super) derivations $\sff_{\varf}$ and $\sfh_{\delh,\varh}$ (\cref{lem:generic_derivations_on_graded_foam}; restricted to the super case) are
+  \begin{gather*}
+    [\sfe_{\vare},\sff_{\varf}] = \sfh_{0,(-\normafoam{}{(-1)^i}\vare\varf^i)_i},
+    \qquad
+    [\sfh_{\delh,\varh},\sfe_{\vare}]=\delh\sfe_{\vare}
+    \qquad\an\qquad
+    [\sfe_{\vare},\sfe_{\vare}]=0,
+  \end{gather*}
+  for any choice of (family of) parameters $\varf$, $(\delh,\varh)$ and $\vare$.
+\end{lemma}
+
+\begin{proof}
+  Thanks to \cref{rem:derivation_uniquely_defn_on_generators_of_A}, it suffices to check the equalities on generators.
+  Checking $[\sfe_{\vare},\sfe_{\vare}]=0$ is straightforward, and the case of the commutator $[\sfh_{\delh,\varh},\sfe_{\vare}]$ follows from the equality
+  \[[\sfh_{\delh,\varh},\sfe_{\vare}]=-\sfe_{\vare}\sfh_{\delh,\varh}.\]
+  %
+  The equality $[\sfe_{\vare},\sff_{\varf}](\tikzpic{\fdot})=0$ is straightforward. For $D$ one of the remaining generators, we have $[\sfe_{\vare},\sff_{\varf}](D) = \sfe_{\vare}\sff_{\varf}(D)$, leading to the remaining equality.
+\end{proof}
+
+\begin{corollary}
+  \label{cor:generic_action_on_super_foam}
+  Let $\varf$, $\varh$, $\varh'$ and $\vare$ be choice of (family of) scalars in $\ringfoam$ as in \cref{lem:generic_derivations_on_graded_foam,lem:generic_derivation_on_super_foam}.
+  If
+  \[\varh^i+\varh^{'i} = \normafoam{-\vare\varf^i}{-(-1)^i\vare\varf^i}\quad\text{ for all }1\leq i\leq d-1,\]
+  then the application
+  \[\{\lief\mapsto \sff_{\varf},\lieh_1\mapsto\sfh_{1,\varh},\lieh_2\mapsto\sfh_{-1,\varh'},\liee\mapsto \sfe_{\vare}\}\]
+  defines an action of $\gloo$ by derivation on $\presfoam_d$.
+\end{corollary}
+
+\begin{proof}
+  This follows from \cref{cor:generic_action_on_graded_foam} and \cref{lem:commutator_super_case} (with the help of \cref{rem:action_uniquely_defn_by_generators_of_g}), using that
+  $\sfh_{1,\varh}+\sfh_{-1,\varh'}=\sfh_{0,\varh+\varh'}$.
+\end{proof}
+
+We pick a standard choice of action, corresponding to the choice $\varf^i=\vare=1$, $\varh^i=0$ and $\varh^{'i}=-1$:
+
+\begin{definition}
+  \label{defn:action_on_foam_super_case}
+  We view $\presfoam_d$ as a $\gloo$-2-category with the action of $\gloo$ by derivation given by:
+  \begin{gather}
+    \label{eq:simplest_derivation}
+    \def\spc{2ex}
+    \def\scl{.5}
+    \begin{tabular}{@{}l@{\hskip 4ex}r*{4}{@{\hskip 3ex}r}@{}}
+      &
+      $\tikzpic{\fdot\node at (.2,-.2) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\tikzpic{\fcup\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\tikzpic{\fzip\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\tikzpic{\fcap\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\tikzpic{\funzip\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+      \\*[2ex]
+      \midrule
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      $\lief$
+      &
+      $0$
+      &
+      $\normafoam{}{}\tikzpic{\fcup\fdot[.5][.8]\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\normafoam{}{}\tikzpic{\fzip\fdot[-.3][.7]\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\normafoam{-\;}{?}\tikzpic{\fcap\fdot[.5][.2]\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\normafoam{}{}\tikzpic{\funzip\fdot[-.3][.3]\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+      \\*[\spc]
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      $\liee$
+      &
+      $\normafoam{}{(-1)^i}\id_\emptyset$
+      &
+      $0$
+      &
+      $0$
+      &
+      $0$
+      &
+      $0$
+      \\*[\spc]
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      $\lieh_1$
+      &
+      $-\;\tikzpic{\fdot\node at (.2,-.2) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\;\tikzpic{\fcup\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $0$
+      &
+      $0$
+      &
+      $-\;\tikzpic{\funzip\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+      \\*[\spc]
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      $\lieh_2$
+      &
+      $\tikzpic{\fdot\node at (.2,-.2) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $0$
+      &
+      $\;\tikzpic{\fzip\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $-\;\tikzpic{\fcap\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $0$
+      % \\*[\spc]
+      % \cmidrule(r){2-6}
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      % $\lieh\coloneqq\lieh_1+\lieh_2$
+      % $\lieh$
+      % &
+      % $0$
+      % &
+      % $-\;\tikzpic{\fcup\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      % &
+      % $-\;\tikzpic{\fzip\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      % &
+      % $\;\tikzpic{\fcap\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+      % &
+      % $\;\tikzpic{\funzip\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+    \end{tabular}
+  \end{gather}
+  Note that in term of the $\bZ^2$-grading $(a,b)$, we have $h_1(D)=-b D$, $h_2(D)=a D$ and $h(D)=(a-b) D$.
+\end{definition}
+
+\begin{remark}
+  \label{rem:gloo_is_almost_unique}
+  Under certain reasonable assumptions, the $\gloo$-action is almost unique.
+  Arguing as in \cref{rem:unicity_generic_graded}, it is reasonable to assume that each family of scalars is independent of $i$. We then view $\varf$, $\varh$ and $\varh'$ as three scalars.
+  Any graded derivation on $\pregfoam_d$ of degree $(-1,-1)$ is of the form $\sfe$.
+  following \cref{rem:unicity_generic_graded} and \cref{lem:commutator_super_case}, under this assumption any $\gloo$-action by derivation arises as in \cref{cor:generic_action_on_super_foam}.
+  Assuming further that $\varf$ and $\vare$ are invertible, one can renormalize the action of $\lief$ and $\liee$, leaving only one parameter $\varh$, having necessarily $\varh'=-1-\varh$.
+\end{remark}
+
+\begin{example}
+  Another choice compatible with the assumptions of \cref{rem:gloo_is_almost_unique} is $\varf^i=-1$, $\vare=1$, $\varh^i=\varh^{'i}=\frac{1}{2}$, assuming that $2$ is invertible in the ground ring. This gives:
+  \begin{center}
+    \def\spc{2ex}
+    \def\scl{.5}
+    \begin{tabular}{@{}l@{\hskip 4ex}r*{4}{@{\hskip 3ex}r}@{}}
+      &
+      $\tikzpic{\fdot\node at (.2,-.2) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\tikzpic{\fcup\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\tikzpic{\fzip\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\tikzpic{\fcap\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\tikzpic{\funzip\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+      \\*[2ex]
+      \midrule
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      $\lief$
+      &
+      $0$
+      &
+      $\normafoam{-\;}{}\tikzpic{\fcup\fdot[.5][.8]\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\normafoam{-\;}{}\tikzpic{\fzip\fdot[-.3][.7]\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\normafoam{}{?}\tikzpic{\fcap\fdot[.5][.2]\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\normafoam{-\;}{}\tikzpic{\funzip\fdot[-.3][.3]\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+      \\*[\spc]
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      $\liee$
+      &
+      $\normafoam{}{(-1)^i}\id_\emptyset$
+      &
+      $0$
+      &
+      $0$
+      &
+      $0$
+      &
+      $0$
+      \\*[\spc]
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      $\lieh_1$
+      &
+      $-\;\tikzpic{\fdot\node at (.2,-.2) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\frac{1}{2}\;\tikzpic{\fcup\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $-\frac{1}{2}\;\tikzpic{\fzip\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\frac{1}{2}\;\tikzpic{\fcap\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $-\frac{1}{2}\;\tikzpic{\funzip\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+      \\*[\spc]
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      $\lieh_2$
+      &
+      $\tikzpic{\fdot\node at (.2,-.2) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $(-1-\frac{1}{2})\;\tikzpic{\fcup\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $-\frac{1}{2}\;\tikzpic{\fzip\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\frac{1}{2}\;\tikzpic{\fcap\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $-(-1-\frac{1}{2})\;\tikzpic{\funzip\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+      % \\*[\spc]
+      % \cmidrule(r){2-6}
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      % $\lieh\coloneqq\lieh_1+\lieh_2$
+      % $\lieh$
+      % &
+      % $0$
+      % &
+      % $-\;\tikzpic{\fcup\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      % &
+      % $-\;\tikzpic{\fzip\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      % &
+      % $\;\tikzpic{\fcap\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+      % &
+      % $\;\tikzpic{\funzip\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+    \end{tabular}
+  \end{center}
+  % Note that in term of the $\bZ^2$-grading $(a,b)$, we have $h_1(D)=-\frac{1}{2}(a+b) D$, $h_2(D)=\frac{1}{2}(3b-a) D$ and $h(D)=(b-a) D$.
+\end{example}
+
+\begin{example}
+  A choice which is not compatible with the assumptions of \cref{rem:gloo_is_almost_unique} is $\vare=1$, $\varf^i=0$, $\varh^i=\frac{1}{2}$ and $\varh^{'i}=-\frac{1}{2}$, assuming again that $2$ is invertible in the ground ring. This gives:
+  \begin{center}
+    \def\spc{2ex}
+    \def\scl{.5}
+    \begin{tabular}{@{}l@{\hskip 4ex}r*{4}{@{\hskip 3ex}r}@{}}
+      &
+      $\tikzpic{\fdot\node at (.2,-.2) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\tikzpic{\fcup\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\tikzpic{\fzip\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\tikzpic{\fcap\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\tikzpic{\funzip\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+      \\*[2ex]
+      \midrule
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      $\lief$
+      &
+      $0$
+      &
+      $0$
+      &
+      $0$
+      &
+      $0$
+      &
+      $0$
+      \\*[\spc]
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      $\liee$
+      &
+      $\normafoam{}{(-1)^i}\id_\emptyset$
+      &
+      $0$
+      &
+      $0$
+      &
+      $0$
+      &
+      $0$
+      \\*[\spc]
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      $\lieh_1$
+      &
+      $-\;\tikzpic{\fdot\node at (.2,-.2) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\frac{1}{2}\;\tikzpic{\fcup\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $-\frac{1}{2}\;\tikzpic{\fzip\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\frac{1}{2}\;\tikzpic{\fcap\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $-\frac{1}{2}\;\tikzpic{\funzip\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+      \\*[\spc]
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      $\lieh_2$
+      &
+      $\tikzpic{\fdot\node at (.2,-.2) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $-\frac{1}{2}\;\tikzpic{\fcup\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\frac{1}{2}\;\tikzpic{\fzip\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $-\frac{1}{2}\;\tikzpic{\fcap\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+      &
+      $\frac{1}{2}\;\tikzpic{\funzip\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+      % \\*[\spc]
+      % \cmidrule(r){2-6}
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      % $\lieh\coloneqq\lieh_1+\lieh_2$
+      % $\lieh$
+      % &
+      % $0$
+      % &
+      % $-\;\tikzpic{\fcup\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      % &
+      % $-\;\tikzpic{\fzip\node at (1,.4) {\scriptsize $i$};}[scale=\scl]$
+      % &
+      % $\;\tikzpic{\fcap\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+      % &
+      % $\;\tikzpic{\funzip\node at (1,.6) {\scriptsize $i$};}[scale=\scl]$
+    \end{tabular}
+  \end{center}
+  % Note that in term of the $\bZ^2$-grading $(a,b)$, we have $h_1(D)=-\frac{1}{2}(a+b) D$, $h_2(D)=\frac{1}{2}(a+b) D$ and $h(D)=0$.
+\end{example}
+
+
+\subsection{Twist on graded \texorpdfstring{$\glt$}{gl2}-foams}
+\label{subsec:twist_foam}
+
+In this subsection, we define webs with green markings and twists on graded $\glt$-foams, following the general framework of \cref{subsubsec:twisting_g2categories} and in analogy with \cite[section~5.1]{QRS+_SymmetriesEquivariantKhovanovRozansky_2023}.
+We fix $\fg$ to be either $\fg=\grgl_2^\leq$ or $\fg=\gloo$.
+Recall the notation $\fg\foam_d$ after \cref{defn:foam_and_sfoam}, denoting either $\gfoam_d$ or $\sfoam_d$.
+Recall that we fixed a structure of $\fg$-2-category on $\fg\prefoam_d$ in \cref{defn:action_on_foam_graded_case} and in \cref{defn:action_on_foam_super_case}, which extends to $\fg\foam_d$.
+
+Below is an example of a web with markings:
+\begin{equation*}
+  \tikzpic{
+    \webid[0][1.5][1]\webs[1][1.5]\webmMarkedT[2][1.5][$(0,3,-3)$]\webid[3][1.5][1]
+    \webm\webid[1][0][1]\webid[2][0][1]\websMarkedB[3][0][$(2,-1,-1)$]
+  }[xscale=.5,yscale=.4][(0,1.25*.4)]
+  =
+  \tikzpic{
+    \webid[0][1.5][1]\webs[1][1.5]\webm[2][1.5]\webid[3][1.5][1]
+    \webm\webid[1][0][1]\webid[2][0][1]\websMarkedB[3][0][$2$]
+  }[xscale=.5,yscale=.4][(0,1.25*.4)]
+  \;\langle 2,-4\rangle
+  \qquad
+  \epsilon_{W^{\greenmarking}}(h_1)=2,\quad\epsilon_{W^{\greenmarking}}(h_2)=-4.
+\end{equation*}
+More formally, a \emph{web with markings $W^{\greenmarking}$} (or \emph{marked web}) is the data of a web $W$ together with markings 
+$\greenmarking[2]$ on its edges of width one, each equipped with a triple of scalars in $\ringfoam$, generically denoted $(\alpha,\beta_1,\beta_2)$.
+% When $\fg=\gloo$, we further assume that
+% \[\alpha=\beta_1+\beta_2.\]
+% (This assumption is not necessary for the following few paragraphs, but as we shall see \cref{lem:family_of_twists_foam}, it is necessary for the rest of the paper.)
+For a marked web $W^{\greenmarking}$ and $i\in \{1,2\}$, we set $\epsilon_{W^{\greenmarking}}(h_i)$ to be the sum of the $i+1$st entries of all the markings on $W$.
+See the example above; the notation of the second web is explained in \cref{rem:notation_bracket_twist}.
+If $W_s^{\greenmarking}$ and $W_t^{\greenmarking}$ are two marked webs with $W_s$ and $W_t$ as underlying webs respectively, then any foam $F\colon W_s\to W_t$ defines a foam $F^{{\greenmarking}}\colon W_s^{\greenmarking}\to W_t^{\greenmarking}$.
+If $F$ has quantum grading $\qdeg F$, then
+\[\qdeg F^{\greenmarking}\coloneqq \qdeg F - (\epsilon_{W_s^{\greenmarking}}(h_2)-\epsilon_{W_s^{\greenmarking}}(h_1)) + (\epsilon_{W_t^{\greenmarking}}(h_2)-\epsilon_{W_t^{\greenmarking}}(h_1)).\]
+In other words, adding a twist $\greenmarking$ to a web $W$ shifts it by $q^{\epsilon_{W^{\greenmarking}}(h_2)-\epsilon_{W^{\greenmarking}}(h_1)}$.
+Denote $\fg\foam_d^{\text{pre-}\greenmarking}$ the $\fg$-2-category consisting of marked webs and the same Hom-categories as $\fg\foam_d$, restricting to foams preserving the quantum grading. 
+
+We now define a family of twists for the $\fg$-2-category $\gfoam_d^{\text{pre-}\greenmarking}$.
+
+\begin{definition}
+  \label{defn:twist_foam}
+  Let $\alpha,\beta_1,\beta_2\in\ringfoam$ be three parameters.
+  Defines:
+  \begin{IEEEeqnarray*}{rClcrClcrCl}
+    \lief\left(\;\tikzpic{
+      \draw[web1] (-1,0) to (1,0);
+      \node[green_mark] at (0,0){};
+      \node[below] at (0,0){\scriptsize $(\alpha,\beta_1,\beta_2)$};
+    }[scale=.7][(0,0)]\;\right)
+    &=&
+    \alpha\;
+    \tikzpic{
+      \draw (-1,0) rectangle (1,1);
+      \fdot[0][.5]
+    }[scale=.7]
+    &\quad&
+    \lieh_{i}\left(\;\tikzpic{
+      \draw[web1] (-1,0) to (1,0);
+      \node[green_mark] at (0,0){};
+      \node[below] at (0,0){\scriptsize $(\alpha,\beta_1,\beta_2)$};
+    }[scale=.7][(0,0)]\;\right)
+    &=&
+    \beta_{i}\;
+    \tikzpic{
+      \draw (-1,0) rectangle (1,1);
+    }[scale=.7]
+    &\quad&
+    \liee\left(\;\tikzpic{
+      \draw[web1] (-1,0) to (1,0);
+      \node[green_mark] at (0,0){};
+      \node[below] at (0,0){\scriptsize $(\alpha,\beta_1,\beta_2)$};
+    }[scale=.7][(0,0)]\;\right)
+    &=&
+    0
+    \\
+    \tau_{\alpha,\beta_1,\beta_2}(\lief)
+    &=&
+    \alpha\;
+    \tikzpic{
+      \draw (-1,0) rectangle (1,1);
+      \fdot[0][.5]
+    }[scale=.7]
+    &&
+    \tau_{\alpha,\beta_1,\beta_2}(\lieh)
+    &=&
+    \beta_{i}\;
+    \tikzpic{
+      \draw (-1,0) rectangle (1,1);
+    }[scale=.7]
+    &&
+    \tau_{\alpha,\beta_1,\beta_2}(\liee)
+    &=&
+    0
+  \end{IEEEeqnarray*}
+  Extending this definition by the Leibniz rule defines for each marked web $W^{\greenmarking}$ a degree-preserving linear map
+  \[\tau_{W^{\greenmarking}}\colon\fg\to\End_{\fg\foam_d^{\text{pre-}\greenmarking}}(W^{\greenmarking}).\]
+\end{definition}
+
+Note that $\tau_{W^{\greenmarking}}(h_i)=\epsilon_{W^{\greenmarking}}(h_i)\id_W$.
+
+\begin{remark}
+  \label{rem:twist-foam-front-back-composition}
+  In the definition above, ``extending by the Leibniz rule'' should be understood both with respect to the horizontal composition and with respect to the front-back composition (see \cref{rem:monoidal-2-categorical-structure}).
+  Below we sometimes use 2-categorical statements, although we should really be using monoidal 2-categorical statements, and take the front-back composition into account.
+  % We shall refer to this remark when encountering such caveat.
+\end{remark}
+
+
+\begin{remark}
+  \label{rem:notation_bracket_twist}
+  Only the action of $\lief$ depends on the position of the dot. For that reason, we shall use the notation
+  \begin{gather*}
+    \tikzpic{
+      \draw[web1] (-1,0) to (1,0);
+      \node[green_mark] (B) at (0,0){};
+      \node[below={-3pt} of B] {\scriptsize $(\alpha,\beta_1,\beta_2)$};
+    }[scale=.7][(0,0)]
+    =
+    \tikzpic{
+      \draw[web1] (-1,0) to (1,0);
+      \node[green_mark] (B) at (0,0){};
+      \node[below={-3pt} of B] {\scriptsize $\alpha$};
+    }[scale=.7][(0,0)]
+    \langle \beta_1,\beta_2 \rangle.
+  \end{gather*}
+  In particular, marking a green dot with a single scalar $\alpha$ is a notation for marking it with the triple $(\alpha,0,0)$, and the notation $W\langle \beta_1,\beta_2 \rangle$ means ``the web $W$ with an additional marking $(0,\beta_1,\beta_2)$ anywhere''. See the example above.
+\end{remark}
+
+Note that $\tau_{W^{\greenmarking}}(f)$ is a sum over the identity foam with a single dot.
+We write $\epsilon_{W^{\greenmarking}}(f)$ the sum over all the scalars in front of these dotted identities.
+
+\begin{lemma}
+  \label{lem:family_of_twists_foam}
+  The family $\tau$ given in \cref{defn:twist_foam} is a family of twists in the sense of \cref{defn:family_of_twists}:
+  \begin{enumerate}[(i)]
+    \item in the graded case, for any $\grgl_2^{\leq}$-action defined in \cref{cor:generic_action_on_graded_foam};
+    \item in the super case, for any $\gloo$-action defined in \cref{cor:generic_action_on_super_foam}, provided that $\epsilon_{W^{\greenmarking}}(f)=\epsilon_{W^{\greenmarking}}(h_1)+\epsilon_{W^{\greenmarking}}(h_2)$.
+  \end{enumerate}
+\end{lemma}
+
+\begin{proof}
+  It is clear that $\tau$ verifies the Leibniz rule and has a graded-commutative image.
+  Thanks to \cref{rem:notation_bracket_twist}, we can redistribute twists with respect to $h_1$ and $h_2$, so that if the condition is verified, we may assume it is verified at the level of each twist.
+  Following \cref{rem:twist_only_check_on_generators} (bearing \cref{rem:twist-foam-front-back-composition} in mind), it suffices to check flatness locally, that is, a single green marking $\omega=(\alpha,\beta_1,\beta_2)$.
+  In the graded case, flatness holds in fact for any $\sff_{\varf}$ and $\sfh_{\delh,\varh}$ defined in \cref{lem:generic_derivations_on_graded_foam}, using \cref{lem:commutator_graded_case} (here we write $\epsilon(\sfh_{\delh,\varh})=\beta$ and $\epsilon(\sfh_{\delh,\varh}')=\beta'$):
+  \begin{IEEEeqnarray*}{rCl}
+    \IEEEeqnarraymulticol{3}{l}{
+      \sfh_{\delh,\varh}\cdot \tau(\sff_{\varf})-\bilfoam(\sfh_{\delh,\varh},\sff_{\varf})\sff_{\varf}\cdot\tau(\sfh_{\delh,\varh})
+    }
+    \\
+    \mspace{80mu}
+    &=&
+    \sfh_{\delh,\varh}(\alpha\;\tikzpic{\fdot}) - \sff_{\varf}(\beta\id)
+    = -\delh\alpha\;\tikzpic{\fdot}
+    = \tau(-\delh\sff_{\varf})
+    = \tau([\sfh_{\delh,\varh},\sff_{\varf}])
+    \\[1ex]
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \IEEEeqnarraymulticol{3}{l}{
+      \sfh_{\delh,\varh}\cdot \tau(\sfh_{\delh',\varh'})-\bilfoam(\sfh_{\delh,\varh},\sfh_{\delh',\varh'})\sfh_{\delh',\varh'}\cdot\tau(\sfh_{\delh,\varh})
+    }
+    \\
+    &=& \sfh_{\delh,\varh}(\beta')-\sfh_{\delh',\varh'}(\beta\id)=0
+    = \tau([\sfh_{\delh,\varh},\sfh_{\delh',\varh'}])
+    \\[1ex]
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \IEEEeqnarraymulticol{3}{l}{
+      \sff_{\varf}\cdot \tau(\sff_{\varf'})-\bilfoam(\sff_{\varf},\sff_{\varf'})\sff_{\varf'}\cdot\tau(\sff_{\varf})
+    }
+    \\
+    &=&
+    \sff_{\varf}(\alpha'\;\tikzpic{\fdot})-XY\sff_{\varf'}(\alpha\;\tikzpic{\fdot})=0
+    = \tau([\sff_{\varf},\sff_{\varf'}])
+  \end{IEEEeqnarray*}
+  We do a similar computation in the super case, using \cref{lem:commutator_super_case}:
+  \begin{IEEEeqnarray*}{rCl}
+    \IEEEeqnarraymulticol{3}{l}{
+      \sfh_{\delh,\varh}\cdot \tau(\sfe_{\vare})-\bilfoam(\sfh_{\delh,\varh},\sfe_{\vare})\sfe_{\vare}\cdot\tau(\sfh_{\delh,\varh})
+    }
+    \\
+    \mspace{80mu}
+    &=&
+    - \sfe_{\vare}(\beta\id) = 0 = \tau(\delh\sfe_{\vare})
+    = \tau([\sfh_{\delh,\varh},\sfe_{\vare}])
+    \\[1ex]
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \IEEEeqnarraymulticol{3}{l}{
+      \sfe_{\vare}\cdot \tau(\sff_{\varf})-\bilfoam(\sfe_{\vare},\sff_{\varf})\sff_{\varf}\cdot\tau(\sfe_{\vare})
+    }
+    \\
+    &=&
+    \alpha\normafoam{\vare}{(-1)^i\vare}
+    \overset{?}{=}
+    \beta\id
+    = \tau(\sfh_{0,(-\normafoam{}{(-1)^i}\vare\varf^i)_i})
+    =
+    \tau([\sfe_{\vare},\sff_{\varf}])
+    \\[1ex]
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \IEEEeqnarraymulticol{3}{l}{
+      \sfe_{\vare}\cdot \tau(\sfe_{\vare'})-\bilfoam(\sfe_{\vare},\sfe_{\vare'})\sfe_{\vare'}\cdot\tau(\sfe_{\vare})
+    }
+    \\
+    &=& 0
+    = \tau([\sfe_{\vare},\sfe_{\vare'}])
+  \end{IEEEeqnarray*}
+  The only equality that does not hold formally is the condition coming from the commutation between $\sff$ and $\sfe$, as it requires
+  $\alpha
+  =
+  \beta$, where here $\beta=\beta_1+\beta_2$.
+\end{proof}
+
+\begin{definition}
+  \label{defn:twisted_foams}
+  We denote $\fg\markedfoam[d]\coloneqq\left(\fg\foam_d^{\text{pre-}\greenmarking}\right)^\tau$, where $\tau$ is the family of twists defined in \cref{defn:twist_foam}.
+\end{definition}
+
+
+We conclude this subsection by gathering some properties of twists.
+
+\begin{lemma}[$\lieh$-equivariance]
+  \label{lem:h-equivariance}
+  Suppose that $G\in \Hom_{\markedgfoam[d]} (W_s^{\greenmarking}, W_t^{\greenmarking}) $ is homogeneous of degree $\deg(G)=(a,b)$. Then the following statements are true:
+  \begin{enumerate}[(i)]
+    \item $G$ is $h_1$-equivariant if and only if $\tau_{W_t^{\greenmarking}}(h_2)-b-\tau_{W_s^{\greenmarking}}(h_2)=0$;
+    \item $G$ is $h_2$-equivariant if and only if $\tau_{W_t^{\greenmarking}}(h_2)+a-\tau_{W_s^{\greenmarking}}(h_2)=0$.
+  \end{enumerate}
+  In particular, if $G\colon W_s^{\greenmarking}\to W_t^{\greenmarking}$ is $\fg$-equivariant, then $G\colon W_s^{\greenmarking}\langle a,b\rangle\to W_t^{\greenmarking}\langle a,b\rangle$ is $\fg$-equivariant.
+\end{lemma}
+
+\begin{lemma}[$\lief$-equivariance]
+  \label{lem:f-equivariance}
+  Let $W_s^{\greenmarking}$ and $W_t^{\greenmarking}$ be two marked webs with the same underlying web $W$.
+  Let $F\colon W_s^{\greenmarking}\to W_t^{\greenmarking}$ be a linear combination where each term is $\id_W$ decorated with a single dot.
+  Let $G$ and $H$ be linear combinations of $\lief$-equivariant foams, suitably composable with $F$.
+  If
+  \[G\circ\tau_{W_s^{\greenmarking}}(f)\circ H=G\circ\tau_{W_t^{\greenmarking}}(f)\circ H,\]
+  then $G\circ F\circ H$ is $f$-equivariant.
+  In particular, if $\tau_{W_s^{\greenmarking}}(f)=\tau_{W_t^{\greenmarking}}(f)$, then $F$ is $\lief$-equivariant.
+\end{lemma}
+
+In some sense, the condition states that ``globally'', i.e.\ when dots are allowed to move in $G\circ F\circ H$, the marked webs $W_s^{\greenmarking}$ and $W_t^{\greenmarking}$ have identical $f$-markings. In practice, one can move $f$-markings along connected components of the underlying unmarked web $W$, and across components if they happen to be connected in $G\circ F\circ H$.
+
+\begin{lemma}[$\liee$-equivariance]
+  \label{lem:e-equivariance}
+  Let $W_s^{\greenmarking}$ and $W_t^{\greenmarking}$ be two marked webs with the same underlying web $W$.
+  Let $F\colon W_s^{\greenmarking}\to W_t^{\greenmarking}$ be a linear combination where each term is $\id_W$ decorated with a single dot.
+  Write $\epsilon(F)$ for the sum of coefficients in $F$.
+  If
+  \[\epsilon(F)=0,\]
+  then $F$ is $\liee$-equivariant.
+\end{lemma}
+
+Below we sometimes implicitly assume that $2$ is invertible in the ground ring.
+
+\begin{notation}
+We use the following notation:
+\begin{equation*}
+  \tikzpic{\draw (0,0) to (1,0);\node[round_mark] (A) at (.5,0) {};}
+  \quad\coloneqq\quad
+  \tikzpic{
+    \coordinate (base) at (.5,-.5ex);
+    \draw (0,0) to (1,0);\node[green_mark] (A) at (.5,0) {};
+    \node[below={-3pt} of A] {\scriptsize $(-1,-\frac{1}{2},-\frac{1}{2})$};
+  }[baseline=(base)]
+\end{equation*}
+\end{notation}
+
+\begin{lemma}
+  \label{lem:twist_dot_slide_cup_cap}
+  \def\webscl{.6}
+  The following are $\fg$-equivariant:
+  \begin{gather*}
+    \tikzpic{\websMarkedT[0][0][$\alpha$]}%
+      [scale=\webscl][(.5,.5*\webscl)]
+    =
+    \tikzpic{\websMarkedB[0][0][$\alpha$]}%
+      [scale=\webscl][(.5,.5*\webscl)]
+    \qquad\an\qquad
+    \tikzpic{\webmMarkedT[0][0][$\alpha$]}%
+      [scale=\webscl][(.5,.5*\webscl)]
+    =
+    \tikzpic{\webmMarkedB[0][0][$\alpha$]}%
+      [scale=\webscl][(.5,.5*\webscl)]
+  \end{gather*}
+\end{lemma}
+
+\begin{lemma}
+\label{lem:crossing_complex_equivariant}
+  \def\webscl{.6}
+  The following are $\fg$-equivariant:
+  \begin{IEEEeqnarray*}{CcC}
+    \tikzpic{\webid}[scale=\webscl][(.5,.5*\webscl)]
+    %
+    \quad
+    \xrightarrow{\tikzpic{\fzip}[scale=.6]}
+    \quad
+    %
+    \tikzpic{\websRoundMarkedB[0][0][]\webm[1][0]}%
+      [scale=\webscl][(.5,.5*\webscl)]
+    \;\langle \frac{1}{2},-\frac{1}{2}\rangle
+    %%%%%%%%%%%%%%%%%%%%
+    &\mspace{80mu}&
+    %%%%%%%%%%%%%%%%%%%%
+    \tikzpic{\websRoundMarkedB[0][0][]\webm[1][0]}%
+      [scale=\webscl][(.5,.5*\webscl)]
+    \;\langle -\frac{1}{2},\frac{1}{2}\rangle
+    %
+    \quad
+    \xrightarrow{\tikzpic{\funzip}[scale=.6]}
+    \quad
+    %
+    \tikzpic{\webid}[scale=\webscl][(.5,.5*\webscl)]
+    %%%%%%%%%%%%%%%%%%%%
+    \\[2ex]
+    %%%%%%%%%%%%%%%%%%%%
+    \tikzpic{\draw[web2] (-1,0) to (1,0);}%
+      [scale=\webscl][(.5,0*\webscl)]
+    %
+    \quad
+    \xrightarrow{\tikzpic{\fcup}[scale=.6]}
+    \quad
+    %
+    \tikzpic{\webmRoundMarkedB[0][0][]\webs[1][0]}%
+      [scale=\webscl][(.5,.5*\webscl)]
+    \;\langle -\frac{1}{2},\frac{1}{2}\rangle
+    %%%%%%%%%%%%%%%%%%%%
+    &\mspace{80mu}&
+    %%%%%%%%%%%%%%%%%%%%
+    \tikzpic{\webmRoundMarkedB[0][0][]\webs[1][0]}%
+      [scale=\webscl][(.5,.5*\webscl)]
+    \;\langle \frac{1}{2},-\frac{1}{2}\rangle
+    %
+    \quad
+    \xrightarrow{\tikzpic{\fcap}[scale=.6]}
+    \quad
+    %
+    \tikzpic{\draw[web2] (-1,0) to (1,0);}%
+      [scale=\webscl][(.5,0*\webscl)]
+  \end{IEEEeqnarray*}
+\end{lemma}
+ 
+\begin{lemma}
+  \label{lem:web_defining_relations_equivariance}
+  \def\webscl{.6}
+  The following isomorphisms are $\fg$-equivariant:
+  \begin{gather*}
+    \stackanchor{W_{i,s_1}W_{j,s_2}\cong^\fg W_{j,s_2}W_{i,s_1}}{(\text{for all }s_1,s_2\in\{-,+\}\an \abs{i-j}>1)}
+    \\[2ex]
+    \tikzpic{
+      \websRoundMarkedB[1][1]\webm[2][1]
+      \webmRoundMarkedB\webs[3][0]
+      \draw[web1] (0,2) to (1,2);\draw[web1] (3,2) to (4,2);
+      \draw[web1] (1,0) to (3,0);
+    }[scale=.4][(2,1.25*.4)]
+    \cong^\fg
+    \tikzpic{
+      \coordinate (C) at (2,1);
+      \draw[web1] (0,2) to (4,2);
+      \draw[web2] (0,.5) to (4,.5);
+    }[scale=.4][(2,1.25*.4)]
+    \quad\an\quad
+    \tikzpic{
+      \webmRoundMarkedB[0][1]\webs[3][1]
+      \websRoundMarkedB[1][0]\webm[2][0]
+      \draw[web1] (0,0) to (1,0);\draw[web1] (3,0) to (4,0);
+      \draw[web1] (1,2) to (3,2);
+    }[scale=.4][(2,.75*.4)]
+    \cong^\fg
+    \tikzpic{
+      \draw[web1] (0,0) to (4,0);
+      \draw[web2] (0,1.5) to (4,1.5);
+    }[scale=.4][(2,.75*.4)]
+  \end{gather*}
+  Furthermore, the following is a $\fg$-equivariant split short exact sequence:
+  \begin{gather*}
+    \tikzpic{
+      \draw[web2] (0,0) to (2,0);
+    }[scale=\webscl]
+    \;\langle \frac{1}{2},-\frac{1}{2}\rangle
+    %
+    \quad
+    \xrightarrow{\tikzpic{\fcup}[scale=.6]}
+    \quad
+    %
+    \tikzpic{\webmRoundMarkedB[0][0][]\webs[1][0]}%
+      [scale=\webscl][(0,.5*\webscl)]
+    %
+    \quad
+    \xrightarrow{\tikzpic{\fcap}[scale=.6]}
+    \quad
+    %
+    \tikzpic{
+      \draw[web2] (0,0) to (2,0);
+    }[scale=\webscl]
+    \;\langle -\frac{1}{2},\frac{1}{2}\rangle
+  \end{gather*}
+\end{lemma}

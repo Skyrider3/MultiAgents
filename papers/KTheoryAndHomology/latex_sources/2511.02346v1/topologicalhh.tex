@@ -1,0 +1,270 @@
+\section{Topological Hochschild homology}
+\label{chap:topologicalhh}
+
+In this section, we will define topological Hochschild homology and some of the tools, mostly spectral sequences, that we will later use in our computation.
+
+The spectral sequence that appears with the first definition of Topological Hochschild homology by Bökstedt in \cite{bokstedtthhzzp} is of the following type:
+\begin{equation}
+  HH_*(H_*(R;\F_p)) \Rightarrow H_*(\THH(R);\F_p)
+\end{equation}
+where $R$ is a ring spectrum and $HH_*$ is the Hochschild homology. This was used to compute $\THH_*(\Z_p)$ and $\THH_*(\F_p)$ in \cite{bokstedtthhzzp}.
+
+The existence of an algebra structure on $\THH(R)$ allows the construction of various Bockstein spectral sequences associated to the multiplication by some element of the algebra; the exact couple of a Bockstein spectral sequence is obtained from the cofiber sequence of the multiplication by the chosen element. Although multiple Bockstein spectral sequences can be constructed from an algebra, they must all compute the same thing. That fact yields a computation of $\THH_*(\ell)$ in \cite{angeltveit2010topological} by making the Bockstein spectral sequences for multiplication by $p$ and $u$ compete.
+
+The spectral sequence of Brun compute $\THH$ of a ring $A$ with coefficients in an $A$-algebra $B$ from $\THH$ of $B$ with coefficients in a generalized $\operatorname{Tor}$ group in the sense of \cite{elmendorf1997rings}. In \cite{brun2000topological}, that spectral sequence is introduced to compute $\THH_*(\Z/p^n)$. Modern categories of spectra allow us to express this spectral sequence as an Atiyah-Hirzebruch spectral sequence, as done in \cite{honing2020brun} to compute $V(1)_*\THH(ku)$ and $V(0)_*\THH(K(\F_q);\Z_p)$. Switching the ring with the coefficients often yield a smaller object to compute; moreover, this can be repeated multiple times.
+
+We work in the category $\M_R$ of $R$-modules of \cite{elmendorf1997rings}, from which most of our definitions will come.
+
+\subsection{Simplicial spectra and their realization}
+
+Let $\Delta$ be the simplex category, whose object are the ordered sets of integers $[n]=\{0,\dots,n\}$ and morphisms are the order preserving maps.
+
+\begin{definition}
+  A simplicial $R$-module is a functor $F:\Delta^{op}\rightarrow \M_R$.
+
+  For such a functor, its geometric realization, denoted $|F|$, is the coend
+  \begin{equation}
+ \int^\Delta F\wedge (\Delta_\bullet)_+ 
+\end{equation}
+that is the coend of the functor $\Delta^{op}\times \Delta\rightarrow \M_R$ that sends $(n,m)$ to $F(n)\wedge (\Delta_m)_+$, where $\Delta_\bullet$ is the topological simplex, viewed as a functor $\Delta\rightarrow Top$.
+
+Similarly, a simplicial based space is a functor $F:\Delta^{op}\rightarrow Top_*$, and its geometric realization $|F|$ is the coend of the functor $F\wedge (\Delta_\bullet)_+$.
+\end{definition}
+
+The geometric realization, as a coend, is in fact a coequalizer, and thus will commute with colimits. Other useful properties of the geometric realization are:
+\begin{proposition}[X.1.3 of \cite{elmendorf1997rings}]
+  \begin{itemize}
+  \item For a simplicial based space $X_\bullet$, there is a natural isomorphism
+    \begin{equation}
+      \Sigma^\infty |X_\bullet| \cong |\Sigma^\infty X_\bullet|.
+    \end{equation}
+  \item For a simplicial based space $X_\bullet$ and a simplicial spectrum $Y_\bullet$, a simplicial $R$-module $Y_\bullet\wedge X_\bullet$ can be obtained by composing the diagonal $\Delta^{op}\rightarrow \Delta^{op}\times\Delta^{op}$ with the functor $\Delta^{op}\times\Delta^{op}\rightarrow \M_R$ sending $(n,\,m)$ to $Y_n\wedge X_m$, and there is a natural isomorphism
+    \begin{equation}
+      |Y_\bullet \wedge X_\bullet| \cong |Y_\bullet| \wedge |X_\bullet| .
+    \end{equation}
+  \item For two simplicial spectra $Y_\bullet$ and $Z_\bullet$, again using the diagonal structure, there is a natural isomorphism
+    \begin{equation}
+      |Y_\bullet \wedge Z_\bullet| \cong |Y_\bullet| \wedge |Z_\bullet| .
+    \end{equation}  
+  \end{itemize}
+\end{proposition}
+
+A useful example of simplicial $R$-module is given by the bar construction: 
+\begin{definition}[IV.7.2 of \cite{elmendorf1997rings}]
+  For an $S$-algebra $R$, a right $R$-module $M$ and a left $R$-module $N$, the bar construction of $(M,R,N)$ is the simplicial $S$-module $B_\bullet(M,R,N)$ whose $n$-th simplicial level is
+  \begin{equation}
+ B_n(M,R,N) = M\wedge R^{\wedge n} \wedge N 
+\end{equation}
+  whose $i$-th face map is multiplication on the $i$-th $\wedge$, and whose $i$-th degeneracy map is given by adding an $R$ between the $i$-th $R$ and the $(i+1)$-th $R$ via the unit $S\rightarrow R$.
+
+  Denote by $B(M,R,N)$ the realization $|B_\bullet(M,R,N)|$.
+\end{definition}
+
+\begin{proposition}[IV.7.5 of \cite{elmendorf1997rings}]
+  For $M$ a cell $R$-module and $N$ any $R$-module, there is a natural weak equivalence
+  \begin{equation}
+ B(M,R,N) \simeq M\wedge_R N .
+\end{equation}
+\end{proposition}
+
+If $R$ is commutative, $A$ is an $R$-algebra and $M$ and $N$ are right and left $A$-modules, one can also form the bar construction $B^R_\bullet(M,A,N)$ by replacing all the smash products by smash products over $R$. In that case:
+\begin{proposition}[X.1.2 and XII.1.2 of \cite{elmendorf1997rings}]
+  There is a natural weak equivalence $B^R(A,A,N)\simeq N$.
+\end{proposition}
+
+The next section will also define topological Hochschild homology as a simplicial spectrum.
+
+
+\subsection{Simplicial definition of THH and consequences}
+
+Let $R$ be a cofibrant commutative $S$-algebra; $A$ be a cofibrant $R$-algebra; $M$ be an $(A,A)$-bimodule. Let
+\begin{equation}
+ \phi:A\wedge_R A\rightarrow A \mbox{ and } \eta:R\rightarrow A 
+\end{equation}
+be the multiplication and unit of $A$. Let
+\begin{equation}
+ \xi_\ell:A\wedge_R M\rightarrow M \mbox{ and } \xi_r:M\wedge_R A\rightarrow M 
+\end{equation}
+be the left and right action of $A$ on $M$. Let
+\begin{equation}
+ \tau:M\wedge_R A^{\wedge n} \wedge_R A \rightarrow A\wedge_R M \wedge_R A^{\wedge n} 
+\end{equation}
+be the map cyclically permuting the factors. Here and after all the smash products are over $R$.
+
+\begin{definition}[IX.2.1 of \cite{elmendorf1997rings}]
+  The topological Hochschild homology of $A$ with coefficients in $M$ is the realization, denoted $\THH^R(A;M)$, of the simplicial $R$-module $\THH^R(A;M)_\bullet$ whose $n$-th simplicial level is given by
+  \begin{equation}
+ \THH^R(A;M)_n = M\wedge_R A^{\wedge n} 
+\end{equation}
+  with $i$-th face map given by $\xi_r\wedge id^{n-1}$ if $i=0$, $id\wedge id^{i-1} \wedge \phi \wedge id^{n-i-1}$ if $0<i<n$, $(\xi_\ell \wedge id^{n-1})\circ \tau$ if $i=n$; and with $i$-th degeneracy map given by $id\wedge id^i \wedge \eta \wedge id^{n-1}$.
+\end{definition}
+
+This construction is also called the cyclic bar construction.
+
+When working over $R=S$, we will drop the $^S$ from the notation. When $M=A$, we will write $\THH^R(A)=\THH^R(A;A)$. When $A$ is commutative, topological Hochschild homology has the following structure:
+\begin{proposition}[IX.2.2 of \cite{elmendorf1997rings}]
+  Let $A$ be a commutative $R$-algebra. Then $\THH^R(A)$ is naturally a commutative $A$-algebra with unit map the inclusion of the 0-th simplicial level $A\rightarrow \THH^R(A)$; $\THH^R(A;M)$ is a $\THH^R(A)$-module.
+\end{proposition}
+
+From the cited properties of the geometric realization with respect to the smash product, and by seeing $M$ as a constant simplicial spectrum, one can see that:
+\begin{proposition}
+  When $A$ is commutative and $M$ is a symmetric $(A,A)$-bimodule, there is a natural isomorphism of simplicial $R$-modules
+  \begin{equation}
+ M \wedge_A \THH^R(A)_\bullet \cong \THH^R(A;M)_\bullet 
+\end{equation}
+  and thus a natural isomorphism of $R$-modules
+  \begin{equation}
+ M \wedge_A \THH^R(A) \cong \THH^R(A;M) .
+\end{equation}
+\end{proposition}
+We will use this mostly with the fact that for the Smith-Toda complex $V(0)$ (the modulo $p$ sphere), we have $V(0)\wedge H\Z \cong V(0)\wedge H\Z_p \cong H\F_p$, so
+\begin{equation}
+  V(0)\wedge\THH(A;H\Z) \cong V(0)\wedge\THH(A;H\Z_p)\cong \THH(A;H\F_p).
+\end{equation}
+
+The simplicial construction of THH can also be linked with the bar construction. For an $R$-algebra $A$, let $A^e= A\wedge_R A^{op}$ be the enveloping algebra of $A$, where $A^{op}$ is the $R$-algebra obtained by composing the multiplication $A\wedge_R A \rightarrow A$ of $A$ with the map permuting the two factors $A\wedge A \rightarrow A\wedge A$.
+\begin{proposition}[IX.2.4 and IX.2.5 of \cite{elmendorf1997rings}]\label{prop:thhandbar}
+  There is a natural isomorphism
+  \begin{equation}
+ \THH^R(A;M) \cong M\wedge_{A^e} B^R(A,A,A) 
+\end{equation}
+  that gives a natural weak equivalence
+  \begin{equation}
+ \THH^R(A;M) \simeq M \wedge_{A^e} A 
+\end{equation}
+  when $M$ is a cell $A^e$-module.
+\end{proposition}
+\begin{proof}
+  On the $n$-th simplicial level, by seeing $M$ as a constant simplicial spectrum, here are natural isomorphism
+  \begin{equation}
+ M \wedge_R A^{\wedge n} \cong M \wedge_{A^e} (A^e \wedge_R A^{\wedge n}) \cong M \wedge_{A^e} (A \wedge_R A^{\wedge n} \wedge_R A) 
+\end{equation}
+  and the simplicial maps can be seen to be that of $B^R_\bullet(A,A,A)$ on the right. The properties of the geometric realization yield the result.
+
+  The weak equivalence comes from proposition III.3.8 of \cite{elmendorf1997rings} and the weak equivalence $B^R(A,A,A) \simeq A$.
+\end{proof}
+
+Thus, we could have defined $\THH^R(A;M)$ as the derived smash product $M\wedge^L_{A^e} A$, which is the second definition proposed in \cite{elmendorf1997rings}.
+
+
+\subsection{Spectral sequences computing THH}
+
+The original result of Brun was the following:
+\begin{theorem}[Brun]
+  When $R\rightarrow A$ is a ring homomorphism between (discrete) commutative rings, there is a multiplicative spectral sequence:
+  \begin{equation}
+ E^2_{n,m} = \THH_n(HA;H\operatorname{Tor}^R_m(A,A)) \Rightarrow \THH(HR;HA) .
+\end{equation}
+\end{theorem}
+
+That result was generalized by Höning in \cite{honing2020brun}
+\begin{theorem}[1.1 of \cite{honing2020brun}]
+  Let $A$ be a cofibrant commutative $S$-algebra and $B$ be a connective cofibrant commutative $A$-algebra. Let $E$ be an $S$-ring spectrum. Then there is a multiplicative spectral sequence of the form
+  \begin{equation}
+    E^2_{n,m} = \THH_n(B;HE^S_m(B\wedge_A B)) \Rightarrow E^S_{n+m}(\THH(A;B))
+  \end{equation}
+  with differentials
+  \begin{equation}
+    d^r_{_n,m}:E^r_{n,m}\rightarrow E^r_{n-r, m+r - 1}.
+  \end{equation}
+\end{theorem}
+
+Topological Hochschild homology can also be computed using a Künneth spectral sequence.
+\begin{proposition}[Lemma 2.2 and corollary 2.3 of \cite{angeltveit2010topological}] \label{prop:simplebockstedtss}
+  Suppose $R\rightarrow Q$ is a map of $S$-algebras and $M$ is a $(Q,R)$-bimodule, given an $(R,R)$-bimodule structure by pullback. Then there is a weak equivalence
+  \begin{equation}
+ \THH(R;M) \simeq M\wedge^L_{Q\wedge R^{op}} Q 
+\end{equation}
+  and thus a Künneth spectral sequence
+  \begin{equation}
+ \operatorname{Tor}_{*,*}^{Q_*R^{op}}(M_*,Q_*) \Rightarrow \THH_*(R;M) .
+\end{equation}
+\end{proposition}
+
+The last spectral sequence we will use in our computation is the Bockstein spectral sequence. We will now specify our definition in the context of topological Hochschild homology.
+
+Assume that $A$ is a commutative $R$-algebra, that $M$ is a connective, symmetric $(A,A)$-bimodule and that there is a map of $(A,A)$-bimodule $m:\Sigma^n M \rightarrow M$ for some $n\geq 0$. Let $M/m$ be the cofiber
+\begin{equation}
+  \begin{tikzcd}
+    \Sigma^n M \rar["m"] & M \rar & M/m.
+  \end{tikzcd}
+\end{equation}
+We can define an exact couple from the tower of spectra with cofibers
+\begin{equation}
+  \begin{tikzcd}
+    \dots \rar["m"] & \Sigma^{2n} M \rar["m"] \dar & \Sigma^n M \rar["m"] \dar & M \dar \\
+    & \Sigma^{2n}M/m & \Sigma^n M/m & M/m
+  \end{tikzcd}
+\end{equation}
+after smashing it with $\wedge_A\THH(A)$.
+\begin{proposition}[Bockstein spectral sequence]
+  If $A$ and $M$ are connective, the spectral sequence 
+  \begin{equation}
+    \THH_*(A;M/m)\botimes P(m) \Rightarrow \THH_*(A;M).
+  \end{equation}
+  is strongly convergent.
+\end{proposition}
+\begin{proof}
+  Here we use a result we will prove later in \cref{chap:truncated}. When $A$ is connective, so is $\THH(A)$; this can be seen from the structure of the Künneth spectral sequence computing $\THH_*(A)$. Our tower of spectra is
+  \begin{equation}
+    \begin{tikzcd}
+      \dots \rar["m"] & \Sigma^n \THH(A;M) \rar["m"] \dar & \THH(A;M) \dar \\
+      & \Sigma^n \THH(A;M/m) & \THH(A;M/m)
+    \end{tikzcd}
+  \end{equation}
+  and $\lim_{k\in\Z}(\Sigma^{kn}\THH(A;M))_* = 0$ because of the suspension. Thus by \cref{prop:convergencessnicecase} the spectral sequence is strongly convergent.
+\end{proof}
+Here, the map $m$ need not be a multiplication; the $P(m)$ represent the different copies of $\THH_*(A;M/m)$ of the first page of the spectral sequence. 
+
+\subsection{Smashing localizations and THH}
+
+Let $R$ be a cofibrant commutative $S$-algebra; $A$ be a cofibrant $R$-algebra and $M$ be an $(A,A)$-bimodule. Let $E$ be a cell $R$-module. We will study the Bousfield localization at $E$, whose definition and useful properties can be found in chapter VIII of \cite{elmendorf1997rings}.  We suppose that the Bousfield localization at $E$ of $R$-module is smashing, that is the localization of any $R$-module $X$, denoted $X_E$, can be realized as $R_E \wedge_R X$ where $R_E$ is the Bousfield localization of $R$ at $E$. Precisely, we can construct $R_E$ to be an $R$-algebra and the localization map $\lambda: R\rightarrow R_E$ to be an algebra map. Then the localization map of $A$
+\begin{equation}
+  \begin{tikzcd}
+    \lambda: A \rar["\simeq"] & R\wedge_R A \rar["\lambda\wedge id"] & R_E\wedge_R A
+  \end{tikzcd}
+\end{equation}
+can be seen to be an $R$-algebra map, where the multiplication on $R_E\wedge_R A$ is
+\begin{equation}
+  \begin{tikzcd}
+    R_E\wedge_R A\wedge_R R_E\wedge_R A \rar["id\wedge\tau\wedge id"] & R_E\wedge_R R_E \wedge_R A\wedge_R A \rar["\mu\wedge\mu"] & R_E \wedge_R A
+  \end{tikzcd}
+\end{equation}
+where $\tau$ switch the two factors and $\mu$ are the multiplications. Similarly, $B_E$ can be given both an $(A,A)$-bimodule such that $\lambda$ is an $(A,A)$-bimodule map, and an $(A_E,A_E)$-bimodule structure.
+
+
+\begin{proposition}\label{prop:localizationthh}
+  If the condition above are meet, then there is an isomorphism
+  \begin{equation}
+ \THH^R(A;B)_E \cong \THH^R(A;B_E) 
+\end{equation}
+  and a weak equivalence
+  \begin{equation}
+ \THH^R(A;B_E) \simeq \THH^R(A_E;B_E) .
+\end{equation}
+\end{proposition}
+\begin{proof}
+  $\THH^R(A;B)_E$ can be seen to be the realization of the simplicial object $R_E\wedge_R \THH^R(A;B)_\bullet$, which is also $\THH^R(A;B_E)_\bullet$. This yields the isomorphism.
+
+  The map $\lambda: R_E \rightarrow R_E\wedge_R R_E$ as defined above is an $E$-equivalence between $E$-local $R$-modules, and thus a weak equivalence.  Define a simplicial map
+  \begin{equation}
+ \THH^R(A;B_E)_\bullet \rightarrow \THH^R(A_E;B_E)_\bullet
+\end{equation}
+  such that on the $n$-th simplicial level we have:
+  \begin{equation}
+    \begin{tikzcd}
+      B_E\wedge_R A^{\wedge n} = R_E\wedge_R B \wedge_R A^{\wedge n} \dar["\simeq"] \\
+      R_E\wedge_R R^{\wedge n}\wedge_R B \wedge_R A^{\wedge n} \dar["id\wedge\lambda^n\wedge id"] \\
+      R_E\wedge_R R_E^{\wedge n}\wedge_R B \wedge_R A^{\wedge n} \dar["\tau"] \\
+      R_E\wedge_R B \wedge_R (R_E\wedge_R A)^{\wedge n}=B_E\wedge_R A_E^{\wedge n} .
+    \end{tikzcd}
+  \end{equation}
+  Each of these maps is a weak equivalence, so by taking a suitable cellular replacement and by theorem X.1.2 of \cite{elmendorf1997rings}, we get a weak equivalence between the realizations.
+\end{proof}
+
+
+
+%
+%
+%
+%

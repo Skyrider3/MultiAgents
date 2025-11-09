@@ -1,0 +1,180 @@
+
+\pgfdeclareradialshading{fadeoutdisk}{\pgfpointorigin}{
+  color(0)=(pgftransparent!100);
+  color(22)=(pgftransparent!100);
+  color(24)=(pgftransparent!0);
+  color(30)=(pgftransparent!0)%
+}
+\pgfdeclarefading{fade out disk}{\pgfuseshading{fadeoutdisk}}
+
+\newcommand{\switch}[3]{
+\begin{tikzpicture}[scale=1,very thick]
+% \filldraw [lightgray] (0,0) circle (1.41);
+\draw [#1] (-1.41, 0) to (0, 0);
+\draw [#2] (0, 0) to [in=240,out=0] (1, 1);
+\draw [#3] (0, 0) to [in=120,out=0] (1, -1);
+
+\fill[white,path fading=fade out disk] (0,0) circle (1.45);
+\end{tikzpicture}
+}
+
+\newcommand{\splitsource}[4]{
+\begin{tikzpicture}[scale=1.5,thick,baseline={([yshift=-.8ex]current bounding box.center)}]
+
+\draw (0, 0) to node {\outline{$e$}} (0.5, 0);
+\draw [#1] (0.5, 0) to [out=0,in=240] node [pos=0.6] {\outline{$a$}} (1, 0.5);
+\draw [#2] (-0.5, 0.5) to [out=-60,in=180] node [pos=0.4] {\outline{$b$}} (0, 0);
+\draw [#3] (-0.5, -0.5) to [out=60,in=180] node [pos=0.4]{\outline{$c$}} (0, 0);
+\draw [#4] (0.5, 0) to [out=0,in=120] node [pos=0.6] {\outline{$d$}} (1, -0.5);
+
+\end{tikzpicture}
+}
+
+\newcommand{\splittarget}[8]{
+\begin{tikzpicture}[scale=1.5,thick,baseline={([yshift=-.8ex]current bounding box.center)}]
+
+\draw [#1] (-0.5, 0.5) to [out=-60,in=180] (0, 0.2);
+\draw [#2] (0, 0.2) to (0.5, 0.2);
+\draw [#3] (0.5, 0.2) to [out=0,in=240] (1, 0.5);
+\draw [#4] (-0.5, -0.5) to [out=60,in=180] (0, -0.2);
+\draw [#5] (0, -0.2) to (0.5, -0.2);
+\draw [#6] (0.5, -0.2) to [out=0,in=120] (1, -0.5);
+
+\draw [#7] (0, -0.2) to [out=0,in=180] (0.5, 0.2);
+\draw [#8] (0, 0.2) to [out=0,in=180] (0.5, -0.2);
+
+\ifthenelse{\equal{#7}{red}}{\ifthenelse{\equal{#8}{blue}}{\node [dot] at (0.25,0) {};}}{}
+
+\ifthenelse{\equal{#7}{blue}}{\ifthenelse{\equal{#8}{red}}{\node [dot] at (0.25,0) {};}}
+
+% \ifthenelse{\and{\equal{#7}{red}}{\equal{#8}{blue}}}{\node [dot] at (0.25,0) {};}{}
+
+% \ifthenelse{\and{\equal{#7}{blue}}{\equal{#8}{red}}}{\node [dot] at (0.25,0) {};}{}
+
+\end{tikzpicture}
+}
+
+\newcommand{\tikzdisk}[2]{
+\begin{tikzpicture}[scale=0.85,very thick]
+\draw [transparent] (0,0) circle (1.5);  % Bounding box.
+\tikzdiskcore{#1}{#2}
+\end{tikzpicture}
+}
+
+\newcommand{\tikzdisksplit}[6]{
+\begin{tikzpicture}[scale=1,very thick]
+\tikzdiskcore{#1}{#2}
+
+\pgfmathsetmacro{\sa}{(360 * (#3-1) / \n) - 180 + (90 * #5)}
+\pgfmathsetmacro{\ea}{(360 * (#4-1) / \n) - 180 + (90 * #6)}
+\draw [red, looseness=1] (#3) to [out=\sa,in=\ea] (#4);
+
+\ifthenelse{#5=0}{\node [dot] at (#3) {};}{}
+\ifthenelse{#6=0}{\node [dot] at (#4) {};}{}
+\end{tikzpicture}
+}
+
+\newcommand{\tikzdiskcore}[2]{
+
+\setsepchar{,}
+\readlist\angles{#1}
+\readlist\colours{#2}
+
+\pgfmathsetmacro{\n}{\listlen\angles[]}
+\pgfmathsetmacro{\nn}{\n+1}
+\pgfmathsetmacro{\nnn}{\n-1}
+
+\tikzset{B/.style={blue}}
+\tikzset{R/.style={red}}
+\tikzset{G/.style={gray, dotted}}
+
+% Make coordinates.
+\foreach \k [
+count=\i from 1,
+evaluate=\i as \ii using {ifthenelse(\i==\nn,1,\i)},
+evaluate=\ii as \a using {\angles[\ii]},
+evaluate=\k as \d using {360*\k / \n}
+] in {0,1,...,\n} {
+    \pgfmathsetmacro{\rr}{ifthenelse(\a==180,1,ifthenelse(\a==90,1.25,1.5)}
+    \coordinate (\i) at (\d:\rr);
+}
+
+
+% Make the backing disk.
+\path [draw=none, fill=none] (1)
+\foreach \k 
+[
+count=\i from 1,
+count=\j from 2,
+evaluate=\j as \jj using {ifthenelse(\j==\nn,1,\j)},
+evaluate=\i as \a using {\angles[\i]}, 
+evaluate=\jj as \aa using {\angles[\jj]},
+evaluate=\k as \d using {360*\k / \n}
+] in {0,1,...,\nnn} {
+    .. controls +({ifthenelse(\a==180,\d+90,ifthenelse(\a==90,\d+90+45,\d+90+90)}:0.25) and +({ifthenelse(\aa==180,\d-60,ifthenelse(\aa==90,\d-60-45,\d-60-90)}:0.25) .. (\j)
+};
+
+% Add arcs.
+\foreach \k 
+[
+count=\i from 1, 
+count=\j from 2,
+evaluate=\j as \jj using {ifthenelse(\j==\nn,1,\j)},
+evaluate=\i as \a using {\angles[\i]},
+evaluate=\jj as \aa using {\angles[\jj]},
+evaluate=\k as \d using {360*\k / \n}
+] in {0,1,...,\nnn} {
+    \pgfmathsetmacro{\xx}{ifthenelse(\a==180,\d+90,ifthenelse(\a==90,\d+90+45,\d+90+90)}
+    \pgfmathsetmacro{\yy}{ifthenelse(\aa==180,\d-60,ifthenelse(\aa==90,\d-60-45,\d-60-90)}
+    % This is so ugly, but this is the only way I could get this to work.
+    % Turns out you can't nest \ifthenelse inside any smaller part of a tikz \draw command :(
+    \ifthenelse{\equal{\colours[\i]}{R}}{\draw [R] (\i) to [out=\xx,in=\yy] (\j);}{}
+    \ifthenelse{\equal{\colours[\i]}{G}}{\draw [G] (\i) to [out=\xx,in=\yy] (\j);}{}
+    \ifthenelse{\equal{\colours[\i]}{B}}{\draw [B] (\i) to [out=\xx,in=\yy] (\j);}{}
+}
+
+% Add dots (where needed).
+\foreach \i
+[
+evaluate=\i as \a using {\angles[\i]},
+] in {1,...,\n} {
+    \ifthenelse{\a=90}{\node [dot] at (\i) {};}{}
+}
+}
+
+\newcommand{\standardannulus}[4]
+{
+% +ve, -ve, hor, vert
+\begin{tikzpicture}[scale=1.5,very thick]
+
+\draw [thin] (-1, 1.1) to [out=90, in=90, looseness=0.5] (1, 1.1);
+\draw [thin, fill=none] (-1, 1.1) 
+ to [out=270, in=90] (-1, -0.7) to [out=270, in=270, looseness=0.5] (1, -0.7)
+ to [out=90, in=270] (1, 1.1) to [out=270, in=270, looseness=0.5] (-1, 1.1);
+\draw [thin] (-1, -0.7) to [out=270, in=270, looseness=0.5] (1, -0.7);
+
+\draw [thin] (-1, 1.1) to (-1, -0.7);
+\draw [thin] (1, 1.1) to (1, -0.7);
+\draw [thin, dotted] (-1, -0.7) to [out=90, in=90, looseness=0.5] (1, -0.7);
+
+\draw [dotted, looseness=0.5] (-1,0.2) to [out=90,in=90] (1,0.2);
+\draw (0, 0.8) to (0, 0.55);
+\draw (0, -1) to (0, -0.75);
+
+\draw (-1,0.2) to [out=270,in=165] (-0.75, 0);
+\draw (1,0.2) to [out=270,in=15] (0.75, 0);
+
+\draw [#1] (-0.75, 0) to [out=-15, in=270] (0,0.55); % positive slope, left
+\draw [#1] (0.75, 0) to [out=195, in=90] (0,-0.75); % positive slope, right
+\draw [#2] (-0.75, 0) to [out=-15, in=90] (0,-0.75); % negative slope, left
+\draw [#2] (0.75, 0) to [out=195, in=270] (0,0.55); % negative slope, right
+
+\draw [#3, looseness=0.75] (-0.75, 0) to [out=-15, in=195] (0.75, 0); % horizontal
+\draw [#4] (0, -0.75) to (0, 0.55); % vertical
+
+\ifthenelse{\equal{#3}{red}}{\ifthenelse{\equal{#4}{blue}}{\node [dot] at (0,-0.0835) {};}}{}
+
+\ifthenelse{\equal{#3}{blue}}{\ifthenelse{\equal{#4}{red}}{\node [dot] at (0,-0.0835) {};}}
+
+\end{tikzpicture}
+}

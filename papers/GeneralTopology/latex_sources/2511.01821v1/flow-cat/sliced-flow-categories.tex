@@ -1,0 +1,259 @@
+\subsection{Flow categories}\label{sec:sliced-flow-cats} Our flow categories are more general than the flow categories of \cite{AB24}; their objects are orbifolds, and the composition is defined on a certain fiber product instead of the usual product. The precise definition is given in \S\ref{subsec:sliced-flow-cat}.
+
+\subsubsection{Preliminaries} Recall that a Lie groupoid $X = [X_1\rightrightarrows X_0]$ is a groupoid where the set of objects and morphisms carry the structure of smooth manifolds, all structure maps are smooth, and the source and target maps $s,t \cl X_1\to X_0$ are submersions (whence the multiplication is a well-defined smooth map). We write $\phi \cl x\to y$ for $\phi\in X_1$ with source $x = s(\phi)$ and target $y = t(\phi)$. We will also abuse notation and write $y =\phi(x)$.\par
+We call $X$ \emph{\'etale} if $s$ (and thus $t$) is a local diffeomorphism and \emph{proper} if $(s,t)\cl X_1 \to X_0\times X_0$ is proper. By \cite[Corollary~1.4]{Par24}, any \'etale proper Lie groupoid with a finite number of isotropy types is equivalent to a \emph{transformation groupoid} $[M/G] := [G\times M\rightrightarrows M]$ given by the action of a compact Lie group $G$ on a smooth manifold $M$ so that all points have finite isotropy. All Lie groupoids we consider in our main application are of this form. We need a weakening of the notion of smoothness. See also \cite{Swa21} for more details.
+
+\begin{definition}
+    A map $\pi\cl M\to B$ to a smooth manifold is \emph{of class rel--$C^1$} if there exist local charts $\{\phi_i\cl U_i \to B\}$ and $\{\varphi_i\cl U_i\times N\to M\}$ so that $\pi\g \varphi = \phi\g \pr_U$ , the transition maps $\varphi_{ij}(u) =\varphi_i\inv\varphi_j(u,\cdot)$ is of class $C^1$ for $u \in U_i\cap U_j$, and $u\mapsto \varphi_{ij}(u)$ is continuous in the $C^1_{loc}$-topology.
+\end{definition}
+
+A \emph{rel--$C^1$ Lie groupoid} is a topological groupoid $X$ equipped with a morphism $X\to B$ of groupoids so that $X_1/B_1$ and $X_0/B_0$ are rel--$C^1$ manifolds and the structure maps are of class rel--$C^1$. The following notions can be defined verbatim in the rel--$C^1$ setting. We refrain from doing so here for the sake of clarity, but we will use them in that generality in \S\ref{subsec:unstructured-flow-cat}.
+
+\begin{definition}
+    A \emph{slicing} of a morphism of Lie groupoids $f \cl X\to [Y/G]$ is a $G$-action on $X_0$, whose action map factors through $G\times X_0 \to X_1$ and which satisfies $f_1(g,x) = (g,f_0(y))$. 
+    We say $f$ is \emph{sliced} if it is (implicitly) equipped with a slicing and \emph{sliceable} if it admits a slicing. We say a slicing is \emph{free} if the $G$-action on $X_0$ is free.
+\end{definition}
+
+\begin{ex}
+    A morphism $f\cl G\to G'$ of groups is sliceable if there exists an inclusion $G'\hkra G$ of groups, which is a section of $f$. 
+\end{ex}
+
+In our main application, $X$ is the groupoid associated to an action of a compact Lie group $G_X$ on a smooth manifold $\wt X$ and similarly for $Y$, with $G_X = G_Y\times G'_X$ canonically.
+
+\begin{definition}\label{de:sliced-fiber-product}
+    Given two morphisms $f \cl X\to Z = [Z_0/G]$ and $g\cl Y\to Z$ that intersect transversely in $Z_0$ and are equipped with free slicings $j_f$ and $j_g$, we define the \emph{quotient fiber product} $X\ov{\times}_Z Y$ to be the Lie groupoid with objects given by 
+    \begin{equation}
+        (X\bar{\times}_Z Y)_{0} \coloneqq X_0\times_{Z_0} Y_0/G 
+     \end{equation}
+    and morphisms $(X\ov{\times}_Z Y)_1 \coloneqq f_1\inv(\ide)\times g_1\inv(\ide)$.
+\end{definition}
+
+\begin{ex}\label{ex:quotient-fiber-product}
+    Suppose 
+    $$f\cl X=[M/ G_Z]\to [Z_0/G_Z]\qquad\text{and}\qquad g\cl Y= [N/ G_Z]\to [Z_0/G_Z]$$ 
+   are submersions on the level of objects, and $G_Z$ acts freely on $M\times Z$. Then, $X\ov{\times}_Z Y$ is the manifold $(M\times_{Z_0} N)/G_Z$, where $G_Z$ acts diagonally via the slicings on $M$ and $N$. If, moreover, the action of $G_Z$ on $Z_0$ is transitive, then we have a canonical isomorphism $\fg_Z \cong TZ_0$ and therefore, a canonical identification 
+   \begin{equation}\label{eq:tangen-bundle-sliced-fiber-product}
+       T(X\,\ov{\times}_{Z}\, Y) \,\cong\, TX\oplus TY
+   \end{equation}
+   of $G_Z$-vector bundles on $M\times_{Z_0} N$. The same is true if $M$ and $N$ are equipped with almost free actions by $G\times G_Z$ and $G'\times  G_Z$, respectively.
+\end{ex}
+
+This quotient fiber product commutes with filtered colimits in the following sense.
+
+\begin{lemma}\label{lem:commute-with-colimits}
+	 Suppose $\{X_\alpha\}_{\alpha\in A}$ and $\{Y_\beta\}_{\beta\in B}$ are filtered diagrams in $\normalfont\text{dOrb}_{/\cdot}$ with $S_{X_\alpha} = S_{X_{\alpha'}}$ and $T_{X_\alpha} = S_{Y_\beta}$ for all $\alpha,\beta$ and $T_{Y_{\alpha}} = T_{Y_\beta}$. If the colimits $X$ and $Y$ exist, then the colimit of $\{(X_\alpha\ov{\times} Y_\beta)\}_{(\alpha,\beta)\in A\times B}$ exists and is given by $X\ov{\times} Y$.
+\end{lemma}
+
+\begin{proof}
+    Write $S = S_{X_\alpha}$, $Z = T_{X_\alpha} = [Z_1\rightrightarrows Z_0]$ and $T = T_{Y_\beta}$ for some $\alpha$ and $\beta$. Then, we have that $X_\alpha\ov{\times} Y_\beta$ is a quotient of the fiber product $X_\alpha\times_{Z_0} Y_\beta$. Since finite limits commute with filtered colimits, we have that 
+    $$\colim\limits_{(\alpha,\beta)}X_\alpha\times_{Z_0} Y_\beta = X\times_{Z_0} Y.$$
+    Since the morphisms in $\dOrb_{/\cdot}$ are compatible with the slicings of $t_{X_\alpha}$ and $s_{Y_\beta}$, the claim follows now directly from the definition.
+\end{proof}
+
+\subsubsection{A more general notion of flow category}\label{subsec:sliced-flow-cat}
+Given the setup in the previous subsection, the definition of a flow category looks almost as before, except that we replaced the Cartesian product by the quotient fiber product and that we have a symmetric action on the objects. Note that in the case where each object is simply a point and the symmetric action is trivial, this recovers the original definition of a flow category as in \cite{AB24} or \cite{CJS95}.\par 
+Recall from \cite{AB24} that a \emph{strong equivalence} $f \cl \bX\to \bY$ of derived orbifolds is a morphism of derived orbifolds (that is, spaces equipped with global Kuranishi charts) together with a morphism $\pi \cl Y\to X$ of the underlying thickenings so that $X\to Y$ corresponds to the inclusion of the zero section. 
+
+
+\begin{definition}\label{de:derived-orbifold-category}
+	We define the category $\dOrb_{/\cdot}$ to have as objects derived orbifolds $\bX$ with corners equipped with two maps $s_{\bX}\cl \bX\to S_\bX = [\wt{ S}_{\bX}/G^S_\bX]$ and $t_{\bX}\cl \bX\to T_\bX= [\wt{ T}_{\bX}/G^T_\bX]$ to compact transitive orbifolds so that $s_\bX$ and $t_\bX$ are freely sliced submersions. The morphisms are given by strong equivalences $f \cl \bX\to \bY$ so that $s_\bY\g f = s_\bX$ and $t_\bY\g f = t_\bX$.
+\end{definition}
+
+Given $\bX,\bY$ in $\dOrb_{/\cdot}$ with $T_\bX = S_\bY$, we define
+\begin{equation}\label{eq:new-product}
+	\bX\,\ov{\times}\, \bY \,\coloneqq\, (\bX\,\ov{\times}_{S_\bY}\, \bY,S_\bX,T_\bY)
+\end{equation}
+with the canonical structural maps. This yields one part of our generalization. In order to encode the symmetric action concisely, we introduce the following definition. 
+
+\begin{definition}\label{de:symmetric-set}
+    Let $\Delta^*$ be the groupoid whose objects are pairs $(n,\prec)$, where $n\in \bZ_{\ge 0}$ is an integer and $\prec$ is a total ordering of $\{1,\dots,n\}$, and whose morphisms are order-preserving isomorphisms $(n,\prec)\to (n,\prec')$. A \emph{symmetric set} in $\cC$ with \emph{orbit set} $I$ is a functor $P \cl I \times \Delta^*\to \cC$, where we consider the set $I$ as a discrete category. We set $|P(i,\{(n,\prec)\})|:= n$ and will identify $P$ with its image in $\obj(\cC)$.
+\end{definition}
+
+In the future we will repeatedly use the observation that a disjoint union of symmetric sets is canonically a symmetric set.
+
+\begin{definition}\label{de:sliced-flow-cat}
+    A \emph{symmetric flow category} $\scM$ consists of a symmetric set $\cP$ of closed orbifolds, the objects of $\scM$, and for any $\alpha,\beta\in \cP$ a derived orbifold $\scM(\alpha,\beta)$ of morphisms equipped with 
+    \begin{itemize}
+        \item a proper function $E\cl \scM(\alpha,\beta)\to [0,\infty)$,
+        \item free sliced submersions $s_{\alpha\beta} \cl \scM(\alpha,\beta)\to \alpha$ and $t_{\alpha\beta} \cl \scM(\alpha,\beta)\to \beta$
+        \item isomorphisms 
+        \begin{equation}\label{eq:symmetric-isomorphisms}
+            \scM(\sigma\cdot\alpha,\beta) \cong \scM(\alpha,\beta)\cong \scM(\alpha,\sigma'\cdot\beta)
+        \end{equation}for any $\sigma\in S_{|\alpha|}$ and $\sigma'\in S_{|\beta|}.$
+    \end{itemize}
+    The composition functions, defined on the quotient fiber product
+     \begin{equation}\label{eq:composition}  
+    \scM(\alpha,\beta)\,\ov{\times}_{\,\beta} \;\scM(\beta,\gamma) \;\to \;\scM(\alpha,\gamma),
+    \end{equation}
+    are smooth embeddings onto a codimension-$1$ boundary stratum $\del_{\beta}\scM(\alpha,\gamma)$ of $\scM(\alpha,\gamma)$. They are \begin{itemize} 
+    \item additive with respect to $E$.
+        \item compatible with the symmetric action in the sense that 
+        \begin{center}\begin{tikzcd}
+		\scM(\alpha,\beta)\,\ov{\times}_{\,\beta} \;\scM(\beta,\gamma) \arrow[rr,"\cong"] \arrow[dr,""]&&\scM(\alpha,\sigma\cdot\beta)\,\ov{\times}_{\,\sigma\cdot\beta} \;\scM(\sigma\cdot\beta,\gamma) \arrow[dl,""]\\ & \scM(\alpha,\gamma) \end{tikzcd} \end{center}
+        commutes for any $\beta$ and $\sigma\in S_{|\beta|}$, whence
+        $$\del_{\beta}\scM(\alpha,\gamma) = \del_{\sigma\cdot\beta}\scM(\alpha,\gamma).$$ 
+        \end{itemize}
+        Thus, we can write $\del_{[\beta]}\scM(\alpha,\gamma)$, using the orbit of $\beta$ under the symmetric action to indicate the boundary stratum. We require that these strata cover the boundary of $\scM(\alpha,\gamma)$ and that
+    \begin{equation}\begin{tikzcd}
+\scM(\alpha,\beta)\,\ov{\times}_{\,\beta}\,\scM(\alpha,\beta')\,\ov{\times}_{\,\beta'}\,\scM(\beta',\gamma)  \arrow[r,""] \arrow[d,""]&\scM(\alpha,\beta)\,\ov{\times}_{\,\beta}\,\scM(\beta,\gamma) \arrow[d,""]\\ 
+        \scM(\alpha,\beta')\,\ov{\times}_{\,\beta'}\,\scM(\beta',\gamma) \arrow[r,""] &  \scM(\alpha,\gamma) \end{tikzcd} \end{equation}
+is a pullback square for any $\alpha,\beta,\beta',\gamma\in \cP$.
+\end{definition}
+
+\begin{definition}\label{de:rel-c^1-flow-cat}
+    We say a symmetric flow category $\scM$ is \emph{of class rel--$C^1$} if the morphism spaces are derived orbifolds of class rel-$C^1$, the maps $s_{\alpha\beta}$ and $t_{\alpha\beta}$ are of class rel--$C^1$ as described in \S\ref{sec:gluing} as well as the symmetric actions and composition maps are of class rel--$C^1$.
+\end{definition}
+
+\begin{remark}\label{rem:extends}
+    Since this generalization only makes the notation heavier, we will phrase all remaining proofs in terms of smooth flow categories. However, the definitions and proofs carry over verbatim to the rel--$C^1$ setting.
+\end{remark} 
+
+\begin{ex}
+    In our main example, each object of $\scM$ is of the form $B\Gamma =[E\Gamma/\bT_\Gamma]$, where $\Gamma = (\gamma_1,\dots,\gamma_k)$ is a sequence of Reeb orbits and $\bT_\Gamma = (S^1)^\Gamma$. The symmetric action permutes the ordering of the sequence, and the morphism spaces are manifolds $\wt\scM(\Gamma^-,\Gamma^+)$ equipped with an action by the Lie group $\bT_{\Gamma^-}\times\bT_{\Gamma^+}\times G_{\Gamma^-,\Gamma^+}$. The action of $\bT_{\Gamma^-}\times\bT_{\Gamma^+}$ comes from rotating the asymptotic markers. Then, the quotient fiber product over $\Gamma$ is the quotient of 
+    $$\wt\scM(\Gamma^-,\Gamma)\times_{E\Gamma} \wt\scM(\Gamma,\Gamma^+)$$
+    by the (free) diagonal $\bT_\Gamma$ action; it carries the induced action of $\bT_{\Gamma^-}\times G_{\Gamma^-,\Gamma}\times \bT_{\Gamma^+}\times G_{\Gamma,\Gamma^+}$.
+\end{ex}
+
+We briefly discuss stable complex structures on the flow categories of Definition~\ref{de:sliced-flow-cat}; see also \cite[Definition~3.8]{AB24}. The definition of framed structures as in \cite{AB24} can be adapted similarly. 
+
+\begin{definition}\label{de:stable-complex-flow-cat}
+    A \emph{stably complex lift} $\scM^U$ of a symmetric flow category $\scM$ consists of
+    \begin{enumerate}[leftmargin=20pt]
+        \item a symmetric set of virtual orbi-bundles $V_\alpha \to \alpha$, for object $\alpha$ of $\scM$, lifting the symmetric set $\cP$ of objects,
+        \item a complex virtual vector bundle $I_{\alpha\beta}$ on $\scM(\alpha,\beta)$, 
+        \item a vector bundle $W_{\alpha\beta}$ on $\scM(\alpha,\beta)$,
+        \item a virtual vector space $U_{\alpha\beta}$ of the form $U_{\alpha\beta} = (0,\bR^{\{\beta\}})$
+        \item an equivalence
+        \begin{equation}\label{eq:equivalence-stable-complex}
+            T\scM(\alpha,\beta)\oplus  V_\beta\oplus \bR^{\{\beta\}} \,\simeq\, (W_{\alpha\beta},W_{\alpha\beta})\oplus I_{\alpha\beta}\oplus V_\alpha
+        \end{equation}
+        of virtual vector bundles;
+        \item compatible equivalences 
+        \begin{equation}\label{eq:compatible-complex}
+            I_{(\sigma\cdot\alpha)\beta}\cong I_{\alpha\beta}\cong I_{\alpha(\sigma'\cdot\beta)}\end{equation}
+            \begin{equation}
+           \label{eq:compatible-stabilising} W_{(\sigma\cdot\alpha)\beta}\cong W_{\alpha\beta}\cong W_{\alpha(\sigma'\cdot\beta)}
+        \end{equation}
+        of complex virtual vector bundles, respectively vector bundles, that lift~\eqref{eq:symmetric-isomorphisms} and intertwine the equivalences~\eqref{eq:equivalence-stable-complex}.
+    \end{enumerate}
+    Moreover, for any objects $\alpha,\beta,\gamma$ of $\scM$ we have split embeddings and isomorphisms
+    \begin{gather}
+        I_{\alpha\beta}\oplus I_{\beta\gamma}\,\to\, I_{\alpha\gamma},\\
+        W_{\alpha\beta}\oplus W_{\beta\gamma}\,\to\, W_{\alpha\gamma},\\
+        U_{\alpha\beta}\oplus U_{\beta\gamma}\,\cong\, (0,\bR^{\{\beta\}})\oplus U_{\alpha\gamma},
+    \end{gather}
+    respectively, that cover the composition map~\eqref{eq:composition} and are compatible with the equivalences~\eqref{eq:compatible-complex} and~\eqref{eq:compatible-stabilising}, so that the square
+    \begin{equation}\label{dig:associativity-stable-complex}
+    \begin{tikzcd}
+		T\scM(\alpha,\beta)\oplus V_\beta\oplus \bR^{\{\beta\}}\oplus T\scM(\beta,\gamma)\oplus V_\gamma\oplus \bR^{\{\gamma\}} \arrow[r,""] \arrow[d,"\simeq"]& T\scM(\alpha,\gamma)\oplus V_\gamma\oplus \bR^{\{\gamma\}}
+        \arrow[d,"\simeq"]\\ 
+    (W_{\alpha\beta},W_{\alpha\beta})\oplus I_{\alpha\beta}\oplus V_\alpha\oplus (W_{\beta\gamma},W_{\beta\gamma})\oplus I_{\beta\gamma}\oplus V_\beta \arrow[r,""] & (W_{\alpha\gamma},W_{\alpha\gamma})\oplus I_{\alpha\gamma}\oplus V_\alpha \end{tikzcd} \end{equation}
+    commutes, where we implicitly use the isomorphism~\eqref{eq:tangen-bundle-sliced-fiber-product}
+\end{definition}
+
+Since we will need the main result of \cite{AB24} that symmetric flow categories are the $0$-simplices of a stable $\infty$-category, we introduce the relevant adaptions of their definitions here. Given a finite set $\cP = (\cP_0,\dots,\cP_n)$ of sets, we define the category $\cP^{\bR_{\ge 0}}(p,q)$ for $p\in \cP_i$ and $q \in \cP_j$ with $i \leq j$ to have 
+\begin{itemize}[leftmargin=20pt]
+    \item objects linear trees $T$ with two exterior edges so that 
+    \begin{itemize}[leftmargin=15pt]
+        \item each inter edge labeled by an element of $\cP_k$ for $i\leq k \leq j$,
+        \item the incoming edge is labeled by $p$ and the outgoing one by $q$,
+        \item each vertex is labeled by $m \in \bR_{\ge 0}$ and a subset of $\{k+1,\dots,\ell-1\}$, where $k$ and $\ell$ are the labels of the edges adjacent to $v$;
+    \end{itemize}
+    \item morphism from $T$ to $T'$ given by collapsing a (possibly empty) sequence of consecutive edges so that the labels of the collapsing of $T$ agree with those of $T'$ as described in \cite[Definition~4.2]{AB24}.
+    \end{itemize}
+This yields a strict $2$-category $\cP^{\bR_{\ge 0}}$, where the horizontal composition is given by gluing two trees along the `common' exterior edge. If $\cP$ is a symmetric set, we can define the $2$-category $\cP^{\bR_{\ge 0}}$ analogously. When $\cP$ is a symmetric set, then there are canonical isomorphisms $\cP^{\bR_{\ge 0}}(\sigma\cdot p,q)\cong\cP^{\bR_{\ge 0}}( p,q)\cong \cP^{\bR_{\ge 0}}(p,\sigma'\cdot q)$ induced by the symmetric actions on the labels.
+
+\begin{definition}\label{de:enriched-in-complicated}
+    A \emph{(non-unital graded) symmetric category} $\cC$ \emph{enriched in $\dOrb_{/\cdot}$} consists of
+    \begin{itemize}[leftmargin=20pt]
+        \item a symmetric set $\obj(\cC)$ in the category of closed orbifolds, associating to $x$ the orbifold $B_x$,
+        \item for any pair of objects $x,y$ an object $(\cC(x,y),B_x,B_y)$ of $\dOrb_{/\cdot}$ together with a proper energy map 
+        \begin{equation}\label{} 
+        	E_{xy}\cl \cC(x,y)\to \bR_{\ge0},
+        \end{equation}        
+        \item for any $\sigma\in S_{|x|}$ and $\sigma'\in S_{|y|}$ isomorphisms 
+        \begin{equation}
+        	\cC(\sigma\cdot x,y) \xra{\sigma^*} \cC(x,y)\xra{\sigma'_*} \cC( x,\sigma'\cdot y)
+        \end{equation}
+    that are compatible with the symmetric actions on $\obj(\cC)$ and which intertwine the energy maps.
+        \item for any triple $x,y,z$ the composition map is a strong equivalence 
+        \begin{equation}\label{eq:composition-general}
+            \cC(x,y)\,\ov{\times}_{B_y}\,\cC(y,z)\to \del_{y}\cC(x,y), 
+        \end{equation}
+        which is a component of the boundary $\del_y \cC(x,z)$ so that $E_{xz}$ restricts to $E_{xy} + E_{yx}$ on the image and
+        \begin{center}\begin{tikzcd}
+        		\cC(x,y)\,\ov{\times}_{B_y}\,\cC(y,z) \arrow[rr,""] \arrow[dr,""]&&\cC(x,\tau\cdot y)\,\ov{\times}_{B_{\tau\cdot y}}\,\cC(\tau\cdot y,z) \arrow[dl,""]\\ & \cC(x,z) \end{tikzcd} \end{center}
+        commutes for any $\tau\in S_{|y|}$. We can thus let $\del_{[y]}\cC(x,z)$ denote the image of~\eqref{eq:composition-general}, where $[y]$ is the orbit of $y$ under the symmetric action.
+    \end{itemize}
+We require that 
+\begin{equation}\begin{tikzcd}
+		\cC(x,y)\,\ov{\times}_{\,B_y}\,\cC(y,y')\,\ov{\times}_{\,B_{y'}}\,\cC(y',z)  \arrow[r,""] \arrow[d,""]&\cC(x,y)\,\ov{\times}_{\,B_y}\,\cC(y,z) \arrow[d,""]\\ 
+		\cC(x,y')\,\ov{\times}_{\,B_{y'}}\,\cC(y',z) \arrow[r,""] &  \cC(x,z) \end{tikzcd} \end{equation}
+
+is a pullback square and that $\del \cC(x,z) = \djun{[y]}\,\del_{[y]}\cC(x,z).$
+\end{definition}
+
+
+\begin{definition}[{cf. \cite[Definition~4.8]{AB24}}]\label{de:elementary-flow-simplex}
+    An \emph{elementary symmetric $n$-flow simplex} consists of a sequence $\cP = (\cP_0,\dots,\cP_n)$ of symmetric sets, a closed orbifold $B_p$ for each $p \in \djun{i}\cP_i$, and the data of a symmetric category $\scX$ enriched in $\dOrb_{/\cdot}$ with objects given by the symmetric set $\obj(\scX) = \djun{i}\cP_i$, together with a strict $2$-functor $\cP_\scX\to \cP^{\bR_{\ge 0}}$, where $\cP_\scX$ is the stratifying category of the corners of $\scX$. We require the energy map 
+    \begin{equation}
+        E\cl \djun{q}\scX(p,q) \to \bR
+    \end{equation}
+    to be proper for any $p \in \obj(\scX)$, with a uniform lower bound independent of $p$.
+\end{definition}
+
+For the next definition, observe that we can identify the strata of the standard simplex $\Delta^n$ with subsets of $\{0,\dots,n\}$. Thus, letting $I = \{i_1,\dots,i_k\}$ be the subset associated to a stratum $\sigma\sub \Delta^n$, we write $\del^\sigma\cP = (\cP_{i_1},\dots,\cP_{i_k})$. We write $\epsilon_i$ for the stratum corresponding to the complement of the singleton $\{i\}$. 
+Given an elementary symmetric flow simplex $\scX$ as in Definition~\ref{de:elementary-flow-simplex}, we let $\del^\sigma\scX$ be the restriction of $\scX$ to $\del^\sigma\cP$.
+As pointed out in \cite[Remark~4.12]{AB24}, Definition~\ref{de:elementary-flow-simplex} is not quite sufficient since the simplicial set obtained from these elementary symmetric flow simplices might not satisfy the horn-filling property and is thus not an $\infty$-category. This is remedied by the following condition.
+
+\begin{definition}[{cf. \cite[Definition~4.10]{AB24}}]\label{de:flow-simplex}
+    A \emph{symmetric $n$-flow simplex} consists of a sequence $\cP = (\cP_0,\dots,\cP_n)$ of sets, an orbifold $B_p$ for each $p \in \djun{i}\cP_i$, an elementary symmetric flow simplex $\scX^\sigma$ lifting $\del^\sigma\cP$ for each stratum $\sigma$ of $\Delta^n$, and a functor $\scX_\tau\to \del^\tau X_\sigma$ enriched in $\dOrb_{/}$ for any strata $\tau \sub \sigma$. They lift the isomorphisms of stratifying categories and satisfy the usual associativity condition for any triple $\rho\sub \tau\sub \sigma$ of strata. For each $i \in \{0,\dots,n\}$ we define
+    \begin{equation}\label{eq:face-map}
+        \del_i\scX := (\scX_{\sigma})_{\sigma\subseteq \epsilon_i}.
+    \end{equation}
+\end{definition}
+
+The definition of a \emph{structured symmetric flow simplex} in our setting is equivalent to Definition~\ref{de:flow-simplex} with the changes of \cite[Definition~4.18 and Definition~4.19]{AB24}. This uses the isomorphism~\eqref{eq:tangen-bundle-sliced-fiber-product}.
+We can now define the semisimplicial set underlying the stable $\infty$-category $\normalfont\text{Flow}^\Sigma$. 
+
+\begin{lemma}[Flow]\label{lem:flow-semi-simplicial} Letting $\text{Flow}^\Sigma_n$ be the set of symmetric $n$-flow simplices for $n \ge 0$ and taking $\del_i\cl \normalfont\text{Flow}^\Sigma_n \to \normalfont\text{Flow}^\Sigma_{n-1}$ to be the map given by~\eqref{eq:face-map}, defines a semisimplicial set $\normalfont\text{Flow}^\Sigma$.\qed
+\end{lemma}
+
+The proof is a straightforward verification. As the set-theoretic problems facing this definition are exactly the same as in \cite{AB24}, we refer to \cite[Remark~4.14]{AB24} for an approach on how to deal with them. We can now state the main result of this subsection, generalizing \cite[Theorem~1.6]{AB24}.
+
+\begin{proposition}\label{prop:flow-stable}
+    $\normalfont\text{Flow}^\Sigma$ admits the structure of a stable $\infty$-category whose morphisms are symmetric bimodules. The same is true for the stably complex case $\normalfont\text{Flow}^{\Sigma,U}$.
+\end{proposition}
+
+\begin{proof}
+    The proof follows from observing that the arguments of \cite{AB24} carry through. We first observe that the arguments of \cite[\textsection6]{AB24}, in particular, Proposition~6.4 loc. cit., which lift their semisimplicial set $\Flow^\Sigma$ to a simplicial set, carry over verbatim to our setting. Indeed, the reasoning is formal, using \cite{Stei18} adapted as in \cite{AB24}, once one has constructed the inital and terminal degeneracies
+    \begin{gather*}
+        s_0 \cl \Flow^\Sigma_n \to \Flow^\Sigma_{n+1}\\
+        s_n\cl \Flow^\Sigma_n \to \Flow^\Sigma_{n+1},
+    \end{gather*}
+    and the constructions of \cite[\textsection6.2]{AB24} extends to our setting by replacing the usual product by the sliced fiber product of Definition~\ref{de:sliced-fiber-product} and keeping track of the symmetric action on objects and morphism spaces.\par 
+    The proof of the horn-filling property is the part that is the least obvious to adapt to our setting as it requires delicate geometric arguments. However, they are always about one morphism space at at a time. Thus, these arguments carry through when having symmetric sets of objects, where each object is simply a point, due to the naturality of the constructions and by replacing the products appearing in the definition of the map~(5.5) loc. cit. by quotient fiber products. The proof of \cite[Lemma~5.8]{AB24}, showing the claim of \cite[Theorem~5.1]{AB24} under the simplifying Assumption~1 loc. cit. requires Lemma~\ref{lem:commute-with-colimits} in our setting. The proof without the assumption (cf. \cite[Proposition~5.12]{AB24}) is about a single morphism space and thus is not affected by our generalization of the definition of a flow category. This shows that $\Flow^\Sigma$ as in Lemma~\ref{lem:flow-semi-simplicial} is an $\infty$-category.\par
+    Recall that an $\infty$-category $C$ is \emph{stable} by \cite[Theorem~1.1.2.14 and Remark~1.1.2.15]{Lur09}) if 
+    \begin{itemize}[leftmargin=25pt]
+        \item $C$ has a zero object $*$,
+        \item the suspension $\Sigma \cl C\to C$, taking $x$ to the pushout $\Sigma x$ of $*\to x\leftarrow *$, exists and is an auto-equivalence,
+        \item any morphism in $C$ admits a cofiber.
+    \end{itemize}   
+    The unit of $\Flow^\Sigma$ is the flow category $\emst$ whose set of objects is empty, just as in \cite[\S7.2]{AB24}. The proof that the suspension $\Sigma$ exists and is an auto-equivalence is the same as the proofs of Lemma~7.8 and Lemma~7.9 in \cite{AB24}, by associating to the ``additional'' elements of $s_i\cP$ in Equations~(7.31) and~(7.32) the obvious orbifolds, and by replacing the products in Equation~(7.36) with quotient fiber products. The last property follows from the constructions of \cite[\S7.4]{AB24} by noting that they do not require the boundary strata to be products of other morphism spaces. This shows the claim in the unstructured case. The arguments of \cite[\S7.5]{AB24} allows us to lift the assertion to structured flow categories.
+\end{proof}
+
+
+\begin{lemma}\label{lem:all-colimits}
+    The stable $\infty$-category $\normalfont\text{Flow}^\Sigma$ of unstructured flow categories admits all $\aleph_0$-small (homotopy) colimits. The same is true for stably complex flow categories.
+\end{lemma}
+
+\begin{proof}
+By \cite[Proposition~4.4.3.2]{Lur09} and Theorem~\ref{prop:flow-stable}, it suffices to show that $\normalfont\text{Flow}^\Sigma$ has all $\aleph_0$-small coproducts. Its coproducts are given by disjoint unions of flow categories: if $\{\scX_i\}_{i\in \bN}$ is a set of symmetric flow categories with object sets $P_i$, let $\scX$ be the flow category with objects the symmetric set $P = \djun{i}P_i$ and morphism spaces 
+\begin{equation*}
+    \scX(p,q) = \begin{cases}
+        \scX_i(p,q) & p,q\in P_i\\
+        \emst & \text{otherwise,}
+    \end{cases}
+\end{equation*}
+equipped with the obvious symmetric actions and composition maps. It is a straightforward verification that this is indeed a coproduct. The argument carries over verbatim to the stably complex case.
+\end{proof}

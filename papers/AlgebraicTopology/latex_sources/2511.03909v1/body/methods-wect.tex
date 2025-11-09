@@ -1,0 +1,285 @@
+\section{Computation of WECFs}\label{sec: computation}
+In this section, we present a new algorithm for computing the WECFs of a
+weighted simplicial complex with respect to a finite set of vertex filters.
+Computation of the WECT of a weighted geometric simplicial complex is the
+motivation for \algref{WECT}, and corresponds to the case where the vertex
+filters are height functions.
+See Example~\ref{ex:wect} for specifics on how \algref{WECT} may be used to
+compute the WECT.
+
+\subsection{Algorithm}
+We fix a weighted simplicial complex $\K= (K, \omega)$ and a set of vertex
+filters $\{f_0, f_1, \ldots, f_m\}$ for the entirety of this section.
+For any $i \geq 0$, we denote by $K_i$, the set of $i$-simplices in $K$
+and we let $k_i = |K_i|$.
+We fix enumerations $K_0 = \{v_0, v_1, \ldots, v_{k_0}\}$
+and \mbox{$K_i = \{\sigma_0^i, \sigma_1^i, \ldots, \sigma_{k_i}^i \}$} for each
+$i \geq 1$.
+To simplify notation, we extend the vertex filters~$f_p: K_0 \to \R$ to $K$ by
+defining $f_p^{\max}: K \to \R$ as
+\[
+    f_p^{\max} (\sigma) = \max_{v \in \sigma} f_p(v).
+\]
+
+Our algorithm uses the following inputs
+\begin{itemize}
+    \item $\complex$: A list of tuples:
+    \begin{itemize}
+        \item $\complex[0] = (\fvals, \vweights)$
+        \begin{itemize}
+            \item $\fvals$ is a tensor with shape $(k_0, m)$ and values
+            \[
+                \fvals[a,p] = f_p(v_a).
+            \]
+            \item $\vweights$ is a tensor with shape $(k_0)$ and values
+            \[
+                \vweights[a] = \omega(v_a).
+            \]
+        \end{itemize}
+
+        \item for $i \geq 1$: $\complex[i] =
+        (i\texttt{-SimplexVertices}, i\texttt{-SimplexWeights})$
+        \begin{itemize}
+            \item $i\texttt{-SimplexVertices}$ is a tensor with shape
+                $(k_i, i+1)$ and values in~$[[k_0]]$.
+                The rows of this tensor correspond to the
+                vertex sets of each $i$-simplex.
+            \item $i\texttt{-SimplexWeights}$ is a tensor with shape $(k_i)$
+                and values
+            \[
+                i\texttt{-SimplexWeights}[b] = \omega(\sigma_b^i).
+            \]
+        \end{itemize}
+    \end{itemize}
+    \item $\numvals$: The number of values to sample the filter functions
+    over.
+\end{itemize}
+
+Define $\maxheight$ as
+\[
+    \maxheight = \max_{\substack{p \in [[m]] \\ v \in K_0}} |f_p(v)|.
+\]
+We discretize $[-\maxheight, \maxheight]$ by evenly sampling $\numvals$ points.
+That is, we define the map
+\[
+    \beta \colon [[\numvals]] \to [-\maxheight, \maxheight]
+\]
+by
+\[
+    \beta (q) = q \frac{2 * \maxheight} {\numvals - 1} - \maxheight.
+\]
+The function $\beta$ has a left inverse
+\[
+    \alpha \colon [-\maxheight, \maxheight] \to [[\numvals]]
+\]
+defined as
+\begin{equation} \label{eq:left-adjoint}
+    \alpha(t) = \bigg\lceil \frac{(\numvals - 1)
+    (\maxheight + t)}{2 * \maxheight} \bigg\rceil.
+\end{equation}
+The maps $\alpha$ and $\beta$ are order-preserving and satisfy
+\begin{equation} \label{eq:galois}
+    \alpha(t) \leq q \iff t \leq \beta(q)
+\end{equation}
+for all $t \in [-\maxheight, \maxheight]$ and
+$q \in [[\numvals]]$.
+In other words, $\alpha$ and $\beta$ form a Galois connection.
+
+\begin{algorithm}
+    \caption{\texttt{ComputeWECFs}$(\complex, \numvals)$}
+    \label{alg:WECT}
+    \begin{algorithmic}[1]
+        \REQUIRE $\complex$,
+                 $\numvals$
+        \ENSURE $\wecfs$: tensor of shape $(m, \numvals)$ and values
+        \mbox{$\wecfs[p, q] = \wecf_{f_p}( \beta(q))$}.
+
+        \vspace{1ex}
+        \STATE $\fvals, \vweights \gets \complex[0]$
+        \STATE $\diffwecfs \gets \zeros(m, \numvals)$
+
+        \vspace{1ex}
+        \STATE $\vindices \gets \alpha(\fvals)$
+        \STATE $\scadd(\vindices^T, \texttt{VertexWeights})
+        (\diffwecfs)$
+
+        \vspace{1ex}
+        \FOR{$i=1$ \TO $\dim(K)$}
+            \STATE \texttt{SimplexVertices, SimplexWeights} $\gets \complex[i]$
+            \STATE \texttt{SimpIndices} $\gets \vindices
+            [\texttt{SimplexVertices}]$
+            \STATE $\msi \gets \rmax(\texttt{SimpIndices},1)$
+
+            \vspace{1ex}
+            \STATE \mbox{$\scadd(\msi^T,(-1)^i * \texttt{SimplexWeights}) (\diffwecfs)$}
+        \ENDFOR
+
+        \vspace{1ex}
+        \STATE $\wecfs \gets \cumsum(\diffwecfs)$
+        \STATE \RETURN $\wecfs$
+    \end{algorithmic}
+\end{algorithm}
+
+\algref{WECT} ultimately produces a tensor $\wecfs$ with shape
+$(m, \numvals)$ and values
+\[
+    \wecfs[p, q] = \wecf_{f_p} \big( \beta(q) \big).
+\]
+The algorithm begins by initializing a zero-tensor $\diffwecfs$ with shape
+$(m,\numvals)$.
+Next, the vertex filter values are mapped to indices in $[[\numvals]]$ by
+applying the map~$\alpha$ elementwise to the tensor $\fvals$.
+This gives the tensor $\vindices$ with values
+\begin{equation} \label{eq:v-inds}
+    \vindices[a, p] = \alpha \big( f_p(v_a) \big).
+\end{equation}
+The operation $\scadd(\vindices^T, \texttt{VertexWeights})$ is then applied to
+$\diffwecfs$, resulting in adding to $\diffwecfs$, the tensor $D_0$ with shape
+$(m, \numvals)$ and values
+\[
+    D_0[p,q] = \sum_{\substack{a \in [[k_0]] \\ \vindices[a, p] = q}}
+    \texttt{VertexWeights}[a].
+\]
+
+Next, inside the for-loop, fix an $i \in \{1, 2, \ldots \dim(K)\}$.
+The tensor \texttt{SimplexVertices} has rows indexed by $K_i$ with the entries in each row corresponding to the vertex sets of simplices in $K_i$.
+Therefore, the tensor~$\msi$ has shape~$(k_i, m)$ and values
+\begin{align} \label{eq:msi}
+    \nonumber
+    \msi[b, p] &= \max_{j \in [[i+1]]}
+    \vindices \big[ \texttt{SimplexVertices}[b, j], p \big]\\
+    \nonumber
+    &= \max_{v \in \sigma_b^i} \alpha \big( f_p (v) \big)\\
+    \nonumber
+    &= \alpha \big( \max_{v \in \sigma_b^i} f_p (v) \big)
+    \hspace{1.5cm} \text{as } \alpha \text{ is order-preserving}\\
+    &= \alpha \big( f_p^{\max} (\sigma_b^i) \big).
+\end{align}
+The operation $\scadd(\msi^T, (-1)^i * \texttt{SimplexWeights})$ updates
+$\diffwecfs$ by adding to it, the tensor $D_i$ with shape
+$(m, \numvals)$ and values
+\[
+    D_i[p,q] = \sum_{\substack{b \in [[k_i]] \\ \msi[b,p] = q}}
+    (-1)^i \texttt{SimplexWeights}[b].
+\]
+
+After the conclusion of the for loop, we have
+\[
+    \diffwecfs = \sum_{i=0}^{\dim(K)} D_i.
+\]
+Finally, a cumulative sum is applied to $\diffwecfs$ to obtain the tensor
+$\wecfs$.
+From the fact that the cumulative sum is a linear operator, we have
+\[
+    \wecfs = \sum_{i = 0}^{\dim(K)} \cumsum(D_i).
+\]
+The cumulative sum of $D_0$ has values
+\begin{align} \label{eq:vertex-sum}
+    \nonumber
+    \cumsum(D_0)[p,q]
+    &= \sum_{q' \leq q} \sum_{\substack{a \in [[k_0]] \\ \vindices[a, p]= q'}}
+    \texttt{VertexWeights}[a]\\
+    \nonumber
+    &= \sum_{\substack{a \in [[k_0]] \\ \vindices[a, p] \leq q}}
+    \texttt{VertexWeights}[a]\\
+    \nonumber
+    &= \sum_{\substack{a \in [[k_0]] \\ \alpha( f_p( v_a ) ) \leq q}}
+    \texttt{VertexWeights}[a]
+    &\text{by \eqref{v-inds}}\\
+    \nonumber
+    &= \sum_{\substack{a \in [[k_0]] \\ f_p(v_a) \leq \beta(q)}}
+    \texttt{VertexWeights}[a]
+    &\text{by \eqref{galois}}\\
+    &= \sum_{\substack{ v \in K_0 \\ f_p(v) \leq \beta(q) }}
+    \omega(v).
+\end{align}
+Likewise, for any $i \in \{1, \ldots, \dim(K)\}$, \eqref{msi} together with the
+same argument used to show \eqref{vertex-sum} gives
+\[
+    \cumsum(D_i)[p,q] = \sum_{\substack{\sigma \in K_i \\ f_p^{\max} (\sigma)
+    \leq \beta(q)}} \omega(\sigma).
+\]
+Therefore, the tensor $\wecfs$ has values
+\begin{align*}
+    \wecfs[p,q] &= \sum_{\substack{ v \in K_0 \\ f_p(v) \leq \beta(q) }}
+    \omega(v) + \sum_{i = 1}^{\dim(K)} \sum_{\substack{\sigma \in K_i \\ f_p^{\max} (\sigma)
+    \leq \beta(q)}} \omega(\sigma)\\
+    &= \sum_{\substack{\sigma \in K \\ f_p^{\max}(\sigma) \leq \beta(q)}}
+    \omega(\sigma)\\
+    &= \wecf_{f_p} \big( \beta(q) \big).
+\end{align*}
+
+\begin{example} \label{ex:wect}
+    Computing a discretization of the WECT of a weighted geometric
+    simplicial complex ${\K= (K, \omega)}$ in $\R^n$ is a special case of
+    \algref{WECT} as follows.
+    Consider a tensor $D$, with shape $(d, n)$, of direction vectors over which
+    to sample the WECT.
+    For any $p \in [[d]]$, let $\vect s_{p} \in \R^n$ be the $p$-th row of $D$.
+    Let $V$ be the tensor, with shape $(k_0, n)$, of the vertex coordinates of
+    $K$.
+    Then, the tensor $V * D^T$ has values
+    \[
+        (V * D^T)[a, p] = h_{\vect s_p}(v_a).
+    \]
+    Therefore, using the tensor $V * D^T$ as the $\fvals$ tensor in
+    \algref{WECT} produces a discretization of the WECT over the finite sample
+    of directions in $D$.
+\end{example}
+
+
+\subsection{Complexity}
+
+Here, we analyze the asymptotic complexity of \algref{WECT}.
+We make the assumption that the ambient dimension $n$ is fixed.
+Let $k$ be the total number of simplices of $K$, let~$m$ be the number of vertex
+filters, and let $\numvals$ be the number of values to sample the vertex filters
+over.
+
+The function \texttt{ComputeWECFs} has inputs $\complex$ and $\numvals$
+requiring $\Theta(k  m)$ memory usage.
+The algorithm first initializes a zero tensor $\diffwecfs$ of
+shape~$(m,\numvals)$, requiring~$\Theta(m  \numvals)$ memory.
+The function $\alpha$ (see \eqref{left-adjoint}) is then applied elementwise to
+$\fvals$, taking $\Theta(k  m)$ time.
+
+Next, the operation
+\[
+    \scadd(\vindices^T, \texttt{VertexWeights})
+\]
+is applied to $\diffwecfs$.
+ScatterAdd adds a value from \texttt{VertexWeights} to $\diffwecfs$ for each
+entry of $\vindices^T$, resulting in a time complexity
+of~$\Theta(k  m)$ and no additional memory usage as the operation
+is performed in place.
+
+Now, for a fixed dimension $i \in \{1, 2, \ldots n\}$, the tensor
+\[
+    \texttt{SimpIndices} = \vindices[\texttt{SimplexVertices}]
+\]
+with shape $(k_i, i+1, m)$ is constructed,
+taking $\Theta(k  m)$ time and memory.
+This tensor is then reduced along the second axis by taking the maximum values,
+creating the tensor $\msi$ with shape $(k_i, m)$ in
+$\Theta(k  m)$ time and memory.
+The tensor $\diffwecfs$ is then updated by applying the map
+\[
+    \scadd(\msi^T, (-1)^i * \texttt{SimplexWeights})
+\]
+which takes $\Theta(k  m)$ time and memory.
+
+After the conclusion of the for-loop, we have a total time and memory complexity
+of
+\[
+    \Theta \big( n  k  m \big)
+    = \Theta ( k  m ).
+\]
+Finally, a cumulative sum is applied to $\diffwecfs$, taking
+$\Theta(m  \numvals)$ time and using no additional memory.
+This results in a final time and memory complexity of~\mbox{$\Theta(m (k + \numvals))$}
+for \algref{WECT}.
+
+In practice, $m$ and $\numvals$ are typically held constant.
+Indeed, this is necessary to achieve consistent vectorizations of data.
+Holding $m$ and $\numvals$ constant results in a theoretically optimal
+final time and memory complexity of $\Theta(k)$ for \algref{WECT}.

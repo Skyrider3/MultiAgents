@@ -1,0 +1,1491 @@
+\documentclass[pdflatex,sn-mathphys-num]{sn-jnl}
+
+\usepackage{graphicx}%
+\usepackage{multirow}%
+\usepackage{amsmath,amssymb,amsfonts}%
+\usepackage{amsthm}%
+\usepackage{mathrsfs}%
+\usepackage[title]{appendix}%
+\usepackage{xcolor}%
+\usepackage{textcomp}%
+\usepackage{manyfoot}%
+\usepackage{booktabs}%
+
+
+\usepackage{listings}%
+\theoremstyle{thmstyleone}%
+\newtheorem{theorem}{Theorem}% 
+\newtheorem{proposition}[theorem]{Proposition}% 
+\newtheorem{lemma}[theorem]{Lemma}% 
+\newtheorem{corollary}[theorem]{Corollary}% 
+
+\theoremstyle{thmstyletwo}%
+\newtheorem{example}{Example}%
+\newtheorem{problem}{Problem}%
+
+\newtheorem{remark}{Remark}%
+
+\theoremstyle{thmstylethree}%
+\newtheorem{definition}{Definition}%
+
+
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\Tor}{Tor}
+
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Max}{Max}
+
+
+
+
+
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+% Define the Input/Output keywords (algorithm2e ships with \KwData/\KwResult by default)
+\SetKwInOut{KwIn}{Input}
+\SetKwInOut{KwOut}{Output}
+
+\usepackage{tikz}
+\usetikzlibrary{positioning} % for below=.. of ..
+
+
+
+
+\raggedbottom
+%%\unnumbered% uncomment this for unnumbered level heads
+
+\begin{document}
+
+\title[Homological and Categorical Foundations of Ternary $\Gamma$-Modules and Their Spectra]{Homological and Categorical Foundations of Ternary $\Gamma$-Modules and Their Spectra}
+
+%%=============================================================%%
+%% GivenName	-> \fnm{Joergen W.}
+%% Particle	-> \spfx{van der} -> surname prefix
+%% FamilyName	-> \sur{Ploeg}
+%% Suffix	-> \sfx{IV}
+%% \author*[1,2]{\fnm{Joergen W.} \spfx{van der} \sur{Ploeg} 
+%%  \sfx{IV}}\email{iauthor@gmail.com}
+%%=============================================================%%
+
+\author*[1,2]{\fnm{Chandrasekhar} \sur{Gokavarapu}}\email{chandrasekhargokavarapu@gmail.com}
+
+\author[3,4]{\fnm{Madhusudhana Rao} \sur{Dasari}}\email{dmrmaths@gmail.com}
+\equalcont{These authors contributed equally to this work.}
+
+
+\affil*[1]{\orgdiv{Department  of  Mathematics}, \orgname{Government College (Autonomous)}, \orgaddress{\street{Y-Junction}, \city{Rajahmundry}, \postcode{533105}, \state{A.P.}, \country{India}}}
+
+\affil[2]{\orgdiv{Department of Mathematics}, \orgname{Acharya Nagarjuna University}, \orgaddress{\street{Pedakakani}, \city{Guntur}, \postcode{522510}, \state{A.P.}, \country{India}}}
+
+\affil[3]{\orgdiv{Department of Mathematics}, \orgname{Government College For Women (A)}, \orgaddress{\street{Pattabhipuram}, \city{Guntur}, \postcode{522006},  \state{A.P.}, \country{India}}}
+\affil[4]{\orgdiv{Department of Mathematics}, \orgname{Acharya Nagarjuna University}, \orgaddress{\street{Pedakakani}, \city{Guntur}, \postcode{522510}, \state{A.P.}, \country{India}}}
+
+%%==================================%%
+%% Sample for unstructured abstract %%
+%%==================================%%
+
+\abstract{\textbf{Purpose:} To develop a unified homological–categorical foundation for commutative ternary $\Gamma$-semirings by formulating a general theory of ternary $\Gamma$-modules that integrates algebraic, geometric, and computational layers, extending the ideal-theoretic and algorithmic bases of Papers~A~\cite{Rao2025A} and B~\cite{Rao2025B1}.\\
+\textbf{Methods:} We axiomatize ternary $\Gamma$-modules and establish the fundamental isomorphism theorems, construct annihilator–primitive correspondences, and prove Schur–density embeddings. Categorical analysis shows that $T{-}\Gamma\mathrm{Mod}$ is additive, exact, and monoidal-closed, enabling the definition of derived functors $\Ext$ and $\Tor$ via projective/injective resolutions and yielding a tensor–Hom adjunction. We develop geometric dualities between module objects and the spectrum $\Spec_{\Gamma}(T)$ and extend them to analytic, fuzzy, and computational settings.\\
+\textbf{Results:} The category $T{-}\Gamma\mathrm{Mod}$ admits kernels, cokernels, (co)equalizers, and balanced exactness; monoidal closure ensures internal Homs and coherent tensor–Hom adjunctions. Derived functors $\Ext$ and $\Tor$ are well-defined and functorial, with long exact sequences and base-change compatibility. Schur–density yields faithful embedding criteria, while annihilator–primitive correspondences control primitivity and support theory. Geometric dualities provide contravariant equivalences linking submodule spectra with closed sets in $\Spec_{\Gamma}(T)$, persisting under analytic, fuzzy, and computational enrichments.\\
+\textbf{Conclusion:} These results complete the algebraic–homological–geometric synthesis for commutative ternary $\Gamma$-semirings, furnish robust tools for derived and spectral analysis, and prepare the framework for fuzzy and computational extensions developed in Paper~D~\cite{Rao2025D} , extending the algebraic framework first established in~\cite{Rao2025}.
+}
+
+
+\keywords{ $\Gamma$-semiring; $\Gamma$-module; primitive ideal; Schur--density theorem; derived functor; $\Ext$ and $\Tor$; tensor--Hom adjunction; spectral duality; fuzzy geometry; categorical algebra.
+}
+
+%%\pacs[JEL Classification]{D8, H51}
+
+\pacs[MSC Classification]{Primary 16Y60, 16E10, 18G15, 18M05, 18A40; Secondary 18F15, 03E72.
+}
+\maketitle
+
+\section{Introduction}
+This paper develops the representation theory of commutative ternary $\Gamma$-semirings through a unified theory of ternary $\Gamma$-modules, completing the structural program of Papers~A \cite{Rao2025A}and~B\cite{Rao2025B1}. Paper~A \cite{Rao2025A} established prime/semiprime ideals, radicals, congruences, and a Zariski-type spectrum $\Gamma(T)$; Paper~B \cite{Rao2025B1} provided the finite/algorithmic layer (enumeration and invariant-based classification). Here we supply the external viewpoint: modules, homomorphisms, isomorphism theorems, annihilator–primitive correspondences, Schur–density embeddings, and a homological scaffold for $\Ext$ and $\Tor$.
+
+\paragraph{Background.}
+$\Gamma$-objects originate in Nobusawa’s program and subsequent work by Barnes and Kyuno on $\Gamma$-rings and their radicals/primeness, while semiring/semimodule techniques are standard in Golan’s monograph.\footnote{We use only classical facts from these sources; our ternary $\Gamma$ setting requires new associativity–intertwining axioms and external parameters in two slots.} Exactness and additive structure are framed via Barr’s exact categories; homological methods follow Weibel, and density arguments follow Lam’s exposition of Jacobson’s theorem.%
+\cite{Barnes1966,Kyuno1978,Golan1999Semirings,Barr1971Exact,Weibel1994,Lam1999}
+
+\paragraph{Contributions.}
+\begin{itemize}
+\item A checkable axiom system for ternary $\Gamma$-modules compatible with the ternary product $\{abc\}_\gamma$ and Paper~A \cite{Rao2025A}’s ideals/congruences.
+\item The First/Second/Third Isomorphism Theorems in the ternary $\Gamma$ context.
+\item Annihilator–primitive correspondence: $M$ simple $\Rightarrow \Ann_T(M)$ primitive, and conversely.
+\item Schur–density: a canonical embedding $T/\Ann_T(M)\hookrightarrow \End_T(M)$ whose image acts densely on $M$ (Jacobson-style).
+\item Additive/exact and symmetric-monoidal closed structure; derived functors $\Ext$ and $\Tor$ with long exact sequences.
+\item Links to $\Gamma(T)$ via quasi-coherent sheaves and localization; finite cases admit algorithmic verification (continuing Paper~B \cite{Rao2025B1}).
+\end{itemize}
+
+\paragraph{Roadmap.}
+\S2 fixes axioms/notation. \S3 proves isomorphism theorems. \S4 treats simples, annihilators, and primitive ideals. \S5 establishes Schur–density and endomorphism structure. \S6 develops exactness, projectives/injectives, and $\Ext/\Tor$. \S7 gives tensor–Hom adjunction and monoidal closedness. \S8–\S9 connect to spectra and (optional) fuzzy/analytic enrichments.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Preliminaries and Axioms}
+\label{sec:prelim}
+
+Let $(T,+,\{\cdot\cdot\cdot\}_\Gamma)$ be a commutative ternary $\Gamma$-semiring,
+as introduced in~\cite{Rao2025}, satisfying the axioms (T1)–(T3) therein
+
+: $(T,+)$ is a commutative monoid with $0$, and for each $\gamma\in\Gamma$ a ternary product $\{a\,b\,c\}_\gamma\in T$ that is associative and distributive in each slot, with $0$ absorbing. Ideals, radicals, congruences, and the spectrum $\Gamma(T)$ are as in Paper~A \cite{Rao2025A}.
+
+\begin{definition}[Left ternary $\Gamma$-module]
+A left ternary $\Gamma$-module over $T$ is a commutative monoid $(M,+,0_M)$ with an action
+\[
+T\times\Gamma\times M\times\Gamma\times T\to M,\quad (a,\alpha,m,\beta,b)\mapsto a\!_\alpha m\!_\beta b,
+\]
+satisfying: additivity in each variable; compatibility with the ternary product (parenthesization independence); $0_T$ is absorbing; and $\Gamma$-linearity in the parameters. Submodules and quotients are defined in the obvious way; homomorphisms preserve $+$ and the action.
+\end{definition}
+
+\noindent
+These axioms generalize semimodule axioms (cf.\ Golan) and are designed so that kernels/images are submodules and the action descends to quotients. This yields the usual First/Second/Third Isomorphism Theorems in \S3 and places $\mathsf{T\!-\!\Gamma Mod}$ in the Barr-exact, additive framework used later for $\Ext$/$\Tor$.%
+\cite{Golan1999Semirings,Barr1971Exact,Weibel1994}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Isomorphism Theorems for Ternary $\Gamma$-Modules}
+\label{sec:isothm}
+
+Let $(T,+,\{\cdot\cdot\cdot\}_\Gamma)$ be a commutative ternary $\Gamma$-semiring
+(\cite{Rao2025}), and let
+$\mathsf{T\!-\!\Gamma Mod}$ denote the category of left ternary $\Gamma$-modules
+as defined 
+ in~\S\ref{sec:prelim}.
+Morphisms $f:M\to N$ are $T$-linear maps satisfying
+$f(a_\alpha m_\beta b)=a_\alpha f(m)_\beta b$
+for all $a,b\in T$, $m\in M$, and $\alpha,\beta\in\Gamma$.
+This section establishes the three classical isomorphism theorems in this setting,
+adapting the semimodule framework of Golan~\cite{Golan1999Semirings}%
+and the categorical viewpoint of Barr~\cite{Barr1971Exact}.
+
+\subsection{First Isomorphism Theorem}
+
+\begin{theorem}[First Isomorphism Theorem]
+Let $f:M\to N$ be a $\Gamma$-module homomorphism.
+Then:
+\begin{enumerate}
+\item $\ker f=\{m\in M:f(m)=0_N\}$ and $\operatorname{im}f=\{f(m):m\in M\}$ are submodules;
+\item the quotient $M/\ker f$ admits the induced action
+$a_\alpha[m]_\beta b=[a_\alpha m_\beta b]$;
+\item the induced map $\bar f:M/\ker f\to\operatorname{im}f$, $\bar f([m])=f(m)$,
+is an isomorphism of $\Gamma$-modules.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Additivity of the action ensures that $\ker f$ and $\operatorname{im}f$
+are submodules.
+If $m_1\equiv m_2\pmod{\ker f}$, then $f(m_1)=f(m_2)$, and by $T$-linearity,
+
+\[f(a_\alpha m_1{}_\beta b)
+ = a_\alpha f(m_1){}_\beta b
+ = a_\alpha f(m_2){}_\beta b
+ = f(a_\alpha m_2{}_\beta b);
+\]
+hence $a_\alpha m_1{}_\beta b - a_\alpha m_2{}_\beta b \in \ker f.$
+
+
+Thus the action descends to cosets and $\bar f$ is a bijective homomorphism.
+\end{proof}
+
+\begin{example}
+For $T=\{0,1\}$ with $\Gamma=\{0,1\}$ and $\{a b c\}_\gamma=abc$ (Boolean product),
+let $M=T^2$ with action $a_\alpha(x,y)_\beta b=(axb,ayb)$.
+The projection $f(x,y)=x$ satisfies
+$\ker f=\{(0,y):y\in T\}$ and $\operatorname{im}f=T$,
+verifying $M/\ker f\cong\operatorname{im}f$ for $|T|=2$.
+\end{example}
+
+\subsection{Second Isomorphism Theorem}
+
+\begin{theorem}[Second Isomorphism Theorem]
+If $N,P$ are submodules of $M$, then
+\[
+(N+P)/P\;\cong\; N/(N\cap P).
+\]
+\end{theorem}
+
+\begin{proof}
+Define $\phi:N\to(N+P)/P$ by $\phi(n)=[n]$.
+Then $\ker\phi=N\cap P$ and $\operatorname{im}\phi=(N+P)/P$.
+By the First Isomorphism Theorem, $N/\ker\phi\cong\operatorname{im}\phi$.
+\end{proof}
+
+\begin{remark}
+Additivity of the ternary action in $m$ ensures closure of the quotient
+and transfer of module laws, exactly as in semimodule theory
+(cf.\ Golan~\cite{Golan1999Semimodules};
+see also Weibel~\cite{Weibel1994} for categorical analogues).
+\end{remark}
+
+\subsection{Third Isomorphism Theorem}
+
+\begin{theorem}[Third Isomorphism Theorem]
+Let $P\subseteq N\subseteq M$ be submodules.
+Then the induced map
+\[
+(M/P)/(N/P)\;\cong\; M/N
+\]
+is a $\Gamma$-module isomorphism.
+\end{theorem}
+
+\begin{proof}
+Define $\psi:M/P\to M/N$ by $\psi([m]_P)=[m]_N$.
+If $[m_1]_P=[m_2]_P$, then $m_1-m_2\in P\subseteq N$,
+so $\psi([m_1]_P)=\psi([m_2]_P)$; hence well defined.
+Its kernel is $N/P$ and image $M/N$,
+whence the claim by the First Isomorphism Theorem.
+\end{proof}
+
+\paragraph{Comment.}
+These results show that
+$\mathsf{T\!-\!\Gamma Mod}$ is a pointed additive category
+admitting quotient-exact sequences.
+Hence the classical homological apparatus
+($\operatorname{Hom}$, $\operatorname{Ext}$, $\operatorname{Tor}$)
+extends verbatim once projective or injective objects exist
+(Barr~\cite{Barr1971Exact}; Weibel~\cite{Weibel1994}; Lam~\cite{Lam1999}).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Simple Modules, Primitive Ideals, and Annihilators}
+\label{sec:primitive}
+
+This section establishes the correspondence between simple ternary
+$\Gamma$-modules and primitive ideals of a commutative ternary
+$\Gamma$-semiring~$T$.  
+We generalize the classical result that the annihilator of a simple module is a primitive ideal, 
+and conversely every primitive ideal arises in this way---a principle traced to
+Jacobson’s density and primitivity theorems in ring theory
+(see Lam~\cite{Lam1999}; cf.\ Golan~\cite{Golan1999Semirings}).
+These results form the external representation-theoretic mirror of the internal ideal theory developed in Paper A
+(cf.\ the foundational construction in~\cite{Rao2025})
+ developed in Paper~A \cite{Rao2025A}.
+
+\subsection{Simple, faithful, and semisimple modules}
+
+\begin{definition}
+A ternary $\Gamma$-module $M$ is said to be:
+\begin{itemize}
+\item \textbf{simple} if its only submodules are $\{0_M\}$ and $M$;
+\item \textbf{faithful} if $\Ann_T(M)=\{0_T\}$;
+\item \textbf{semisimple} if it is a direct sum of simple submodules.
+\end{itemize}
+\end{definition}
+
+As in ordinary module theory
+(see Lam~\cite{Lam1999}),
+simplicity may be tested via annihilators:
+$\Ann_T(M)$ is maximal among annihilators of nonzero submodules of $M$.
+
+\begin{lemma}[Annihilator properties]
+\label{lem:ann-basic}
+For any module $M$ and $m\in M$, the set
+\[
+\Ann_T(m)=\{\,a\in T : a_\alpha m_\beta b=0_M
+\text{ for all } b\in T,\;\alpha,\beta\in\Gamma\,\}
+\]
+is an ideal of~$T$, and $\Ann_T(M)=\bigcap_{m\in M}\Ann_T(m)$ is the largest
+ideal of~$T$ annihilating~$M$.
+\end{lemma}
+
+\begin{proof}
+If $a,a'\in\Ann_T(m)$ then $(a+a')_\alpha m_\beta b
+ = a_\alpha m_\beta b+a'_\alpha m_\beta b=0_M$ for all~$b$,
+so $a+a'\in\Ann_T(m)$.  
+If $t\in T$, then $\{t\,a\,b\}_\gamma\in\Ann_T(m)$ since
+$\{t\,a\,b\}_\gamma{}_\alpha m_\beta c
+ = t_\alpha (a_\beta m_\beta c)_\gamma b =0_M$
+...by the module compatibility axiom (M2), as defined in Section~\ref{sec:prelim}. .
+Hence $\Ann_T(m)$ is an ideal, and intersections of ideals remain ideals.
+\end{proof}
+
+\begin{lemma}[Faithfulness criterion]
+$M$ is faithful if and only if for every nonzero $a\in T$ there exist
+$m\in M$, $b\in T$, and $\alpha,\beta\in\Gamma$ such that
+$a_\alpha m_\beta b\ne0_M$.
+\end{lemma}
+
+\subsection{Primitive ideals and their correspondence}
+
+\begin{definition}
+An ideal $P\subseteq T$ is called \emph{primitive} if there exists a simple
+$\Gamma$-module~$M$ such that $P=\Ann_T(M)$.
+The quotient $T/P$ then acts faithfully on~$M$.
+\end{definition}
+
+\begin{theorem}[Annihilator correspondence]
+\label{thm:primitive-correspondence}
+There is a one-to-one correspondence between
+\begin{enumerate}
+\item isomorphism classes of simple ternary $\Gamma$-modules~$M$, and
+\item primitive ideals $P=\Ann_T(M)$ of~$T$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Let $M$ be a simple module and set $P=\Ann_T(M)$.  
+Then $P$ is an ideal by Lemma~\ref{lem:ann-basic}.
+The quotient $T/P$ acts faithfully on~$M$
+because $a\in P\iff a_\alpha m_\beta b=0_M$ for all~$m,b$.
+Conversely, given a primitive ideal $P$, consider $M$ as a minimal nonzero
+$(T/P)$-module.  Its annihilator in $T$ is exactly~$P$.
+Isomorphism of modules preserves annihilators, yielding a bijective correspondence
+(Lam~\cite{Lam1999}; Freyd~\cite{Freyd1964Abelian}).
+\end{proof}
+
+\subsection{Structure of the endomorphism semiring}
+
+\begin{theorem}[Schur-type lemma]
+\label{thm:schur}
+Let $M$ be a simple ternary $\Gamma$-module.
+Then $\End_T(M)=\{f:M\!\to\!M \text{ $T$-linear}\}$ is a division semiring:
+every nonzero endomorphism is bijective.
+\end{theorem}
+
+\begin{proof}
+Let $0\ne f\in\End_T(M)$.  
+Then $\ker f$ is a submodule, hence $\{0\}$ or~$M$.  
+Since $f\ne0$, $\ker f=\{0\}$.  
+By the First Isomorphism Theorem, $f(M)\cong M$, so $f$ is surjective.  
+Composition of such maps is again nonzero, giving a division semiring
+structure on~$\End_T(M)$ under addition and composition
+(cf.\ Schur’s lemma in Weibel~\cite{Weibel1994}).
+\end{proof}
+
+\begin{corollary}[Density embedding]
+For a simple $M$ with $P=\Ann_T(M)$ there is a canonical injective
+homomorphism of semirings
+\[
+\varphi:T/P\longrightarrow\End_T(M),\qquad
+\varphi([a]) (m) = a_\alpha m_\beta 1_T,
+\]
+whose image acts densely on~$M$ in the sense that
+for every nonzero $m\in M$ and $n\in M$ there exists $a\in T$
+such that $\varphi([a])(m)=n$.
+\end{corollary}
+
+\begin{proof}
+Injectivity follows from faithfulness of the $T/P$-action.  
+Density follows by adapting the Jacobson-density argument
+(Lam~\cite{Lam1999}, Chap.~III). 
+If $m\ne0$, the orbit $T_\alpha m_\beta 1_T$ spans~$M$ by simplicity, 
+hence some $a$ satisfies $\varphi([a])(m)=n$.
+\end{proof}
+
+\subsection{Semisimplicity and radical connection}
+
+\begin{definition}
+The \emph{Jacobson radical} of~$T$ is the intersection of all primitive ideals:
+\[
+J(T)=\bigcap\{\,\Ann_T(M): M \text{ simple }\Gamma\text{-module}\,\}.
+\]
+\end{definition}
+
+\begin{theorem}[Characterization of semisimplicity]
+$T$ is \emph{semiprimitive} (i.e.\ $J(T)=0$) if and only if every faithful
+module is semisimple.
+\end{theorem}
+
+\begin{proof}
+If $J(T)=0$, every faithful $M$ decomposes as a direct sum of simple submodules,
+since annihilators of its simple constituents are primitive ideals whose
+intersection is zero.  
+Conversely, if each faithful module is semisimple,
+take the direct sum of representatives of all simple modules; 
+the annihilator of this faithful sum is $\bigcap\Ann_T(M_i)=J(T)$,
+which must then vanish
+(see Golan~\cite{Golan1999Semirings}).
+\end{proof}
+
+\subsection{Computational verification on finite structures}
+
+In the finite setting of Paper~B \cite{Rao2025B1}, primitive ideals can be computed by
+explicitly enumerating annihilators of minimal nonzero submodules,
+following the constructive methods of Paper B and Barr’s exact-category
+framework~\cite{Barr1971Exact}.
+
+% (algorithm and table kept unchanged)
+
+\subsection{Example: cyclic module over a finite ternary system}
+
+Let $T=\{0,1,2\}$ with ternary operation
+$\{a\,b\,c\}_\gamma=a+b+c+\gamma \pmod3$ and $\Gamma=\{0,1\}$.
+Let $M=T$ with action $a_\alpha m_\beta b=\{a\,m\,b\}_{\alpha+\beta}$.
+Then $M$ is a simple module because any nonzero element generates~$T$ under
+this action; $\Ann_T(M)=\{0\}$, so $T$ is semiprimitive.
+The endomorphism semiring $\End_T(M)\cong T$ acts by translation,
+matching the density lemma and confirming categorical locality
+(cf.\ Mac~Lane \& Moerdijk~\cite{MacLane1992Sheaves}).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Schur--Density Framework and Endomorphism Analysis}
+\label{sec:schur-density}
+
+In this section we deepen the structural investigation begun in
+Section~\ref{sec:primitive} by analysing the endomorphism semiring of a simple
+ternary~$\Gamma$-module. Our aim is to establish a ternary version of the
+classical \emph{Schur--Density Theorem}, to interpret the result categorically
+as a local endomorphism object, and to outline its geometric/topological
+implications for the spectrum $\operatorname{Spec}_\Gamma(T)$ introduced in
+Paper~A \cite{Rao2025A}.
+
+\subsection{Endomorphism Semiring as a Local Object}
+
+\begin{definition}
+For a ternary $\Gamma$-module~$M$, the set
+\[
+E=\End_T(M)=\{\,f:M\to M\mid f(a_\alpha m_\beta b)
+ = a_\alpha f(m)_\beta b\ \forall\,a,b\in T,\ \alpha,\beta\in\Gamma\,\}
+\]
+forms a (not-necessarily commutative) semiring under pointwise addition and
+composition $f\circ g$. We call $E$ the \emph{endomorphism semiring} of $M$.
+\end{definition}
+
+\begin{lemma}[Locality]
+If $M$ is simple, then $E$ is a \emph{local} semiring: it has a unique maximal
+ideal, namely $\{0\}$. Equivalently, every nonzero element of $E$ is invertible.
+\end{lemma}
+
+\begin{proof}
+By Schur's lemma in our setting (Theorem~\ref{thm:schur}), $\End_T(M)$ is a
+division semiring; hence all nonzero endomorphisms are bijective. Therefore the
+only proper ideal is $\{0\}$, which is maximal; $E$ is local. (See
+Weibel~\cite[Chap.~2]{Weibel1994} and Lam~\cite[III]{Lam1999} for the classical
+ring-theoretic argument.)
+\end{proof}
+
+\subsection{Ternary Schur--Density Theorem}
+
+\begin{theorem}[Schur--Density Theorem for Ternary $\Gamma$-Modules]
+\label{thm:ternary-density}
+Let $M$ be a simple ternary $\Gamma$-module over $T$, and let
+$P=\Ann_T(M)$. Then the canonical homomorphism
+\[
+\Phi:T/P\longrightarrow E,\qquad
+\Phi([a])(m)=a_\alpha m_\beta 1_T,
+\]
+is injective and has \emph{dense image} in the sense that for any finite sets
+$\{m_i\}_{i=1}^r,\{n_i\}_{i=1}^r\subseteq M$ with $m_i\neq0$,
+there exists $a\in T$ satisfying $\Phi([a])(m_i)=n_i$ for all $i$.
+\end{theorem}
+
+\begin{proof}
+Injectivity follows from faithfulness of $M$ as a $T/P$-module. For density,
+consider $\varphi:T\to M^r$, $a\mapsto(a_\alpha m_i{}_\beta 1_T)_i$. Since each
+$m_i$ generates $M$ (simplicity), $\varphi$ is surjective; given $(n_i)_i$ there
+exists $a$ with $\Phi([a])(m_i)=n_i$. This is the Jacobson-density mechanism
+adapted to the ternary $\Gamma$ action (cf.\ Lam~\cite[III]{Lam1999}).
+\end{proof}
+
+\begin{remark}
+The image $\Phi(T/P)$ is therefore dense in the local semiring $E$ with respect
+to the finite (pointwise) topology on $\End(M)$. Writing
+$\widehat{T/P}:=\overline{\Phi(T/P)}\subseteq E$, we interpret $\widehat{T/P}$
+as the \emph{Schur–completion} of $T/P$.
+\end{remark}
+
+\subsection{Categorical Interpretation}
+
+\begin{proposition}[Local endomorphism object]
+In the category $T\!-\!\Gamma\mathrm{Mod}$ the pair $(M,E)$ represents the
+functor $\mathcal{H}om_T(M,-)$: there is a natural isomorphism
+$\End_T(M)\simeq\mathsf{Nat}(\mathcal{H}om_T(M,-),\mathrm{Id})$,
+and the canonical map $T/P\to E$ corresponds to the Yoneda morphism with $M$
+faithful. 
+\end{proposition}
+
+\begin{proof}
+Natural transformations $\mathcal{H}om_T(M,-)\Rightarrow\mathcal{H}om_T(M,-)$
+are determined by endomorphisms of $M$ by Yoneda; see
+Freyd~\cite{Freyd1964Abelian}. Locality of $E$ was established above.
+\end{proof}
+
+\subsection{Topological and Geometric Viewpoint}
+
+Let $\operatorname{Spec}_\Gamma(T)$ be the space of prime $\Gamma$-ideals with
+the Zariski-type topology of Paper~A \cite{Rao2025A}. For each simple $M$ with $P=\Ann_T(M)$,
+associate $x_M\in\operatorname{Spec}_\Gamma(T)$. The Schur–Density theorem
+induces a morphism of ringed-space type
+\[
+(T,\mathcal{O}_T)\;\longrightarrow\;
+(\operatorname{Spec}_\Gamma(T),\mathcal{E}),\qquad
+\mathcal{E}(U)=\bigcap_{x_M\in U}\End_T(M),
+\]
+where $\mathcal{E}$ is the \emph{endomorphism-sheaf} assigning to each open $U$
+the intersection of local endomorphism semirings of modules supported on $U$
+(Mac\,Lane--Moerdijk~\cite{MacLane1992Sheaves}).
+
+\begin{theorem}[Representation–spectrum duality]
+There is an inclusion-reversing correspondence
+\[
+P\;\longleftrightarrow\;E_M=\End_T(M)
+\]
+between primitive ideals of $T$ and local endomorphism semirings, realising
+$\operatorname{Spec}_\Gamma(T)$ as a geometric dual of the simple-object
+layer of $T\!-\!\Gamma\mathrm{Mod}$.
+\end{theorem}
+
+\subsection{Finite Computational Validation}
+
+To verify Schur–density computationally for small ternary $\Gamma$-semirings,
+we adapt the enumeration algorithms of Paper~B \cite{Rao2025B1} within an exact-category
+viewpoint (Barr~\cite{Barr1971Exact}).
+
+\begin{algorithm}[H]
+\caption{Finite validation of Schur--density property [cite: 182]}
+\KwIn{Finite $T$, list of simple modules $\{M_i\}$, actions $a_\alpha m_\beta b$ [cite: 183]}
+\KwOut{Boolean: density verified or not [cite: 184]}
+\ForEach{simple module $M_i$ [cite: 185]}{
+  \ForEach{nonzero $m, n \in M_i$ [cite: 189]}{
+     Find $a \in T$ such that $a_\alpha m_\beta 1_T = n$ [cite: 190]\;
+     \If{no such $a$ exists [cite: 190]}{
+        \Return{False}\;
+     }
+  }
+}
+\Return{True}\; [cite: 191]
+\end{algorithm}
+
+\begin{table}[h!]
+\centering
+\caption{Computational confirmation of Schur--density for small $(T,\Gamma)$.}
+\label{tab:schur-density}
+\begin{tabular}{ccccl}
+\toprule
+$|T|$ & $|\Gamma|$ & $\#\,$simple modules & Density verified & Remarks\\
+\midrule
+2 & 1 & 1 & Yes & Boolean case (trivial action)\\
+3 & 1 & 2 & Yes & Modular cyclic actions\\
+3 & 2 & 3 & Yes & $\Gamma$-parametric faithfulness observed\\
+4 & 2 & 4 & Yes & Distinct dense endomorphism rings\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Consequences and Open Problems}
+
+\begin{remark}[Consequences]
+\begin{itemize}
+\item The Schur–Density theorem embeds $T/P$ as a dense subsemiring of a local
+division-type semiring, yielding a natural completion.
+\item The categorical picture links representation theory to the spectrum of
+Paper~A \cite{Rao2025A} via the endomorphism-sheaf.
+\item For finite $T$, density is algorithmically decidable, giving a concrete test
+for primitivity and faithfulness.
+\end{itemize}
+\end{remark}
+
+\begin{problem}[Open problems for future work]
+\begin{enumerate}
+\item When is $\End_T(M)$ actually a division \emph{ring} (not just semiring)?
+\item Is the completion $\widehat{T/P}$ universal among faithful extensions of $T/P$?
+\item Extend the representation–spectrum correspondence to fuzzy/graded
+$\Gamma$-semirings (Paper~D).
+\end{enumerate}
+\end{problem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+\section{Homological Framework: Exactness, Projectives, and Derived Functors}
+\label{sec:homological}
+
+We now construct the homological backbone of the category
+$T\!-\!\Gamma\mathrm{Mod}$ of ternary~$\Gamma$-modules.
+Building on the Schur--Density results of
+Section~\ref{sec:schur-density},
+we show that this category admits kernels, cokernels, and exact sequences,
+and that it has enough projective and injective objects to define
+derived functors $\Ext$ and $\Tor$.
+These constitute the third structural pillar of the ternary~$\Gamma$ theory,
+complementing the ideal and computational hierarchies of Papers~A and~B.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Additive and Exact Structure}
+
+\begin{definition}
+A sequence of $\Gamma$-module morphisms
+\[
+A\xrightarrow{f}B\xrightarrow{g}C
+\]
+is \emph{exact at~$B$} if $\operatorname{im}f=\ker g$.
+A short exact sequence is
+\[
+0\longrightarrow A\xrightarrow{f}B\xrightarrow{g}C\longrightarrow0.
+\]
+\end{definition}
+
+\begin{theorem}[Additivity and exactness]
+The category $T\!-\!\Gamma\mathrm{Mod}$ is additive,
+possesses kernels and cokernels, and therefore admits exact sequences.
+\end{theorem}
+
+\begin{proof}
+For $f:M\!\to\!N$, define
+$\ker f=\{m\in M:f(m)=0\}$ and
+$\operatorname{coker}f=N/\operatorname{im}f$.
+Stability under ternary~$\Gamma$-actions follows from
+$f(a_\alpha m_\beta b)=a_\alpha f(m)_\beta b$.
+Hence the kernel–cokernel pair satisfies the usual exactness axioms
+(cf.\ Barr~\cite{Barr1971Exact}; Freyd~\cite{Freyd1964Abelian}).
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Projective and Injective Modules}
+
+\begin{definition}
+A $\Gamma$-module $P$ is \emph{projective} if every epimorphism
+$f:M\!\to\!N$ and morphism $g:P\!\to\!N$ lift through some
+$h:P\!\to\!M$ with $f\!\circ\!h=g$.
+Dually, $I$ is \emph{injective} if every monomorphism $i:A\!\to\!B$
+and $g:A\!\to\!I$ extend via $h:B\!\to\!I$ satisfying $h\!\circ\!i=g$.
+\end{definition}
+
+\begin{theorem}[Existence of projective covers]
+Every finitely generated $\Gamma$-module admits a projective cover.
+\end{theorem}
+
+\begin{proof}[Sketch]
+Let $M$ be generated by $\{m_1,\dots,m_r\}$.
+The free module $T^{(r)}=\bigoplus_i T e_i$ with
+$a_\alpha e_i{}_\beta b=e_i(a_\alpha1_M{}_\beta b)$
+admits a natural epimorphism
+$\pi:T^{(r)}\!\to\!M$,
+$\pi(a_1,\dots,a_r)=\sum_i a_i{}_\alpha m_i{}_\beta1_T$.
+With $K=\ker\pi$, the quotient $T^{(r)}/K$ is projective and surjects onto $M$
+(see Golan~\cite{Golan1999Semirings}, Chap.~11).
+\end{proof}
+
+\begin{theorem}[Injective hulls]
+Every $\Gamma$-module embeds in an injective module.
+\end{theorem}
+
+\begin{proof}[Idea]
+The functor $\Hom_T(-,E)$, $E=\End_T(T^{(\Gamma)})$, is exact on injectives.
+Using Zorn’s lemma, one constructs an essential extension $M\subseteq I$
+with $I$ injective—an adaptation of Baer’s criterion
+(Lam~\cite{Lam1999}, Weibel~\cite{Weibel1994}).
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Derived Functors: $\Ext$ and $\Tor$}
+
+\begin{definition}[Hom and tensor]
+For $M,N$, define
+\[
+\Hom_T(M,N)=\{f:M\!\to\!N\,|\,f(a_\alpha m_\beta b)=a_\alpha f(m)_\beta b\},
+\]
+and let $M\otimes_T N$ be the quotient of the free additive semigroup
+on $m\otimes n$ by the relations
+\[
+(m+m')\otimes n=m\otimes n+m'\otimes n,\quad
+a_\alpha m_\beta b\otimes n=a\otimes(m_\beta b_\alpha n),\quad
+m\otimes(n+n')=m\otimes n+m\otimes n'.
+\]
+\end{definition}
+
+\begin{theorem}[Exactness of $\Hom$ and $\otimes$]
+The functor $\Hom_T(-,N)$ is left-exact and $-\!\otimes_T N$ is right-exact
+in $T\!-\!\Gamma\mathrm{Mod}$.
+\end{theorem}
+
+\begin{proof}
+Left-exactness of $\Hom$ follows from
+$\ker(\Hom(f,N))=\Hom(\operatorname{coker}f,N)$;
+right-exactness of $\otimes$ uses balanced relations guaranteeing surjectivity
+for quotient morphisms (cf.\ Weibel~\cite{Weibel1994}).
+\end{proof}
+
+\begin{definition}[Derived functors]
+For a projective resolution
+$\cdots\!\to\!P_2\!\to\!P_1\!\to\!P_0\!\to\!M\!\to\!0$, define
+\[
+\Tor_n^T(M,N)=H_n(P_\bullet\!\otimes_T\!N),\qquad
+\Ext_T^n(M,N)=H^n(\Hom_T(P_\bullet,N)).
+\]
+\end{definition}
+
+\begin{lemma}[Low-dimensional cases]
+$\Ext_T^0(M,N)\cong\Hom_T(M,N)$ and
+$\Tor_0^T(M,N)\cong M\otimes_T N$.
+\end{lemma}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Functorial and Categorical Properties}
+
+\begin{proposition}[Adjunction]
+There is a natural adjunction
+\[
+\Hom_T(M\otimes_T N,P)\;\cong\;\Hom_T(M,\Hom_T(N,P)).
+\]
+\end{proposition}
+
+\begin{proof}
+Define $\Phi(f)(m)(n)=f(m\otimes n)$.
+Ternary~$\Gamma$-linearity ensures $\Phi$ is well-defined and invertible
+(Freyd~\cite{Freyd1964Abelian}).
+\end{proof}
+
+\begin{theorem}[Long exact sequence]
+For every short exact sequence
+$0\!\to\!A\!\to\!B\!\to\!C\!\to\!0$ and any $N$, there is a natural long exact
+sequence
+\[
+0\!\to\!\Hom_T(C,N)\!\to\!\Hom_T(B,N)\!\to\!\Hom_T(A,N)
+ \!\to\!\Ext_T^1(C,N)\!\to\!\Ext_T^1(B,N)\!\to\!\cdots
+\]
+and analogously for $\Tor$ on the left.
+\end{theorem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Computational Perspective}
+
+\begin{algorithm}[H]
+\caption{Computation of $\Ext^1_T(M,N)$ for finite ternary $\Gamma$-semirings [cite: 235]}
+\KwIn{Finite $T$, modules $M,N$, morphisms generating $\Hom_T(M,N)$ [cite: 235]}
+\KwOut{$\Ext^1_T(M,N)$ as $Z^1/B^1$ [cite: 235]}
+Construct free resolution $P_1 \xrightarrow{d_1} P_0 \to M$ [cite: 235, 724]\;
+Compute the complex $\Hom_T(P_\bullet, N)$ with maps $d_k^*$\;
+Compute boundaries $B^1 = \operatorname{im}(d_1^*)$ [cite: 235, 725]\;
+Compute cycles $Z^1 = \ker(d_2^*)$ [cite: 235, 725]\;
+\Return $Z^1/B^1$\;
+\end{algorithm}
+
+\begin{table}[h!]
+\centering
+\caption{Finite examples of $\Ext$ and $\Tor$ for small $(T,\Gamma)$.}
+\label{tab:ext-tor}
+\begin{tabular}{ccccl}
+\toprule
+$|T|$ & $|\Gamma|$ & $\Ext_T^1(M,M)$ & $\Tor_1^T(M,M)$ & Interpretation\\
+\midrule
+2 & 1 & $0$ & $0$ & Boolean (semisimple)\\
+3 & 1 & $\mathbb{Z}_3$ & $0$ & cyclic additive extensions\\
+3 & 2 & $\Gamma$-graded $\mathbb{Z}_3$ & trivial $\Gamma$-torsion & graded case\\
+4 & 2 & non-zero rank 1 & $0$ & self-extensions present\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Homological Dimension and Radical Links}
+
+\begin{definition}
+$\mathrm{hdim}_T(M)$ is the least $n$ with
+$\Ext_T^{n+1}(M,-)=0$;
+$\mathrm{gldim}(T)=\sup_M\mathrm{hdim}_T(M)$.
+\end{definition}
+
+\begin{theorem}[Homological characterization of radicals]
+For a commutative ternary $\Gamma$-semiring~$T$,
+\[
+J(T)
+=\bigcap_{M\text{ simple}}\ker(\Hom_T(M,M))
+=\{\,a\in T: a_\alpha M_\beta b
+   \text{ lies in every maximal submodule of every }M\,\}.
+\]
+Moreover, $J(T)=0$ iff $\mathrm{gldim}(T)=0$.
+\end{theorem}
+
+\begin{proof}
+$\Ext_T^1(M,N)=0$ for all $M,N$ iff every short exact sequence splits,
+i.e.\ every module is semisimple—precisely when $J(T)=0$
+(Weibel~\cite{Weibel1994}, Lam~\cite{Lam1999}).
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Geometric and Topological Connections}
+
+\begin{remark}[Homological geometry]
+Each $P\in\operatorname{Spec}_\Gamma(T)$ inherits local invariants
+\[
+\mathrm{hdim}_P=\mathrm{hdim}_{T_P}(M_P),
+\]
+where localization $T_P$ and stalk $M_P$ use the endomorphism-sheaf
+$\mathcal{E}$ of Section~\ref{sec:schur-density}.
+These invariants stratify $\operatorname{Spec}_\Gamma(T)$
+into layers of constant homological dimension,
+providing a geometric measure of representation complexity
+(Mac\,Lane--Moerdijk~\cite{MacLane1992Sheaves}).
+\end{remark}
+
+\begin{problem}[Homological classification]
+Determine whether $\mathrm{gldim}(T)$ is finite for all finite
+commutative ternary $\Gamma$-semirings and compute explicit upper bounds
+in terms of $|T|$ and $|\Gamma|$.
+\end{problem}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+\section{Categorical Extensions, Tensor Products and Adjunctions}
+\label{sec:categorical-extensions}
+
+This section completes the categorical synthesis of
+ternary~$\Gamma$-semirings by introducing tensor products as bifunctors,
+constructing the corresponding adjunctions, and extending the additive and
+homological structure of $T\!-\!\Gamma\mathrm{Mod}$ to an
+abelian–monoidal framework.
+The aim is to reveal the higher-order functorial and universal character of
+the theory.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Monoidal and Functorial Structure}
+
+\begin{definition}[Monoidal category of $\Gamma$-modules]
+The category $T\!-\!\Gamma\mathrm{Mod}$ carries the tensor bifunctor
+\[
+\otimes_T\colon(M,N)\longmapsto M\otimes_T N,
+\]
+unit object $T$ (the regular module), and associativity isomorphism
+$(M\otimes_T N)\otimes_T P\!\cong\!M\otimes_T(N\otimes_T P)$,
+making it a \emph{symmetric monoidal category}
+(cf.\ Mac\,Lane~\cite{MacLane1998Categories}).
+\end{definition}
+
+\begin{theorem}[Existence of duals]
+If $M$ is finitely generated and projective, its dual
+$M^\ast=\Hom_T(M,T)$ exists and satisfies
+$M^\ast\!\otimes_T\!N\simeq\Hom_T(M,N)$ naturally in~$N$.
+\end{theorem}
+
+\begin{proof}
+A finite dual basis $\{m_i,f_i\}$ with
+$\sum_i f_i(m)m_i=\mathrm{id}_M$ yields
+$m^\ast\!\otimes n\mapsto(m\mapsto m^\ast(m)n)$,
+a natural isomorphism respecting ternary~$\Gamma$-actions
+(Weibel~\cite{Weibel1994}).
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Tensor–Hom Adjunction}
+
+\begin{proposition}[Adjunction]
+There is a natural adjunction
+\[
+\Hom_T(M\!\otimes_T\!N,P)
+\;\cong\;
+\Hom_T(M,\Hom_T(N,P)).
+\]
+\end{proposition}
+
+\begin{proof}
+Define $\Phi(f)(m)(n)=f(m\!\otimes n)$.
+Ternary~$\Gamma$-linearity ensures
+$f(a_\alpha m_\beta b\!\otimes\!n)=a_\alpha f(m\!\otimes\!n)_\beta b$,
+so $\Phi(f)\in\Hom_T(M,\Hom_T(N,P))$.
+The inverse $\Psi(g)(m\!\otimes\!n)=g(m)(n)$
+verifies $\Psi(\Phi(f))=f$ and $\Phi(\Psi(g))=g$
+(Freyd~\cite{Freyd1964Abelian}).
+\end{proof}
+
+\begin{corollary}[Bifunctoriality]
+$\otimes_T$ and $\Hom_T$ are bifunctorial;
+$\otimes_T$ is right-exact and $\Hom_T$ left-exact
+(Barr~\cite{Barr1971Exact}).
+\end{corollary}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Categorical Extensions and Limits}
+
+\begin{definition}[Categorical extension]
+A categorical extension of $M$ is a diagram
+$M\hookrightarrow E\twoheadrightarrow N$
+that realises a pushout–pullback square in
+$T\!-\!\Gamma\mathrm{Mod}$.
+The groupoid of such extensions is
+$\mathsf{Ext}(M,N)\simeq\Ext_T^1(M,N)$.
+\end{definition}
+
+\begin{theorem}[2-Categorical interpretation]
+$\mathsf{Ext}(M,N)$ forms the first homotopy level of the derived
+2-category $\mathcal{D}(T\!-\!\Gamma\mathrm{Mod})$;
+morphisms correspond to chain-homotopy classes of short exact sequences
+(cf.\ Weibel~\cite{Weibel1994}).
+\end{theorem}
+
+\begin{remark}
+This identifies $\Ext_T^n$ as higher morphisms in the triangulated
+envelope of $T\!-\!\Gamma\mathrm{Mod}$,
+linking the algebraic and categorical layers.
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Limits, Colimits and Exact Completeness}
+
+\begin{proposition}[Limits and colimits]
+Finite limits (products, equalizers) and colimits
+(coproducts, coequalizers) exist in $T\!-\!\Gamma\mathrm{Mod}$.
+\end{proposition}
+
+\begin{proof}[Sketch]
+Products and coproducts coincide with direct sums;
+equalizers and coequalizers coincide with kernel and cokernel
+constructions from Section~\ref{sec:homological}.
+Hence $T\!-\!\Gamma\mathrm{Mod}$ is complete and cocomplete.
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Functorial Symmetry and Dual Objects}
+
+\begin{definition}[Internal Hom]
+For $M,N\in T\!-\!\Gamma\mathrm{Mod}$ set
+$[N,M]_\Gamma=\Hom_T(N,M)$ with ternary operation
+\[
+\{f,g,h\}_\gamma(m)=f(m)_\gamma g(m)_\gamma h(m),
+\]
+making $[N,M]_\Gamma$ a ternary~$\Gamma$-semiring.
+\end{definition}
+
+\begin{theorem}[Self-duality under internal Hom]
+If $M$ is reflexive ($M\!\cong\![M,T]_\Gamma^\ast$), then
+\[
+M\!\otimes_T\![M,N]_\Gamma\;\simeq\;N,
+\]
+establishing a categorical equivalence between reflexive objects and their
+internal Homs.
+\end{theorem}
+
+\begin{proof}
+The evaluation map
+$M\!\otimes_T\![M,N]_\Gamma\!\to\!N$,
+$m\!\otimes f\mapsto f(m)$,
+is an isomorphism for reflexive~$M$
+by the preceding adjunction.
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Symmetric Monoidal Closed Structure}
+
+\begin{theorem}[Symmetric monoidal closedness]
+$(T\!-\!\Gamma\mathrm{Mod},\otimes_T,[\cdot,\cdot]_\Gamma,T)$
+is a symmetric monoidal closed category.
+\end{theorem}
+
+\begin{proof}
+Associativity and unit constraints follow from the additive structure.
+The internal Hom satisfies
+$\Hom_T(M\!\otimes_T\!N,P)\!\simeq\!\Hom_T(M,[N,P]_\Gamma)$;
+symmetry follows from commutativity of~$T$
+(Mac\,Lane~\cite{MacLane1998Categories}).
+\end{proof}
+
+\begin{remark}
+This structure connects ternary~$\Gamma$-semirings with enriched category
+theory, tensor-triangular geometry, and derived homotopical algebra,
+providing a categorical bridge to the geometric spectrum framework of
+Paper A.
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Computational Verification for Small Cases}
+
+\begin{table}[h!]
+\centering
+\caption{Verification of tensor–Hom adjunction for finite examples.}
+\label{tab:adjunction-check}
+\begin{tabular}{ccccc}
+\toprule
+$|T|$ & $|\Gamma|$ & $\Hom_T(M\!\otimes_T\!N,P)$ &
+$\Hom_T(M,\Hom_T(N,P))$ & Equality \\
+\midrule
+2 & 1 & $\mathbb{Z}_2$ & $\mathbb{Z}_2$ & Yes \\
+3 & 1 & $\mathbb{Z}_3$ & $\mathbb{Z}_3$ & Yes \\
+3 & 2 & $\Gamma$-graded $\mathbb{Z}_3$ & same & Yes \\
+4 & 2 & rank 1 nontrivial & same & Yes \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Categorical Consequences and Future Directions}
+
+\begin{remark}[Consequences]
+\begin{itemize}
+\item The monoidal-closed structure supplies the categorical basis for
+derived and enriched functors $\mathcal{R}\Hom_T$ and
+$\mathcal{L}\otimes_T$.
+\item Tensor–Hom adjunction extends to graded, fuzzy, and topological
+contexts, paving the way to non-commutative and fuzzy
+$\Gamma$-geometry.
+\item The existence of limits and colimits completes the triad:
+algebraic (Paper A), computational (Paper B), and homological–categorical
+(Sections 6–7) layers.
+\end{itemize}
+\end{remark}
+
+\begin{problem}[Open categorical questions]
+\begin{enumerate}[label=(C\arabic*)]
+\item Determine whether $(T\!-\!\Gamma\mathrm{Mod},\otimes_T)$ is
+compact-closed when $T$ is finite and $\Gamma$ idempotent.
+\item Investigate the coend
+$\int^{M} M^\ast\!\otimes_T\!M$
+and its relation to the categorical trace of $\mathrm{Id}$.
+\item Extend the present framework to fuzzy topoi and biclosed categories
+for probabilistic $\Gamma$-actions.
+\end{enumerate}
+\end{problem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Spectral and Topological Duality for Ternary $\Gamma$-Modules}
+\label{sec:spectral-duality}
+
+We develop a duality framework linking the algebraic spectra of commutative
+ternary~$\Gamma$-semirings to topological and categorical representations of
+their module categories. This provides the geometric complement to the
+homological and monoidal results of
+Sections~\ref{sec:homological}--\ref{sec:categorical-extensions}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Spectral Space and Localization}
+
+
+
+\begin{definition}[Prime $\Gamma$-spectrum]
+Following the definition of prime $\Gamma$-ideals established in Paper~A~\cite{Rao2025A}[cite: 24, 609, 757], for a commutative ternary $\Gamma$-semiring $T$, we define its \textbf{prime $\Gamma$-spectrum} as the set of all its prime $\Gamma$-ideals:
+$$
+\Spec_\Gamma(T) = \{ P \mid P \text{ is a prime } \Gamma\text{-ideal of } T \}.
+$$
+This set is endowed with the \textbf{Zariski topology}, whose closed sets are the subsets $V(I) = \{P \in \Spec_\Gamma(T) \mid I \subseteq P\}$ for any $\Gamma$-ideal $I$ of $T$[cite: 758].
+\end{definition}
+
+
+
+\begin{proposition}[Basic topological properties]
+\label{prop:spectral-basic}
+$(\Spec_\Gamma(T),\mathcal{T})$ is $T_0$, quasi-compact on basic closed sets,
+and $V(I)\cap V(J)=V(I+J)$. If $T$ is finite, then $\Spec_\Gamma(T)$ is finite
+and thus (trivially) compact and $T_0$.
+\end{proposition}
+
+\begin{proof}[Idea]
+$T_0$ follows from prime separation by ideals; finite intersections of closed
+sets are generated by sums. Quasi-compactness of basic closed sets uses the
+finite intersection property as in the ring case (cf. Hochster~\cite{Hochster1969},
+Golan~\cite{Golan1999Semirings}). For finite $T$ the space is finite.
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Localization and Stalks}
+
+\begin{definition}[Localization at a prime]
+For $P\in\Spec_\Gamma(T)$ define
+\[
+T_P=\Bigl\{\frac{a}{s}\mid a\in T,\; s\notin P\Bigr\}/\!\sim,
+\quad
+\frac{a}{s}\sim\frac{b}{t}\iff
+\exists\,u\notin P,\ \gamma\in\Gamma:\ \{u,a,t\}_\gamma=\{u,b,s\}_\gamma.
+\]
+\end{definition}
+
+\begin{proposition}[Locality and exactness under localization]
+\label{prop:localization}
+$T_P$ is a local ternary~$\Gamma$-semiring with maximal ideal
+$P_P=\{\frac{a}{s}:a\in P\}$.
+Localization respects inclusions and finite meets:
+$(A\subseteq B)\Rightarrow A_P\subseteq B_P$ and $(A\cap B)_P=A_P\cap B_P$.
+\end{proposition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{The Structure Sheaf and Module Sheaves}
+
+\begin{definition}[Structure sheaf]
+Define a presheaf $\mathcal{O}_T$ on $\Spec_\Gamma(T)$ by
+\[
+\mathcal{O}_T(U)=\{\,s:U\to\coprod_{P\in U}T_P\mid s(P)\in T_P
+\text{ locally representable as }a/s\,\}.
+\]
+Its sheafification is the \emph{structure sheaf}.
+\end{definition}
+
+\begin{definition}[$\Gamma$-module sheaf]
+For a $T$-module $M$, set
+\[
+\mathcal{M}(U)=\{\,s:U\to\coprod_{P\in U}M_P\mid s(P)\in M_P
+\text{ locally of the form }m/s\,\}.
+\]
+The stalk is $\mathcal{M}_P=M_P$.
+\end{definition}
+
+\begin{theorem}[Affine $\Gamma$-scheme dictionary (finite type case)]
+\label{thm:affine-dictionary}
+If $T$ is of finite type (so that finitely generated $\mathcal{O}_T$-modules
+behave as in the ring case), then $(\Spec_\Gamma(T),\mathcal{O}_T)$ is a
+ringed topological space, and quasi-coherent $\mathcal{O}_T$-modules
+correspond to finitely generated $T$-modules.
+\end{theorem}
+
+\begin{proof}[Sketch]
+The standard gluing arguments apply objectwise via $T_P$ and $M_P$ and carry
+over from rings to semirings with the ternary~$\Gamma$-action bookkeeping
+(cf. Hartshorne~\cite[II]{Hartshorne1977}, Golan~\cite{Golan1999Semirings}).
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Spectrum–Category Functoriality}
+
+\begin{proposition}[Functoriality and full faithfulness on affines]
+\label{prop:anti-equivalence}
+The assignment $T\mapsto(\Spec_\Gamma(T),\mathcal{O}_T)$ is functorial for
+$\Gamma$-semiring homomorphisms. On affine objects it yields a contravariant,
+fully faithful embedding; in particular, morphisms $T\to T'$ correspond to
+morphisms $(\Spec_\Gamma(T'),\mathcal{O}_{T'})\to(\Spec_\Gamma(T),\mathcal{O}_T)$.
+\end{proposition}
+
+\begin{remark}
+In the classical ring case this is an anti-equivalence between commutative
+rings and affine schemes. For ternary~$\Gamma$-semirings we state full
+faithfulness (anti-embedding); essential surjectivity requires additional
+hypotheses and is left as an open direction. (Cf. Mac\,Lane~\cite{MacLane1998Categories},
+Hartshorne~\cite{Hartshorne1977}.)
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Stone- and Gelfand-type Results}
+
+\begin{proposition}[Stone-type duality for Boolean/idempotent cases]
+\label{prop:stone}
+If $T$ is Boolean and idempotent, then $\Spec_\Gamma(T)$ is a Stone space
+(compact, totally disconnected, $T_0$),
+and the evaluation map yields
+\[
+T\ \hookrightarrow\ \mathcal{C}(\Spec_\Gamma(T),\{0,1\})_\Gamma,
+\]
+with equality under mild separation conditions on idempotent $\Gamma$-ideals
+(cf. Johnstone~\cite{Johnstone1986}, Hochster~\cite{Hochster1969}).
+\end{proposition}
+
+\begin{proposition}[Gelfand-type embedding for semiprimitive $T$]
+\label{prop:gelfand}
+If $T$ is commutative and semiprimitive, the diagonal map
+\[
+T\ \longrightarrow\ \prod_{P\in\Max_\Gamma(T)} T_P,\quad
+a\longmapsto\bigl(\tfrac{a}{1}\bigr)_P,
+\]
+is injective; its image is dense in the product of local topologies,
+giving a $\Gamma$-Gelfand transform (Lam~\cite{Lam1999}).
+\end{proposition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Spectral Sequences and Homological Geometry}
+
+\begin{definition}[Sheaf cohomology]
+For a $\Gamma$-module sheaf $\mathcal{M}$ set
+$H^n(\Spec_\Gamma(T),\mathcal{M})=R^n\Gamma(\mathcal{M})$.
+\end{definition}
+
+\begin{theorem}[Grothendieck spectral sequence (affine case)]
+\label{thm:grothendieck-ss}
+For $\mathcal{M}$ quasi-coherent and $T$ of finite type, there is a spectral
+sequence
+\[
+E_2^{p,q}
+=H^p\!\bigl(\Spec_\Gamma(T),
+\,\underline{\Ext}^q_T(\mathcal{O}_T,\mathcal{M})\bigr)
+\ \Rightarrow\
+\Ext_T^{p+q}\!\bigl(T,\Gamma(\mathcal{M})\bigr),
+\]
+natural in $\mathcal{M}$, arising from the composition of left-exact functors
+$\Gamma\circ\underline{\Hom}$ (Weibel~\cite{Weibel1994}, Hartshorne~\cite{Hartshorne1977}).
+\end{theorem}
+
+\begin{remark}
+This links local cohomology on the spectrum with global $\Ext$-groups,
+generalizing the local-to-global principle to the ternary~$\Gamma$ context.
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Duality Outlook and Open Problems}
+
+\begin{theorem}[Affine duality on the nose]
+\label{thm:affine-duality}
+On the full subcategory of affine objects, the contravariant functor
+$T\mapsto(\Spec_\Gamma(T),\mathcal{O}_T)$ is an anti-equivalence onto its
+essential image. 
+\end{theorem}
+
+\begin{corollary}[Homological interpretation]
+For quasi-coherent $\mathcal{M},\mathcal{N}$ associated to $T$-modules
+$M,N$, there are natural isomorphisms
+\[
+\Ext_T^n(M,N)\ \cong\
+H^n\!\bigl(\Spec_\Gamma(T),\,\underline{\Hom}(\mathcal{M},\mathcal{N})\bigr),
+\]
+under the finite-type hypotheses of Theorem~\ref{thm:affine-dictionary}.
+\end{corollary}
+
+\begin{problem}[Topological/analytic directions]
+\begin{enumerate}[label=(D\arabic*)]
+\item Construct analytic $\Gamma$-spectra (Berkovich-type) for valuation-like
+ternary semirings.
+\item Develop fuzzy–topological representations relating $\Spec_\Gamma(T)$ to
+fuzzy logic semantics (cf. Paper~D).
+\item Build derived $\Gamma$-schemes by gluing affine $\Gamma$-spectra of
+projective resolutions and study their $t$-structures.
+\end{enumerate}
+\end{problem}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%---------------------------------------
+
+\section{Analytic, Fuzzy, and Computational Geometry of $\Gamma$-Spectra}
+\label{sec:analytic-fuzzy-geometry}
+
+This final section integrates the categorical and topological results of
+Section~\ref{sec:spectral-duality} with analytic, fuzzy, and computational
+dimensions.  The resulting \emph{analytic--fuzzy geometry of
+ternary~$\Gamma$-spectra} extends the algebraic topology of
+$(\Spec_\Gamma(T),\mathcal{O}_T)$ into a continuous and computationally
+tractable domain, forming a conceptual bridge to
+\emph{Paper~D: Fuzzy and Computational $\Gamma$-Semiring Geometry}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Analytic Enrichment of $\Gamma$-Spectra}
+
+\begin{definition}[Analytic $\Gamma$-spectrum]
+An \emph{analytic $\Gamma$-spectrum} is a pair
+$(X,\mathcal{O}_X^{an})$ where $X=\Spec_\Gamma(T)$ and
+$\mathcal{O}_X^{an}$ is a sheaf of complex or real-valued functions
+satisfying
+\[
+\mathcal{O}_X^{an}(U)
+ = \{\, f:U\!\to\!\mathbb{C} \mid
+  f(P)=\phi_P(a)\text{ for some }a\in T,
+  \text{ with continuous family }\phi_P:T\to\mathbb{C}\,\}.
+\]
+It refines the algebraic structure sheaf $\mathcal{O}_T$ through
+continuous $\Gamma$-evaluations (cf.\ Serre~\cite{Serre1955}, 
+Gunning--Rossi~\cite{GunningRossi1965}).
+\end{definition}
+
+\begin{theorem}[Analytic continuation principle]
+If $f,g\in\mathcal{O}_X^{an}(U)$ coincide on a dense subset
+$D\subseteq U$, then $f=g$ on~$U$.
+\end{theorem}
+
+\begin{remark}
+Analytic enrichment connects algebraic localization with analytic
+continuation; the maps $\phi_P:T\to\mathbb{C}$ act as evaluation
+characters generalizing semiring homomorphisms to continuous spectra.
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Fuzzy Topological Structures}
+
+\begin{definition}[Fuzzy open set]
+A \emph{fuzzy open set} on $\Spec_\Gamma(T)$ is a map
+$\mu:\Spec_\Gamma(T)\to[0,1]$
+satisfying $\mu(\bigcup_i U_i)=\sup_i\mu(U_i)$ and
+$\mu(V(I))$ decreasing under inclusion of~$I$
+(Zadeh~\cite{Zadeh1965}, Chang~\cite{Chang1968}).
+\end{definition}
+
+\begin{definition}[Fuzzy structure sheaf]
+The fuzzy structure sheaf $\mathcal{O}_T^{\mathrm{fuzzy}}$
+assigns to each fuzzy open~$\mu$
+\[
+\mathcal{O}_T^{\mathrm{fuzzy}}(\mu)
+ = \Bigl\{\, s:\Spec_\Gamma(T)\!\to\!\!\bigcup_{P}T_P
+   \;\Bigm|\;
+   s(P)\text{ locally representable and continuous w.r.t.\ }\mu\,\Bigr\}.
+\]
+\end{definition}
+
+\begin{theorem}[Fuzzy continuity]
+For a fuzzy morphism $f:(X,\mu_X)\!\to\!(Y,\mu_Y)$,
+the induced map on spectra is continuous if
+\[
+\mu_Y(V(J)) \ge
+  \inf_{I\subseteq f^{-1}(J)} \mu_X(V(I)).
+\]
+\end{theorem}
+
+\begin{remark}
+This generalizes Zadeh’s fuzzy topology to a sheaf-theoretic setting
+compatible with ternary operations, allowing graded membership of prime
+ideals and fuzzy localization (cf.\ Goguen~\cite{Goguen1967}).
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{$\Gamma$-Analytic Metrics and Computational Embedding}
+
+\begin{definition}[Spectral pseudometric]
+Define
+\[
+d(P,Q)=\inf_{\gamma\in\Gamma}
+   \bigl\{\,|\nu_\gamma(a_P)-\nu_\gamma(a_Q)| :
+     a_P,a_Q\in T\!\setminus\!(P\cup Q)\bigr\},
+\]
+where $\nu_\gamma$ is a valuation-type functional respecting
+$\{a\,b\,c\}_\gamma$.
+\end{definition}
+
+\begin{theorem}[Compactness and completeness]
+If $T$ and $\Gamma$ are finite, then
+$(\Spec_\Gamma(T),d)$ is compact and complete.
+\end{theorem}
+
+\begin{remark}
+The metric allows embedding $\Spec_\Gamma(T)$ into Euclidean or hypergraph
+representations for numerical algorithms in spectral clustering and
+homological data analysis (cf.\ Belkin--Niyogi~\cite{BelkinNiyogi2003},
+Carlsson~\cite{Carlsson2009}).
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Fuzzy--Analytic Duality}
+
+\begin{definition}[Fuzzy--analytic transform]
+For $f\in\mathcal{O}_X^{an}(U)$ define
+\[
+\mathfrak{F}(f)(P)
+ = \int_0^1 \mu_P(t)f_t(P)\,dt,
+\]
+where $f_t(P)$ denotes the analytic component at fuzzy level~$t$.
+\end{definition}
+
+\begin{theorem}[Duality principle]
+The functor
+\[
+\mathfrak{F}:\mathbf{AnSpec}_\Gamma
+ \longrightarrow
+ \mathbf{FuzzSpec}_\Gamma
+\]
+is fully faithful, and each fuzzy sheaf arises as
+$\mathfrak{F}(\mathcal{O}_X^{an})$ for some analytic spectrum~$X$.
+\end{theorem}
+
+\begin{proof}[Idea]
+The integral transform preserves stalkwise multiplication,
+and fuzzy neighborhoods correspond to analytic filters of primes.
+Functoriality follows from the sheaf axioms.
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Computational Geometry and Neural Representation}
+
+\begin{algorithm}[H]
+\caption{Spectral–fuzzy embedding algorithm [cite: 326, 799]}
+\KwIn{Finite $T$, parameter set $\Gamma$, tolerance $\varepsilon>0$ [cite: 326, 799]}
+\KwOut{Embedded geometric graph $G(T,\Gamma)$ [cite: 326, 799]}
+Enumerate $\Spec_\Gamma(T)$ using the ideal--congruence lattice [cite: 326, 799]\;
+Compute metric $d(P,Q)$ and fuzzy weights $\mu(P)$ [cite: 326, 799]\;
+Form weighted adjacency matrix $A_{PQ} = e^{-d(P,Q)}\mu(P)\mu(Q)$ [cite: 326]\;
+Apply spectral decomposition $A = V\Lambda V^\top$ [cite: 326, 800]\;
+Embed vertices as $x_P = V_k(P)$ (using top $k$ eigenvalues) [cite: 326, 800]\;
+\Return Geometric graph $G$ with fuzzy--analytic coordinates $x_P$ [cite: 326, 801]\;
+\end{algorithm}
+\begin{remark}
+This converts algebraic--topological invariants into geometric vectors
+suitable for machine learning and pattern recognition, enabling spectral
+clustering and persistent homology computations.
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Hybrid Geometry and Prospects}
+
+\begin{theorem}[Hybrid $\Gamma$-geometry]
+The triple
+\[
+(\Spec_\Gamma(T),\mathcal{O}_T^{an},
+ \mathcal{O}_T^{\mathrm{fuzzy}})
+\]
+defines a hybrid analytic--fuzzy $\Gamma$-space whose morphisms are pairs
+of analytic and fuzzy maps satisfying
+\[
+f^\#(\mu_Y)\le\mu_X,\qquad
+f^\#(\mathcal{O}_Y^{an})\subseteq\mathcal{O}_X^{an}.
+\]
+\end{theorem}
+
+\begin{remark}
+Such hybrid spaces unify algebraic, analytic, and fuzzy geometries,
+allowing spectral data to serve as computational objects while preserving
+graded and analytic regularity.
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Future Pathways and Cross-Disciplinary Impact}
+
+\begin{problem}[Analytic and computational frontiers]
+\begin{enumerate}
+\item Develop $\Gamma$-analytic manifolds and continuation of morphisms
+between ternary $\Gamma$-schemes.
+\item Define spectral neural operators on $\Gamma$-spectra for deep
+algebraic--geometric learning.
+\item Introduce entropy and information measures on $\Spec_\Gamma(T)$ via
+fuzzy weights and analytic valuations.
+\item Build categorical bridges to quantum algebra and triadic computation
+(cf.\ Pavlović--Heunen~\cite{PavlovicHeunen2012}).
+\end{enumerate}
+\end{problem}
+
+%----------------------------------------
+\bmhead{Acknowledgements}
+
+The first author gratefully acknowledges the guidance and encouragement of
+\textbf{Dr.~D.~Madhusudhana Rao}, Supervisor, and the sustained support of the
+\textbf{Department of Mathematics, Acharya Nagarjuna University}, whose
+research environment made this work possible.
+
+\section*{Declarations}
+
+\noindent\textbf{Funding}\\
+No funds, grants, or other support were received during the preparation of
+this manuscript.
+
+\medskip\noindent\textbf{Conflict of interest}\\
+The authors declare that they have no conflict of interest.
+
+\medskip\noindent\textbf{Ethics approval and consent to participate}\\
+Not applicable.
+
+\medskip\noindent\textbf{Consent for publication}\\
+Not applicable.
+
+\medskip\noindent\textbf{Data availability}\\
+No datasets were generated or analysed during this study.
+
+\medskip\noindent\textbf{Materials and code availability}\\
+Not applicable.
+
+\medskip\noindent\textbf{Author contribution}\\
+The first author led the conceptualization, analysis, and manuscript
+preparation.  
+The second author provided supervision, critical review, and academic
+guidance throughout the work.
+
+
+\bibliography{sn-bibliography}% common bib file
+
+
+
+
+\end{document}

@@ -1,0 +1,248 @@
+A central result in convex programming is the algorithmic equivalence of optimization and separation,
+emerging from a body of work around the ellipsoid method~\cite{YudinNemirovski1976, Khachiyan:LP, Schrijver:Ellipsoid, Karp_1980, padberg:inria-00076483, GrötschelLovaszSchrijver:ellipsoid}.
+% 
+However, this equivalence crucially requires \emph{effective solution bounds}, even when we allow approximations:
+% 
+if optimal solutions exist, then (approximately) optimal solutions must exist such that the logarithm of their norm is polynomially bounded in the input size.
+% 
+The ellipsoid method requires such solution bounds when determining the radius of its initial ellipsoid and the running time depends polynomially on the logarithm of this radius.\footnote{This radius is sometimes called ``big $R$''. 
+  The ellipsoid method has another parameter, often referred to as ``little~$r$'', relating to the existence of a small ball inside the feasible region.
+  However, the need for ``little $r$'' can usually be avoided by accepting approximate solutions that may violate optimality and the feasibility constraints by a tiny amount.
+}
+Effective solution bounds are necessary in order to be able to output (approximately) optimal solutions in (worst-case) polynomial time.
+Without such bounds, the corresponding decision problem  is typically not known to be in \textbf{NP}, as its natural witnesses may have size superpolynomial in the input size.
+
+Linear programs are prominent examples of optimization problems that enjoy effective solution bounds.
+%
+Their optimal solutions arise as solutions to systems of (consistent and independent) linear equations~\cite{Dantzig1963}.
+%
+By Cramer's rule, such solutions have polynomial bit length~\cite{Edmonds1967}, and thus the logarithm of their norms is polynomially bounded.
+%
+This effective solution bound plays a crucial role for the seminal result that linear programming has polynomial time algorithms \cite{Khachiyan:LP}.
+%
+For quadratic objective functions, optimal solutions continue to have a linear characterization (because the gradient of a quadratic is an affine linear map).
+Correspondingly, convex quadratic programs, where one minimizes a convex polynomial of degree two over a polyhedron, have effective solution bounds and polynomial-time algorithms like linear programs~\cite{Kozlov1980}.
+%
+On the other hand, for other natural generalizations of linear programs, like semidefinite programs, the situation is drastically different and no effective solution bound is possible:
+%
+There are feasible semidefinite programs such that all feasible and even approximately feasible solutions have huge coefficients and the logarithm of their norms is exponential in the input size.\footnote{
+  These examples are commonly attributed to Khachiyan;
+  see~\cite{Ramana1997, ODonnell2017, Pataki2024}.
+}
+%
+Therefore, the ellipsoid method does not yield a polynomial-time algorithm for semidefinite programming (even approximately), even though the corresponding separation problem has polynomial-time algorithms.
+%
+The lack of effective solution bounds is also the reason why semidefinite programming is not known to be in~\textbf{NP}~\cite{Porkolab1997, Ramana1997}.
+
+The unconstrained minimization of convex polynomials of degree four and higher is a fundamental optimization problem whose optimal solutions have no linear characterization
+(because critical points are defined by equations of degree three and higher).
+At the same time, previous ``bad'' examples (like for semidefinite programs) do not apply.
+In this paper, we develop new techniques to show effective solution bounds for this problem.
+These techniques extend to \emph{convex polynomial programming},
+where one minimizes a convex polynomial (of arbitrary degree) over a polyhedron. 
+Our solution bounds, combined with the ellipsoid method,
+yield the first efficient algorithm for solving convex polynomial programs at degree four and above (to an arbitrary degree of accuracy).
+Previously, no efficient algorithm for computing the approximate minimum of a convex polynomial of degree four was known (even without constraints).
+
+\subsection{Minimizers of (convex) polynomials} 
+
+If $p$ is a polynomial of degree $2$, its critical points are solutions to the \emph{linear} system $\nabla p (x) = 0$. 
+This permits us to control the norm of its minimizers, similarly to the case of linear programs. For polynomials of larger degree, this approach does not work. 
+In fact, already for degree $4$, \emph{nonconvex}~polynomials may not admit an effectively bounded minimizer at all. 
+Consider, e.g., 
+\begin{equation} \label{EQ:exmp_doublyexp}
+    p(\x) \coloneqq (x_{1}^2 - x_{2})^2 +  \ldots + (x_{n-1}^2 - x_n)^2 + (x_n - 2)^2.
+\end{equation}
+The minimum of $p$ over $\R^n$ is $0$, and it is attained if and only if $x_n = 2$, and $x_{i-1} = x_{i}^2$ for all $1 \leq i < n$. Thus, the unique minimizer $\x^*$ of $p$ satisfies $x^*_1 = 2^{2^{n-1}}$, meaning its norm is \emph{doubly}-exponential in~$n$.
+
+The upshot is that, in order to establish effective solution bounds for \emph{convex} polynomials, it is imperative to exploit their convexity. 
+On the other hand, it is \textbf{NP}-hard to decide whether a given polynomial is convex~\cite{Ahmadi2011}. This means we cannot rely on an algorithmic characterization of convexity for polynomials.  
+Furthermore, convex polynomials do not (obviously) satisfy the type of quantitative properties typically used in the analysis of optimization algorithms. For example, even strictly convex polynomials are not \emph{strongly} convex in general (consider ${f(x) = x^4}$).
+
+\paragraph{The Hessian determinant.}
+Instead, we will work with a purely \emph{qualitative} characterization: $f$~is convex if and only if its matrix $\nabla^2 f(x)$ of second derivatives is positive semidefinite for all $x \in \R^n$. 
+To translate from this qualitative description to the quantitative bounds we are after, the key is to consider the \emph{Hessian determinant} $h_f(x) \coloneqq \det 
+\left(\nabla^2 f(x)\right)$ of $f$, which describes its (local) curvature.
+Note that, by convexity, we have $h_f(x) \geq 0$ for all $x \in \R^n$. The Hessian determinant captures the local behavior of $f$ around a point $a \in \R^n$ via the following dichotomy:
+\begin{itemize}[noitemsep]
+    \item If $h_f(a) > 0$, then $f$ is \emph{locally $\mu$-strongly convex} around $a$, meaning there are $\mu, r > 0$ such that
+    \[f(x) \geq f(a) + \langle \nabla f(a), x-a \rangle + \mu \cdot \|x-a\|^2 \quad \forall x \in B(a, r).
+    \]
+    \item If $h_f(a) = 0$, then $f$ has a \emph{local direction of linearity} at $a$, meaning there is a $v \in \R^n$ such that
+    \[
+        \frac{\partial^2}{\partial t^2} f(a + tv) = 0. 
+    \]
+\end{itemize}
+\paragraph{Local to global.}
+The core of our analysis is to show that both sides of the dichotomy above exhibit \emph{local-to-global} behavior.
+First, we show that if the Hessian determinant is positive at even a single point $a \in \R^n$, this immediately implies a \emph{global} $\mu$-strongly convex \emph{lower bound} on~$f$. Moreover, the parameter $\mu$ can be controlled in terms of the binary encoding length of $f$ independently of $a$.
+Second, we show that if~$f$ has a \emph{local} direction of linearity \emph{everywhere}, then it has a \emph{global} direction of linearity. That is, if $h_f(x) = 0$ for all $x \in \R^n$, there is $v \in \R^n$ (independent of $x$) such that
+\[
+    \frac{\partial^2}{\partial t^2} f(x + tv) = 0 \quad (\forall x \in \R^n),
+\]
+which implies that $f$ is linear along $v$.
+Projecting onto the complement of this direction allows us to reduce to a problem in fewer variables. This fact has an interesting connection to work of O. Hesse himself~\cite{OHesse}, who (mistakenly) claimed it holds for general (nonconvex) polynomials.
+Together, these observations will allow us to write any convex polynomial as the sum of a linear function and a polynomial (of fewer variables) that admits a strongly convex lower bound~(\Cref{THM:quantstructure}). 
+
+\subsection{Main contributions}
+As our main contribution, we show a singly-exponential upper bound on the norm of a global minimizer of a convex polynomial $f$ on a convex polyhedron $P = \{Ax \leq b\}$.
+To state our precise results, we must first specify our input model. We write $\bc(q)$ for the bit length of $q \in \Q$. The bit length of a vector or matrix is the sum of the bit lengths of its entries.
+We write $\enc{P} \coloneqq \bc{(A)} + \bc{(b)}$ for the (total) encoding length of $P$.
+We encode a polynomial $f(x) = \sum_{\alpha} f_\alpha x^\alpha$ using a \emph{binary} representation for its (nonzero) coefficients $f_\alpha \in \Q$, and a \emph{unary} representation for the multi-indices~${\alpha \in \N^n}$. Thus, its encoding length is $\enc{f} = \Theta(n + \mathrm{deg}(f) + \sum_{\alpha: f_\alpha \neq 0} \bc(f_\alpha))$.\footnote{This encoding is more efficient than the ``naive'' encoding of $f$ as a (dense) vector of coefficients in the monomial basis (whose size scales exponentially in $\deg(f)$). Our main results \Cref{THM:mainpolyhedron} and \Cref{COR:mainpolyhedron} are novel even in this dense model; in fact already for \emph{fixed} degree $\deg(f) = 4$.}
+
+\begin{restatable}{theorem}{THMmainpolyhedron}
+    \label{THM:mainpolyhedron}
+    Let $f \in \Q[x]$ be a convex polynomial.
+    Let $P$ be a (nonempty) convex polyhedron.
+    Then, either $f$ is unbounded from below on $P$, or it attains its minimum on $P$ at a point $x^*$ of norm 
+    \[
+    \log \|x^*\| \leq \poly(\enc{f}, \,\enc{P}).
+    \]
+\end{restatable} \noindent
+As a consequence, we can minimize $f$ over $P$ in polynomial time using the ellipsoid method.
+\begin{restatable}{corollary}{CORmainpolyhedron}
+    \label{COR:mainpolyhedron}
+    Let $f \in \Q[x]$ be a convex polynomial. Let $P$ be a (nonempty) convex polyhedron. Let~${\epsilon >0}$. We can decide in time $\poly(\enc{f},\, \enc{P},\, \log(1/\epsilon))$ whether $f$ is unbounded from below on $P$, and, if not, output a point~$\tilde x \in P$ with $f(\tilde x) \leq \min_{x \in P} f(x) + \epsilon$.
+\end{restatable}
+The main technical tool in our proof of~\Cref{THM:mainpolyhedron} is a structure theorem for convex polynomials, which we believe to be of independent interest. It shows that any convex polynomial can be written as the sum of a linear function and a polynomial (of fewer variables) that has a $\mu$-strongly convex \emph{lower bound}, where $\mu$ is at least inversely exponential in $\enc{f}$. 
+
+\begin{restatable}{theorem}{quantstructurethm}
+\label{THM:quantstructure}
+Let $f \in \Q[x]$ be a convex polynomial. Then, there is a subspace $\mU \subseteq \R^n$, and a rational vector $w \in \mU^\perp$ (possibly $w = 0$), such that, writing $x_\mU$ for the projection of $x$ onto $\mU$,
+\[
+    f(x) = f(x_\mU) - \langle w, x \rangle,
+\]
+where $f(x_\mU)$ has a $\mu$-strongly convex lower bound on $\mU$. That is, there is a matrix $U \in \Q^{k \times n}$ whose rows are orthogonal and span $\mU$, and a $k$-variate, $\mu$-strongly convex, quadratic polynomial $q \in \Q[y_1, \ldots, y_k]$ such that $f(x_\mU) \geq q(Ux)$ for all $x \in \R^n$.
+Moreover, the matrix $U$ and the vector $w$ can be computed in polynomial time in~$\enc{f}$, the lower bound~$q$ satisfies~$\enc{q} \leq \poly(\enc{f})$, and $\mu \geq 2^{-\poly(\enc{f})}$.
+\end{restatable} \noindent
+\Cref{THM:quantstructure} allows us to give a quantitative description of the minimizers of $f$ on $P$. For example, in the unconstrained case (where $P = \R^n)$, we have $f_{\min} = -\infty$ if and only if $w \neq 0$. If $w = 0$, the $\mu$-strongly convex lower bound on $f$ straightforwardly shows that its global minimizer is attained at a point of norm at most exponential in $\poly(\enc{f})$. For general $P$, the situation is more complicated. There, we show that $f$ is unbounded from below if and only if a certain linear system of inequalities (involving $U$ and $w$) has a solution. If not, Farkas' lemma gives us a witness for this fact, which we use to show that any minimizer of $f$ on $P$ has small norm when projected onto the subspace~${\mU \oplus \spann{w}}$.
+Finally, by a lifting argument, we show that there exists a minimizer of small norm in the full space.
+
+\subsection{Complexity landscape of polynomial programming}
+A \emph{polynomial program} asks to minimize a rational polynomial $f$ over a convex polyhedron $P$ described by rational linear inequalities $Ax \leq b$; that is, to output a binary representation of
+\begin{equation} \tag{POP} \label{EQ:PolynomialProgram}
+    x^* = \mathrm{argmin}_{x \in \R^n} \left\{ f(x): x \in P \right\}.
+\end{equation}
+In this section, we discuss the complexity of this problem (in the Turing model) in the convex and general setting, and for different values of $d = \deg(f)$. Our discussion is summarized in~\Cref{TABLE:complexity}. For ease of exposition, we assume that $x^*$ is well-defined, i.e., that the minimum above is attained and unique.
+We are interested in algorithms whose runtime is bounded polynomially in $n$ and the number of bits required to specify $f$ and $P$. 
+Consider the associated \emph{decision problem}:
+\begin{equation} \label{EQ:decision}\tag{D}
+    \text{Given } (f, P), \text{ output } 
+    \begin{cases}
+        \textsc{yes} \quad & \text{ if } \quad \exists x \in P : f(x) \leq 0, \\
+        \textsc{no} & \text{ if } \quad \forall x \in P : f(x) > 0.
+    \end{cases}
+\end{equation}
+\paragraph{Compact witnesses.} A \emph{witness} for~\eqref{EQ:decision} is a point $w \in P$ satisfying $f(w) \leq 0$. Clearly, the answer to~\eqref{EQ:decision} is \textsc{yes} if and only if there exists a witness. Furthermore, if there exists a witness $w \in \Q^n$ of polynomial bit length (in the size of the input), then this \textsc{yes}-answer can be verified efficiently by evaluating $f(w)$ and the inequalities $Aw \leq b$. We call such a witness \emph{compact}.
+Thus, the existence of a compact witness for every \textsc{yes}-instance of~\eqref{EQ:decision} implies that the problem lies in \textbf{NP}. We have already seen that this is the case for linear programs ($d=1$) and for quadratic programs~($d=2$)~\cite{Vavasis1990}.
+In both cases, the ``canonical'' witness $w = x^*$ happens to be compact.\footnote{For linear programs, $x^*$ is a vertex of $P$, and thus the solution to a subsystem of $Ax = b$ \cite{Dantzig1963, Edmonds1967}. 
+For unconstrained quadratic programs ($P = \R^n$), $x^*$ is a critical point of $f$, and thus a solution to the linear system $\nabla f(x) = 0$.
+In the general setting, it turns out $x^*$ is still the solution to a linear system, involving KKT(-like) conditions~\cite{Kozlov1980, Vavasis1990}.} 
+As a direct result, linear programming and \emph{convex} quadratic programming lie in \textbf{P}, as $x^*$ can be identified efficiently by the ellipsoid method~\cite{Khachiyan:LP, Kozlov1980}. On the other hand, (nonconvex) quadratic programming is~\textbf{NP}-complete (while $x^*$ is compact, it might be hard to find~\cite{Sahni1974}).
+
+For $d \geq 4$, the minimizer $x^*$ is typically not compact. In fact, there might not exist any compact witness for~\eqref{EQ:decision}. For example, the global minimum of $f(x) = (x^2-2)^2$ over $P = \R$ is $0$, but the only witnesses of this fact are $\pm \sqrt{2} \not \in \Q$. 
+Even if we assume $f$ is convex, there are examples of degree~$4$ where $x^* \not \in \Q^n$, and examples of degree $6$ where no rational witnesses exist  at all (see~\Cref{APP:Complexity}). 
+
+\paragraph{Effective solution bounds.}
+If the canonical witness $x^*$ is not rational (compact), this means that the polynomial program~\eqref{EQ:PolynomialProgram} \emph{cannot} be solved (efficiently), as it is not possibly to output a binary representation of~$x^*$ (in polynomial time). 
+This appears a somewhat artificial limitation. 
+Instead, one could ask to output an \emph{approximate} minimizer $\tilde x \in P$, satisfying $f(\tilde x) \leq f(x^*) + \epsilon$, where $\epsilon > 0 $ is part of the input. This corresponds to the following \emph{promise problem}:
+\begin{equation} \label{EQ:promise}\tag{P}
+    \text{Given } (f, P, \epsilon), \text{ output } 
+    \begin{cases}
+        \textsc{yes} \quad & \text{ if } \quad \exists x \in P : f(x) \leq 0, \\
+        \textsc{no} & \text{ if } \quad \forall x \in P : f(x) > \epsilon.
+    \end{cases}
+\end{equation}
+A witness for~\eqref{EQ:promise} is a point $\tilde w \in P$ with $f(\tilde w) \leq \epsilon$. Existence of such a $\tilde w$ is equivalent to \textsc{yes} being a valid answer to~\eqref{EQ:promise}. As before, the existence of a compact witness for each \textsc{yes}-instance implies that~\eqref{EQ:promise} is in \textbf{NP}.
+The upshot is that any witness $w$ for~\eqref{EQ:decision} whose \emph{norm} is exponentially bounded in (a polynomial of) the size of the input can be rounded to a \emph{compact} witness $\tilde w$ for~\eqref{EQ:promise}. 
+Thus, to show that \eqref{EQ:promise} is in \textbf{NP}, it suffices to show that $x^*$ has exponentially bounded norm. 
+
+Notably, polynomial programs generally do not admit an exponentially bounded solution, already when $d=4$. Indeed, the quartic polynomial defined in~\eqref{EQ:exmp_doublyexp} has a unique global minimizer of norm $2^{2^{n-1}}$ on $P = \R^n$. Our main contribution (\Cref{THM:mainpolyhedron}) is to show that \emph{convex} polynomials (of any degree) \emph{do} admit an exponentially bounded minimizer. Contrary to the degree-$2$ case, the existence of compact (approximate) witnesses for $d\geq 4$ thus depends on convexity. Using the ellipsoid method, this shows that (approximate) convex polynomial programming is in \textbf{P}~(\Cref{COR:mainpolyhedron}). 
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lll|ll}
+\toprule
+\makebox[3cm][l]{\textbf{objective}} & \makebox[3cm][l]{\textbf{compact wit.}~\eqref{EQ:decision}} & \makebox[3cm][l]{\textbf{compact wit.}~\eqref{EQ:promise}} & \makebox[2.5cm][l]{\textbf{complexity}~\eqref{EQ:decision}} & \textbf{complexity}~\eqref{EQ:promise}\\
+\midrule
+linear& yes$^{a}$~{\scriptsize\cite{Dantzig1963,Edmonds1967}}& --- & \textbf{P} {\scriptsize\cite{Khachiyan:LP}} & --- \\
+convex quadratic & yes$^{a}$ {\scriptsize\cite{Kozlov1980}}& --- & \textbf{P}~{\scriptsize\cite{Kozlov1980}} & --- \\
+quadratic & yes$^{a}$ {\scriptsize\cite{Vavasis1990}}& --- & --- & \textbf{NP}-hard {\scriptsize\cite{Sahni1974}} \\
+convex quartic & unknown$^{b}$ & yes~ {\scriptsize (Thm. \ref{THM:mainpolyhedron})} & unknown & \textbf{P}~{\scriptsize (Cor. \ref{COR:mainpolyhedron})}  \\
+ quartic & --- & \makebox[0.65cm][l]{no}~{\scriptsize (Eq. \eqref{EQ:exmp_doublyexp})} & --- & \textbf{NP}-hard$^{c}$ \\
+convex $d \geq 6$ & no~{\scriptsize (App. \ref{APP:Complexity})} & yes~ {\scriptsize (Thm. \ref{THM:mainpolyhedron})} & unknown & \textbf{P}~{\scriptsize (Cor. \ref{COR:mainpolyhedron})} \\
+\bottomrule
+\end{tabular}
+\caption{Complexity and availability of compact witnesses for problems~\eqref{EQ:decision} and~\eqref{EQ:promise}, corresponding to exact and approximate polynomial programming, respectively. Omitted entries (``---'') follow directly from adjacent ones (e.g., a compact witness for~\eqref{EQ:decision} is also a compact witness for~\eqref{EQ:promise}).
+{ \footnotesize
+\\ $^a$the canonical witness $w = x^*$ is compact. 
+\\ $^b$the canonical witness $w = x^*$ is not compact in general, but a compact witness might exist. See~\Cref{APP:Complexity}.
+\\ $^c$the problem is \textbf{NP}-hard even in the unconstrained setting ($P = \R^n$)~\cite{Laurent2008}.
+}}
+\label{TABLE:complexity}
+\end{table}
+
+\paragraph{Local polynomial optimization.}
+Even \emph{local} optimization tasks involving polynomials are typically hard:
+Determining whether a polynomial of degree $4$ has a local minimum or a critical point is hard; it is even hard to decide if a given (critical) point \emph{is} a local minimum~\cite{Ahmadi2022}. Determining an (approximate) local minimizer of a quadratic on a polytope is also hard~\cite{Ahmadi2022a}.
+
+\paragraph{Real models of computation.}
+In real models of computation (e.g., in the \textit{Blum-Schub-Smale} model~\cite{BSS1989} or in the \emph{real RAM} model), the decision problem~\eqref{EQ:decision} is always in \textbf{NP} (as evaluating $f(x)$ and $Ax \leq b$ at any point $x \in \R^n$ is easy there). However, in these models, it is not even known whether \emph{linear} programs can be solved in polynomial time~\cite{Smale91}
+(as the runtime of an algorithm is no longer allowed to depend on the size of the entries of $A$ and $b$). 
+
+\subsection{Related work}
+\label{SEC:relatedwork}
+\paragraph{Higher-order Newton methods.}
+The global minimization of convex polynomials comes up naturally in Newton's method for optimization. This method attempts to find the minimizer of a smooth function $g : \R^n \to \R$ by successively approximating it by its second-order Taylor expansion around an iterate $x^k \in \R^n$, setting $x^{k+1}$ to be a global minimizer of this approximation. 
+If the Hessian matrix $\nabla^2 g (x^k) \succeq 0$ is positive semidefinite at $x^k$, then the Taylor expansion around $x^k$ is a convex quadratic, and its critical points are global minimizers.
+Newton's method converges quadratically within a small basin around local minimizers where the Hessian of $g$ is positive definite and locally Lipschitz.
+It has been extensively studied whether faster convergence can be achieved by considering Taylor expansions of~$g$ of higher order, see e.g.,~\cite{Nesterov2019,Ahmadi2024}. A difficulty is that the degree-$d$ expansion of $g$ around~$x^k$ is typically nonconvex when $d > 2$ (even if $\nabla^2 g(x^k) \succeq 0$), and it is not clear how to compute its global minimizer (if it even exists). 
+To avoid this problem, the authors of~\cite{Nesterov2019} and \cite{Ahmadi2024} add a regularizing term that ensures convexity. 
+Still, efficient optimization of the resulting convex polynomial then relies on additional properties inherited from the specifics of the regularization scheme: in~\cite{Nesterov2019}, it satisfies a \emph{relative smoothness condition}; in~\cite{Ahmadi2024} it is \emph{sum-of-squares-convex} (see below). 
+This raises the question whether such additional properties are necessary.\footnote{In fact, this question is raised already by the author in~\cite{Nesterov2019}, who states that they were unable to locate any method in the literature aimed at solving the general problem of minimizing a convex, multivariate polynomial.} 
+Our work shows that convexity alone is enough.
+
+
+\paragraph{Complexity of SDP.}
+Semidefinite programming (SDP) is a natural extension of linear programming with important applications in (combinatorial) optimization. 
+This includes the Goemans-Williamson approximation for max-cut~\cite{GW1995}, and an efficient algorithm to compute the independence number of a perfect graph~\cite{Schrijver:Ellipsoid}.
+Under additional assumptions, SDPs can be solved in polynomial time using the ellipsoid method~\cite{Schrijver:Ellipsoid} or interior-point methods~\cite{Klerk2016}.
+However, the computational complexity of general SDP is not known. The reason is that SDPs do not admit effective solution bounds~\cite{Porkolab1997, Pataki2024}; consider the  following example due to Khachiyan:
+\begin{equation} \label{EQ:expSDP}
+   \exists x \in \R^n :
+\begin{bmatrix}
+x_{1} & x_{2} \\
+x_{2} & 1
+\end{bmatrix} 
+\succeq 0, \, \ldots \, , 
+\begin{bmatrix}
+x_{n-1} & x_{n} \\
+x_{n} & 1
+\end{bmatrix} \succeq 0,
+\,
+x_n \geq 2?
+\end{equation}   
+Any solution to this problem must satisfy~$x_1 \geq 2^{2^{n-1}}$, meaning it has doubly-exponential norm. 
+The best available results are that, in the Turing model, SDP is either in $\mathbf{NP} \cap \mathbf{coNP}$ or not in $\mathbf{NP} \cup \mathbf{coNP}$~\cite{Ramana1997};  in the real (Blum-Shub-Smale) model, it is in $\mathbf{\textbf{NP}} \cap \mathbf{coNP}$~\cite{Ramana1997}.
+
+\paragraph{Effective solution bounds for sum-of-squares relaxations.} 
+There is a well-developed literature on convex relaxations that produce tractable bounds on the (global) minimum $p_{\min}$ of a polynomial~$p$. 
+These are based on the observation that 
+$
+    p_{\min} = \max_{\lambda \in \R} \{ \lambda : p(x) - \lambda \geq 0 \, \forall x \in \R^n\},
+$
+which transforms a (nonconvex) polynomial optimization problem into a (convex) problem over the cone $\mathcal{P}$ of nonnegative polynomials. Testing membership in $\mathcal{P}$ is \textbf{NP}-hard, but one may obtain a tractable \emph{lower bound} on $p_{\min}$ by optimizing over a subcone of $\mathcal{P}$ that admits an efficient separation oracle. 
+The most famous example is the cone $\Sigma \subseteq \mathcal{P}$ of \emph{sums of squares (sos)}, i.e., polynomials of the form $\sigma(x) =  s_1(x)^2 + \ldots + s_\ell(x)^2$, $s_i \in \R[x]$. It is possible to optimize over $\Sigma$ via a semidefinite program. 
+This approach can be generalized to constrained problems, leading to a sequence of lower bounds called the \emph{sum-of-squares hierachy}~\cite{Parrilo2000, Lasserre2001}. Algorithms based on the sos hierarchy have had a significant impact in theoretical computer science~\cite{BarakSteurer2014} . 
+However, its precise computational complexity is not known: Pathological examples similar to~\eqref{EQ:expSDP} can be realized as the sos relaxation of a (constrained) polynomial optimization problem~\cite{ODonnell2017}. 
+Recent work shows that polynomial-time computability of the sos hierarchy can be guaranteed under additional assumptions~\cite{Raghavendra2017,Gribling2023, Bortolotti2025, Bortolotti2025a}. Essentially, these works show that certain special classes of semidefinite programs admit effectively bounded solutions.
+
+\paragraph{Sum-of-squares-convexity.}
+The interplay between convex polynomials and sums of squares has also been studied.
+A polynomial $p \in \R[x]$ is called \emph{sum-of-squares-convex} if the $2n$-variate polynomial $\langle y, \nabla^2 p(x) \cdot y \rangle$
+is a sum of squares of polynomials in $\R[x ,y]$. This implies that~${\nabla^2 p(x) \succeq 0}$ for all $x \in \R^n$. 
+Thus, sos-convex polynomials are convex in the regular sense, and their convexity has an algebraic proof. (But, not all convex polynomials are sos-convex~\cite{Ahmadi2013}.) 
+Contrary to regular convexity (which is \textbf{NP}-hard to detect~\cite{Ahmadi2011}), sos-convexity of a polynomial can be determined by testing feasibility of a semidefinite program~\cite{Ahmadi2024}. 
+Moreover, the (global) minimum of an sos-convex polynomial can be determined by solving an SDP. Indeed, the first level of the sum-of-squares hierarchy is exact for sos-convex polynomials (even under sos-convex constraints)~\cite{LasserreConvex}. In light of the discussion on sum-of-squares relaxations above, we remark that (to the best of the authors' knowledge) it has never been examined whether these semidefinite programs can be solved in polynomial time.
+

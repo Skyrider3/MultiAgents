@@ -1,0 +1,205 @@
+\section{Preliminaries}
+
+% Game Description
+\subsection{Game Instructions}
+We proceed with a more formal description of the Ideal Chomp Game.
+
+\begin{Def}
+    [Ideal Chomp Game] Let $R$ be a ring and $I_0 = (0)$ the zero ideal. Players A and B alternately take turns, starting with player A. In each turn, the current player chooses an element $a_n \in R \setminus I_{n-1}$ and builds the ideal $I_n = I_{n-1} + (a_n)$. The player who increases the ideal to the entire ring, that is, who sets $I_n = R$, loses the game. 
+\end{Def}
+
+More explicitly, the $n$-th ideal is given by $I_n = (0, a_1, a_2, \dots, a_n)$. In addition, a valid state of an Ideal Chomp Game is completely described by the tuple $(R, a_1, \dots, a_N)$ where $R$ is the ring on which the game is played and $a_1, \dots, a_N$ are the elements the players choose in the subsequent turns, i.e. satisfy $a_i \in R \setminus (0,a_1,\dots,a_{i-1})$.
+
+\begin{Ex}
+    The Ideal Chomp Game $(\BR[x,y], x+y, 2x + y, 2)$, is a valid game since
+$$x+y \in \BR[x,y],$$ 
+$$2x+y \in \BR[x,y]\setminus (x+y) \text{ and}$$ 
+$$2 \in \BR[x,y] \setminus (x+y, 2x+y).$$
+The game is won by the second player since the first player increased the ideal to the entire ring by adding $2$: $(x+y,2x + y,2) = (x,y,2) = \BR[x,y].$
+\end{Ex}
+
+% Reformulation
+\subsection{A Reformulation of the Game}
+The Ideal Chomp Game can also be phrased in the following way.
+
+\begin{Def}[Quotient Chomp Game]
+
+    Let $R_0 = R$ be a ring. Players A and B alternately take turns, starting with player A. In each turn, the current player chooses an element $a_n \in R_{n-1} \setminus \{0\}$ and builds the ring $R_{n} = R_{n-1} / (a_n)$. The player who reduces the given ring to the zero ring, that is, who sets $R_{n} = 0$, loses the game.
+\end{Def}
+
+More explicitly, the $n$-th ring is given by $$R_n = \left(((R/a_1)\dots)/a_n\right) \cong R/(a_1,\dots,a_{n}).$$ In addition, the state of a game is completely described by the tuple $(R, a_1,\dots, a_n)$ where $a_i \in R_{i-1}$.
+
+Due to the following proposition, the Quotient Chomp Game is, indeed, only a reformulation of the Ideal Chomp Game.
+
+\begin{Prop}
+    The Ideal Chomp Game on the ring $R$ and the Quotient Chomp Game starting with the ring $R_0 = R$ are equivalent formulations of the same game.
+\end{Prop}
+
+\begin{myproof}
+    %Consider the Ideal Chomp Game on the ring $R$ and the Quotient Chomp Game starting on the ring $R_0 = R$. We show that the game states of these two games stand in bijection and that player X, with $X \in \{A,B\}$, has a winning strategy in the Ideal Chomp Game if and only if he has a winning strategy in the Quotient Chomp Game.
+    %For the Ideal Chomp Game we call a tuple $(R,a_1,\dots,a_N)$ where the first entry specifies the ring the game is played on and the $a_i$'s are a sequence of allowed moves such that the game ends with $a_N$, a complete set of moves.
+    Let $\CI_R = \{(R,a_1,\dots, a_N) \mid \forall n \in [N]: a_n \notin (a_1,\dots, a_{n-1})\}$ be the set of all complete sets of moves in the Ideal Chomp Game on the ring $R$. Since two complete sets of moves reflect the same game if and only if all the ideals $I_n = (a_1,\dots,a_n)$ equal one another, we introduce the equivalence relation $$(R,a_1,\dots, a_N) \sim (R, b_1, \dots, b_N) \iff \forall n \in [N]: (a_1, \dots, a_n) = (b_1,\dots, b_n).$$
+    
+    Then the set of all valid Ideal Chomp Games is $\CI^{\sim}_R = \CI_R/\text{\hspace*{-1.5mm}}\sim$. 
+    
+    Similarly, let $\CQ_R = \{(R,a_1,\dots, a_N) \mid \forall n \in [N]: a_n \in R/(a_1,\dots, a_{n-1})\setminus\{0\}\}$ be the set of all complete sets of moves in the Quotient Chomp Game starting on the ring $R_0 = R$ and let $\CQ_R^{\sim} = \CQ_R/\text{\hspace*{-1.5mm}}\sim$ be the set of all valid Quotient Chomp Games where the equivalence relation is given as
+    \[(R,a_1,\dots, a_N) \sim (R,b_1,\dots,b_N) \iff \forall n \in [N]\ \exists \phi_n:
+    \begin{tikzcd}
+    R \arrow[r]\arrow[dr] & R_{a,n} \arrow[d, "\phi_n"] \\
+     & R_{b,n}
+    \end{tikzcd}\
+    %R_{a,n} = R_{b,n}
+    \text{commutes.}\]
+    where $R_{i,n}$ for $i \in \{a,b\}$ is inductively defined by $R_{i,0} = R$ and $R_{i,n} = R_{i,n-1}/(i_n)$.
+
+    We claim that the maps $$\phi: \CI_R^{\sim} \to \CQ_R^{\sim}, [(R, a_1, \dots, a_N)] \mapsto [(R, [a_1], \dots, [a_N])] \hspace*{5mm} \text{and}$$ $$\psi: \CQ_R^{\sim} \to \CI_R^{\sim}, [(R, b_1, \dots, b_N)] \mapsto [(R, \psi(b_1), \dots, \psi(b_N))],$$
+    where $[a_i]$ is the equivalence class of $a_i$ in $R_{a,i-1}$ and $\psi(b_i) \in R$ is any element with $[\psi(b_i)] = b_i$ in $R_{i-1}$, are well-defined and two-sided inverses to one another.
+
+    For a valid game $[(R, a_1, \dots, a_N)] \in \CI_R^{\sim}$, the game $\phi([(R,a_1,\dots,a_N)])$ is a well-defined element of $\CQ_R^{\sim}$ as the rings $R_{a,n}$ only depend on the ideals $I_n$, i.e. only on the game's equivalence class. For a valid game $[(R, b_1, \dots, b_N)] \in \CQ_R^{\sim}$ we have that for any $i$ and any choice of representative $\psi(b_i)$ it holds that $$\psi(b_i) \in R \setminus (0,\psi(b_1), \dots, \psi(b_{i-1}))$$ since $b_i \neq 0$ in $R_{i-1}$. In addition, the game $[(R, \psi(b_1),\dots, \psi(b_N))]$ does not depend on the choice of representative $\psi(b_i)$ since for the cosets of any two representatives $x, y \in b_i$ we have $[x] = [y]$ in $R/(0,\psi(b_1), \dots, \psi(b_{i-1}))$, so the ideals $(0,\psi(b_1), \dots, \psi(b_{i-1}), x)$ and $(0, \psi(b_1), \dots, \psi(b_{i-1}), y)$ lie in the same equivalence class of $\CI_R^{\sim}$, that is, they are representatives of the same element in $\CI_R^{\sim}$. Furthermore, there exists an element $x_{b_i} \in R$ that satisfies $[x_{b_i}] = b_i$ in $R_{b,i-1}$ since $\pi_{i-1}^{-1}(b_i)$ is non-empty where $$\pi_{i-1}: R \to R_{b,i-1} = \left((R/(b_0))/\dots\right)/(b_{i-1})$$ is the projection map.
+
+    To show that the maps $\phi$ and $\psi$ are two-sided inverses of one another, notice that if we set $I_{i-1} = (0,a_1, \dots, a_{i-1})$, then $a_i$ is a representative of the coset $[a_i] = a_i I_{i-1}$. Since $\psi$ is independent of the choice of representative by the above paragraph, we conclude that $\psi \circ \phi = \id_{\CI_R^{\sim}}$. The direction $\phi \circ \psi = \id_{\CQ_R^{\sim}}$ is immediate as the coset of a representative of a coset is again the same coset.
+
+    Finally, a valid Ideal Chomp Game is won by the first player if and only if the corresponding valid Quotient Chomp Game is won by the first player since the number of turns is the same and both games are won by the first player if and only if the game consists of an even number of turns. Similarly, the second player wins the game if and only if the game consists of an odd number of turns. Hence, these games are just reformulations of one another.
+\end{myproof}
+
+% First Winning Conditions
+\subsection{First Winning Conditions}
+
+In the following, we list some immediate winning conditions.
+
+\begin{Prop}
+\label{fieldwin}
+    If $R$ is a field, then player $B$ wins.
+\end{Prop}
+
+\begin{myproof}
+    Already in the first round, player $A$ has to increase the zero ideal to the entire ring $R$ since the only proper ideal of a field is the zero ideal. Player $B$ wins although they did not even make a move.
+\end{myproof}
+
+\begin{Prop}
+\label{principalmaxidealwin}
+    If $R$ is a ring with a principal maximal ideal and not a field, then player $A$ wins. In particular, player $A$ wins on any principal ideal domain that is not a field.
+\end{Prop}
+
+\begin{myproof}
+    Let $(a) \ideal R$ be a principal maximal ideal. Since $R$ is not a field, $(a) \neq (0)$, the move $I_1 = (a)$ is a regular move for player $A$. Now, player $B$ has to increase the maximal ideal to the entire ring. Hence, player $A$ wins the game.
+\end{myproof}
+
+Notice that at least for a Notherian ring $R$ the question ``Which player has a winning strategy in the Ideal Chomp Game on $R$?'' is well-posed due to the following corollary.
+
+\begin{Cor}\label{ExistenceOfWinningStrategy}
+    Let $R$ be a Noetherian ring. Then one of the players has a winning strategy in the Ideal Chomp Game.
+\end{Cor}
+
+\begin{myproof}
+    By Zermelo's Theorem for deterministic, finite, two-player, zero-sum games of perfect information (see \cite{zermelo}), there exist strategies such that the game ends in a draw or one of the players has a winning strategy. Since the Noetherian condition implies the finiteness of the Ideal Chomp Game and there is no mechanism for a game ending in a draw in the Ideal Chomp Game, we conclude that one of the players has to have a winning strategy in the Ideal Chomp Game on $R$.
+\end{myproof}
+
+Finally, we can easily determine the winner of the Ideal Chomp game on any Cartesian product of rings.
+
+\begin{Prop}
+\label{CartesianProdCor}
+    Let $R = \prod_{i \in I} R_i$ be a non-trivial Cartesian product of Noetherian rings, i.e. for all $i \in I$ we have $R_i \neq 0$ and $|I| \geq 2$. Then player A has a winning strategy in the Ideal Chomp Game on $R$.
+\end{Prop}
+
+\begin{myproof}
+    If there exists an index $i_A \in I$ such that player A has a winning strategy on $R_{i_A}$, then player A has a winning strategy on $R$ by reducing the game on R to the game on $R_{i_A}$ by playing $a = (a_i)_{i \in I}$ with $$a_i = \begin{cases}
+        a_W & \text{if } i = i_A\\
+        1 & \text{otherwise}
+    \end{cases}$$ in her first move where $a_W$ is the element player A's winning strategy on $R_{i_A}$ starts with.\newline Otherwise, the second player has a winning strategy on every $R_i$ by Corollary \ref{ExistenceOfWinningStrategy}. In particular, player B has a winning strategy in the Ideal Chomp Game on $R_1$. Player A can steal this winning strategy of player B on $R_1$ by playing $a = (a_i)_{i \in I}$ with $$a_i = \begin{cases}
+        0 & \text{if } i = 1\\
+        1 & \text{otherwise}
+    \end{cases}$$
+    which leaves player B with the ring $R_1$ on which the second player (now player A) has a winning strategy.
+\end{myproof}
+
+% Poonen's classification
+\subsection{Poonen's Classification of local $\overline{K}$-Algebras up to Rank 6}
+
+From the perspective of the Quotient Ring Game it is clear that the dimension of the ring $R$ is monotonically decreasing throughout the game play. This suggests the approach where one tries to classify rings of increasing dimension one after the other by finding second-player-win rings $S$ and noticing that any ring $R$ that player A can reduce to $S$ by factoring through a principal ideal is a first-player-win ring. However, even the case of zero-dimensional rings is quite tricky already. The most basic examples are $\bar{K}$-algebras R which are finite dimensional as $\bar{K}$-vector spaces and, hence, also Artinian rings. By the Structure Theorem for Artinian rings (see Theorem 8.7 in \cite{atiyah-macdonald}), any such $\bar{K}$-algebra $R$ is a finite product of local $\bar{K}$-algebras. By Proposition \ref{CartesianProdCor} immediately classify all $\bar{K}$-algebras with more than one factor in this factorisation. Hence, we are left with classifying the Ideal Chomp Game on local $\bar{K}$-algebras $R$.
+
+In this case, Poonen classified all local $K$-algebras up to rank $6$ in his paper \cite{poonen}. We summarize his results in the following Table \ref{poonentable}.
+Here $n$ is the rank of the $K$-algebra, the vector $\vec{d}$ is given as $\vec{d} = (d_i)_{i > 0} = (\dim(\Fm^{i}/\Fm^{i+1}))_{i > 0}$ where $\Fm$ is the unique maximal ideal of the local $K$-algebra.  An asterisk ``$*$'' means that this case is only a separate isomorphism class when $\charact(K) = 2$ and a double asterisk ``$**$'' means that this case is only a separate isomorphism class if $\charact(K) = 3$, in other characteristica these cases reduce to the case immediately above it. The column ``Win'' summarises the results we will obtain throughout the next Section \ref{ClassificationIdealChomp} by showing which player has a winning strategy on the respective $K$-algebra.\\
+
+%\vspace{3cm}
+
+%%%%%%%%% Table
+%\enlargethispage{1cm}
+
+\renewcommand{\arraystretch}{1.2}
+\setlength\LTleft{-1cm}
+\setlength\LTright{0pt plus 1fill}
+%\setlength\LTpre{-2cm}
+%\setlength\LTpost{-2cm}
+\thispagestyle{empty}
+\enlargethispage{10mm}
+
+\begin{longtable}{|c|c|c|c|c|}
+        \hline
+        \( n \) & \( \vec{d} \) & Name & \textbf{Local $K$-algebra} & \textbf{Win}\\
+        \hline
+        1 & (0) & \(R_1\) & \( K \) & B\\
+        \hline
+        2 & 1 & \(R_2\) & \( K[x] / (x^2) \) & A\\
+        \hline
+        3 & 1,1 & \(R_3\) & \( K[x] / (x^3) \) & A\\
+          & 2 & \(R_4\) & \( K[x, y] / (x, y)^2 \) & B\\
+        \hline
+        4 & 1,1,1 & \(R_5\) & \( K[x] / (x^4) \) & A\\
+          & 2,1 & \(R_6\) & \( K[x, y] / (x^2, xy, y^3) \) & A\\
+          & 2,1 & \(R_7\) & \( K[x, y] / (x^2, y^2) \) & A\\
+          & *2,1 & \(R_{7,*}\) & \( K[x, y] / (x^2 + y^2, xy) \) & A \\
+          & 3 & \(R_8\) & \( K[x, y, z] / (x, y, z)^2 \) & A\\
+        \hline
+        5 & 1,1,1,1 & \(R_9\) & \( K[x] / (x^5) \) & A\\
+          & 2,1,1 & \(R_{10}\) & \( K[x, y] / (x^2, xy, y^4) \) & A\\
+          & 2,1,1 & \(R_{11}\) & \( K[x,y] / (x^2 + y^3, xy) \) & A\\
+          & 2,2 & \(R_{12}\) & \( K[x, y] / (xy, x^3, y^3) \) & B\\
+          & 2,2 & \(R_{13}\) & \( K[x,y] / (x^2, xy^2, y^3) \) & B\\
+          & 3,1 & \(R_{14}\) & \( K[x, y, z] / (x^2, y^2, xy, xz, yz, z^3) \) & A\\
+          & 3,1 & \(R_{15}\) & \( K[x, y, z] / (x^2, y^2, z^2, xy, xz) \) & A\\
+          & *3,1 & \(R_{15,*}\) & \( K[x, y, z] / (x^2, xy, xz, yz, y^2 + z^2) \) & A\\
+          & 3,1 & \(R_{16}\) & \( K[x, y, z] / (xy, xz, yz, x^2 + y^2, x^2 + z^2) \) & A\\
+          & 4 & \(R_{17}\) & \( K[x, y, z, w] / (x, y, z, w)^2 \) & B\\
+        \hline
+        6 & 1,1,1,1,1 & \(R_{18}\) & \( K[x] / (x^6) \) & A\\
+          & 2,1,1,1 & \(R_{19}\) & \( K[x, y] / (x^2, xy, y^5) \) & A\\
+          & 2,1,1,1 & \(R_{20}\) & \( K[x,y] / (x^2+y^4, xy) \) & A\\
+          & 2,2,1 & \(R_{21}\) & \( K[x, y] / (xy, x^3, y^4) \) & A\\
+          & 2,2,1 & \(R_{22}\) & \( K[x,y] / (xy, x^3 + y^3) \) & A\\
+          & 2,2,1 & \(R_{23}\) & \( K[x,y] / (x^2, xy^2, y^4) \) & A\\
+          & 2,2,1 & \(R_{24}\) & \( K[x,y] / (x^2+y^3, xy^2, y^4) \) & A\\
+          & 2,2,1 & \(R_{25}\) & \( K[x,y] / (x^2, y^3) \) & A\\
+          & *2,2,1 & \(R_{25,*}\) & \( K[x,y] / (x^2 + xy^2, y^3) \) & A\\
+          & **2,2,1 & \(R_{25,**}\) & \( K[x,y] / (x^2, xy^2 + y^3) \) & A\\
+          & 2,3 & \(R_{26}\) & \( K[x,y] / (x,y)^3 \) & A\\
+          & 3,1,1 & \(R_{27}\) & \( K[x, y, z] / (x^2, xy, y^2, xz, yz, z^4) \) & A\\
+          & 3,1,1 & \(R_{28}\) & \( K[x,y,z] / (x^2,xy,y^2+z^3, xz, yz, z^4) \) & A\\
+          & 3,1,1 & \(R_{29}\) & \( K[x,y,z] / (x^2, xy + z^3, y^2, xz, yz, z^4) \) & A\\
+          & * 3,1,1 & \(R_{29,*}\) & \( K[x,y,z] / (x^2 + z^3, xy, y^2 + z^3, xz, yz, z^4) \) & A\\
+          & 3,2 & \(R_{30}\) & \( K[x, y, z] / (xy, yz, z^2, y^2 - xz, x^3) \) & A\\
+          & 3,2 & \(R_{31}\) & \( K[x,y,z] / (xy, z^2, xz - yz, x^2 + y^2 - xz) \) & A\\
+          & *3,2 & \(R_{31,*}\) & \( K[x, y, z] / (x^2, z^2, y^2 - xz, yz) \) & A\\
+          & 3,2 & \(R_{32}\) & \( K[x,y,z] / (x^2, xy, xz, y^2, yz^2, z^3) \) & A\\
+          & 3,2 & \(R_{33}\) & \( K[x,y,z] / (x^2, xy, xz, yz, y^3, z^3) \) & A\\
+          & 3,2 & \(R_{34}\) & \( K[x,y,z] / (xy, xz, y^2, z^2, x^3) \) & A\\
+          & *3,2 & \(R_{34,*}\) & \( K[x,y,z] / (xy, xz, yz, y^2- z^2, x^3) \) & A\\
+          & 3,2 & \(R_{35}\) & \( K[x,y,z] / (xy, xz, yz, x^2 + y^2 - z^2) \) & A\\
+          & 3,2 & \(R_{36}\) & \( K[x,y,z] / (x^2, xy, yz, y^2 - z^2) \) & A\\
+          & *3,2 & \(R_{36,*}\) & \( K[x,y,z] / (x^2, xy, yz, xz + y^2 - z^2) \) & A\\   
+          & 3,2 & \(R_{37}\) & \( K[x,y,z] / (x^2, xy,y^2, z^2) \) & A\\
+          & *3,2 & \(R_{37,*}\) & \( K[x,y,z] / (x^2, xy, y^2, z^2 - xz) \) & A\\
+          & 4,1 & \(R_{38}\) & \( K[x, y, z, w] / (x^2, y^2, z^2, xy, xz, xw, yz, yw, zw, w^3) \) & A\\
+          & 4,1 & \(R_{39}\) & \( K[x,y,z,w] / (x^2, y^2, z^2, w^2, xy, xz, xw, yz, yw) \) & A\\
+          & *4,1 & \(R_{39,*}\) & \( K[x,y,z,w] / (x^2, y^2, z^2 + w^2, xy, xz, xw, yz, yw, zw) \) & A\\
+          & 4,1 & \(R_{40}\) & \( K[x,y,z,w] / (x^2, y^2 + z^2, y^2 + w^2, xy, xz, xw, yz, yw, zw) \) & A\\
+          & 4,1 & \(R_{41}\) & \( K[x,y,z,w] / (x^2, y^2, z^2, w^2, xy - zw, xz, xw, yz, yw) \) &A\\
+          & *4,1 & \(R_{41,*}\) & \( K[x,y,z,w] / ( x^2 + y^2, x^2 + z^2, x^2+ w^2, xy, xz, xw, yz, yw, zw) \) & A\\
+          & 5 & \(R_{42}\) & \( K[x, y, z, w, v] / (x, y, z, w, v)^2 \) & A\\
+        \hline
+    \caption{Local algebras over \( K \) of rank \( \leq 6 \).}
+    \label{poonentable}
+\end{longtable}
+
+
+

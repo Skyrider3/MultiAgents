@@ -1,0 +1,184 @@
+\label{SEC:ProofStructureThm}
+In this section, we give the full proof of our structure theorem for convex polynomials, which we restate for convenience.
+
+\quantstructurethm*\noindent
+Our proof relies on two key technical tools. The first provides a $\mu$-strongly convex lower bound on a convex polynomial $f \in \Q[x]$ whose hessian $h_f(x) \coloneqq \det \left(\nabla^2 f(x)\right)$ is not identically zero.
+\begin{restatable}{proposition}{quantstronglyconvex}
+    \label{PROP:quantstronglyconvex}
+    Let $f \in \Q[x]$ be a convex polynomial with $h_f \not \equiv 0$.
+    Then, there is a $\mu$-strongly convex, quadratic $q \in \Q[x]$ with $\bc(q) \leq \poly(\enc{f})$ such that $f(x) \geq q(x)$ for all $x \in \R^n$. Moreover,
+    $
+        \mu \geq 2^{-\poly(\enc{f})}.
+    $
+\end{restatable} \noindent
+The second shows that any convex polynomial $f \in \Q[x]$ can be written as the sum of a linear function and a polynomial $\hat f$ (of fewer variables) with nonzero hessian $h_{\hat f} \not \equiv 0$.
+\begin{proposition} \label{PROP:quantdecomposition}
+Let $f \in \Q[x]$ be a convex polynomial. Then, there is a subspace $\mU \subseteq \R^n$, a matrix $U \in \Q^{k \times n}$ whose orthogonal rows span $\mU$, and a rational vector $w \in \mU^\perp$ (possibly $w = 0$), such that
+\begin{equation} \label{EQ:quantdecomp}
+    f(x) = \hat f (Ux) - \langle w, x\rangle \quad (\forall \, x\in \R^n),
+\end{equation}
+where the polynomial $\hat f : \R^k \to \R$ defined by $\hat f(Ux) = f(x_\mU)$ satisfies $h_{\hat f} \not \equiv 0$. Moreover, we can compute $U, w$ and~$\hat f$ in polynomial time in $\enc{f}$. In particular, $U, w, \hat f$ have bit length $\poly(\enc{f})$.
+\end{proposition}
+Together, these statements immediately imply~\Cref{THM:quantstructure}. Indeed, one first decomposes $f$ according to~\eqref{EQ:quantdecomp}, and then applies~\Cref{PROP:quantstronglyconvex} to $\hat f$.  In the remainder of this section, we prove~\Cref{PROP:quantstronglyconvex} and~\Cref{PROP:quantdecomposition} separately.
+
+\subsection{\texorpdfstring{A strongly convex lower bound: Proof of~\Cref{PROP:quantstronglyconvex}}{A strongly convex lower bound}}
+Let $f \in \Q[x]$ be a convex polynomial of degree $d$ with $h_f \not \equiv 0$. For any $a \in \R^n$, we know from~\cite[Lemma 5]{Ahmadi2024} that
+\[
+    f(\x) \geq f(a) + \langle \nabla f (a), 
+        \, \x-a \rangle + \frac{\langle x-a, \, \nabla^2 f(a) \cdot (x-a) \rangle}{4d^2} \quad (\forall x \in \R^n).
+\]
+If $\nabla^2 f(a) \succ 0$, this gives us a $\mu$-strongly convex, quadratic lower bound on $f$, namely,
+\[
+f(\x) \geq q(x) \coloneqq f(a) + \langle \nabla f (a), \x-a \rangle + \mu \cdot \|x-a\|^2  \quad (\forall 
+x \in \R^n),
+\]
+where
+\begin{equation*}
+    \mu = \mu(a) = \frac{\lambda_{\min}(\nabla^2 f (a))}{2d^2} > 0.
+\end{equation*}
+Note that, if $a \in \Q^n$, then $\bc(q) \leq \poly(\enc{f},\, \bc(a))$. Thus, it suffices to find an $a \in \Q^n$ with $\bc(a) \leq \poly(\enc{f})$ such that $\mu(a) \geq 2^{-\poly(\enc{f})}$. To do so, we establish the following two facts:
+\begin{fact} \label{Fact:nonzero}
+    If $h_f \not \equiv 0$, then there
+    there is an $a \in \Q^n$ with $\bc(a) \leq \poly(n, d)$ such that $h_f(a) > 0$. 
+\end{fact}
+\begin{fact} \label{Fact:bound}
+    For any $a \in \Q^n$ with $\bc(a) \leq \poly(\enc{f})$ and $h_f(a) > 0$, we have $\mu(a) \geq 2^{-\poly(\enc{f})}$.
+\end{fact}
+
+
+
+\subsubsection{Polynomial identity testing: proof of~\Cref{Fact:nonzero}}
+\label{SEC:PROOF:smallnonzero}
+The Schwartz-Zippel lemma is a standard tool in (probabilistic) polynomial identity testing.
+It states that, for any polynomial $p \not\equiv 0$, and $S \subseteq \R$ finite,
+\[
+    \mathbb{P}_{x \, \sim \, \mathrm{Unif}(S^n)}\big[p(x) = 0\big] \leq \frac{\mathrm{deg}(p)}{|S|},
+\]
+where $\mathrm{Unif}(S^n)$ is the uniform distribution on $S^n \subseteq \R^n$. The following is a deterministic version:
+\begin{lemma}[Schwartz-Zippel, see~{\cite[Corollary 1]{Schwartz1980}}] \label{LEM:ZS} Let $p \in \R[\x]$ be a nonzero polynomial of degree~$d$. Let $S = \{0, 1, \ldots, d\}$. Then, there is an $a \in S^n$ with $p(a) \neq 0$. 
+\end{lemma}
+Applying the deterministic Schwartz-Zippel lemma to the Hessian determinant $h_f \not \equiv 0$ yields the desired point $a \in \Q^n$ of small bit size for which $h_f(a) > 0$ (recall that $h_f(x) \geq 0$ for all $x \in \R^n$).
+\begin{corollary} \label{COR:ZSHessian}
+    Let $p$ be a polynomial in $n$ variables of degree~$d$ and assume that $h_p \not \equiv 0$. Then, there is an $a \in \Z^n$ with $\bc(a) \leq O(n \log (dn))$ such that $h_p(a) = \det \left(\nabla^2 p (a) \right) \neq 0$.
+\end{corollary}
+\begin{proof}
+    By assumption, the Hessian determinant $h_p$ of $p$ is a nonzero polynomial in $n$ variables of degree at most $dn$. By \Cref{LEM:ZS}, there is thus an $a \in \{0, 1, \ldots, dn\}^n$ with $h_p(a) \neq 0$. This $a$ has bit size at most $O(n \log (dn))$.
+\end{proof}
+
+\subsubsection{Spectral bounds for rational matrices: proof of~\Cref{Fact:bound}} \label{SEC:PROOF:rationalmatrix}
+Now, let $a \in \Q^n$ with $\bc(a) \leq \enc{f}$ and $h_f(a) > 0$. We aim to show that $\mu(a) \geq 2^{-\poly(\enc{f})}$, for which it suffices to show that $\lambda_{\min}(\nabla^2 f (a)) \geq 2^{-\poly(\enc{f})}$. 
+For this, note that $\nabla^2 f (a) \succ 0$ is a rational matrix of bit size at most $\poly(\enc{f})$. Indeed, the entries of $\nabla^2 f(a)$ each have bit length at most $\poly(\enc{f}, \, \bc(a))$. The eigenvalues of such matrices can be bounded away from $0$ as follows.
+
+\begin{lemma}[{\cite[Lemma 3.1]{Raghavendra2017}}] \label{LEM:integermatrix}
+Let $M \in \Z^{N \times N}$ be a positive semidefinite matrix with ${|M_{ij}| \leq B}$ for all $1 \leq i, j \leq N$. Then $\lambda_{\min}^+(M) \geq (BN)^{-N}$.
+\end{lemma}
+
+\begin{corollary} \label{COR:rationalmatrix}
+Let $M \in \Q^{N \times N}$ be a positive definite matrix. Then,
+$
+\lambda_{\min}(M) \geq 2^{-\poly(\bc(M))}.
+$
+\end{corollary}
+\begin{proof}
+    Let $C \in \Z$ be the least common multiple of the denominators of the entries of $M$. 
+    Note that $\bc(C) \leq \poly(\bc(M))$, and so $C \cdot M$ is an integer matrix whose entries are bounded in magnitude by $2^{\poly(\bc(M))}$. Applying~\Cref{LEM:integermatrix} yields
+    \[
+        \lambda_{\min}(M) = \frac{1}{C} \cdot \lambda_{\min}(C \cdot M) \geq \frac{1}{2^{\poly(\bc(M))}} \cdot(2^{\poly(\bc(M))} \cdot N)^{-N} \geq 2^{-\poly(\bc(M))}. \qedhere
+    \]
+\end{proof}
+
+
+
+
+
+\subsection{\texorpdfstring{A Hessian decomposition theorem: Proof of~\Cref{PROP:quantdecomposition}}{A Hessian decomposition theorem}}
+The primary tool in our proof of~\Cref{PROP:quantdecomposition} is the following characterization of convex functions whose Hessian determinant is identically zero.
+\begin{restatable}{proposition}{Hessianvanishes}
+    \label{PROP:Hessianvanishes}
+    Let $\varphi: \R^n \to \R$ be twice continuously differentiable and convex. Then, $\varphi$ has a direction of linearity if and only if its Hessian is nowhere definite:
+    \[
+        \det \left(\nabla^2 \varphi \right) \equiv 0 \iff \exists v \in \R^n \setminus \{ 0 \}, \, c \in \R : \mynabla{v} \varphi \equiv c.
+    \]
+\end{restatable}
+To establish this proposition, we consider $\nabla \varphi$ as function $\R^n \to \R^n$, and  investigate its range 
+\[
+    \nabla \varphi(\R^n) \coloneqq \{ \nabla\varphi(x) : x \in \R^n \} \subseteq \R^n.
+\]
+We aim to show that $\det \left(\nabla^2{\varphi}\right) \equiv 0$ if and only if $\nabla \varphi(\R^n)$ is contained in an affine hyperplane. First, we recall that that the range of the gradient of a convex function is \emph{almost convex}.
+\begin{lemma}[cf. {\cite[Corollary 2]{Minty1964}}] \label{LEM:convexgradient}
+    Let $\varphi : \R^n \to \R$ be  convex and continuously differentiable. Then the range of the gradient of $\varphi$ is \emph{almost convex}, i.e., we have $\mathrm{int}(\mathrm{conv}(\nabla \varphi (\R^n))) \subseteq \nabla \varphi (\R^n) $.
+\end{lemma}
+\begin{proof}
+    The \emph{convex conjugate} of $\varphi : \R^n \to \R$ is the map 
+    \[
+        \varphi^* : \R^n \to \R \cup \{\infty\}, \quad v \mapsto \sup_{x \in \R^n} \left\{ \langle v, x \rangle - \varphi(x) \right\}.
+    \]
+    The function $\varphi^*$ is itself convex (since it is the supremum of affine functions). Furthermore, $\varphi^* \not\equiv \infty$ (i.e., $\varphi^*$ is a \emph{proper} convex function) \cite[Theorem 12.2]{Rockafellar1970}.
+    Lastly, for any $x, v \in \mathbb{R}^n$, $v$ is a subgradient of $\varphi$ at $x$ if and only if $x$ is a subgradient of $\varphi^*$ at $v$ \cite[Theorem 23.5]{Rockafellar1970}. 
+    
+    Now, since $\varphi$ is differentiable, we get
+    \begin{equation} \label{EQ:subgradient}
+    \nabla \varphi (\R^n) = \{v \in \R^n : \varphi^* \text{ has a subgradient at } v\}.
+    \end{equation}
+    We give a convex set $C$ such that $\mathrm{int}(C) \subseteq \nabla \varphi (\R^n) \subseteq C$.
+    This immediately implies that $\nabla \varphi (\R^n)$ is almost convex, since we then have $\mathrm{conv}(\nabla \varphi (\R^n)) \subseteq C$, and thus also $\mathrm{int}(\mathrm{conv}(\nabla \varphi (\R^n))) \subseteq \mathrm{int}(C)$.
+    
+    Let $C \coloneqq \{v \in \R^n \mid \varphi^*(v) \neq \infty\}$ be the \emph{effective domain} of $\varphi^*$.
+    Since $\varphi^* \not\equiv \infty$, we find that~$\varphi^*$ has no subgradient at any $v \in \R^n$ with $\varphi^*(v) = \infty$. 
+    Hence, using~\eqref{EQ:subgradient}, we get $\nabla \varphi (\R^n) \subseteq C$.
+    On the other hand, because $\varphi^*$ is a proper convex function, it has a subgradient at any point in the relative interior of its effective domain~\cite[Theorem 23.4]{Rockafellar1970}.
+    Thus, $\mathrm{int}(C) \subseteq \mathrm{relint}(C) \subseteq \nabla \varphi(\R^n)$, which completes the proof.
+\end{proof}
+Then, we observe that $\nabla^2 \varphi$ is the Jacobian of $\nabla \varphi$. Thus, if $\det \left(\nabla^2 \varphi\right) \equiv 0$, we find that $\nabla \varphi(\R^n)$ has Lebesgue measure zero by Sard's theorem.
+\begin{theorem}[Sard's theorem]  \label{THM:Sard} 
+    Let $\psi : \R^n \to \R^n$ be continuously differentiable. Let 
+    \[
+        X \coloneqq \{ x \in \R^n : \det \left(\nabla \psi(x) \right) = 0\}.
+    \]
+    Then $\psi(X) \subseteq \R^n$ has Lebesgue measure zero. 
+\end{theorem}
+\begin{proof}[Proof of~\Cref{PROP:Hessianvanishes}]
+    First, assume that $\mynabla{v} \varphi \equiv c$ for some $v \in \R^n \setminus \{0\}$, $c \in \R$. Then, ${\mynabla{w} \mynabla{v} \varphi(x) = 0}$ for all $w \in \R^n$ and $x \in \R^n$, meaning $\nabla^2 \varphi(x) \cdot v = 0$. In particular, $\det \left( \nabla^2 \varphi(x) \right) = 0$.
+
+    Now, assume $\det \left(\nabla^2 \varphi\right) \equiv 0$. By the above, this implies that $\nabla \varphi(\R^n)$ is an almost convex set of Lebesgue measure $0$. But that means $\nabla \varphi(\R^n)$ is contained in an affine hyperplane, for, if not, the interior of its convex hull would contain (the interior of) a simplex of positive measure. Thus, there is a $v \in \R^n \setminus \{0\}$, and $c \in \R$ such that $\langle y, v \rangle = c$ for all $y \in \nabla\varphi(\R^n)$. In other words, $\mynabla{v} \varphi \equiv c$.
+\end{proof}
+
+\begin{proof}[Proof of~\Cref{PROP:quantdecomposition}]
+With \Cref{PROP:Hessianvanishes} in hand, we are able to identify the subspace $\mU \subseteq \R^n$ and vector $w \in \Q^n$ that feature in~\Cref{PROP:quantdecomposition}. Let $f \in \Q[x]$ be a convex polynomial. Consider the joint support 
+\[
+    S = \{ 0 \} \cup \bigcup_{i=1}^n \, \supp{\partial f / \partial x_i} \subseteq \N^n
+\]
+of the partial derivatives of $f$, which is of size $|S| \leq n \cdot |\supp{f}| + 1$. (Here, we have added $0 \in \N^n$ for technical reasons that become clear shortly.) Set $\mathcal{R} = \spann {x^\alpha : \alpha \in S} \subseteq \R[x]$. We view the gradient of $f$ as a linear operator $\R^n \to \mathcal{R}$, namely
+\[
+    \nabla f : v \mapsto \mynabla{v} f = \sum_{i=1}^n v_i \cdot \frac{\partial f}{\partial x_i} \in \mathcal{R} \quad (v \in \R^n).
+\]
+Importantly, this operator can be expressed as a rational matrix $\mat{\nabla f}$ of size $|S| \times n$, where the $i$th column represents the expansion of $\partial f / \partial x_i$ in the (partial) monomial basis. Moreover, this matrix has bit size at most $\poly(\enc{f})$.  
+Write~${\mathds{1} \in \Q^{|S|}}$ for the expansion of the constant polynomial $x \mapsto 1$ (which exists as $0 \in S$). In light of~\Cref{PROP:Hessianvanishes}, we consider the subspace
+\[
+    \mL \coloneqq \{ v \in \R^n : \mynabla{v} f \equiv c \text{ for some } c \in \R\} =  \{ v \in \R^n : \mat{\nabla f} \cdot v \in \spann{\mathds{1}}\}.
+\]
+Since $\mL$ is the inverse image of a subspace of dimension $1$, we can write 
+\[
+    \mL = \ker \left(\mat{\nabla f}\right) \oplus \spann{w},
+\]
+where $w \in \ker \left(\mat{\nabla f}\right)^\perp$ is either zero, or satisfies $\mat{\nabla f} \cdot w = -\mathds{1}$. Then, we set $\mU = \mL^\perp$, and write $\mV = \ker \left(\mat{\nabla f}\right)$, $\mW = \spann{w}$. By construction, we have
+\[
+    f(x) = f(x_{\mU} + x_{\mV} + x_{\mW}) = f(x_\mU) - \langle w, x \rangle.
+\]
+We can compute $w$, and an orthogonal basis $U_1, \ldots, U_k$ for $\mU$ in polynomial time in $\enc{f}$. In particular, $w$ and the matrix $U \in \Q^{k \times n}$ whose rows are $U_1, \ldots, U_k$ have polynomial bit size in~$\enc{f}$. This follows from standard (bit-)complexity results in linear algebra, see \Cref{APP:LA}.
+
+For $1 \leq i \leq k$, write $\overline{U}_i = U_i / \|U_i\|^2$, and note that $\bc(\overline{U}_i) \leq \poly(\enc{f})$. Consider the $k$-variate polynomial $\hat f \in \Q[y_1, \ldots, y_k]$ defined by $\hat f(y) = f(\sum_{i=1}^k y_i \cdot \overline{U}_i)$.  Note that $\hat f$ is convex, and that $\enc{\hat f} \leq \poly(\enc{f})$. Furthermore, for any $x \in \R^n$,
+\[
+    \hat f (Ux) = f \left(\sum_{i=1}^k \frac{\langle x, U_i \rangle}{\, \|U_i\|^2} \cdot U_i \right) = f(x_\mU).
+\]
+It remains to show that $h_{\hat f} \not \equiv 0$. By~\Cref{PROP:Hessianvanishes}, this is equivalent to showing it has no directions of linearity. Suppose that it did, i.e., that there is a nonzero $\hat v \in \R^k$ such that $\mynabla{\hat v} \hat f \equiv c$ for some~${c \in \R}$.  Then, writing $e_j \in \R^n$ for the $j$-th standard basis vector,
+\[
+    \mynabla{e_j} \hat f (y) = \mynabla{\overline{U}_j} f\left(\sum_{i=1}^k y_i \cdot \overline{U}_i \right).
+\]
+Now, write $u = \sum_{i=1}^k \hat v_i \overline{U}_i \in \mU = \mL^\perp$. Note that $u \neq 0$.
+Then, as $\langle w, u \rangle = 0$, for any $x \in \R^n$,
+\[
+\mynabla{u} f(x) = \mynabla{u} f \left (\sum_{i=1}^k \langle x, U_i \rangle \cdot \overline{U}_i \right) = \mynabla{\hat v} \hat f(Ux) = c,
+\]
+a contradiction.
+\end{proof}

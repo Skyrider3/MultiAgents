@@ -1,0 +1,452 @@
+\usepackage[margin=20truemm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{float}
+\usepackage{shuffle}
+\usepackage{multicol}
+\usepackage{ascmac}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{amscd}
+\usepackage{comment}
+\usepackage{mathrsfs}
+\usepackage[all]{xy}
+\usepackage{color}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{setspace}
+\usepackage{cases}
+\usepackage{paralist}
+\usepackage{autobreak}
+\usepackage{enumitem}
+\usepackage{stackrel}
+
+%\definecolor{Mycolor}{cmyk}{ 1.00, 0.00, 1.00, 0.2} %緑基調
+%使いたい色を使ってください。
+%\definecolor{Mycolor}{cmyk}{ 1.00, 0.50, 0.00, 0.0}  %青基調
+%\definecolor{Mycolor}{cmyk}{ 0.1, 0.15, 1.0, 0.1} %黄色基調
+%\definecolor{Mycolor}{cmyk}{ 0.20, 1.00, 1.00, 0.} %赤基調
+\definecolor{Mycolor}{cmyk}{ 0.90, 0.00, 0.34, 0.35} %碧
+
+% ==== hyperref はエンジンで分岐 ====
+\usepackage{iftex}
+\ifptex
+  % pLaTeX / upLaTeX（DVI→dvipdfmx）のとき
+  \usepackage[dvipdfmx,bookmarksnumbered,colorlinks]{hyperref}
+  \usepackage{pxjahyper}
+\else
+  % pdfLaTeX / LuaLaTeX（PDF直出力）のとき
+  \usepackage[bookmarksnumbered,colorlinks]{hyperref} % ドライバ指定しない
+\fi
+
+\hypersetup{%
+ setpagesize=false,%
+ bookmarks=true,%
+ bookmarksdepth=tocdepth,%
+ bookmarksnumbered=true,%
+ colorlinks=true,
+ linkcolor=Mycolor,   % 内部リンク（式番号・図表番号・目次項目）
+ citecolor=blue,   % 文献引用
+ %urlcolor=blue,    % URL
+ %filecolor=blue    % ファイルリンク（必要なら）
+ pdftitle={},%
+ pdfsubject={},%
+ pdfauthor={Takumi Anzawa},%
+ pdfkeywords={SMZVs}}
+
+
+
+
+
+\title[A Lie algebra associated with AMZVs]{A Lie algebra associated with adjoint multiple zeta values}
+\author{Takumi Anzawa}
+\address{graduate school of mathematics, Nagoya University, furo-cho, chikusa-ku, Nagoya, 464-8602, japan}
+\email{m20001s@math.nagoya-u.ac.jp}
+
+
+% カスタムカウンタの定義
+\newcounter{dfcounter}
+\renewcommand{\thedfcounter}{\thesection}
+
+% カウンタの同期
+\makeatletter
+\@addtoreset{dfcounter}{chapter}    % 章が変わったらリセット
+\@addtoreset{dfcounter}{section} % 小節が変わったらリセット
+\makeatother
+
+% 定理環境の設定
+\newtheorem{df}{Definition}[dfcounter]
+\newtheorem{thm}[df]{Theorem}
+\newtheorem{cor}[df]{Corollary}
+\newtheorem{axi}[df]{\pmb{Axiom}}
+\newtheorem{conj}[df]{Conjecture}
+\newtheorem{qu}[df]{Question}
+\newtheorem*{mt}{Main Theorem}
+
+
+\theoremstyle{remark}{
+\newtheorem{lem}[df]{Lemma}
+\newtheorem{prop}[df]{Proposition}
+\newtheorem{ex}[df]{Example}
+\newtheorem{rmk}[df]{Remark}
+}
+
+
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\SL}{SL}
+\DeclareMathOperator{\Mn}{Mn}
+\DeclareMathOperator{\Gal}{Gal}
+\DeclareMathOperator{\Span}{Span}
+\DeclareMathOperator{\Fil}{Fil}
+
+
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\ord}{ord}
+
+
+
+%\DeclareMathOperator{\Re}{Re}
+%\DeclareMathOperator{\Cl}{Cl}
+\newcommand{\dtext}[1]{\textbf{\textit{#1}}\;}
+\newcommand{\ide}[1]{\mathfrak{#1}}
+\newcommand{\pf}{(pf)}
+\newcommand{\ca}[1]{\mathscr{#1}}
+\newcommand{\cat}[1]{\mathbf{#1}}
+\newcommand{\del}{\partial}
+\newcommand{\qbinom}[2]{\left[ #1 \atop #2 \right]}
+\newcommand{\ibtext}[1]{\textit{\textbf{#1}}}
+\newcommand{\btext}[1]{\textbf{#1}}
+\newcommand{\A}{\mathscr{A}}
+
+\DeclareMathOperator{\dch}{dch}
+
+
+\newcommand{\engMonth}{
+	\ifcase\month
+		\or January 
+		\or February 
+		\or March 
+		\or April
+		\or May 
+		\or June
+		\or July 
+		\or August 
+		\or September
+		\or October 
+		\or November 
+		\or December\fi
+} 
+% write date in english(for reports in japanese)
+\newcommand{\fullday}{
+	\engMonth \, \the\day, \the\year	
+} 
+
+% mathmatical template comand
+% the set of natural number
+\newcommand{\N}{\mathbb{Z}_{>0}}
+% the set of integers
+\newcommand{\Z}{\mathbb{Z}}
+% the set of rational numbers
+\newcommand{\Q}{\mathbb{Q}}
+% the set of real numbers 
+\newcommand{\R}{\mathbb{R}}
+% the set of complex numbers
+\newcommand{\C}{\mathbb{C}}
+% a field
+\newcommand{\K}{\mathbb{K}}
+% the power of the set
+\newcommand{\powerof}{\mathcal{P}}
+% left or right hand side. 
+\newcommand{\RHS}{
+	\left(\textrm{RHS}\right)
+}
+\newcommand{\LHS}{
+	\left(\textrm{LHS}\right)
+}
+
+% mapping
+% the image of mapping
+\let\Im\relax
+\newcommand{\Im}{\textrm{Im}}
+
+%double shuffle
+\newcommand{\DMR}{\mathrm{DMR}}
+\newcommand{\dmr}{\mathfrak{dmr}}
+\newcommand{\ls}{\mathfrak{ls}}
+
+
+%Adjoint side
+\newcommand{\AdDMR}{\mathrm{AdDMR}}
+\newcommand{\addmr}{\mathfrak{addmr}}
+\newcommand{\adls}{\mathfrak{adls}}
+\newcommand{\der}{\mathfrak{der}}
+
+
+%Adjoint maps
+\newcommand{\Ad}{\mathrm{Ad}}
+\newcommand{\ad}{\mathfrak{ad}}
+
+% ring
+\newcommand{\fA}{\mathcal{A}}
+\newcommand{\Qi}{\mathcal{C}_{0}^{\A}}
+\newcommand{\fQ}{\mathcal{Q}}
+\newcommand{\fP}{\mathcal{P}^{0}_{\fA}}
+\newcommand{\fa}[2]{\alpha^{\fA}(#1; #2)}
+\newcommand{\seq}[2]{s(#1; #2)}
+\newcommand{\resi}[2]{\left(\frac{#1}{#2}\right)}
+\newcommand{\Prime}{P}
+\newcommand{\rep}[1]{\left\langle\left\langle#1\right\rangle\right\rangle}
+\newcommand{\qint}[1]{[#1]_{q}}
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+\newcommand{\lsym}[1]{\left(\frac{#1}{5}\right)}
+\DeclareMathOperator{\BCH}{BCH}
+
+
+
+\newcommand{\TM}{\mathrm{TM}}
+\newcommand{\tm}{\mathfrak{tm}}
+\newcommand{\Fad}{\mathfrak{F}_2^{\ad(x_1)}}
+\newcommand{\FAd}{\mathfrak{F}_2^{\Ad(x_1)}}
+
+\DeclareMathOperator{\inv}{inv}
+
+
+%Linear operation
+\DeclareMathOperator{\GL}{GL}
+\newcommand{\gl}{\mathfrak{gl}}
+\newcommand{\cotimes}{\widehat{\otimes}}
+
+
+\newcommand{\AdTM}{\mathrm{AdTM}}
+\newcommand{\adtm}{\mathfrak{adtm}}
+
+%EDS
+\DeclareMathOperator{\EDS}{EDS}
+
+
+
+%MZV
+\let\S\relax
+\newcommand{\S}{\mathcal{S}}
+\let\LS\relax
+\newcommand{\LS}{\mathcal{LS}}
+\newcommand{\zs}{\zeta_{\mathcal{S}}}
+\newcommand{\zsl}[1]{\zeta_{\mathcal{S}_{#1}}}
+
+\newcommand{\slmzv}[2]{\zeta_{\mathcal{S}}(#2;#1)}
+\newcommand{\bslmzv}[2]{\zeta_{\mathcal{S}}^{\bullet}(#2;#1)}
+\newcommand{\sslmzv}[2]{\zeta_{\mathcal{S}}^{\shuffle}(#2;#1)}
+\newcommand{\hslmzv}[2]{\zeta_{\mathcal{S}}^{*}(#2;#1)}
+\newcommand{\fslmzv}[2]{\zeta_{\mathcal{S}}^f(#2;#1)}
+
+\newcommand{\Admzv}[2]{\zeta_{\mathrm{Ad}}(#2;#1)}
+\newcommand{\bAdmzv}[2]{\zeta_{\mathrm{Ad}}^{\bullet}(#2;#1)}
+\newcommand{\sAdmzv}[2]{\zeta_{\mathrm{Ad}}^{\shuffle}(#2;#1)}
+\newcommand{\hAdmzv}[2]{\zeta_{\mathrm{Ad}}^{*}(#2;#1)}
+\newcommand{\fAdmzv}[2]{\zeta_{\mathrm{Ad}}^f(#2;#1)}
+
+\newcommand{\hzs}{\zeta_{\widehat{\mathcal{S}}}}
+\newcommand{\zshift}[1]{\zeta_{\mathrm{sft},{#1}}}
+\newcommand{\RS}{\mathcal{RS}}
+\DeclareMathOperator{\sft}{sft}
+
+%MZV
+
+\newcommand{\cmzv}[4]{\zeta\left(\begin{matrix} {#1} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#2} \\ {#3} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#4}\end{matrix} \right)}
+
+\newcommand{\csmzv}[4]{\zeta^{\shuffle}\left(\begin{matrix} {#1} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#2} \\ {#3} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#4}\end{matrix} \right)}
+
+\newcommand{\chmzv}[4]{\zeta^{*}\left(\begin{matrix} {#1} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#2} \\ {#3} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#4}\end{matrix} \right)}
+
+\newcommand{\cbmzv}[4]{\zeta^{\bullet}\left(\begin{matrix} {#1} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#2} \\ {#3} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#4}\end{matrix} \right)}
+
+\newcommand{\csmzvT}[5]{\zeta^{\shuffle}\left(\begin{matrix} {#1} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#2} \\ {#3} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#4}\end{matrix};{#5} \right)}
+
+\newcommand{\chmzvT}[5]{\zeta^{*}\left(\begin{matrix} {#1} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#2} \\ {#3} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#4}\end{matrix};{#5} \right)}
+
+\newcommand{\cslmzv}[5]{\zeta^{\shuffle}_{\sft_{#5}}\left(\begin{matrix} {#1}\hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#2} \\ {#3}\hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#4}\end{matrix} \right)}
+
+\newcommand{\chlmzv}[5]{\zeta^{*}_{\sft_{#5}}\left(\begin{matrix} {#1}\hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#2} \\ {#3}\hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#4}\end{matrix} \right)}
+
+%Lifted SMZV
+
+\newcommand{\cslsmzv}[4]{\zeta^{\shuffle}_{\LS.\alpha}\left(\begin{matrix} {#1} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#2} \\ {#3} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#4}\end{matrix} \right)}
+
+\newcommand{\chlsmzv}[4]{\zeta^{*}_{\LS,\alpha} \left(\begin{matrix} {#1} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#2} \\ {#3} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#4}\end{matrix} \right)}
+
+\newcommand{\clsmzv}[4]{\zeta_{\LS,\alpha} \left(\begin{matrix} {#1} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#2} \\ {#3} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#4}\end{matrix} \right)}
+
+\let\cslslmzv\relax
+\newcommand{\cslslmzv}[5]{\zeta^{\shuffle}_{\LS_{#5},\alpha}\left(\begin{matrix} {#1} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#2} \\ {#3} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#4}\end{matrix} \right)}
+
+\let\chlslmzv\relax
+\newcommand{\chlslmzv}[5]{\zeta^{*}_{\LS_{#5},\alpha}\left(\begin{matrix} {#1} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#2} \\ {#3} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#4}\end{matrix} \right)}
+
+%SMZV
+
+\newcommand{\cssmzv}[4]{\zeta^{\shuffle}_{\S(N,\alpha)}\left(\begin{matrix} {#1} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#2} \\ {#3} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#4}\end{matrix} \right)}
+
+\newcommand{\chsmzv}[4]{\zeta^{*}_{\S(N,\alpha)} \left(\begin{matrix} {#1} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#2} \\ {#3} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#4}\end{matrix} \right)}
+
+\newcommand{\cbsmzv}[4]{\zeta^{\bullet}_{\S(N,\alpha)} \left(\begin{matrix} {#1} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#2} \\ {#3} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#4}\end{matrix} \right)}
+
+\newcommand{\csslmzv}[5]{\zeta^{\shuffle}_{\S_{#5},\alpha}\left(\begin{matrix} {#1} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#2} \\ {#3} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#4}\end{matrix} \right)}
+
+\newcommand{\chslmzv}[5]{\zeta^{*}_{\S_{#5},\alpha}\left(\begin{matrix} {#1} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#2} \\ {#3} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#4}\end{matrix} \right)}
+
+\newcommand{\cSmzv}[4]{\zeta_{\S(N,\alpha)}\left(\begin{matrix} {#1} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#2} \\ {#3} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#4}\end{matrix} \right)}
+
+\newcommand{\cSlmzv}[5]{\zeta_{\S_{#5},\alpha}\left(\begin{matrix} {#1} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#2} \\ {#3} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#4}\end{matrix} \right)}
+
+%Refineed SMZV
+
+\newcommand{\csrsmzv}[4]{\zeta^{\shuffle}_{\RS(N,\alpha)}\left(\begin{matrix} {#1} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#2} \\ {#3} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#4}\end{matrix} \right)}
+
+\newcommand{\chrsmzv}[4]{\zeta^{*}_{\RS(N,\alpha)} \left(\begin{matrix} {#1} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#2} \\ {#3} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#4}\end{matrix} \right)}
+
+\newcommand{\crsmzv}[4]{\zeta_{\RS(N,\alpha)} \left(\begin{matrix} {#1} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#2} \\ {#3} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#4}\end{matrix} \right)}
+
+%FMZV
+
+\newcommand{\cfmzv}[4]{\zeta_{\A(N,\alpha)}\left(\begin{matrix} {#1} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#2} \\ {#3} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#4}\end{matrix} \right)}
+
+%UMZV
+
+\newcommand{\cUmzv}[4]{\zeta_{U(N,\alpha)}\left(\begin{matrix} {#1} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm} {#2} \\ {#3} \hspace{-0.3cm}&,\ldots,&\hspace{-0.3cm}{#4}\end{matrix} \right)}
+
+
+%mould
+\newcommand{\YZ}{\mathcal{Y}_{\mathbb{Z}}}
+
+\let\neg\relax
+\DeclareMathOperator{\neg}{neg}
+\DeclareMathOperator{\anti}{anti}
+\DeclareMathOperator{\mantar}{mantar}
+\DeclareMathOperator{\pus}{pus}
+\DeclareMathOperator{\push}{push}
+\DeclareMathOperator{\sh}{sh}
+\DeclareMathOperator{\swap}{swap}
+\DeclareMathOperator{\Sh}{Sh}
+\DeclareMathOperator{\mi}{mi}
+\DeclareMathOperator{\ma}{ma}
+\DeclareMathOperator{\vimo}{vimo}
+
+\DeclareMathOperator{\odd}{odd}
+
+\DeclareMathOperator{\pol}{pol}
+
+\let\x\relax
+\newcommand{\x}{\mathrm{x}}
+\newcommand{\y}{\mathrm{y}}
+\newcommand{\z}{\mathrm{z}}
+\let\Y\relax
+\newcommand{\X}{\mathrm{X}}
+\let\Y\relax
+\newcommand{\Y}{\mathrm{Y}}
+\let\V\relax
+\newcommand{\V}{\mathrm{V}}
+
+\DeclareMathOperator{\Conv}{Conv}
+\newcommand{\ConvL}{\Conv_L}
+\newcommand{\ConvR}{\Conv_R}
+\newcommand{\ConvLM}{\Conv_{LM}}
+\newcommand{\ConvMR}{\Conv_{MR}}
+
+\let\u\relax
+\newcommand{\u}{\mathrm{u}}
+\let\v\relax
+\newcommand{\v}{\mathrm{v}}
+\let\w\relax
+\newcommand{\w}{\mathrm{w}}
+
+\newcommand{\XZ}{\mathcal{X}_{\mathbb{Z}}}
+
+
+%complete generating series
+\newcommand{\cUF}{\widehat{U\mathfrak{F}_2}}
+\newcommand{\cF}{\widehat{\mathfrak{F}_2}}
+
+\newcommand{\cUFY}{\widehat{U\mathfrak{F}_Y}}
+\newcommand{\cFY}{\widehat{\mathfrak{F}_Y}}
+
+\DeclareMathOperator{\gr}{gr}
+\DeclareMathOperator{\op}{op}
+\newcommand{\dec}{\mathrm{dec}}
+
+
+%parity
+\newcommand{\parity}{\mathrm{parity}}
+\newcommand{\uparity}{\underline{\mathrm{parity}}}
+\newcommand{\strprty}{\mathrm{str.prty}}
+\newcommand{\weakprty}{\mathrm{weak.prty}}
+
+\def\utilde#1{\mathord{\vtop{\ialign{##\crcr
+$\hfil\displaystyle{#1}\hfil$\crcr\noalign{\kern1.5pt\nointerlineskip}
+$\hfil\tilde{}\hfil$\crcr\noalign{\kern1.5pt}}}}}
+
+% #1 without #2
+\newcommand{\wo}[2]{#1^{\hat{#2}}}
+
+% math frak
+%\newcommand{\fa}{\mathfrak{a}}
+%\newcommand{\fb}{\mathfrak{b}}
+%\newcommand{\fn}{\mathfrak{n}}
+%\newcommand{\fm}{\mathfrak{m}}
+\newcommand{\fp}{\mathfrak{p}}
+\newcommand{\fq}{\mathfrak{q}}
+%\let\endo\relax
+%\newcommand{\endo}{\mathfrak{end}}
+
+
+%\bibtex{C:/Users/User/Documents/Tex/reference/transcendental}
+
+
+%category
+\newcommand{\Qalg}{\mathbb{Q}\text{-}\mathrm{\mathbf{Alg}}}
+\newcommand{\Grp}{\mathrm{\mathbf{Grp}}}
+\newcommand{\Set}{\mathrm{\mathbf{Set}}}
+\newcommand{\Lalg}{\mathrm{\mathbf{Lie}}\text{-}\mathrm{\mathbf{alg}}}
+
+
+
+
+%%%%%%%ゼータ関連
+\newcommand{\za}{\zeta_{\mathscr{A}}}
+%\newcommand{\zs}{\zeta_{\mathcal{S}}}
+%\newcommand{\zsl}[1]{\zeta_{\mathcal{S}_{#1}}}
+\newcommand{\SMZV}{\mathcal{S}\;MZV}
+\newcommand{\FMZV}{\mathcal{F}\;MZV}
+\newcommand{\KZ}{\mathrm{KZ}}
+\DeclareMathOperator{\dep}{dep}
+\newcommand{\Li}{\mathrm{Li}}
+
+
+%%%%%%%空間関連
+%\newcommand{\A}{\mathscr{A}}
+
+%%%%%%%operator関連
+%\newcommand{\dch}{\mathrm{dch}}
+\DeclareMathOperator{\wt}{wt}
+
+\font\sy=cmsy10
+\font\fm=eufm10
+\font\xm=msam10
+\font\ym=msbm10
+\allowdisplaybreaks[0]
+\renewcommand{\theenumi}{\roman{enumi}}
+
+%\usepackage{lineno}
+%\linenumbers
+
+\makeatletter
+\newcommand{\nsubsection}[1]{%
+  \par\bigskip
+  \noindent\textbf{#1}\par
+  \medskip
+}
+\makeatother
+
+
+
+%\addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
+

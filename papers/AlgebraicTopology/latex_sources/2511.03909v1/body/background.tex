@@ -1,0 +1,466 @@
+\section{Background}
+
+In this section, we provide necessary foundations in
+computational topology and tensor computation to develop the main results.
+For simplicity, we restrict our attention to simplicial complexes in this paper;
+however, our results and code work for cubical complexes with no modifications
+necessary.
+
+\subsection{Lower-Star Filtrations}
+
+While the primary focus of this paper is on the WECT, our algorithm applies more
+generally to any finite set of lower-star filtrations.
+Here, we provide the necessary background on lower-star filtrations.
+
+\begin{definition}[Lower-Star Filtrations]\label{def:lower_star_filtration}
+    Let $K$ be a simplicial complex with vertex set~$K_0$ and let $\sub(K)$
+    denote the set of subcomplexes of $K$.
+    A \emph{vertex filter} on $K$ is a function~${f \colon K_0 \to \R}$.
+    For a vertex filter $f: K_0 \to \R$,
+    the \emph{lower-star filtration} induced by~$f$ is the
+    function\footnote{In this paper, we use a lower case letter to denote a
+    filter function and the same upper case letter to denote the filtration it
+    induces.}
+    \begin{equation*}
+        F : \R \to \sub(K),
+    \end{equation*}
+    defined as
+    \begin{equation}
+        F(t) := \{ \sigma \in K \mid \max_{v \in \sigma} f(v) \le t \}
+    \end{equation}
+    where the max is taken over all vertices $v$ of the simplex $\sigma$.
+\end{definition}
+
+The main examples of lower-star filtrations used in this paper are height
+filtrations.
+To define height filtrations, we first define
+\emph{geometric simplicial complexes}.
+%
+We adopt the definition from
+\cite[Chap.~3, pp.~52]{edelsbrunner2010computational}, and refer the reader to
+this source for further~details.
+
+\begin{definition}[Geometric Simplicial Complex] \label{def:geometric-complex}
+    A \emph{geometric simplicial complex} is a finite collection of geometric
+    simplices $K$ in $\R^{n}$ that satisfies the following two conditions:
+    \begin{itemize}
+        \item If $\sigma \in K$, then all faces of $\sigma$ are in $K$.
+        \item If $\sigma, \tau \in K$, then $\sigma \cap \tau$ is either empty,
+        or a face of both $\sigma$ and $\tau$.
+    \end{itemize}
+\end{definition}
+
+Note that any (abstract) simplicial complex has a (non-unique)
+geometric realization in Euclidean space, as demonstrated, for example,
+in \cite[Chap.~3, pp.~53]{edelsbrunner2010computational}.
+%
+Given an abstract simplicial complex~$K$ with underlying space $|K|$, a
+function~$\ell: |K| \to \R^{n}$ that provides a geometric realization of $K$ in
+$\R^{n}$ is called an \emph{embedding} of~$K$ into~$\R^{n}$.
+
+When working with geometric realizations of abstract simplicial complexes, we
+often abuse notation by avoiding explicit reference to the embedding
+function~$\ell$.
+%
+Consequently, when we refer to a vertex~$v \in K_0$, we often mean its image
+$\ell(v) \in \R^{n}$.
+
+\begin{definition}[Height Functions and Filtrations]
+    Let $K$ be a simplicial complex embedded in $\R^{n}$ via the map
+    $\ell: |K| \to \R^n$ and let~${\vect{s} \in \mathbb \sph^{n-1}}$ be a
+    direction vector.
+    The \emph{height function} in direction $\vect{s}$ is the
+    map~${\heightfcn{\vect s}: K_0 \to \R}$ defined as
+    \[
+        \heightfcn{\vect s}(v) := \ell(v) \cdot \vect{s}.
+    \]
+    The \emph{height filtration} of $K$ in direction~$\vect{s}$, which we denote
+    by $H_{\vect{s}}$, is the lower-star filtration of $K$ induced by
+    $h_{\vect s}$.
+\end{definition}
+
+\subsection{The Weighted Euler Characteristic Transform}
+
+Here, we introduce the main focus of this paper: the WECT.
+
+\begin{definition}[Weighted Simplicial Complexes]
+    A \emph{weighted simplicial complex} is a pair~$(K, \omega)$, where $K$ is
+    a simplicial complex and $\omega: K \to \R$ is a function (referred to
+    as the \emph{weight function}).
+\end{definition}
+
+Weighted simplicial complexes are often used to model various types of data.
+%
+For example, triangular meshes are widely used to model three-dimensional surfaces,
+with weight functions capturing scalar fields on the surface.
+%
+Another example comes from image data, where grayscale images are converted
+into weighted simplicial complexes via the \emph{Freudenthal triangulation} \cite{cisewski2023weighted, Jiang2020TheWE}
+with weights derived from the pixel intensities.
+
+Originally introduced by Euler in 1758 for convex polyhedra \cite{euler1758elementa},
+the Euler characteristic (EC) is a topological invariant that readily extends to simplicial complexes.
+%
+We use an extension of the EC to weighted simplicial complexes: the
+weighted Euler characteristic.
+
+\begin{definition}[Weighted Euler Characteristic]
+    The \emph{weighted Euler characteristic~(WEC)} of a weighted simplicial
+    complex~$(K, \omega)$ is
+    \[
+        \chi(K, \omega) := \sum_{\sigma \in K} (-1)^{\dim{\sigma}}
+        \omega(\sigma).
+    \]
+\end{definition}
+
+\begin{remark}\label{rem:ec-wec}
+    The Euler characteristic is a special case of the WEC.
+    For a simplicial complex $K$, its Euler characteristic is the WEC of
+    $(K, \mathbf{1})$, where $\mathbf{1}: K \to \R$ is the constant function
+    that assigns value one to each simplex.
+\end{remark}
+
+While the WEC is a remarkably useful invariant given its simplicity, there is
+limited information that a single number can capture about a simplicial complex
+$K$.
+%
+To incorporate more information, we apply the WEC to a lower-star filtration of
+$K$, resulting in a \emph{weighted Euler characteristic function (WECF)}.
+
+\begin{definition}[Weighted Euler Characteristic Function]
+    Let $\K = (K, \omega)$ be a weighted simplicial complex
+    and let $f \colon K_0 \to \R$ be a vertex filter on $K$.
+    The \emph{weighted Euler characteristic function}
+    \footnote{
+        Weighted Euler characteristic functions are also known as weighted
+        Euler characteristic curves.
+        Due to their general lack of continuity, we use the term function
+        rather than curve.
+        }
+    of $\K$ induced by $f$ is
+    the function
+    \begin{equation*}
+        \wecf_{f}: \R \to \R
+    \end{equation*}
+    defined as
+    \begin{equation}
+        \wecf_{f}(t) := \chi \big( F(t), \omega|_{F(t)} \big) \label{eq:ecf}
+    \end{equation}
+    where $F$ is the lower-star filtration of $K$ induced by $f$.
+\end{definition}
+
+\begin{definition}[Directional WECF]
+    Let $\K = (K, \omega)$ be a weighted geometric simplicial complex in $\R^n$
+    and let~${\vect s \in \sph^{n-1}}$ be a direction vector.
+    The \emph{directional WECF} of $\K$ in direction~$\vect s$ is the WECF of
+    $\K$ induced by the height function $h_\vect s$.
+\end{definition}
+
+\begin{remark}\label{rem:which-ecf}
+    In image analysis tasks (and their three-dimensional analogs),
+    there are two common choices of vertex filters considered.
+    %
+    The first uses the pixel intensities (i.e., grayscale values) as the vertex
+    filter.
+    The implementations in \cite{laky2024, wang2022gpu} compute the result of
+    applying the (unweighted) Euler characteristic to the corresponding
+    lower-star filtration.
+    We refer to this simply as the ECF of an image.
+    %
+    The second uses the pixel intensities as weights,
+    and the height function $h_\vect s$ for a given direction vector
+    $\vect{s} \in \sph^1$ as the vertex filter.
+    This method is implemented in
+    \cite{amezquita2022measuring, tang2022topological, lebovici2024efficientcomputationtopologicalintegral}.
+\end{remark}
+
+\begin{example}
+An illustration of the directional ECF and directional WECF is presented
+in \figref{ecf_example}.
+The full simplicial complex, including weighted vertices,
+is displayed in \figref{ecf_simplex_full}.
+The filtration is along direction $(1,0)$,
+and the corresponding ECF and WECF are included in \figref{ecf_ex}
+and \figref{wecf_ex}, respectively.
+The ECF and WECF are the same until time 1 when the weights of the
+two new vertices have weights of 0.5.
+\end{example}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[t]{0.2\textwidth}
+        \centering
+        \includegraphics[height=.95in]{figs/example/simp0}
+        \caption{Time=0}
+    \end{subfigure}%
+    ~
+    \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[height=.95in]{figs/example/simp1}
+        \caption{Time=1}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[height=.95in]{figs/example/simp2}
+        \caption{Time=2}\label{fig:ecf_simplex_full}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[height=1.5in]{figs/example/ecf_example}
+        \caption{ECF in direction (1,0)}  \label{fig:ecf_ex}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[height=1.5in]{figs/example/wecf_example}
+        \caption{WECF in direction (1,0)}  \label{fig:wecf_ex}
+    \end{subfigure}
+    \caption{
+        Filtration of a simplicial complex (a-c) along direction (1,0),
+        where the weights are specified in the green zero-simplices.
+        The weight assigned to a simplex $\sigma$ is the maximum weight of
+        its zero-simplex faces.
+        The corresponding ECF (d) and WECF (e) are displayed in the
+        direction (1,0); see \eqref{ecf}.
+        At times 1 and 2, the ECF and WECF differ due to the
+        WECF's use of the weighted simplices.
+        } \label{fig:ecf_example}
+\end{figure}
+
+Typically, there is no canonical direction vector to choose for directional
+WECFs.
+For this reason, it is common to choose \emph{all} direction vectors.
+This results in the weighted Euler characteristic transform (WECT).
+
+\begin{definition}[Weighted Euler Characteristic Transform]\label{def:wect}
+    Let $\K = (K, \omega)$ be a weighted geometric simplicial complex in $\R^{n}$.
+    The weighted Euler characteristic transform of $\K$ is the~function
+    \begin{equation*}
+        \wect_{\K}: \sph^{n-1} \times \R \to \R
+    \end{equation*}
+    defined as
+    \begin{equation}
+        \wect_{\K}(\vect{s}, t) := \wecf_{h_{\vect s}} (t)
+        = \chi \big( H_{\vect{s}} (t), \omega \big).
+    \end{equation}
+\end{definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% EXISTING FRAMEWORKS
+%
+\subsection{Existing Frameworks}
+\label{sec:existing-frameworks}
+
+Due to its simplicity and ease of computation, the WECT and its variants are
+widely used in applied settings.
+%
+\defref{wect} suggests a na\"ive algorithm for computing a discretization of the WECT:
+\begin{enumerate}
+    \item Choose a finite set of directions $S = \{s_1, \ldots, s_m \} \subsetneq
+        \sph^{n-1}$ and a finite set of height
+        thresholds $T = \{t_1, \ldots t_{\ell} \} \subsetneq \R$.
+    \item Construct the simplicial complexes $\{\sigma \mid \height{\sigma}{s} \leq t \}$ for
+        each $s \in S$ and $t \in T$.
+    \item Compute the WECT of each complex.
+\end{enumerate}
+Suppose that $n = |K|$ is the number of simplices in $K$.
+This na\"ive implementation runs in~$\Theta(\ell  m  n)$ time,
+This can be improved to $\Theta(m(\ell + n \log n))$ time using a sorting-based
+approach.
+%
+There are several publicly available implementations to compute
+the WECT and its variants, which are described next.
+
+\paragraph{Demeter}
+\demeter \cite{amezquita2022measuring} is a Python package that computes the
+directional ECF and ECT of axis-aligned cubical complexes.
+Note that it incorporates an optimization of bucket sorting
+the filtration values of each vertex.
+However, this package does not work for generic simplicial complexes,
+and only computes the special case of the unweighted ECT.
+
+\paragraph{SINATRA}
+The \sinatra package \cite{tang2022topological} is an R package that
+computes the directional ECF and ECT through an algorithm similar to \demeter.
+However, unlike \demeter, \sinatra works for arbitrary simplicial complexes.
+Note that it does not allow for weighted complexes and is not optimized for
+speed.
+
+\paragraph{EuCalc}
+\eucalc \cite{lebovici2024efficientcomputationtopologicalintegral}
+is a highly optimized package that uses a preprocessing step to
+compute critical points of the directional ECF.
+This allows for efficient computation of the exact directional ECF
+(as opposed to a vectorization of it).
+The package only accepts axis-aligned cubical complexes as input,
+but does generalize to weighted complexes.
+
+\paragraph{FastTopology}
+The \fasttopology framework \cite{laky2024} is a highly optimized
+implementation for computing the ECF of lower-star filtrations of two- and
+three-dimensional axis-aligned cubical complexes.
+While it is designed to be highly parallelizable on CPU architectures,
+it does not directly support vectorized computation (e.g., on a GPU)
+or the WECF.
+
+\paragraph{GPU ECC}
+\gpuecc \cite{wang2022gpu} is a GPU-based implementation of the ECF.
+Unlike the other existing packages, it is designed for GPU architectures.
+However, it is highly optimized for image data, so it only works for
+axis-aligned cubical complexes and does not generalize to weighted complexes.
+Additionally, it does not compute the directional ECF or ECT,
+and currently is only available as an implementation on Windows systems.
+
+In this paper, we present the \pyect framework for computing the WECT.
+In general, the \pyect framework has several
+advantages over these existing implementations.
+%
+First, unlike all existing frameworks (except \sinatra), \pyect works in
+full generality across axis-aligned cubical complexes,
+arbitrary cubical complexes, and geometric simplicial complexes;
+see \tabref{input-comparison}.
+%
+Second, \pyect provides frameworks for computing both the WECFs of lower-star
+filtrations and WECTs of weighted geometric complexes.
+This generality is not available in any of these existing packages.
+%
+Third, the vectorized operations used in \pyect are highly optimized
+for modern GPU hardware, which, in most cases, results in significant speedups
+over these existing packages.
+The \gpuecc package admits this advantage as well, but is far less general as it
+only accepts axis-aligned cubical complexes and does not compute the directional
+WECF or WECT.
+%
+Finally, the simplicity of the vectorized approach makes it very advantageous
+for software implementation, especially in the context of well-maintained,
+abstracted tensor computation libraries like
+\texttt{PyTorch} \cite{pytorch1,ansel2024pytorch}.
+For example, the core WECT algorithm in the \pyect implementation
+is only about $25$ lines of code.
+
+One minor disadvantage of \pyect is that it does not compute exact
+Euler characteristic values at all heights of the directional ECF
+(which is available in \eucalc).
+%
+While computing exact values retains more information and can be an advantage
+for reconstruction tasks, it leads to difficulties in
+vectorizing the (W)ECT because directional WECFs
+do not have consistent heights at which they change values
+across varying directions.
+%
+However, vectorizations of the WECT are in fact more desirable for many
+real-world applications, especially when used as input to distance-based
+methods or machine learning pipelines (such as those in
+\cite{Jiang2020TheWE, Turner2014PHT, munch2023invitation, amezquita2022measuring}).
+%
+While it is possible to compute a vectorization from exact values using
+\eucalc, it requires an additional computation step that is
+linear in the size of the discretization.
+
+\begin{table}[ht]
+    \centering
+    \caption{
+        Comparison of acceptable input types of ECT packages.
+    }
+    \begin{tabular}{l llll}
+        \toprule
+        Package
+            &\makecell[l]{Simplicial \\ Complexes}
+            &\makecell[l]{Cubical\\ Complexes}
+            &\makecell[l]{Axis-Aligned\\ Cubical Complexes}\\
+        \midrule
+        \pyect       & \yes & \yes & \yes  \\
+        \eucalc       & \no & \no & \yes \\
+        \fasttopology & \no & \no & \yes \\
+        \demeter         & \no & \no & \yes\\
+        \sinatra        & \yes & \yes & \yes\\
+        \bottomrule
+    \end{tabular}
+    \label{tab:input-comparison}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TENSOR OPERATIONS
+%
+\subsection{Tensor Operations}\label{ss:tensorops}
+
+Our algorithms almost exclusively use vectorized operations on tensors.
+These have two main advantages over non-vectorized approaches.
+The first advantage is that the vectorized operations we use have highly
+optimized implementations in PyTorch~\cite{pytorch1,ansel2024pytorch} that
+run in parallel on both CPUs and GPUs.
+The second advantage is that they support automatic gradient computations,
+facilitating the use of our implementation in neural networks.
+Here, we review tensors and the vectorized operations used in our algorithm.
+
+For any positive integer $m$, let $[[m]] := \{0, 1, \ldots, m-1\}$.
+For $\{m_i \}_{i=0}^{d-1} \subset \Z_{+}$, a
+$d$-dimensional tensor of shape~$(m_0, m_1, \ldots, m_{d-1})$ is a function
+\[
+    T \colon [[m_0]] \times [[m_1]] \times \cdots \times [[m_{d-1}]] \to \R.
+\]
+We exclusively use one-dimensional tensors (i.e., vectors), two-dimensional
+tensors (i.e., matrices), and three-dimensional tensors in our algorithm.
+A specific dimension of a tensor is called an \emph{axis}.
+
+Next, we introduce the tensor operations utilized in our algorithm.
+For examples of the following tensor operations, we refer the reader
+to \appendref{tensor-examples}.
+
+\begin{enumerate}
+    \item Zeros: Given a shape $L$, $\zeros(L)$ is the
+        tensor with shape~$L$, where every value is~$0$.
+    \item Element-wise operations: Any function $f: \R \to \R$ can be applied to
+        tensors element-wise by post-composition. That is, if $T$ is a tensor, then
+        $f(T)$ is the tensor with the same shape as $T$ and values
+        \[
+            f(T)[i_0, i_1, \ldots, i_{d-1}] = f \big( T[i_0, i_1, \ldots, i_{d-1}]
+            \big).
+        \]
+    \item Matrix multiplication: If $T$ and $S$ are tensors with shape
+        $(m_0, m_1)$ and $(m_1, m_2)$ respectively, we use the notation $T * S$
+        to denote their matrix multiplication.
+    \item Cumulative sum: Let $T$ be a tensor of shape $(m_0, m_1)$.
+        Then, $\cumsum(T)$ is the tensor with shape $(m_0, m_1)$ and values
+        \[
+            \cumsum(T)[i,j] = \sum_{\substack{k \in [[m_1]] \\ k \leq j}} T[i,k].
+        \]
+        In this work, we only use the cumulative sum on two-dimensional
+        tensors over the second axis, $[[m_1]]$, as defined here.
+        In more general settings, the cumulative sum can be defined over
+        any axis of a tensor.
+    \item Reduce maximum: Let $T$ be a tensor of shape $(m_0, m_1, \ldots, m_{d-1})$
+        and let $p \in [[d]]$.
+        Then, $\rmax (T, p)$ is the tensor with shape
+        \[
+            (m_0, \ldots, m_{p-1}, m_{p+1}, \ldots, m_{d-1})
+        \]
+        and values
+        \[
+            \rmax(T,p)[i_0, \ldots, i_{p-1}, i_{p+1}, \ldots i_{d-1}] =
+            \max_{j \in [[m_p]]}T[i_0, \ldots, i_{p-1}, j, i_{p+1}, \ldots i_{d-1}].
+        \]
+    \item Advanced indexing: Let $T$ be a tensor with shape $(m_2, m_3)$, and
+        let $I$ be a tensor with shape $(m_0, m_1)$ and values in $[[m_2]]$.
+        The tensor $T[I]$ has shape~$(m_0,m_1,m_3)$ and~values
+        \[
+            T[I][i,j,k] = T \big[ I[i,j], k \big].
+        \]
+    \item Scatter add: Let $S$ be a tensor with shape $(m_0,m_1)$, let $I$ be a
+        tensor with shape~$(m_0,m_2)$ and values in $[[m_1]]$, and let $T$
+        be a tensor with shape~$(m_2)$.
+        The function~$\scadd(I,T)$ updates $S$ in-place by adding
+        to it, the difference tensor~$D$ with shape $(m_0,m_1)$ and values
+        \begin{equation}\label{eq:difftensor}
+            D[i,j] = \sum_{\substack{k \in [[m_2]] \\ I[i, k] = j}} T[k].
+        \end{equation}
+        That is, for a tensor $S$, we have
+        \[
+            \scadd(I,T)(S) = S + D,
+        \]
+        where $+$ is taken element-wise and $S$ is updated in place.
+        In practice, the tensor $D$ is not
+        explicitly built, but is helpful for analysis.
+\end{enumerate}

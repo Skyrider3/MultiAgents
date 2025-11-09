@@ -1,0 +1,407 @@
+\label{SEC:ProofApplications}
+In this section, we give a full proof of \Cref{THM:mainpolyhedron} and \Cref{COR:mainpolyhedron}, which we restate below.
+
+\THMmainpolyhedron*
+
+\CORmainpolyhedron*
+
+For the proof of \Cref{THM:mainpolyhedron} and \Cref{COR:mainpolyhedron} we need \Cref{THM:quantstructure}, which we also restate below for convenience. 
+
+\quantstructurethm*
+
+In particular, this gives us the following lower bound on $f$:
+\begin{equation}\label{EQ:fullprooflowerboundonf}
+    f(x) \geq q(0) -  \|\nabla q(0)\| \cdot \|Ux\| - \langle w, x \rangle + \frac{\mu}{2} \|Ux\|^2.
+\end{equation}
+
+We define $\mW \coloneqq \spann{w}$ for $w$ as in \Cref{THM:quantstructure}.
+In order to prove \Cref{THM:mainpolyhedron} and \Cref{COR:mainpolyhedron}, we also need the following three lemmas.
+\Cref{LEM:fullproofconditionforunbounded} shows how we can efficiently detect whether $f$ is unbounded from below.
+\Cref{LEM:fullproofboundinUandWdirection} then shows that any minimizer needs to have small norm in the subspace $\mU \oplus \mW$.
+Finally, \Cref{LEM:fullproofboundinVdirection} shows how to lift this norm bound in a subspace to the full space.
+
+\begin{lemma}\label{LEM:fullproofconditionforunbounded}
+    Let $f \in \Q[x]$ be a convex polynomial and let $P = \{Ax \leq b\}$ be a (nonempty) polyhedron.
+    Let $\mU$ and $w$ as in \Cref{THM:quantstructure}.
+    Then, $f$ is unbounded from below on $P$, if and only if there exists $x^0 \in \R^n$ with $Ax^0 \leq 0$, $x^0 \in \mU^\perp$ (or equivalently $Ux^0 = 0$ for $U$ as in \Cref{THM:quantstructure}) and $\langle w, x^0 \rangle = 1$.
+\end{lemma}
+
+\begin{lemma}\label{LEM:fullproofboundinUandWdirection}
+    Let $f \in \Q[x]$ be a convex polynomial and let $P = \{Ax \leq b\}$ be a (nonempty) polyhedron.
+    Let $\mU$ and $w$ as in \Cref{THM:quantstructure} and let $x \in P$.
+    Assume that $x$ satisfies $\|x_{\mU \oplus \mW}\| > 2^{\poly(\enc{f}, \,\enc{P})}$.
+    Then there is a point $x' \in P$ with $\|x'\| \leq 2^{\poly(\enc{f}, \,\enc{P})}$  and $f(x') < f(x)$.
+    In particular, if $f$ is bounded from below on $P$, then every minimizer $x^* \in P$ of $f$ on $P$ satisfies $\|x^*_{\mU \oplus \mW}\| \leq 2^{\poly(\enc{f}, \,\enc{P})}$.
+\end{lemma}
+
+\begin{lemma}\label{LEM:fullproofboundinVdirection}
+    Let $P = \{Ax \leq b\}$ be a (nonempty) polyhedron. Let $\mZ$ be a linear subspace of $\R^n$ spanned by orthogonal vectors $x^1, \ldots, x^k$. Let $x^* \in P$. There is an $x' \in P$ such that $x^*_\mZ = x'_\mZ$ and
+    \[
+        \|x'\| \leq \poly\left(\|x^*_{\mZ}\|,\,2^{\poly(\enc{P}, \,\bc(\mZ))}\right),
+    \]
+    where $\bc(\mZ) = \bc(x^1) + \ldots + \bc(x^k)$.
+\end{lemma}
+
+We now first give a formal proof of \Cref{THM:mainpolyhedron} and \Cref{COR:mainpolyhedron} given the lemmas and then prove \Cref{LEM:fullproofconditionforunbounded,LEM:fullproofboundinUandWdirection,LEM:fullproofboundinVdirection} in \Cref{SEC:fullproofconditionforunbounded,SEC:fullproofboundinUandWdirection,SEC:fullproofboundinVdirection}.
+
+\begin{proof}[Proof of \Cref{THM:mainpolyhedron}]
+    Assume that $f$ is bounded from below (otherwise we are immediately done).
+    We claim that
+    \begin{equation}\label{EQ:fullproofPattainsminimumonball}
+        \inf_{x \in P} f(x) = \inf_{x \in P :\: \|x\| \leq R} f(x)
+    \end{equation}
+    for some $R = 2^{\poly(\enc{f}, \,\enc{P})}$.
+    Since the set on the right-hand side is compact and $f$ is continuous, this will allow us to conclude that $f$ attains its minimum.
+    Moreover, it attains it at a point $x^*$ with $\|x^*\| \leq R$, which will complete the proof.
+    Thus, it remains to prove \eqref{EQ:fullproofPattainsminimumonball}.
+    Assume by contradiction that this is not true.
+    Then, there is $x^0 \in P$ with
+    \[
+        f(x^0) < \inf_{x \in P :\: \|x\| \leq R} f(x).
+    \]
+    By \Cref{LEM:fullproofboundinUandWdirection}, we can assume without loss of generality that $\|(x^0)_{\mU \oplus \mW}\| \leq 2^{\poly(\enc{f}, \,\enc{P})}$.
+    Otherwise, we could replace $x^0$ by a point ${x^0}'$ that satisfies this and has $f({x^0}') < f(x^0)$.
+    By \Cref{LEM:fullproofboundinVdirection} (setting $\mZ = \mU \oplus \mW$ and $x^1, \ldots, x^k$ being the rows of $U$ and $w$), we can now find an $x' \in P$ such that $x^0_{\mU \oplus \mW} = x'_{\mU \oplus \mW}$ and
+    \begin{equation}\label{EQ:fullproofpointofsmallnormforminimum}
+        \|x' \| \leq \poly\left(\|x^0_{\mU \oplus \mW}\|,\, 2^{\poly(\enc{P}, \,\bc(\mU \oplus \mW))}\right) \leq 2^{\poly(\enc{f}, \,\enc{P})}.
+    \end{equation}
+    Here we used that by \Cref{THM:quantstructure} we have $\bc(\mU \oplus \mW) \leq \poly(\enc{f})$.
+    Choosing $R$ as this upper bound, we have
+    \[
+        f(x') = f(x'_{\mU \oplus \mW}) = f(x^0_{\mU \oplus \mW}) = f(x^0) < \inf_{x \in P :\: \|x\| \leq R} f(x),
+    \]
+    which contradicts \eqref{EQ:fullproofpointofsmallnormforminimum}.
+    Thus, \eqref{EQ:fullproofPattainsminimumonball} holds, which completes the proof.
+\end{proof}
+
+\begin{algorithm}
+\caption{Algorithm for convex polynomial programming}\label{ALG:mainalgorithm}
+\begin{algorithmic}[1]
+\Input A polynomial $f$, a matrix $A \in \Q^{m \times n}$, a vector $b \in \Q^m$ (defining a nonempty polyhedron $P=\{Ax \leq b\}$), an error parameter $\varepsilon$
+\Output Either $-\infty$ if $f$ is unbounded on $P$ or a point $\tilde{x} \in P$ with $f(\tilde{x}) \leq \min_{x \in \R^n} f(x) + \varepsilon$
+\State Compute $U$ and $w$ as in \Cref{THM:quantstructure}.\label{ALGLINE:structuretheorem}
+\If{there exists $x^0 \in \R^n$ with $Ax^0 \leq 0$, $Ux^0 = 0$ and $\langle w, x^0 \rangle = 1$}\label{ALGLINE:checkforunbounded}
+\Return $-\infty$
+\Else
+\State \parbox[t]{0.928\linewidth}{Run the ellipsoid method from \Cref{PROP:applicationellipsoid} with input $f$, $P$, $R = 2^{\poly(\enc{f}, \,\enc{P})}$ (as in \Cref{THM:mainpolyhedron}) and $\varepsilon$ and \Return the output of the ellipsoid method.\label{ALGLINE:ellipsoid}}
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+\begin{proof}[Proof of \Cref{COR:mainpolyhedron}]
+Consider \Cref{ALG:mainalgorithm}, which we want to use to show \Cref{COR:mainpolyhedron}.
+Correctness follows from \Cref{LEM:fullproofconditionforunbounded} and \Cref{THM:mainpolyhedron}.
+The runtime is $\poly(\enc{f}, \,\enc{P},\, \log(1/\varepsilon))$.
+Indeed, by \Cref{THM:quantstructure}, line~\ref{ALGLINE:structuretheorem} can be done in time $\poly(\enc{f})$.
+The check in line~\ref{ALGLINE:checkforunbounded} can be done in time $\poly(\enc{f}, \,\enc{P})$ by \Cref{PROP:solvelinearprogram} since it checks for feasibility of a linear program and the bit lengths of $A$, $U$ and $w$ are bounded by $\poly(\enc{f}, \,\enc{P})$.
+Finally, the ellipsoid method from \Cref{PROP:applicationellipsoid} in line~\ref{ALGLINE:ellipsoid} runs in time $\poly(\enc{f},\, \enc{P},\, \log(R),\, \log(1/\varepsilon))$, which is also $\poly(\enc{f}, \,\enc{P},\, \log(1/\varepsilon))$ since we have $R = 2^{\poly(\enc{f}, \,\enc{P})}$.
+\end{proof}
+
+\subsection{\texorpdfstring{Deciding unboundedness: Proof of \Cref{LEM:fullproofconditionforunbounded}}{Deciding unboundedness}}\label{SEC:fullproofconditionforunbounded}
+In this section, we prove \Cref{LEM:fullproofconditionforunbounded}, i.e. we show that $f$ is unbounded on $P$ if and only if there exists an $x^0 \in \R^n$ with $Ax^0 \leq 0$, $x^0 \in \mU^\perp$ and $\langle w, x^0 \rangle = 1$.
+We first show that this condition is sufficient.
+
+\begin{proof}[Proof of \Cref{LEM:fullproofconditionforunbounded} (part 1: condition is sufficient)]
+    Let $x \in P$ and consider the points $x + \lambda x^0$ for $\lambda \geq 0$. We have
+    \[
+        A(x + \lambda x^0) = Ax + \lambda Ax^0 \leq b + \lambda \cdot 0 = b
+    \]
+    and thus $x + \lambda x^0 \in P$ for any $\lambda \geq 0$. Furthermore
+    \[
+        f(x + \lambda x^0) = f((x + \lambda x^0)_\mU) - \langle w, x + \lambda x^0 \rangle.
+    \]
+    Since $x^0 \in \mU^\perp$, we have $(x + \lambda x^0)_\mU = x_\mU$. Thus, using $\langle w, x^0 \rangle = 1$,
+    \[
+        f(x + \lambda x^0) = f(x_\mU) - \langle w,x \rangle - \lambda,
+    \]
+    showing that $f(x + \lambda x^0) \to -\infty$ as $\lambda \to \infty$.
+    Hence, if the condition is satisfied, then $f$ is unbounded from below on $P$.
+\end{proof}
+
+To show that the condition is also necessary, assume that $f$ is unbounded from below on~$P$.
+Consider a sequence $(x^k)_{k \geq 1} \subseteq P$ with $\lim_{k \to \infty} f(x^k) = -\infty$.
+Since the unit sphere $S^{n-1}$ is compact, a subsequence of the normalized points $x^k/\|x^k\|$ converges to a point $x^0$.
+Unfortunately, $x^0$ could be in $(\mU \oplus \mW)^\perp$ (in particular meaning that $\langle w, x^0 \rangle = 0$).
+Instead, we get the following claim about the projected normalized points.
+(Note that, since $f(x) = f(x_{\mU \oplus \mW})$ for all $x \in \R^n$, the statements ${\lim_{k \to \infty} f(x^k) = -\infty}$ and $\lim_{k \to \infty} f(x^k_{\mU \oplus \mW}) = -\infty$ are equivalent.)
+\begin{claim}\label{CL:limitinUplusW}
+    Consider a sequence $(x^k)_{k \geq 1}$ such that $\lim_{k \to \infty} f(x^k) = -\infty$. Then a subsequence of the normalized projected points $x^k_{\mU \oplus \mW}/\|x^k_{\mU \oplus \mW}\|$ converges to a point $y^0 \in \mW$ with $\langle w, y^0 \rangle > 0$.
+\end{claim}
+
+Before we prove this claim, we show how to apply it to prove that the condition of \Cref{LEM:fullproofconditionforunbounded} is also necessary.
+For this, we want to argue that we can lift this limit to a point in the full space satisfying the conditions of \Cref{LEM:fullproofconditionforunbounded}.
+In order to do so, we need the following two propositions.
+Recall that the recession cone $\recc(C)$ of a convex set $C$ is the set of directions in which $C$ extends to infinity, i.e.
+\[
+    \recc(C) = \{y \in \R^n : x+\lambda y \in C \:\:\forall x \in C\: \forall \lambda \geq 0\}.
+\]
+\begin{proposition}[{\cite[(Special case of) Corollary 8.3.4]{Rockafellar1970}}]\label{PROP:projectionreccesioncone}
+    Let $C$ be a (nonempty) closed convex set.
+    Let $\mZ$ be a subspace.
+    Consider the projection
+    \[
+        C_\mZ = \{x \in \mZ : \exists x' \in \mZ^\perp \text{ with } x + x' \in C\}.
+    \]
+    Then the projection of the recession cone of $C$ is the recession cone of the projection $C_\mZ$.
+\end{proposition}
+\begin{proposition}[{\cite[Theorem 19.3]{Rockafellar1970}}]\label{PROP:projectionofpolyhedronispolyhedron}
+    The projection of the polyhedron $P = \{Ax \leq b\}$ to a subspace~$\mZ$ is again a polyhedron, i.e., it can be described as
+    \[
+        P_{\mZ} = \{x \in \mZ : \exists x' \in (\mZ)^\perp \text{ with } x + x' \in P\} = \{\hat{A}x \leq \hat{b}\}.
+    \]
+\end{proposition}
+Note that the dimensions of $\hat{A}$ and $\hat{b}$ can be exponential in $n$, but since we are only interested in proving existence of an $x^0$ as in \Cref{LEM:fullproofconditionforunbounded} this is not a problem.
+We now show how to use \Cref{CL:limitinUplusW} and \Cref{PROP:projectionreccesioncone,PROP:projectionofpolyhedronispolyhedron} to prove \Cref{LEM:fullproofconditionforunbounded}.
+
+\begin{proof}[Proof of \Cref{LEM:fullproofconditionforunbounded} (part 2: condition is necessary)]
+    Since $f$ is unbounded, there is a sequence $(x^k)_{k \geq 1}$ of points in $P$ such that $\lim_{k \to \infty} f(x^k) = -\infty$.
+    Thus, using \Cref{CL:limitinUplusW} we get a $y^0 \in \mW$ with 
+    \[
+        y^0 = \lim_{k \to \infty} \frac{x^k_{\mU \oplus \mW}}{\|x^k_{\mU \oplus \mW}\|}.
+    \]
+    Note that we can assume without loss of generality that $y^0$ is the limit of all the points (and not just of a subsequence).
+    Since $y^0 \in \mW$, we in particular have $y^0 \in \mU^\perp$.
+
+    We want to show that we can lift $y^0$ to a point $x^0$ (meaning to an $x^0$ such that $x^0 - y^0 \in (\mU \oplus \mW)^\perp$) with $Ax^0 \leq 0$.
+    We have $x^k_{\mU \oplus \mW} \in P_{\mU \oplus \mW}$.
+    By \Cref{PROP:projectionofpolyhedronispolyhedron}, $P_{\mU \oplus \mW} = \{\hat{A}x \leq \hat{b}\}$ for some $\hat{A}$ and~$\hat{b}$.
+    Since we also have ${\lim_{k \to \infty} f(x_{\mU \oplus \mW}^k) = -\infty}$, it follows that $\lim_{k \to \infty} \|x_{\mU \oplus \mW}^k\| = \infty$ ($f$ is bounded over any compact set) and thus also
+    \[
+        \hat{A}y^0 = \lim_{k \to \infty}\frac{1}{\|x_{\mU \oplus \mW}^k\|}\hat{A}x_{\mU \oplus \mW}^k \leq \lim_{k \to \infty} \frac{1}{\|x_{\mU \oplus \mW}^k\|}\hat{b} = 0.
+    \]
+    Thus, $y^0$ is in the recession cone of $P_{\mU \oplus \mW}$, which by \Cref{PROP:projectionreccesioncone} is the projection of the recession cone $\recc(P) = \{x \in \R^n : Ax \leq 0\}$ of $P$.
+    This implies that we can lift $y^0$ to a point $x^0 \in \recc(P)$.
+    
+    We then have $Ax^0 \leq 0$ by definition of $\recc(P)$.
+    Since $x^0$ and $y^0$ only differ in $(\mU \oplus \mW)^\perp$, we still have $x^0 \in \mU^\perp$.
+    Since $\langle w, x^0 \rangle = \langle w, y^0 \rangle > 0$, by rescaling, we can get $\langle w, x^0\rangle = 1$, which completes the proof.
+\end{proof}
+
+It remains to prove \Cref{CL:limitinUplusW}.
+
+\begin{proof}[Proof of \Cref{CL:limitinUplusW}]
+    Consider the projections $x^k_{\mU \oplus \mW}$.
+    We have ${\lim_{k \to \infty} f(x^k_{\mU \oplus \mW}) = -\infty}$.
+    Thus, by compactness of the unit sphere, a subsequence of the normalized points $x^k_{\mU \oplus \mW}/\|x^k_{\mU \oplus \mW}\|$ converges to a point $y^0 \in \mU \oplus \mW$.
+    Without loss of generality, we can replace the sequence $(x^k)_{k \geq 1}$ by the elements corresponding to this subsequence and thus assume $\lim_{k \to \infty} x^k_{\mU \oplus \mW}/\|x^k_{\mU \oplus \mW}\| = y^0$.
+
+    By \eqref{EQ:fullprooflowerboundonf}, we can conclude two things:
+    First, we need to have $\lim_{k \to \infty} \langle w, x^k_{\mU \oplus \mW} \rangle = \infty$. Without loss of generality we can thus assume $\langle w, x^k_{\mU \oplus \mW} \rangle > 0$ for all $k$, which implies $\langle w, y^0 \rangle \geq 0$.
+    Second, we need to have 
+    \[
+        \lim_{k \to \infty} \frac{\left\|U\frac{x^k_{\mU \oplus \mW}}{\|x^k_{\mU \oplus \mW}\|}\right\|}{\left\langle w, \frac{x^k_{\mU \oplus \mW}}{\|x^k_{\mU \oplus \mW}\|} \right\rangle} = \lim_{k \to \infty} \frac{\|Ux^k_{\mU \oplus \mW}\|}{\langle w, x^k_{\mU \oplus \mW} \rangle} = 0.
+    \]
+    Indeed, if $\langle w, x^k_{\mU \oplus \mW} \rangle \leq c \|Ux^k_{\mU \oplus \mW}\|$ for all $k$ and a constant $c$ independent of $k$, then, by \eqref{EQ:fullprooflowerboundonf},
+    \[
+        f(x^k_{\mU \oplus \mW}) \geq q(0) -  (\|\nabla q(0)\| + c) \cdot \|Ux^k_{\mU \oplus \mW}\| + \frac{\mu}{2} \|Ux^k_{\mU \oplus \mW}\|^2.
+    \]
+    The right hand side is globally lower bounded since it is a quadratic polynomial with positive leading coefficient, which contradicts $\lim_{k \to \infty} f(x^k_{\mU \oplus \mW}) = - \infty$.
+    
+    In particular, since $\left\langle w, \frac{x^k_{\mU \oplus \mW}}{\|x^k_{\mU \oplus \mW}\|} \right\rangle \leq \|w\|$ this furthermore implies 
+    \[
+        \|Uy^0\| = \lim_{k \to \infty} \left\|U \frac{x^k_{\mU \oplus \mW}}{\|x^k_{\mU \oplus \mW}\|}\right\| = 0 
+    \]
+    and thus $Uy^0 = 0$ or in other word $y^0 \in \mU^\perp$.
+    Hence, $y^0 \in \mW$ and since
+    \[
+        \|y^0\| = \lim_{k \to \infty} \left\|\frac{x^k_{\mU \oplus \mW}}{\|x^k_{\mU \oplus \mW}\|}\right\| = 1,
+    \]
+    we also need to have $\langle w, y^0\rangle > 0$ (as opposed to just $\langle w, y^0 \rangle \geq 0$), which completes the proof.
+\end{proof}
+
+\subsection{\texorpdfstring{Bounding the norm of minimizers in a subspace: Proof of \Cref{LEM:fullproofboundinUandWdirection}}{Bounding the norm of minimizers in a subspace}}\label{SEC:fullproofboundinUandWdirection}
+In order to prove \Cref{LEM:fullproofboundinUandWdirection}, we want to use \eqref{EQ:fullprooflowerboundonf} and show that if $\|Ux\|$ or $|\langle w, x \rangle|$ is large, then $x$ cannot be a minimizer.
+We need Farkas' lemma to get a certificate for the fact that there is no $x^0$ as in \Cref{LEM:fullproofconditionforunbounded}.
+\begin{proposition}[Farkas' lemma, see e.g. {\cite[Corollary 7.1e]{Schrijver1994}}]\label{PROP:Farkaslemma}
+    Let $C \in \R^{M \times N}$ be a matrix and $d \in \R^M$ be a vector.
+    Exactly one of the following two statements hold:
+    \begin{itemize}
+        \item The system $Cx \leq d$ has a solution.
+        \item There is a vector $y \in \R_{\geq 0}^M$ with $C^\top y = 0$ and $d^\top y < 0$.  
+    \end{itemize}
+\end{proposition}
+Applying this to the system from \Cref{LEM:fullproofconditionforunbounded}, we get the following.
+\begin{lemma}\label{LEM:Farkaslemmaforboundedpolynomial}
+    Let $f \in \Q[x]$ be a convex polynomial and let $P = \{Ax \leq b\}$ be a polyhedron.
+    Let $U$ and $w$ as in \Cref{THM:quantstructure}.
+    If $f$ is bounded from below on $P$, then there exist vectors $\lambda \in \R_{\geq 0}^n$ and $z \in \R^k$ such that
+    \begin{equation}\label{EQ:Farkaslemmaforboundedpolynomial}
+        w = A^\top \lambda + U^\top z.
+    \end{equation}
+    Furthermore, there exist such $\lambda$ and $z$ with $\bc(\lambda), \bc(z) \leq \poly(\enc{f},\, \bc(A))$.
+\end{lemma}
+
+\begin{proof}
+    Since $f$ is bounded from below on $P$, there does not exist a vector as in \Cref{LEM:fullproofconditionforunbounded}, i.e. there is no $x^0$ with $Ax^0 \leq 0$, $Ux^0 = 0$ and $w^\top x^0 = 1$.
+    By applying \Cref{PROP:Farkaslemma} to the system 
+    \[
+        C = \begin{bmatrix} A\\U\\-U\\w^\top\\-w^\top \end{bmatrix}, \: d = \begin{bmatrix}0\\0\\0\\1\\-1\end{bmatrix}
+    \]
+    we get that there is a vector $y \geq 0$ and $C^\top y = 0$ and $d^\top y < 0$. Decomposing
+    \[
+        y = \begin{bmatrix}\lambda'\\y^1\\y^2\\\alpha_1\\\alpha_2\end{bmatrix}
+    \]
+    for $\lambda' \in \R_{\geq 0}^n$, $y^1,y^2 \in \R_{\geq 0}^k$, $\alpha_1,\alpha_2 \in \R_{\geq 0}$, we get
+    \[
+        A^\top \lambda' + U^\top (y^1-y^2) + (\alpha_1-\alpha_2)w = 0 \text{ and } \alpha_1-\alpha_2 < 0.
+    \]
+    Rescaling this by $\frac{1}{\alpha_2-\alpha_1} > 0$ and defining $\lambda = \frac{1}{\alpha_2-\alpha_1} \lambda'$ and $z = \frac{1}{\alpha_2-\alpha_1} (y^1-y^2)$, we get 
+    \[
+        A^\top \lambda + U^\top z = w.
+    \]
+    By \Cref{PROP:solvelinearprogram}, we can even get $\lambda$ and $z$ with
+    \[
+        \bc(\lambda), \bc(z) \leq \poly(\bc(C),\, \bc(d)) = \poly(\bc(A),\, \bc(U),\, \bc(w)) = \poly(\enc{f},\, \bc(A)),
+    \]
+    where the last step used that $\bc(U), \bc(w) \leq \poly(\enc{f})$ by \Cref{THM:quantstructure}.
+    Note that, since rescaling~$y$ by positive scalars does not change feasibility, we can replace $d^\top y < 0$ by $d^\top y = -1$  (thus making it a linear program as in \Cref{PROP:solvelinearprogram}).
+\end{proof}
+
+We can now prove \Cref{LEM:fullproofboundinUandWdirection}.
+
+\begin{proof}[Proof of \Cref{LEM:fullproofboundinUandWdirection}]
+    Let $\lambda \in \R^n_{\geq 0}$ and $z \in \R^k$ as in \Cref{LEM:Farkaslemmaforboundedpolynomial}.
+    For any $x \in \R^n$ we get
+    \[
+        \langle w, x \rangle = \langle A^\top \lambda, x\rangle + \langle U^\top z, x \rangle = \langle \lambda, Ax\rangle + \langle z, Ux \rangle.
+    \]
+    For $x \in P$ we have $Ax \leq b$, which together with $\lambda \geq 0$ implies
+    \[
+        \langle \lambda, Ax\rangle \leq \lambda^\top b.
+    \]
+    Thus, we get for any $x \in P$    
+    \begin{equation}\label{EQ:fullproofboundwcompintermsofUcomp}
+        |\langle w, x \rangle| \leq \|\lambda \| \cdot \|b\| + \|z\| \cdot \|Ux\|.
+    \end{equation}
+    Using \eqref{EQ:fullproofboundwcompintermsofUcomp} in \eqref{EQ:fullprooflowerboundonf}, we get for all $x \in P$
+    \begin{align*}
+         f(x) &\geq q(0) - \|\nabla q(0)\| \cdot \|Ux\| - \|\lambda \| \cdot \|b\| - \|z\| \cdot \|Ux\| + \frac{\mu}{2} \|Ux\|^2\\
+         &= (q(0) - \|\lambda \| \cdot \|b\|) + (- \|\nabla q(0)\| - \|z\|) \cdot \|Ux\| +  \frac{\mu}{2} \|Ux\|^2
+    \end{align*}
+    Fix $a \in P$ with $\|a\| \leq 2^{\poly(\enc{P})}$ (such a point exists by \Cref{PROP:solvelinearprogram}).
+    We are interested when the lower bound is at least $f(a)$, i.e. when
+    \[
+    (q(0) - \|\lambda \| \cdot \|b\| - f(a)) + (- \|\nabla q(0)\| - \|z\|) \cdot \|Ux\| +  \frac{\mu}{2} \|Ux\|^2 \geq 0
+    \]
+    Since this is a quadratic polynomial in $\|Ux\|$ with positive leading coefficient, as $\|Ux\| \to \infty$ this is positive.
+    Note that for $x=a$ the lower bound needs to be non-positive, i.e. this polynomial in $\|Ux\|$ has at least one root.
+    Thus, if $\|Ux\|$ is larger than the largest root, it needs to be positive.
+    That is, whenever
+    \[
+        \|Ux\| > \frac{ \|\nabla q(0)\| + \|z\| + \sqrt{(\|\nabla q(0)\| + \|z\|)^2 + 2\mu (f(a) + \|\lambda \| \cdot \|b\| - q(0))}}{\mu}
+    \]
+    for some $x \in P$, then we have $f(x) > f(a)$.
+    Furthermore, combining this with \eqref{EQ:fullproofboundwcompintermsofUcomp}, whenever
+    \[
+        |\langle w, x \rangle| > \|\lambda \| \cdot \|b\| + \|z\| \cdot \frac{ \|\nabla q(0)\| + \|z\| + \sqrt{(\|\nabla q(0)\| + \|z\|)^2 + 2\mu (f(a) + \|\lambda \| \cdot \|b\| - q(0))}}{\mu}
+    \]
+    for some $x \in P$, then we also have $f(x) > f(a)$.
+    
+    Thus, if $\|Ux\|$ or $|\langle w, x \rangle|$ are large, then $f(x) > f(a)$. We now want to quantify this in terms of the bit length of the input.
+    We do this term by term:
+    \begin{itemize}
+        \item By \Cref{THM:quantstructure}, we have $\bc(q) \leq \poly(\enc{f})$ and thus $|q(0)|, \|\nabla q(0)\| \leq 2^{\poly(\enc{f})}$.
+        \item By \Cref{THM:quantstructure}, we have $\mu \geq 2^{-\poly(\enc{f})}$.
+        \item By \Cref{LEM:Farkaslemmaforboundedpolynomial}, we have $\bc(z) \leq \poly(\bc(A),\, \bc(U),\, \bc(w)) \leq \poly(\enc{f},\, \bc(A))$ and thus $\|z\| \leq 2^{\poly(\enc{f}, \,\enc{P})}$.
+        \item By \Cref{LEM:Farkaslemmaforboundedpolynomial}, we have $\bc(\lambda) \leq \poly(\bc(A),\, \bc(U),\, \bc(w)) \leq \poly(\enc{f},\, \bc(A))$ and thus $\|\lambda\| \leq 2^{\poly(\enc{f}, \,\enc{P})}$.
+        \item Since we have $\|a\| \leq 2^{\poly(\enc{P})}$, we can bound $|f(a)| \leq 2^{\poly(\enc{f})} \cdot \|a\|^d$ and thus we get $|f(a)| \leq 2^{\poly(\enc{f}, \,\enc{P})}$.
+        \item We have $\|b\| \leq 2^{\poly(\enc{P})}$.
+    \end{itemize}
+    Putting this all together, we get that for all $x \in P$ we have
+    \begin{equation}\label{EQ:fullproofUxorAtoplambdaxlarge}
+        \|Ux\| > 2^{\poly(\enc{f}, \,\enc{P})} \quad \text{or} \quad |\langle w, x \rangle| > 2^{\poly(\enc{f}, \,\enc{P})} \quad \Longrightarrow \quad f(x) > f(a).
+    \end{equation}
+    To complete the proof, it remains to connect $\|Ux\|$ and $|\langle w, x\rangle|$ to $x_{\mU \oplus \mW}$.
+    Note that we have
+    \[
+        x_{\mU \oplus \mW} = \sum_{i=1}^k \frac{(Ux)_i}{\|U_i\|^2}U_i + \frac{\langle w, x\rangle}{\|w\|^2}w,
+    \]
+    where $U_i$ are the rows of $U$ (that are orthogonal and span $\mU$).
+    Thus, we have 
+    \[
+        \|x_{\mU \oplus \mW}\| \leq \sum_{i=1}^k \frac{|(Ux)_i|}{\|U_i\|} + \frac{|\langle w, x\rangle|}{\|w\|}.
+    \]
+    First, since $\bc(U) \leq \poly(\enc{f})$ by \Cref{THM:quantstructure} we have $\|U_i\| \geq 2^{-\poly(\enc{f})}$.
+    Furthermore, we have that $\sum_{i=1}^k |(Ux)_i| = \|Ux\|_1 \leq \sqrt{k} \|Ux\|$.
+    Thus, we get that
+    \[
+        \sum_{i=1}^k \frac{|(Ux)_i|}{\|U_i\|} \leq 2^{\poly(\enc{f})} \|Ux\|.
+    \]
+    Second, by \Cref{THM:quantstructure}, we have $\bc(w) \leq \poly(\enc{f})$ and thus $\|w\| \geq 2^{-\poly(\enc{f})}$.
+    Together, this gives
+    \[
+        \|x_{\mU \oplus \mW}\| \leq 2^{\poly(\enc{f})} (\|Ux\|_2 + |\langle w, x\rangle|)
+    \]
+    and hence, by \eqref{EQ:fullproofUxorAtoplambdaxlarge}, we can conclude that, for all $x \in P$,
+    \[
+        \|x_{\mU \oplus \mW}\| > 2^{\poly(\enc{f}, \,\enc{P})} \Longrightarrow f(x) > f(a).\qedhere
+    \]
+\end{proof}
+
+\subsection{\texorpdfstring{Finding a minimizer of small norm: Proof of \Cref{LEM:fullproofboundinVdirection}}{Finding a minimizer of small norm}}\label{SEC:fullproofboundinVdirection}
+It remains to prove \Cref{LEM:fullproofboundinVdirection}, which shows that we can lift a point $x^* \in P$ with small norm in some subspace $\mZ$ to a point $x' \in P$, whose norm in the entire space is small.
+
+\begin{proof}[Proof of \Cref{LEM:fullproofboundinVdirection}]
+    Consider the polyhedron
+    \begin{align*}
+        P' &= \{x \in \R^n : Ax \leq b, \: \langle x, x^i \rangle = \langle x^*, x^i \rangle \: \forall 1 \leq i \leq k\}\\
+        &= \left\{ x \in \R^n : A' x \leq b'\right\}
+    \end{align*}
+    for
+    \[
+        A' = \begin{bmatrix} A \\ \phantom{-}{x^1}^\top \\ - {x^1}^\top \\ \vdots \\ \phantom{-}{x^k}^\top \\ -{x^k}^\top \end{bmatrix} \quad \text{and} \quad b' = \begin{bmatrix} b\\\phantom{-}\langle x^*, x^1 \rangle\\-\langle x^*, x^1 \rangle\\ \vdots \\ \phantom{-}\langle x^*, x^k \rangle\\-\langle x^*, x^k \rangle \end{bmatrix}.
+    \]
+    Note that $x' \in P'$ if and only if $x' \in P$ and $x^*_\mZ = x'_\mZ$.
+    Thus, it remains to show that there is a $x' \in P'$ with $\|x'\| \leq \poly(\|x^*_\mZ\|,\, 2^{\poly(\enc{P}, \,\bc(\mZ))})$.
+    
+    Notice that we cannot apply \Cref{PROP:solvelinearprogram} immediately since the vector $b'$ might not be rational.
+    Instead, we want to pick a vertex of $P'$ and argue that it has small norm (even though it might also not be rational).
+    However, it could be that $P'$ has no vertices.
+    Namely, $P'$ has no vertices if and only if $\rank(A') < n$ or in other words $\ker(A') \neq \{0\}$ \cite[section 8.5]{Schrijver1994}.
+    Let $y^1, \ldots, y^\ell$ be a basis for $\ker(A')$.
+    We have $\ell \leq n$ and since the $y^j$ are solutions to the linear system $A' y = 0$, they satisfy $\bc(y^j) \leq \poly(\bc(A),\, \bc(x^1),\, \ldots,\, \bc(x^k)) \leq \poly(\bc(A),\, \bc(\mZ))$ \cite[Corollary 3.2d]{Schrijver1994}.
+    Consider the polyhedron
+    \begin{align*}
+        P'' &= \{x \in \R^n : Ax \leq b, \: \langle x, x^i \rangle = \langle x^*, x^i \rangle \: \forall 1 \leq i \leq k, \: \langle x, y^j\rangle = 0 \: \forall 1 \leq j \leq \ell\}\\
+        &= \left\{ x \in \R^n : A'' x \leq b''\right\},
+    \end{align*}
+    where
+    \[
+        A'' = \begin{bmatrix} A \\ \phantom{-}{x^1}^\top \\ - {x^1}^\top \\ \vdots \\ \phantom{-}{x^k}^\top \\ - {x^k}^\top \\ \phantom{-}y^1 \\ -y^1 \\ \vdots \\ \phantom{-}y^\ell \\ -y^\ell \end{bmatrix} \quad \text{and} \quad b'' = \begin{bmatrix} b\\\phantom{-}\langle x^*, x^1 \rangle\\-\langle x^*, x^1 \rangle \\ \vdots \\ \phantom{-}\langle x^*, x^k \rangle\\-\langle x^*, x^k \rangle \\ 0 \\ 0 \\ \vdots \\ 0 \\ 0\end{bmatrix}.
+    \]
+    We claim that the projection ${x^*}' \coloneqq x^*_{\spann{y^1, \ldots, y^\ell}^\perp}$ of $x^*$ to $\spann{y^1, \ldots, y^\ell}^\perp$ is in $P''$, i.e. that $P''$ is feasible.
+    Since $x^* \in P'$ and $y^1, \ldots, y^\ell \in \ker(A')$, we have $A'{x^*}' \leq b'$.
+    Clearly, also $\langle {x^*}', y^j \rangle = 0$, so we indeed have ${x^*}' \in P''$.
+    Furthermore, since $P'' \subseteq P'$, it is sufficient to find a point $x' \in P''$ that satisfies $\|x'\| \leq \poly(\|x^*_\mZ\|,\, 2^{\poly(\enc{P}, \,\bc(\mZ))})$.
+    
+    Note that since the $y^j$ generate $\ker(A')$, we have $\ker(A'') = \{0\}$.
+    Thus, $\rank(A'') = n$ and $P''$ has a vertex $x'$.
+    This vertex is the solution to a subsystem
+    \[
+        \hat{A}x' = \hat{b},
+    \]
+    where $\hat{A}$ contains $n$ linearly independent rows of $A''$ and $\hat{b}$ contains the corresponding elements of $b''$ (see e.g. \cite[equation (23)]{Schrijver1994}).
+    This means that we have
+    \[
+        x' = \hat{A}^{-1} \hat{b}
+    \]
+    and thus also
+    \[
+        \|x'\| \leq \|\hat{A}^{-1}\| \|\hat{b}\|.
+    \]
+    Note that $\bc(\hat{A}) \leq \bc(A'') \leq \poly(\bc(A),\, \bc(\mZ))$.
+    We also have $\bc(\hat{A}^{-1}) \leq \poly(\bc(\hat{A}))$ \cite[Corollary 3.2a]{Schrijver1994}.
+    Thus, we get 
+    \[
+        \|\hat{A}^{-1}\| \leq \sqrt{n} \|\hat{A}^{-1}\|_F \leq 2^{\poly(\bc(\hat{A}))} \leq 2^{\poly(\bc(A),\, \bc(\mZ))}.
+    \]
+    For this, note that $n \leq \bc(\hat{A})$.
+    Furthermore, we have
+    \[
+        \|\hat{b}\|^2 \leq \|b\|^2 + \sum_{i = 1}^k \langle x^*, x^i\rangle^2 \leq \|b\|^2 + \sum_{i=1}^k \|x^*_\mZ\| \|x^i\| \leq \poly(\|x^*_\mZ\|,\, 2^{\poly(\bc(b), \bc(\mZ))}).
+    \]
+    Combining these, we get
+    \[
+        \|x'\| \leq \poly(\|x^*_\mZ\|,\, 2^{\poly(\enc{P}, \,\bc(\mZ))}),
+    \]
+    which completes the proof.
+\end{proof}
